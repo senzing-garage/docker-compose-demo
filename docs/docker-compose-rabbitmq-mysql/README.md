@@ -121,15 +121,13 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
   Default: "root"
 - **MYSQL_STORAGE** -
   Path on local system where the database files are stored.
-  Default: "/storage/docker/senzing/docker-compose-mysql-demo"
+  Default: "/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql"
 - **MYSQL_USERNAME** -
   Non-root MySQL user.
   Default: "g2"
 - **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
-  Default: "/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq"
-- See [github.com/Senzing/docker-mysql](https://github.com/Senzing/docker-mysql)
-  for more details on how to find values for other **MYSQL_** environment variables.
+  Default: "/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq"
 - **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
@@ -175,7 +173,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 1. Once docker formation is up, phpMyAdmin will be available at
    [localhost:8080](http://localhost:8080).
-   The records received from Kafka can be viewed in the following Senzing tables:
+   The records received from RabbitMQ can be viewed in the following Senzing tables:
     1. G2 > DSRC_RECORD
     1. G2 > OBS_ENT
 

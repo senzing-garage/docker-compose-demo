@@ -3,7 +3,7 @@
 ## Overview
 
 This repository illustrates a reference implementation of Senzing using
-RabbitMQ as the queue and 
+RabbitMQ as the queue and
 PostgreSQL as the underlying database.
 
 The instructions show how to set up a system that:
@@ -99,13 +99,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **SENZING_DIR** -
-  Path on the local system where
-  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
-  has been extracted.
-  See [Create SENZING_DIR](#create-senzing_dir).
-  No default.
-  Usually set to "/opt/senzing".
 - **POSTGRES_DB** -
   The database schema name.
   Default: "G2"
@@ -121,17 +114,23 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 - **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq"
+- **SENZING_DIR** -
+  Path on the local system where
+  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
+  has been extracted.
+  See [Create SENZING_DIR](#create-senzing_dir).
+  No default.
+  Usually set to "/opt/senzing".
 
 ### Run docker formation
 
 1. :pencil2: Set environment variables.  Example:
 
     ```console
-    export SENZING_DIR=/opt/senzing
-
     export POSTGRES_DB=G2
     export POSTGRES_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres
     export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq
+    export SENZING_DIR=/opt/senzing
     ```
 
 1. Create directories.  Example:
@@ -147,10 +146,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     cd ${GIT_REPOSITORY_DIR}
 
     sudo \
-      SENZING_DIR=${SENZING_DIR} \
       POSTGRES_DB=${POSTGRES_DB} \
       POSTGRES_STORAGE=${POSTGRES_STORAGE} \
       RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      SENZING_DIR=${SENZING_DIR} \
       docker-compose --file docker-compose-rabbitmq-postgresql.yaml up
     ```
 
