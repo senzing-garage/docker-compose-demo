@@ -145,11 +145,11 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. :pencil2: Set environment variables.  Example:
 
     ```console
-      export MYSQL_DATABASE=G2
-      export MYSQL_ROOT_PASSWORD=root
-      export MYSQL_STORAGE=/storage/docker/senzing/docker-compose-stream-loader-kafka-demo
-    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq
-      export SENZING_DIR=/opt/senzing
+    export MYSQL_DATABASE=G2
+    export MYSQL_ROOT_PASSWORD=root
+    export MYSQL_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql
+    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq
+    export SENZING_DIR=/opt/senzing
     ```
 
 1. Create directories.  Example:
