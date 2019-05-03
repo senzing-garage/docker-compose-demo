@@ -1,0 +1,137 @@
+version: '3'
+services:
+
+  zookeeper:
+    image: 'bitnami/zookeeper:latest'
+    container_name: senzing-zookeeper
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    networks:
+      - backend
+    ports:
+      - '2181:2181'
+    restart: always
+
+  kafka:
+    image: 'bitnami/kafka:latest'
+    container_name: senzing-kafka
+    depends_on:
+      - zookeeper
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-kafka#configuration
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_NUM_PARTITIONS: 5
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    networks:
+      - backend
+    ports:
+      - '9092:9092'
+    restart: always
+
+  mockdata:
+    image: senzing/mock-data-generator
+    container_name: senzing-mock-data-generator
+    depends_on:
+      - kafka
+    environment:
+#     See https://github.com/Senzing/docker-mock-data-generator#configuration
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_RECORD_MAX: 10000
+      SENZING_RECORD_MONITOR: 1000
+      SENZING_SUBCOMMAND: url-to-kafka      
+    networks:
+      - backend
+    restart: on-failure
+
+  postgres:
+    image: postgres
+    container_name: senzing-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-G2}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+    networks:
+      - backend
+    ports:
+      - 5432:5432
+    volumes:
+      - ${POSTGRES_STORAGE:-/storage/docker/senzing/docker-compose-stream-loader-kafka-postgresql}:/var/lib/postgresql/data
+    restart: always
+
+  phppgadmin:
+    image: senzing/phppgadmin
+    container_name: senzing-phppgadmin
+    environment:
+      - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
+      - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
+      - PHP_PG_ADMIN_SERVER_PORT=5432
+      - PHP_PG_ADMIN_SERVER_SSL_MODE=allow
+      - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
+      - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
+      - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
+
+      - PHP_PG_ADMIN_DEFAULT_LANG=auto
+      - PHP_PG_ADMIN_AUTO_COMPLETE=default on
+      - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
+      - PHP_PG_ADMIN_OWNED_ONLY=false
+      - PHP_PG_ADMIN_SHOW_COMMENTS=true
+      - PHP_PG_ADMIN_SHOW_ADVANCED=false
+      - PHP_PG_ADMIN_SHOW_SYSTEM=false
+      - PHP_PG_ADMIN_MIN_PASSWORD_LENGTH=1
+      - PHP_PG_ADMIN_LEFT_WIDTH=200
+      - PHP_PG_ADMIN_THEME=default
+      - PHP_PG_ADMIN_SHOW_OIDS=false
+      - PHP_PG_ADMIN_MAX_ROWS=30
+      - PHP_PG_ADMIN_MAX_CHARS=50
+      - PHP_PG_ADMIN_USE_XHTML_STRICT=false
+      - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
+      - PHP_PG_ADMIN_AJAX_REFRESH=3
+    networks:
+      - backend
+    ports:
+      - "8080:80"
+      - "8443:443"
+    restart: always
+
+  loader:
+    image: senzing/stream-loader
+    container_name: senzing-stream-loader
+    environment:
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/stream-loader#configuration
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
+      SENZING_SUBCOMMAND: kafka
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+  api:
+    image: senzing/senzing-api-server
+    container_name: senzing-api-server
+    command:
+      - -httpPort 8080
+      - -bindAddr all
+      - -iniFile /opt/senzing/g2/python/G2Module.ini
+    depends_on:
+      - postgres
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+    networks:
+      - backend
+    ports:
+      - 8889:8080
+    restart: always
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+networks:
+  backend:
