@@ -58,7 +58,7 @@ services:
     ports:
       - 5432:5432
     volumes:
-      - ${POSTGRES_STORAGE:-/storage/docker/senzing/docker-compose-stream-loader-kafka-postgresql}:/var/lib/postgresql/data
+      - ${POSTGRES_STORAGE:-/storage/docker/senzing/docker-compose-kafka-postgres/postgres}:/var/lib/postgresql/data
     restart: always
 
   phppgadmin:
