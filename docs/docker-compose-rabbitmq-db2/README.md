@@ -2,14 +2,17 @@
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using IBM DB2 as the underlying database.
+This repository illustrates a reference implementation of Senzing using
+RabbitMQ as the queue and
+Db2 as the underlying database.
 
 The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line as a message to a Kafka topic.
-1. Reads messages from the Kafka topic and inserts into Senzing.
-    1. In this implementation, Senzing keeps its data in an IBM Db2 database.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is RabbitMQ.
+1. Reads messages from the queue and inserts into Senzing.
+    1. In this implementation, Senzing keeps its data in a Db2 database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
 
 The following diagram shows the relationship of the docker containers in this docker composition.
@@ -18,8 +21,7 @@ The following diagram shows the relationship of the docker containers in this do
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
-1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
+1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
 1. *[senzing/db2express-c](https://github.com/Senzing/docker-db2express-c)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base)*
@@ -39,9 +41,10 @@ This docker formation brings up the following docker containers:
 1. [Using docker-compose](#using-docker-compose)
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
-    1. [Run docker formation to read from Kafka](#run-docker-formation-to-read-from-kafka)
+    1. [Run docker formation](#run-docker-formation)
     1. [Initialize database](#initialize-database)
-    1. [Test Docker container](#test-docker-container)
+    1. [View data](#view-data)
+    1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -129,13 +132,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-* **SENZING_DIR** -
-  Path on the local system where
-  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
-  has been extracted.
-  See [Create SENZING_DIR](#create-senzing_dir).
-  No default.
-  Usually set to "/opt/senzing".  
 * **DB2_DB** -
   The database schema name.
   Default: "G2"
@@ -151,8 +147,15 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 * **DB2INST1_PASSWORD** -
   The password for the "db2inst1" user name.
   Default: "db2inst1"
+* **SENZING_DIR** -
+  Path on the local system where
+  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
+  has been extracted.
+  See [Create SENZING_DIR](#create-senzing_dir).
+  No default.
+  Usually set to "/opt/senzing".  
 
-### Run docker formation to read from Kafka
+### Run docker formation
 
 1. :pencil2: Set environment variables.  Example:
 
@@ -193,7 +196,11 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     db2 connect reset
     ```
 
-### Test Docker container
+### View data
+
+1. RabbitMQ is viewable at [localhost:15672](http://localhost:15672)
+
+### Test Senzing API
 
 1. Wait for the following message in the terminal showing docker log.
 
@@ -206,7 +213,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 1. Test Senzing REST API server.
    *Note:*  In
-   [docker-compose-kafka-db2.yaml](../../docker-compose-kafka-db2.yaml)
+   [docker-compose-rabbitmq-db2.yaml](../../docker-compose-rabbitmq-db2.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
@@ -227,13 +234,14 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-db2-kafka.yaml down
+    sudo docker-compose --file docker-compose-rabbitmq-db2.yaml down
     ```
 
-1. Delete database storage.
+1. Delete storage.
 
     ```console
     sudo rm -rf ${DB2_STORAGE}
+    sudo rm -rf ${RABBITMQ_STORAGE}
     ```
 
 1. Delete SENZING_DIR.
