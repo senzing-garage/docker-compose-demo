@@ -2,7 +2,9 @@
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using PostgreSQL as the underlying database.
+This repository illustrates a reference implementation of Senzing using
+RabbitMQ as the queue and 
+MySQL as the underlying database.
 
 The instructions show how to set up a system that:
 
@@ -101,7 +103,9 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. Build docker images.
 
     ```console
-    sudo docker build --tag senzing/mysql-init   https://github.com/senzing/docker-mysql-init.git
+    sudo docker build \
+      --tag senzing/mysql-init \
+      https://github.com/senzing/docker-mysql-init.git
     ```
 
 ### Configuration

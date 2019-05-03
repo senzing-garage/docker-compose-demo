@@ -2,7 +2,9 @@
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using PostgreSQL as the underlying database.
+This repository illustrates a reference implementation of Senzing using
+RabbitMQ as the queue and 
+PostgreSQL as the underlying database.
 
 The instructions show how to set up a system that:
 
