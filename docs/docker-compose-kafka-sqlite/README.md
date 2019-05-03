@@ -97,7 +97,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **SENZING_DIR** -
+* **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.

@@ -13,7 +13,7 @@ services:
       - 15672:15672
       - 5672:5672
     volumes:
-      - ${RABBITMQ_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq}:/bitnami
+      - ${RABBITMQ_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq}:/bitnami
 
   mockdata:
     image: senzing/mock-data-generator
@@ -46,7 +46,7 @@ services:
     ports:
       - 50000:50000
     volumes:
-      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-db2-demo}:/home/db2inst1/db2inst1
+      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-db2/db2}:/home/db2inst1/db2inst1
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   loader:

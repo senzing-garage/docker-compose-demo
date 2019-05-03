@@ -138,15 +138,18 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 * **DB2_PASSWORD** -
   The password for the the database "root" user name.
   Default: "db2inst1"  
+* **DB2_STORAGE** -
+  Path on local system where the database files are stored.
+  Default: "/storage/docker/senzing/docker-compose-rabbitmq-db2/db2"  
 * **DB2_USERNAME** -
   The username for the the database "root" user name.
   Default: "db2inst1"  
-* **DB2_STORAGE** -
-  Path on local system where the database files are stored.
-  Default: "/storage/docker/senzing/docker-compose-stream-loader-kafka-db2"
 * **DB2INST1_PASSWORD** -
   The password for the "db2inst1" user name.
   Default: "db2inst1"
+* **RABBITMQ_STORAGE** -
+  Path on local system where RabbitMQ files are stored.
+  Default: "/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq"  
 * **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
@@ -160,13 +163,20 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. :pencil2: Set environment variables.  Example:
 
     ```console
-    export SENZING_DIR=/opt/senzing
-
     export DB2_DB=G2
     export DB2_PASSWORD=db2inst1
+    export DB2_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-db2/db2
     export DB2_USERNAME=db2inst1
-    export DB2_STORAGE=/storage/docker/senzing/docker-compose-stream-loader-kafka-db2
     export DB2INST1_PASSWORD=db2inst1
+    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq
+    export SENZING_DIR=/opt/senzing
+    ```
+
+1. Create directories.  Example:
+
+    ```console
+    sudo mkdir -p ${RABBITMQ_STORAGE}
+    sudo chmod 777 ${RABBITMQ_STORAGE}
     ```
 
 1. Launch docker-compose formation.  Example:
@@ -181,7 +191,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       DB2_USERNAME=${DB2_USERNAME} \
       DB2_STORAGE=${DB2_STORAGE} \
       DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
-      docker-compose --file docker-compose-db2-kafka.yaml up
+      docker-compose --file docker-compose-rabbitmq-db2.yaml up
     ```
 
 ### Initialize database

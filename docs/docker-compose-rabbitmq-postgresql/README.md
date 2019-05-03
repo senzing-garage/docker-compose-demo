@@ -100,22 +100,22 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **POSTGRES_DB** -
+* **POSTGRES_DB** -
   The database schema name.
   Default: "G2"
-- **POSTGRES_PASSWORD** -
+* **POSTGRES_PASSWORD** -
   The password for the the database "root" user name.
   Default: "postgres"  
-- **POSTGRES_USERNAME** -
+* **POSTGRES_USERNAME** -
   The username for the the database "root" user name.
   Default: "postgres"  
-- **POSTGRES_STORAGE** -
+* **POSTGRES_STORAGE** -
   Path on local system where the database files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres"
-- **RABBITMQ_STORAGE** -
+* **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq"
-- **SENZING_DIR** -
+* **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.

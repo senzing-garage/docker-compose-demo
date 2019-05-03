@@ -111,32 +111,32 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **MYSQL_DATABASE** -
+* **MYSQL_DATABASE** -
   Database name.
   Default: "G2"
-- **MYSQL_PASSWORD** -
+* **MYSQL_PASSWORD** -
   Password for MYSQL_USERNAME.
   Default: "g2"  
-- **MYSQL_ROOT_PASSWORD** -
+* **MYSQL_ROOT_PASSWORD** -
   The password for the the database "root" user name.
   Default: "root"
-- **MYSQL_STORAGE** -
+* **MYSQL_STORAGE** -
   Path on local system where the database files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql"
-- **MYSQL_USERNAME** -
+* **MYSQL_USERNAME** -
   Non-root MySQL user.
   Default: "g2"
-- **RABBITMQ_STORAGE** -
+* **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq"
-- **SENZING_DIR** -
+* **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.
   See [Create SENZING_DIR](#create-senzing_dir).
   No default.
   Usually set to "/opt/senzing".
-- See [github.com/Senzing/docker-mysql](https://github.com/Senzing/docker-mysql)
+* See [github.com/Senzing/docker-mysql](https://github.com/Senzing/docker-mysql)
   for more details on how to find values for other **MYSQL_** environment variables.
 
 ### Run docker formation
@@ -174,7 +174,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 1. Once docker formation is up, phpMyAdmin will be available at
    [localhost:8080](http://localhost:8080).
-
 
 ### View data
 
