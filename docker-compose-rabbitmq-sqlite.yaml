@@ -50,6 +50,8 @@ services:
   loader:
     image: senzing/stream-loader
     container_name: senzing-stream-loader
+    depends_on:
+      - rabbitmq
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
@@ -65,7 +67,7 @@ services:
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-1}
     networks:
       - backend
-    restart: on-failure
+    restart: always
     volumes:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
