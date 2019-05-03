@@ -189,8 +189,9 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     ```
 
 1. Test Senzing REST API server.
-   *Note:* port 8889 on the localhost has been mapped to port 8080 in the docker container.
-   See `WEBAPP_PORT` definition.
+   *Note:*  In
+   [docker-compose-rabbitmq-mysql.yaml](../../docker-compose-rabbitmq-mysql.yaml)
+   port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
     ```console
