@@ -17,6 +17,17 @@ The following diagram shows the relationship of the docker containers in this do
 
 ## Implementation
 
+The following table indicates which instructions are used for the variation in components.
+
+1. Component variants:
+    1. Queue
+        1. RabbitMQ
+        1. Kafka
+    1. Database
+        1. Postgres
+        1. MySQL
+        1. Db2
+        1. SQLite
 1. Implementations of the docker formation:
 
     | Queue    | Database   | Instructions | docker-compose.yaml |
