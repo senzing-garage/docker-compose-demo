@@ -19,9 +19,9 @@ The following diagram shows the relationship of the docker containers in this do
 
 1. Implementations of the docker formation:
 
-    | Queue | Database | Instructions |
-    |-------|----------|--------------|
-    | Kafka | Db2 | [docker-compose-kafka-db2.yaml](docs/docker-compose-kafka-db2/README.md) |
+    | Queue | Database | Instructions | docker-compose.yaml |
+    |-------|----------|:------------:|----|
+    | Kafka | Db2 | [:page_facing_up:](docs/docker-compose-kafka-db2/README.md) | [docker-compose-kafka-db2.yaml](docker-compose-kafka-db2.yaml)
     | Kafka | MySQL | [docker-compose-kafka-mysql.yaml](docs/docker-compose-kafka-mysql/README.md) |
     | Kafka | PostgreSQL | [docker-compose-kafka-postgresql.yaml](docs/docker-compose-kafka-postgresql/README.md) |
     | Kafka | SQLite | [docker-compose-kafka-sqlite.yaml](docs/docker-compose-kafka-sqlite/README.md) |
