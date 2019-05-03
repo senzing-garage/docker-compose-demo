@@ -19,10 +19,10 @@ The following diagram shows the relationship of the docker containers in this do
 
 1. Implementations of the docker formation:
 
-| Queue | Database | Instructions |
-|-------|----------|--------------|
-| Kafka | Db2 | [docker-compose-kafka-db2.yaml](docs/docker-compose-kafka-db2/README.md) |
-| Kafka | MySQL | [docker-compose-kafka-mysql.yaml](docs/docker-compose-kafka-mysql/README.md) |
-| Kafka | PostgreSQL | [docker-compose-kafka-postgresql.yaml](docs/docker-compose-kafka-postgresql/README.md) |
-| Kafka | SQLite | [docker-compose-kafka-sqlite.yaml](docs/docker-compose-kafka-sqlite/README.md) |
-| RabbitMQ | PostgreSQL | [docker-compose-rabbitmq-postgresql.yaml](docs/docker-compose-rabbitmq-postgresql/README.md) |
+    | Queue | Database | Instructions |
+    |-------|----------|--------------|
+    | Kafka | Db2 | [docker-compose-kafka-db2.yaml](docs/docker-compose-kafka-db2/README.md) |
+    | Kafka | MySQL | [docker-compose-kafka-mysql.yaml](docs/docker-compose-kafka-mysql/README.md) |
+    | Kafka | PostgreSQL | [docker-compose-kafka-postgresql.yaml](docs/docker-compose-kafka-postgresql/README.md) |
+    | Kafka | SQLite | [docker-compose-kafka-sqlite.yaml](docs/docker-compose-kafka-sqlite/README.md) |
+    | RabbitMQ | PostgreSQL | [docker-compose-rabbitmq-postgresql.yaml](docs/docker-compose-rabbitmq-postgresql/README.md) |
