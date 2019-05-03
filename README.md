@@ -17,12 +17,24 @@ The following diagram shows the relationship of the docker containers in this do
 
 ## Implementation
 
+The following table indicates the instructions for variations in components.
+
+1. Component variants:
+    1. Queue
+        1. RabbitMQ
+        1. Kafka
+    1. Database
+        1. Postgres
+        1. MySQL
+        1. Db2
+        1. SQLite
 1. Implementations of the docker formation:
 
-    | Queue | Database | Instructions |
-    |-------|----------|--------------|
-    | Kafka | Db2 | [docker-compose-kafka-db2.yaml](docs/docker-compose-kafka-db2/README.md) |
-    | Kafka | MySQL | [docker-compose-kafka-mysql.yaml](docs/docker-compose-kafka-mysql/README.md) |
-    | Kafka | PostgreSQL | [docker-compose-kafka-postgresql.yaml](docs/docker-compose-kafka-postgresql/README.md) |
-    | Kafka | SQLite | [docker-compose-kafka-sqlite.yaml](docs/docker-compose-kafka-sqlite/README.md) |
-    | RabbitMQ | PostgreSQL | [docker-compose-rabbitmq-postgresql.yaml](docs/docker-compose-rabbitmq-postgresql/README.md) |
+    | Queue    | Database   | Instructions | docker-compose.yaml |
+    |----------|------------|:------------:|---------------------|
+    | Kafka    | Db2        | [:page_facing_up:](docs/docker-compose-kafka-db2/README.md) | [docker-compose-kafka-db2.yaml](docker-compose-kafka-db2.yaml) |
+    | Kafka    | MySQL      | [:page_facing_up:](docs/docker-compose-kafka-mysql/README.md) | [docker-compose-kafka-mysql.yaml](docker-compose-kafka-mysql.yaml) |
+    | Kafka    | PostgreSQL | [:page_facing_up:](docs/docker-compose-kafka-postgresql/README.md) | [docker-compose-kafka-postgresql.yaml](docker-compose-kafka-postgresql.yaml) |
+    | Kafka    | SQLite     | [:page_facing_up:](docs/docker-compose-kafka-sqlite/README.md) | [docker-compose-kafka-sqlite.yaml](docker-compose-kafka-sqlite.yaml) |
+    | RabbitMQ | MySQL      | [:page_facing_up:](docs/docker-compose-rabbitmq-mysql/README.md) | [docker-compose-rabbitmq-mysql.yaml](docker-compose-rabbitmq-mysql.yaml) |
+    | RabbitMQ | PostgreSQL | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql/README.md) | [docker-compose-rabbitmq-postgresql.yaml](docker-compose-rabbitmq-postgresql.yaml) |

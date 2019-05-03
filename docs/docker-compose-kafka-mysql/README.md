@@ -41,8 +41,7 @@ This docker formation brings up the following docker containers:
 1. [Using docker-compose](#using-docker-compose)
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
-    1. [Run docker formation to initialize database](#run-docker-formation-to-initialize-database)
-    1. [Run docker formation to read from Kafka](#run-docker-formation-to-read-from-kafka)
+    1. [Run docker formation](#run-docker-formation)
     1. [Test Docker container](#test-docker-container)
 1. [Cleanup](#cleanup)
 
@@ -132,7 +131,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 - See [github.com/Senzing/docker-mysql](https://github.com/Senzing/docker-mysql)
   for more details on how to find values for other **MYSQL_** environment variables.
 
-### Run docker formation to read from Kafka
+### Run docker formation
 
 1. :pencil2: Set environment variables.  Example:
 
@@ -144,7 +143,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       export MYSQL_STORAGE=/storage/docker/senzing/docker-compose-stream-loader-kafka-demo
     ```
 
-1. Launch docker-compose formation.
+1. Launch docker-compose formation.  Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
@@ -175,8 +174,9 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     ```
 
 1. Test Senzing REST API server.
-   *Note:* port 8889 on the localhost has been mapped to port 8080 in the docker container.
-   See `WEBAPP_PORT` definition.
+   *Note:*  In
+   [docker-compose-kafka-mysql.yaml](../../docker-compose-kafka-mysql.yaml)
+   port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
     ```console
@@ -196,7 +196,7 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-mysql-kafka.yaml down
+    sudo docker-compose --file docker-compose-kafka-mysql.yaml down
     ```
 
 1. Delete database storage.

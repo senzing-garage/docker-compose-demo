@@ -1,15 +1,18 @@
-# docker-compose-kafka-db2
+# docker-compose-rabbitmq-mysql
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using IBM DB2 as the underlying database.
+This repository illustrates a reference implementation of Senzing using
+RabbitMQ as the queue and
+MySQL as the underlying database.
 
 The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line as a message to a Kafka topic.
-1. Reads messages from the Kafka topic and inserts into Senzing.
-    1. In this implementation, Senzing keeps its data in an IBM Db2 database.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is RabbitMQ.
+1. Reads messages from the queue and inserts into Senzing.
+    1. In this implementation, Senzing keeps its data in a MySQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
 
 The following diagram shows the relationship of the docker containers in this docker composition.
@@ -18,10 +21,11 @@ The following diagram shows the relationship of the docker containers in this do
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
-1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
-1. *[senzing/db2express-c](https://github.com/Senzing/docker-db2express-c)*
+1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
+1. *[mysql](https://github.com/docker-library/mysql)*
+1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
+1. *[senzing/mysql-init](https://github.com/Senzing/docker-mysql-init)*
 1. *[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
@@ -39,8 +43,7 @@ This docker formation brings up the following docker containers:
 1. [Using docker-compose](#using-docker-compose)
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
-    1. [Run docker formation to read from Kafka](#run-docker-formation-to-read-from-kafka)
-    1. [Initialize database](#initialize-database)
+    1. [Run docker formation](#run-docker-formation)
     1. [Test Docker container](#test-docker-container)
 1. [Cleanup](#cleanup)
 
@@ -93,30 +96,6 @@ The following software programs need to be installed:
 If you do not already have an `/opt/senzing` directory on your local system, visit
 [HOWTO - Create SENZING_DIR](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md).
 
-### Db2 Client
-
-1. Visit [Download initial Version 11.1 clients and drivers](http://www-01.ibm.com/support/docview.wss?uid=swg21385217)
-    1. Click on "[IBM Data Server Driver for ODBC and CLI (CLI Driver)](http://www.ibm.com/services/forms/preLogin.do?source=swg-idsoc97)" link.
-    1. Select :radio_button:  "IBM Data Server Driver for ODBC and CLI (Linux AMD64 and Intel EM64T)"
-    1. Click "Continue" button.
-    1. Choose download method and click "Download now" button.
-    1. Download `ibm_data_server_driver_for_odbc_cli_linuxx64_v11.1.tar.gz` to `/opt/senzing/ibm_data_server_driver_for_odbc_cli_linuxx64_v11.1.tar.gz`.
-
-1. Uncompress `.tar.gz` file.  Example:
-
-    ```console
-    sudo mkdir -p /opt/senzing/db2
-
-    sudo tar \
-      --extract \
-      --owner=root \
-      --group=root \
-      --no-same-owner \
-      --no-same-permissions \
-      --directory=/opt/senzing/db2 \
-      --file=/opt/senzing/ibm_data_server_driver_for_odbc_cli_linuxx64_v11.1.tar.gz
-    ```
-
 ## Using docker-compose
 
 ### Build docker images
@@ -124,46 +103,58 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. Build docker images.
 
     ```console
-    sudo docker build --tag senzing/db2express-c  https://github.com/senzing/docker-db2express-c.git
+    sudo docker build \
+      --tag senzing/mysql-init \
+      https://github.com/senzing/docker-mysql-init.git
     ```
 
 ### Configuration
 
-* **SENZING_DIR** -
+- **MYSQL_DATABASE** -
+  Database name.
+  Default: "G2"
+- **MYSQL_PASSWORD** -
+  Password for MYSQL_USERNAME.
+  Default: "g2"  
+- **MYSQL_ROOT_PASSWORD** -
+  The password for the the database "root" user name.
+  Default: "root"
+- **MYSQL_STORAGE** -
+  Path on local system where the database files are stored.
+  Default: "/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql"
+- **MYSQL_USERNAME** -
+  Non-root MySQL user.
+  Default: "g2"
+- **RABBITMQ_STORAGE** -
+  Path on local system where RabbitMQ files are stored.
+  Default: "/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq"
+- **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.
   See [Create SENZING_DIR](#create-senzing_dir).
   No default.
-  Usually set to "/opt/senzing".  
-* **DB2_DB** -
-  The database schema name.
-  Default: "G2"
-* **DB2_PASSWORD** -
-  The password for the the database "root" user name.
-  Default: "db2inst1"  
-* **DB2_USERNAME** -
-  The username for the the database "root" user name.
-  Default: "db2inst1"  
-* **DB2_STORAGE** -
-  Path on local system where the database files are stored.
-  Default: "/storage/docker/senzing/docker-compose-stream-loader-kafka-db2"
-* **DB2INST1_PASSWORD** -
-  The password for the "db2inst1" user name.
-  Default: "db2inst1"
+  Usually set to "/opt/senzing".
+- See [github.com/Senzing/docker-mysql](https://github.com/Senzing/docker-mysql)
+  for more details on how to find values for other **MYSQL_** environment variables.
 
-### Run docker formation to read from Kafka
+### Run docker formation
 
 1. :pencil2: Set environment variables.  Example:
 
     ```console
+    export MYSQL_DATABASE=G2
+    export MYSQL_ROOT_PASSWORD=root
+    export MYSQL_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql
+    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq
     export SENZING_DIR=/opt/senzing
+    ```
 
-    export DB2_DB=G2
-    export DB2_PASSWORD=db2inst1
-    export DB2_USERNAME=db2inst1
-    export DB2_STORAGE=/storage/docker/senzing/docker-compose-stream-loader-kafka-db2
-    export DB2INST1_PASSWORD=db2inst1
+1. Create directories.  Example:
+
+    ```console
+    sudo mkdir -p ${RABBITMQ_STORAGE}
+    sudo chmod 777 ${RABBITMQ_STORAGE}
     ```
 
 1. Launch docker-compose formation.  Example:
@@ -172,26 +163,19 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     cd ${GIT_REPOSITORY_DIR}
 
     sudo \
+      MYSQL_DATABASE=${MYSQL_DATABASE} \
+      MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
+      MYSQL_STORAGE=${MYSQL_STORAGE} \
+      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
       SENZING_DIR=${SENZING_DIR} \
-      DB2_DB=${DB2_DB} \
-      DB2_PASSWORD=${DB2_PASSWORD} \
-      DB2_USERNAME=${DB2_USERNAME} \
-      DB2_STORAGE=${DB2_STORAGE} \
-      DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
-      docker-compose --file docker-compose-db2-kafka.yaml up
+      docker-compose --file docker-compose-rabbitmq-mysql.yaml up
     ```
 
-### Initialize database
-
-1. Populate database. In `senzing-db2` docker container, run
-
-    ```console
-    su - db2inst1
-    db2 create database g2 using codeset utf-8 territory us
-    db2 connect to g2
-    db2 -tf /opt/senzing/g2/data/g2core-schema-db2-create.sql | tee /tmp/g2schema.out
-    db2 connect reset
-    ```
+1. Once docker formation is up, phpMyAdmin will be available at
+   [localhost:8080](http://localhost:8080).
+   The records received from RabbitMQ can be viewed in the following Senzing tables:
+    1. G2 > DSRC_RECORD
+    1. G2 > OBS_ENT
 
 ### Test Docker container
 
@@ -206,7 +190,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 1. Test Senzing REST API server.
    *Note:*  In
-   [docker-compose-kafka-db2.yaml](../../docker-compose-kafka-db2.yaml)
+   [docker-compose-rabbitmq-mysql.yaml](../../docker-compose-rabbitmq-mysql.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
@@ -227,13 +211,14 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-db2-kafka.yaml down
+    sudo docker-compose --file docker-compose-rabbitmq-mysql.yaml down
     ```
 
 1. Delete database storage.
 
     ```console
-    sudo rm -rf ${DB2_STORAGE}
+    sudo rm -rf ${MYSQL_STORAGE}
+    sudo rm -rf ${RABBITMQ_STORAGE}
     ```
 
 1. Delete SENZING_DIR.
