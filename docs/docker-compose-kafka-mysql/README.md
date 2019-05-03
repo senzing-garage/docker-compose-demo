@@ -1,4 +1,4 @@
-# docker-compose-stream-loader-kafka-mysql
+# docker-compose-kafka-mysql
 
 ## Overview
 

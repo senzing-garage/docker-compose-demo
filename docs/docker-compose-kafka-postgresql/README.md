@@ -1,4 +1,4 @@
-# docker-compose-stream-loader-kafka-postgresql
+# docker-compose-kafka-postgresql
 
 ## Overview
 

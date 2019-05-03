@@ -1,4 +1,4 @@
-# docker-compose-stream-loader-kafka-db2
+# docker-compose-kafka-db2
 
 ## Overview
 

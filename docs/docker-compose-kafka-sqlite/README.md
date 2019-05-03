@@ -1,4 +1,4 @@
-# docker-compose-stream-loader-kafka-sqlite
+# docker-compose-kafka-sqlite
 
 ## Overview
 
