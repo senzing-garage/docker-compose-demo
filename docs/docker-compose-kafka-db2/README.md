@@ -2,14 +2,17 @@
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using IBM DB2 as the underlying database.
+This repository illustrates a reference implementation of Senzing using
+Kafka as the queue and
+Db2 as the underlying database.
 
 The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line as a message to a Kafka topic.
-1. Reads messages from the Kafka topic and inserts into Senzing.
-    1. In this implementation, Senzing keeps its data in an IBM Db2 database.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is Kafka.
+1. Reads messages from the queue and inserts into Senzing.
+    1. In this implementation, Senzing keeps its data in a Db2 database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
 
 The following diagram shows the relationship of the docker containers in this docker composition.
@@ -36,12 +39,13 @@ This docker formation brings up the following docker containers:
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
     1. [Create SENZING_DIR](#create-senzing_dir)
+    1. [Db2 Client](#db2-client)
 1. [Using docker-compose](#using-docker-compose)
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
-    1. [Run docker formation to read from Kafka](#run-docker-formation-to-read-from-kafka)
+    1. [Run docker formation](#run-docker-formation)
     1. [Initialize database](#initialize-database)
-    1. [Test Docker container](#test-docker-container)
+    1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -124,18 +128,13 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. Build docker images.
 
     ```console
-    sudo docker build --tag senzing/db2express-c  https://github.com/senzing/docker-db2express-c.git
+    sudo docker build \
+      --tag senzing/db2express-c \
+      https://github.com/senzing/docker-db2express-c.git
     ```
 
 ### Configuration
 
-* **SENZING_DIR** -
-  Path on the local system where
-  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
-  has been extracted.
-  See [Create SENZING_DIR](#create-senzing_dir).
-  No default.
-  Usually set to "/opt/senzing".  
 * **DB2_DB** -
   The database schema name.
   Default: "G2"
@@ -151,19 +150,25 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 * **DB2INST1_PASSWORD** -
   The password for the "db2inst1" user name.
   Default: "db2inst1"
+* **SENZING_DIR** -
+  Path on the local system where
+  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
+  has been extracted.
+  See [Create SENZING_DIR](#create-senzing_dir).
+  No default.
+  Usually set to "/opt/senzing".
 
-### Run docker formation to read from Kafka
+### Run docker formation
 
 1. :pencil2: Set environment variables.  Example:
 
     ```console
-    export SENZING_DIR=/opt/senzing
-
     export DB2_DB=G2
     export DB2_PASSWORD=db2inst1
     export DB2_USERNAME=db2inst1
-    export DB2_STORAGE=/storage/docker/senzing/docker-compose-stream-loader-kafka-db2
+    export DB2_STORAGE=/storage/docker/senzing/docker-compose-kafka-db2/db2
     export DB2INST1_PASSWORD=db2inst1
+    export SENZING_DIR=/opt/senzing
     ```
 
 1. Launch docker-compose formation.  Example:
@@ -172,12 +177,12 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     cd ${GIT_REPOSITORY_DIR}
 
     sudo \
-      SENZING_DIR=${SENZING_DIR} \
       DB2_DB=${DB2_DB} \
       DB2_PASSWORD=${DB2_PASSWORD} \
       DB2_USERNAME=${DB2_USERNAME} \
       DB2_STORAGE=${DB2_STORAGE} \
       DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
+      SENZING_DIR=${SENZING_DIR} \
       docker-compose --file docker-compose-db2-kafka.yaml up
     ```
 
@@ -193,7 +198,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     db2 connect reset
     ```
 
-### Test Docker container
+### Test Senzing API
 
 1. Wait for the following message in the terminal showing docker log.
 
@@ -227,10 +232,10 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-db2-kafka.yaml down
+    sudo docker-compose --file docker-compose-kafka-db2.yaml down
     ```
 
-1. Delete database storage.
+1. Delete storage.
 
     ```console
     sudo rm -rf ${DB2_STORAGE}
