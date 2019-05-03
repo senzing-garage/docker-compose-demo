@@ -19,10 +19,10 @@ The following diagram shows the relationship of the docker containers in this do
 
 1. Implementations of the docker formation:
 
-    | Queue | Database | Instructions | docker-compose.yaml |
-    |-------|----------|:------------:|----|
-    | Kafka | Db2 | [:page_facing_up:](docs/docker-compose-kafka-db2/README.md) | [docker-compose-kafka-db2.yaml](docker-compose-kafka-db2.yaml)
-    | Kafka | MySQL | [docker-compose-kafka-mysql.yaml](docs/docker-compose-kafka-mysql/README.md) |
-    | Kafka | PostgreSQL | [docker-compose-kafka-postgresql.yaml](docs/docker-compose-kafka-postgresql/README.md) |
-    | Kafka | SQLite | [docker-compose-kafka-sqlite.yaml](docs/docker-compose-kafka-sqlite/README.md) |
-    | RabbitMQ | PostgreSQL | [docker-compose-rabbitmq-postgresql.yaml](docs/docker-compose-rabbitmq-postgresql/README.md) |
+    | Queue    | Database   | Instructions | docker-compose.yaml |
+    |----------|------------|:------------:|---------------------|
+    | Kafka    | Db2        | [:page_facing_up:](docs/docker-compose-kafka-db2/README.md) | [docker-compose-kafka-db2.yaml](docker-compose-kafka-db2.yaml) |
+    | Kafka    | MySQL      | [:page_facing_up:](docs/docker-compose-kafka-mysql/README.md) | [docker-compose-kafka-mysql.yaml](docker-compose-kafka-mysql.yaml) |
+    | Kafka    | PostgreSQL | [:page_facing_up:](docs/docker-compose-kafka-postgresql/README.md) | [docker-compose-kafka-postgresql.yaml](docker-compose-kafka-postgresql.yaml) |
+    | Kafka    | SQLite     | [:page_facing_up:](docs/docker-compose-kafka-sqlite/README.md) | [docker-compose-kafka-sqlite.yaml](docker-compose-kafka-sqlite.yaml) |
+    | RabbitMQ | PostgreSQL | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql/README.md) | [docker-compose-rabbitmq-postgresql.yaml](docker-compose-rabbitmq-postgresql.yaml) |
