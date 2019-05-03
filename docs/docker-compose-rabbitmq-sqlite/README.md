@@ -115,7 +115,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. :pencil2: Set environment variables.  Example:
 
     ```console
-    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq
+    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-sqlite/rabbitmq
     export SENZING_DIR=/opt/senzing
     ```
 
