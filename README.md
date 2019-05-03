@@ -15,7 +15,9 @@ The following diagram shows the relationship of the docker containers in this do
 
 ![Image of architecture](docs/img-architecture/architecture.png)
 
-Implementations of the docker formation:
+## Implementation
+
+1. Implementations of the docker formation:
 
 | Queue | Database | Instructions |
 |-------|----------|--------------|
