@@ -38,6 +38,7 @@ This docker formation brings up the following docker containers:
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
     1. [Create SENZING_DIR](#create-senzing_dir)
+    1. [Db2 Client](#db2-client)
 1. [Using docker-compose](#using-docker-compose)
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
