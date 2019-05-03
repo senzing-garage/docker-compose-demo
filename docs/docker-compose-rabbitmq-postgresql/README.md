@@ -199,7 +199,7 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file docker-compose-rabbitmq-postgresql.yaml down
     ```
 
-1. Delete database storage.
+1. Delete storage.
 
     ```console
     sudo rm -rf ${POSTGRES_STORAGE}
