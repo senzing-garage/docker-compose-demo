@@ -183,7 +183,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       DB2_STORAGE=${DB2_STORAGE} \
       DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
       SENZING_DIR=${SENZING_DIR} \
-      docker-compose --file docker-compose-db2-kafka.yaml up
+      docker-compose --file docker-compose-kafka-db2.yaml up
     ```
 
 ### Initialize database
