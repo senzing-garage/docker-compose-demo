@@ -2,13 +2,16 @@
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using MySQL as the underlying database.
+This repository illustrates a reference implementation of Senzing using
+Kafka as the queue and
+MySQL as the underlying database.
 
 The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line as a message to a Kafka topic.
-1. Reads messages from the Kafka topic and inserts into Senzing.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is Kafka.
+1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a MySQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
 
@@ -42,7 +45,8 @@ This docker formation brings up the following docker containers:
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
     1. [Run docker formation](#run-docker-formation)
-    1. [Test Docker container](#test-docker-container)
+    1. [View data](#view-data)
+    1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -101,7 +105,9 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. Build docker images.
 
     ```console
-    sudo docker build --tag senzing/mysql-init   https://github.com/senzing/docker-mysql-init.git
+    sudo docker build \
+      --tag senzing/mysql-init \
+      https://github.com/senzing/docker-mysql-init.git
     ```
 
 ### Configuration
@@ -117,7 +123,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
   Default: "root"
 * **MYSQL_STORAGE** -
   Path on local system where the database files are stored.
-  Default: "/storage/docker/senzing/docker-compose-mysql-demo"
+  Default: "/storage/docker/senzing/docker-compose-kafka-mysql/mysql"
 * **MYSQL_USERNAME** -
   Non-root MySQL user.
   Default: "g2"
@@ -136,11 +142,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. :pencil2: Set environment variables.  Example:
 
     ```console
-      export SENZING_DIR=/opt/senzing
-
-      export MYSQL_DATABASE=G2
-      export MYSQL_ROOT_PASSWORD=root
-      export MYSQL_STORAGE=/storage/docker/senzing/docker-compose-stream-loader-kafka-demo
+    export MYSQL_DATABASE=G2
+    export MYSQL_ROOT_PASSWORD=root
+    export MYSQL_STORAGE=/storage/docker/senzing/docker-compose-kafka-mysql/mysql
+    export SENZING_DIR=/opt/senzing
     ```
 
 1. Launch docker-compose formation.  Example:
@@ -149,20 +154,21 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     cd ${GIT_REPOSITORY_DIR}
 
     sudo \
-      SENZING_DIR=${SENZING_DIR} \
       MYSQL_DATABASE=${MYSQL_DATABASE} \
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
       MYSQL_STORAGE=${MYSQL_STORAGE} \
+      SENZING_DIR=${SENZING_DIR} \
       docker-compose --file docker-compose-mysql-kafka.yaml up
     ```
 
-1. Once docker formation is up, phpMyAdmin will be available at
-   [localhost:8080](http://localhost:8080).
-   The records received from Kafka can be viewed in the following Senzing tables:
-    1. G2 > DSRC_RECORD
-    1. G2 > OBS_ENT
+### View data
 
-### Test Docker container
+1. MySQL is viewable at [localhost:8080](http://localhost:8080).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. G2 > DSRC_RECORD
+        1. G2 > OBS_ENT
+
+### Test Senzing API
 
 1. Wait for the following message in the terminal showing docker log.
 
@@ -199,7 +205,7 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file docker-compose-kafka-mysql.yaml down
     ```
 
-1. Delete database storage.
+1. Delete storage.
 
     ```console
     sudo rm -rf ${MYSQL_STORAGE}
