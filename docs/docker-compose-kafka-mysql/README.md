@@ -158,7 +158,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
       MYSQL_STORAGE=${MYSQL_STORAGE} \
       SENZING_DIR=${SENZING_DIR} \
-      docker-compose --file docker-compose-mysql-kafka.yaml up
+      docker-compose --file docker-compose-kafka-mysql.yaml up
     ```
 
 ### View data
