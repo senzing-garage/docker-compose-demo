@@ -172,9 +172,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       docker-compose --file docker-compose-rabbitmq-mysql.yaml up
     ```
 
-1. Once docker formation is up, phpMyAdmin will be available at
-   [localhost:8080](http://localhost:8080).
-
 ### View data
 
 1. RabbitMQ is viewable at [localhost:15672](http://localhost:15672)
@@ -220,7 +217,7 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file docker-compose-rabbitmq-mysql.yaml down
     ```
 
-1. Delete database storage.
+1. Delete storage.
 
     ```console
     sudo rm -rf ${MYSQL_STORAGE}

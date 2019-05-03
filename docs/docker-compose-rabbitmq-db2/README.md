@@ -149,14 +149,14 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
   Default: "db2inst1"
 * **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
-  Default: "/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq"  
+  Default: "/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq"
 * **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.
   See [Create SENZING_DIR](#create-senzing_dir).
   No default.
-  Usually set to "/opt/senzing".  
+  Usually set to "/opt/senzing".
 
 ### Run docker formation
 
@@ -185,12 +185,13 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     cd ${GIT_REPOSITORY_DIR}
 
     sudo \
-      SENZING_DIR=${SENZING_DIR} \
       DB2_DB=${DB2_DB} \
       DB2_PASSWORD=${DB2_PASSWORD} \
       DB2_USERNAME=${DB2_USERNAME} \
       DB2_STORAGE=${DB2_STORAGE} \
       DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
+      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      SENZING_DIR=${SENZING_DIR} \
       docker-compose --file docker-compose-rabbitmq-db2.yaml up
     ```
 
