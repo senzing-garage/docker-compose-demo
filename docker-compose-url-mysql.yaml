@@ -1,0 +1,95 @@
+version: '3'
+services:
+
+  mysql:
+    image: mysql:5.7
+    container_name: senzing-mysql
+    environment:
+#     See https://hub.docker.com/_/mysql/ "Environment Variables"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-G2}
+      MYSQL_USER: ${MYSQL_USERNAME:-g2}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
+    restart: always
+    networks:
+      - backend
+    ports:
+      - 3306:3306
+    volumes:
+      - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-mysql-demo}:/var/lib/mysql
+
+  mysqlinit:
+    image: senzing/mysql-init
+    container_name: senzing-mysql-init
+    environment:
+      SENZING_SENTINEL_FILE: ${SENZING_DIR:-/opt/senzing}/mysql-init.sentinel
+    command:
+      - --user=${MYSQL_USERNAME:-g2}
+      - --password=${MYSQL_PASSWORD:-g2}
+      - --host=mysql
+      - --database=${MYSQL_DATABASE:-G2}
+      - --execute="source ${SENZING_DIR:-/opt/senzing}/g2/data/g2core-schema-mysql-create.sql"
+    networks:
+      - backend
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+    depends_on:
+      - mysql
+    restart: on-failure
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: senzing-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    networks:
+      - backend
+    ports:
+      - 8080:80
+    restart: always
+    depends_on:
+      - mysql
+
+  loader:
+    image: senzing/stream-loader
+    container_name: senzing-stream-loader
+    environment:
+#     See https://github.com/Senzing/stream-loader#configuration
+      SENZING_SUBCOMMAND: url
+      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+      SENZING_DATA_SOURCE: PEOPLE
+      SENZING_ENTITY_TYPE: PEOPLE
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_LOG_LEVEL: debug
+      SENZING_MONITORING_PERIOD: 60
+      LC_CTYPE: en_US.utf8
+    networks:
+      - backend
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+    depends_on:
+      - mysqlinit
+    restart: always
+
+  api:
+    image: senzing/senzing-api-server
+    container_name: senzing-api-server
+    command:
+      - -httpPort 8080
+      - -bindAddr all
+      - -iniFile /opt/senzing/g2/python/G2Module.ini
+    depends_on:
+      - mysql
+    environment:
+      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+    networks:
+      - backend
+    ports:
+      - 8889:8080
+    restart: always
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+networks:
+  backend:
