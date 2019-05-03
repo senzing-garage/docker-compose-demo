@@ -193,7 +193,7 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-postgresql-kafka.yaml down
+    sudo docker-compose --file docker-compose-kafka-postgresql.yaml down
     ```
 
 1. Delete storage.
