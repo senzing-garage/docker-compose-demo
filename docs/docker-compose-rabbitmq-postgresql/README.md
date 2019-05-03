@@ -43,7 +43,8 @@ This docker formation brings up the following docker containers:
     1. [Configuration](#configuration)
     1. [Run docker formation](#run-docker-formation)
     1. [Initialize database](#initialize-database)
-    1. [Test Docker container](#test-docker-container)
+    1. [View data](#view-data)
+    1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -162,7 +163,15 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. Click "Browse..." button and locate `/opt/senzing/g2/data/g2core-schema-postgresql-create.sql`
 1. Click "Execute" button.
 
-### Test Docker container
+### View data
+
+1. RabbitMQ is viewable at [localhost:15672](http://localhost:15672)
+1. PostgreSQL is viewable at [localhost:8080](http://localhost:8080).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. G2 > DSRC_RECORD
+        1. G2 > OBS_ENT
+
+### Test Senzing API
 
 1. Wait for the following message in the terminal showing docker log.
 
