@@ -3,7 +3,7 @@
 ## Overview
 
 This repository illustrates a reference implementation of Senzing using
-RabbitMQ as the queue and 
+RabbitMQ as the queue and
 MySQL as the underlying database.
 
 The instructions show how to set up a system that:
@@ -169,7 +169,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
       MYSQL_STORAGE=${MYSQL_STORAGE} \
       RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
-      SENZING_DIR=${SENZING_DIR} \      
+      SENZING_DIR=${SENZING_DIR} \
       docker-compose --file docker-compose-rabbitmq-mysql.yaml up
     ```
 
