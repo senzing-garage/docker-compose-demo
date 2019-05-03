@@ -17,7 +17,7 @@ The following diagram shows the relationship of the docker containers in this do
 
 ## Implementation
 
-The following table indicates which instructions are used for the variation in components.
+The following table indicates the instructions for variations in components.
 
 1. Component variants:
     1. Queue
