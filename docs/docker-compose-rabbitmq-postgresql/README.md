@@ -43,7 +43,8 @@ This docker formation brings up the following docker containers:
     1. [Configuration](#configuration)
     1. [Run docker formation](#run-docker-formation)
     1. [Initialize database](#initialize-database)
-    1. [Test Docker container](#test-docker-container)
+    1. [View data](#view-data)
+    1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -99,22 +100,22 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **POSTGRES_DB** -
+* **POSTGRES_DB** -
   The database schema name.
   Default: "G2"
-- **POSTGRES_PASSWORD** -
+* **POSTGRES_PASSWORD** -
   The password for the the database "root" user name.
   Default: "postgres"  
-- **POSTGRES_USERNAME** -
+* **POSTGRES_USERNAME** -
   The username for the the database "root" user name.
   Default: "postgres"  
-- **POSTGRES_STORAGE** -
+* **POSTGRES_STORAGE** -
   Path on local system where the database files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres"
-- **RABBITMQ_STORAGE** -
+* **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq"
-- **SENZING_DIR** -
+* **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.
@@ -162,7 +163,15 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. Click "Browse..." button and locate `/opt/senzing/g2/data/g2core-schema-postgresql-create.sql`
 1. Click "Execute" button.
 
-### Test Docker container
+### View data
+
+1. RabbitMQ is viewable at [localhost:15672](http://localhost:15672)
+1. PostgreSQL is viewable at [localhost:8080](http://localhost:8080).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. G2 > DSRC_RECORD
+        1. G2 > OBS_ENT
+
+### Test Senzing API
 
 1. Wait for the following message in the terminal showing docker log.
 
@@ -199,7 +208,7 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file docker-compose-rabbitmq-postgresql.yaml down
     ```
 
-1. Delete database storage.
+1. Delete storage.
 
     ```console
     sudo rm -rf ${POSTGRES_STORAGE}

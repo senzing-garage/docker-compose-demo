@@ -61,7 +61,7 @@ services:
       - 3306:3306
     restart: always
     volumes:
-      - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-mysql-demo}:/var/lib/mysql
+      - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-kafka-mysql/mysql}:/var/lib/mysql
 
   mysqlinit:
     image: senzing/mysql-init

@@ -13,7 +13,7 @@ services:
       - 15672:15672
       - 5672:5672
     volumes:
-      - ${RABBITMQ_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq}:/bitnami
+      - ${RABBITMQ_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq}:/bitnami
 
   mockdata:
     image: senzing/mock-data-generator
@@ -34,55 +34,20 @@ services:
       - backend
     restart: on-failure
 
-  postgres:
-    image: postgres
-    container_name: senzing-postgres
+  db2:
+    image: senzing/db2express-c:latest
+    command: db2start
+    container_name: senzing-db2
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-G2}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+      LICENSE: accept
+      DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
     networks:
       - backend
     ports:
-      - 5432:5432
+      - 50000:50000
     volumes:
-      - ${POSTGRES_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres}:/var/lib/postgresql/data
-    restart: always
-
-  phppgadmin:
-    image: senzing/phppgadmin
-    container_name: senzing-phppgadmin
-    environment:
-      - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
-      - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
-      - PHP_PG_ADMIN_SERVER_PORT=5432
-      - PHP_PG_ADMIN_SERVER_SSL_MODE=allow
-      - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
-      - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
-      - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
-
-      - PHP_PG_ADMIN_DEFAULT_LANG=auto
-      - PHP_PG_ADMIN_AUTO_COMPLETE=default on
-      - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
-      - PHP_PG_ADMIN_OWNED_ONLY=false
-      - PHP_PG_ADMIN_SHOW_COMMENTS=true
-      - PHP_PG_ADMIN_SHOW_ADVANCED=false
-      - PHP_PG_ADMIN_SHOW_SYSTEM=false
-      - PHP_PG_ADMIN_MIN_PASSWORD_LENGTH=1
-      - PHP_PG_ADMIN_LEFT_WIDTH=200
-      - PHP_PG_ADMIN_THEME=default
-      - PHP_PG_ADMIN_SHOW_OIDS=false
-      - PHP_PG_ADMIN_MAX_ROWS=30
-      - PHP_PG_ADMIN_MAX_CHARS=50
-      - PHP_PG_ADMIN_USE_XHTML_STRICT=false
-      - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
-      - PHP_PG_ADMIN_AJAX_REFRESH=3
-    networks:
-      - backend
-    ports:
-      - "8080:80"
-      - "8443:443"
-    restart: always
+      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-db2/db2}:/home/db2inst1/db2inst1
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   loader:
     image: senzing/stream-loader
@@ -93,7 +58,7 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_MONITORING_PERIOD: ${SENZING_MONITORING_PERIOD:-300}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
@@ -117,9 +82,9 @@ services:
       - -bindAddr all
       - -iniFile /opt/senzing/g2/python/G2Module.ini
     depends_on:
-      - postgres
+      - db2
     environment:
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
     networks:
       - backend
     ports:

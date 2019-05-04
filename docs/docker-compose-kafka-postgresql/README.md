@@ -2,13 +2,16 @@
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using PostgreSQL as the underlying database.
+This repository illustrates a reference implementation of Senzing using
+Kafka as the queue and
+PostgreSQL as the underlying database.
 
 The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line as a message to a Kafka topic.
-1. Reads messages from the Kafka topic and inserts into Senzing.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is Kafka.
+1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a PostgreSQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
 
@@ -39,9 +42,10 @@ This docker formation brings up the following docker containers:
     1. [Create SENZING_DIR](#create-senzing_dir)
 1. [Using docker-compose](#using-docker-compose)
     1. [Configuration](#configuration)
-    1. [Run docker formation to read from Kafka](#run-docker-formation-to-read-from-kafka)
+    1. [Run docker formation](#run-docker-formation)
     1. [Initialize database](#initialize-database)
-    1. [Test Docker container](#test-docker-container)
+    1. [View data](#view-data)
+    1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -97,35 +101,34 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **SENZING_DIR** -
+* **POSTGRES_DB** -
+  The database schema name.
+  Default: "G2"
+* **POSTGRES_PASSWORD** -
+  The password for the the database "root" user name.
+  Default: "postgres"  
+* **POSTGRES_USERNAME** -
+  The username for the the database "root" user name.
+  Default: "postgres"  
+* **POSTGRES_STORAGE** -
+  Path on local system where the database files are stored.
+  Default: "/storage/docker/senzing/docker-compose-kafka-postgres/postgres"
+* **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.
   See [Create SENZING_DIR](#create-senzing_dir).
   No default.
   Usually set to "/opt/senzing".
-- **POSTGRES_DB** -
-  The database schema name.
-  Default: "G2"
-- **POSTGRES_PASSWORD** -
-  The password for the the database "root" user name.
-  Default: "postgres"  
-- **POSTGRES_USERNAME** -
-  The username for the the database "root" user name.
-  Default: "postgres"  
-- **POSTGRES_STORAGE** -
-  Path on local system where the database files are stored.
-  Default: "/storage/docker/senzing/docker-compose-stream-loader-kafka-postgres"
 
 ### Run docker formation
 
 1. :pencil2: Set environment variables.  Example:
 
     ```console
-    export SENZING_DIR=/opt/senzing
-
     export POSTGRES_DB=G2
-    export POSTGRES_STORAGE=/storage/docker/senzing/docker-compose-stream-loader-kafka-postgres
+    export POSTGRES_STORAGE=/storage/docker/senzing/docker-compose-kafka-postgres/postgres
+    export SENZING_DIR=/opt/senzing
     ```
 
 1. Launch docker-compose formation.  Example:
@@ -134,10 +137,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     cd ${GIT_REPOSITORY_DIR}
 
     sudo \
-      SENZING_DIR=${SENZING_DIR} \
       POSTGRES_DB=${POSTGRES_DB} \
       POSTGRES_STORAGE=${POSTGRES_STORAGE} \
-      docker-compose --file docker-compose-postgresql-kafka.yaml up
+      SENZING_DIR=${SENZING_DIR} \
+      docker-compose --file docker-compose-kafka-postgresql.yaml up
     ```
 
 ### Initialize database
@@ -149,7 +152,14 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. Click "Browse..." button and locate `/opt/senzing/g2/data/g2core-schema-postgresql-create.sql`
 1. Click "Execute" button.
 
-### Test Docker container
+### View data
+
+1. PostgreSQL is viewable at [localhost:8080](http://localhost:8080).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. G2 > DSRC_RECORD
+        1. G2 > OBS_ENT
+
+### Test Senzing API
 
 1. Wait for the following message in the terminal showing docker log.
 
@@ -183,10 +193,10 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-postgresql-kafka.yaml down
+    sudo docker-compose --file docker-compose-kafka-postgresql.yaml down
     ```
 
-1. Delete database storage.
+1. Delete storage.
 
     ```console
     sudo rm -rf ${POSTGRES_STORAGE}

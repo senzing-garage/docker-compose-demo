@@ -58,7 +58,7 @@ services:
     ports:
       - 50000:50000
     volumes:
-      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-db2-demo}:/home/db2inst1/db2inst1
+      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/home/db2inst1/db2inst1
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   loader:

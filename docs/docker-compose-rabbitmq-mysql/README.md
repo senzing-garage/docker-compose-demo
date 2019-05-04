@@ -44,7 +44,8 @@ This docker formation brings up the following docker containers:
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
     1. [Run docker formation](#run-docker-formation)
-    1. [Test Docker container](#test-docker-container)
+    1. [View data](#view-data)
+    1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -110,32 +111,32 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **MYSQL_DATABASE** -
+* **MYSQL_DATABASE** -
   Database name.
   Default: "G2"
-- **MYSQL_PASSWORD** -
+* **MYSQL_PASSWORD** -
   Password for MYSQL_USERNAME.
   Default: "g2"  
-- **MYSQL_ROOT_PASSWORD** -
+* **MYSQL_ROOT_PASSWORD** -
   The password for the the database "root" user name.
   Default: "root"
-- **MYSQL_STORAGE** -
+* **MYSQL_STORAGE** -
   Path on local system where the database files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql"
-- **MYSQL_USERNAME** -
+* **MYSQL_USERNAME** -
   Non-root MySQL user.
   Default: "g2"
-- **RABBITMQ_STORAGE** -
+* **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq"
-- **SENZING_DIR** -
+* **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.
   See [Create SENZING_DIR](#create-senzing_dir).
   No default.
   Usually set to "/opt/senzing".
-- See [github.com/Senzing/docker-mysql](https://github.com/Senzing/docker-mysql)
+* See [github.com/Senzing/docker-mysql](https://github.com/Senzing/docker-mysql)
   for more details on how to find values for other **MYSQL_** environment variables.
 
 ### Run docker formation
@@ -171,13 +172,15 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       docker-compose --file docker-compose-rabbitmq-mysql.yaml up
     ```
 
-1. Once docker formation is up, phpMyAdmin will be available at
-   [localhost:8080](http://localhost:8080).
-   The records received from RabbitMQ can be viewed in the following Senzing tables:
-    1. G2 > DSRC_RECORD
-    1. G2 > OBS_ENT
+### View data
 
-### Test Docker container
+1. RabbitMQ is viewable at [localhost:15672](http://localhost:15672)
+1. MySQL is viewable at [localhost:8080](http://localhost:8080).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. G2 > DSRC_RECORD
+        1. G2 > OBS_ENT
+
+### Test Senzing API
 
 1. Wait for the following message in the terminal showing docker log.
 
@@ -214,7 +217,7 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file docker-compose-rabbitmq-mysql.yaml down
     ```
 
-1. Delete database storage.
+1. Delete storage.
 
     ```console
     sudo rm -rf ${MYSQL_STORAGE}

@@ -2,13 +2,16 @@
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using SQLite as the underlying database.
+This repository illustrates a reference implementation of Senzing using
+Kafka as the queue and
+SQLite as the underlying database.
 
 The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line as a message to a Kafka topic.
-1. Reads messages from the Kafka topic and inserts into Senzing.
+1. Sends each JSON line to a message queue.
+    1. In this implementation, the queue is Kafka.
+1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a SQLite database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
 
@@ -22,7 +25,7 @@ This docker formation brings up the following docker containers:
 1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
 1. *[coleifer/sqlite-web](https://github.com/coleifer/sqlite-web)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
-1. *[senzing/python-postgresql-base](https://github.com/Senzing/docker-python-postgresql-base)*
+1. *[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 
@@ -37,11 +40,10 @@ This docker formation brings up the following docker containers:
     1. [Clone repository](#clone-repository)
     1. [Create SENZING_DIR](#create-senzing_dir)
 1. [Using docker-compose](#using-docker-compose)
-    1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
-    1. [Run docker formation to read from Kafka](#run-docker-formation-to-read-from-kafka)
-    1. [View database](#view-database)
-    1. [Test Docker container](#test-docker-container)
+    1. [Run docker formation](#run-docker-formation)
+    1. [View data](#view-data)
+    1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -76,7 +78,7 @@ The following software programs need to be installed:
 
     ```console
     export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-compose-stream-loader-kafka-demo
+    export GIT_REPOSITORY=docker-compose-demo
     ```
 
 1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
@@ -97,7 +99,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **SENZING_DIR** -
+* **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.
@@ -105,7 +107,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
   No default.
   Usually set to "/opt/senzing".
 
-### Run docker formation to read from Kafka
+### Run docker formation
 
 1. :pencil2: Set environment variables.  Example:
 
@@ -118,14 +120,18 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     ```console
     cd ${GIT_REPOSITORY_DIR}
 
-    sudo docker-compose --file docker-compose-sqlite-kafka.yaml up
+    sudo \
+      docker-compose --file docker-compose-kafka-sqlite.yaml up
     ```
 
-### View database
+### View data
 
-1. The database is viewable via [localhost:8080](http://localhost:8080).
+1. SQLite is viewable at [localhost:8080](http://localhost:8080).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. G2 > DSRC_RECORD
+        1. G2 > OBS_ENT
 
-### Test Docker container
+### Test Senzing API
 
 1. Wait for the following message in the terminal showing docker log.
 
@@ -159,7 +165,7 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-sqlite-kafka.yaml down
+    sudo docker-compose --file docker-compose-kafka-sqlite.yaml down
     ```
 
 1. Delete SENZING_DIR.
