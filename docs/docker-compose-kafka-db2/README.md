@@ -140,10 +140,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
   Default: "G2"
 * **DB2_PASSWORD** -
   The password for the the database "root" user name.
-  Default: "db2inst1"  
+  Default: "db2inst1"
 * **DB2_USERNAME** -
   The username for the the database "root" user name.
-  Default: "db2inst1"  
+  Default: "db2inst1"
 * **DB2_STORAGE** -
   Path on local system where the database files are stored.
   Default: "/storage/docker/senzing/docker-compose-stream-loader-kafka-db2"
@@ -188,7 +188,18 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Initialize database
 
-1. Populate database. In `senzing-db2` docker container, run
+1. Enter `senzing-db2`container.
+   Example:
+
+    ```console
+    sudo docker exec \
+      --interactive \
+      --tty \
+      senzing-db2 /bin/bash
+    ```
+
+1. Populate database.
+   In `senzing-db2` docker container, run:
 
     ```console
     su - db2inst1
@@ -196,6 +207,8 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     db2 connect to g2
     db2 -tf /opt/senzing/g2/data/g2core-schema-db2-create.sql | tee /tmp/g2schema.out
     db2 connect reset
+    exit
+    exit
     ```
 
 ### Test Senzing API
