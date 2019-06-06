@@ -99,31 +99,12 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Db2 Client
 
-1. If the "[Using Docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md#using-docker)"
-   method was used to create `SENZING_DIR`, proceed to [Using docker-compose](#using-docker-compose).
-   The Db2 client has been installed.
-
-1. Visit [Download initial Version 11.1 clients and drivers](http://www-01.ibm.com/support/docview.wss?uid=swg21385217)
-    1. Click on "[IBM Data Server Driver for ODBC and CLI (CLI Driver)](http://www.ibm.com/services/forms/preLogin.do?source=swg-idsoc97)" link.
-    1. Select :radio_button:  "IBM Data Server Driver for ODBC and CLI (Linux AMD64 and Intel EM64T)"
-    1. Click "Continue" button.
-    1. Choose download method and click "Download now" button.
-    1. Download `ibm_data_server_driver_for_odbc_cli_linuxx64_v11.1.tar.gz` to `/opt/senzing/ibm_data_server_driver_for_odbc_cli_linuxx64_v11.1.tar.gz`.
-
-1. Uncompress `.tar.gz` file.  Example:
-
-    ```console
-    sudo mkdir -p /opt/senzing/db2
-
-    sudo tar \
-      --extract \
-      --owner=root \
-      --group=root \
-      --no-same-owner \
-      --no-same-permissions \
-      --directory=/opt/senzing/db2 \
-      --file=/opt/senzing/ibm_data_server_driver_for_odbc_cli_linuxx64_v11.1.tar.gz
-    ```
+1. If the "[Manual download and extract](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md#manual-download-and-extract)"
+   method was used to create `SENZING_DIR`,
+   the Db2 Client must be added separately.
+   Visit
+   [HOWTO - Install IBM Db2 client](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-db2-client.md)
+   for instructions.
 
 ## Using docker-compose
 
