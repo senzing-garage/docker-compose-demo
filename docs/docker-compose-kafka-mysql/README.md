@@ -117,7 +117,7 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
   Default: "G2"
 * **MYSQL_PASSWORD** -
   Password for MYSQL_USERNAME.
-  Default: "g2"  
+  Default: "g2"
 * **MYSQL_ROOT_PASSWORD** -
   The password for the the database "root" user name.
   Default: "root"

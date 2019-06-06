@@ -99,6 +99,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Db2 Client
 
+1. If the "[Using Docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md#using-docker)"
+   method was used to create `SENZING_DIR`, proceed to [Using docker-compose](#using-docker-compose).
+   The Db2 client has been installed.
+
 1. Visit [Download initial Version 11.1 clients and drivers](http://www-01.ibm.com/support/docview.wss?uid=swg21385217)
     1. Click on "[IBM Data Server Driver for ODBC and CLI (CLI Driver)](http://www.ibm.com/services/forms/preLogin.do?source=swg-idsoc97)" link.
     1. Select :radio_button:  "IBM Data Server Driver for ODBC and CLI (Linux AMD64 and Intel EM64T)"
@@ -128,7 +132,9 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 1. Build docker images.
 
     ```console
-    sudo docker build --tag senzing/db2express-c  https://github.com/senzing/docker-db2express-c.git
+    sudo docker build \
+      --tag senzing/db2express-c \
+      https://github.com/senzing/docker-db2express-c.git
     ```
 
 ### Configuration
@@ -138,13 +144,13 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
   Default: "G2"
 * **DB2_PASSWORD** -
   The password for the the database "root" user name.
-  Default: "db2inst1"  
+  Default: "db2inst1"
 * **DB2_STORAGE** -
   Path on local system where the database files are stored.
-  Default: "/storage/docker/senzing/docker-compose-rabbitmq-db2/db2"  
+  Default: "/storage/docker/senzing/docker-compose-rabbitmq-db2/db2"
 * **DB2_USERNAME** -
   The username for the the database "root" user name.
-  Default: "db2inst1"  
+  Default: "db2inst1"
 * **DB2INST1_PASSWORD** -
   The password for the "db2inst1" user name.
   Default: "db2inst1"
@@ -198,7 +204,18 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Initialize database
 
-1. Populate database. In `senzing-db2` docker container, run
+1. Enter `senzing-db2`container.
+   Example:
+
+    ```console
+    sudo docker exec \
+      --interactive \
+      --tty \
+      senzing-db2 /bin/bash
+    ```
+
+1. Populate database.
+   In `senzing-db2` docker container, run:
 
     ```console
     su - db2inst1
@@ -206,6 +223,8 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     db2 connect to g2
     db2 -tf /opt/senzing/g2/data/g2core-schema-db2-create.sql | tee /tmp/g2schema.out
     db2 connect reset
+    exit
+    exit
     ```
 
 ### View data
