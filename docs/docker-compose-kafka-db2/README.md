@@ -99,6 +99,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Db2 Client
 
+1. If the "[Using Docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md#using-docker)"
+   method was used to create `SENZING_DIR`, proceed to [Using docker-compose](#using-docker-compose).
+   The Db2 client has been installed.
+
 1. Visit [Download initial Version 11.1 clients and drivers](http://www-01.ibm.com/support/docview.wss?uid=swg21385217)
     1. Click on "[IBM Data Server Driver for ODBC and CLI (CLI Driver)](http://www.ibm.com/services/forms/preLogin.do?source=swg-idsoc97)" link.
     1. Select :radio_button:  "IBM Data Server Driver for ODBC and CLI (Linux AMD64 and Intel EM64T)"
