@@ -52,7 +52,7 @@ This docker formation brings up the following docker containers:
 
 ### Space
 
-This repository and demonstration require 7 GB free disk space.
+This repository and demonstration requires 7 GB of free disk space.
 
 ### Time
 
