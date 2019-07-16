@@ -12,6 +12,7 @@ services:
     ports:
       - 15672:15672
       - 5672:5672
+    restart: always
     volumes:
       - ${RABBITMQ_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq}:/bitnami
 

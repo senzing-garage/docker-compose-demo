@@ -41,7 +41,7 @@ services:
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
-      SENZING_SUBCOMMAND: url-to-kafka      
+      SENZING_SUBCOMMAND: url-to-kafka
     networks:
       - backend
     restart: on-failure

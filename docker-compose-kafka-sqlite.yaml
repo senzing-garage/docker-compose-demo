@@ -72,7 +72,7 @@ services:
       SENZING_SUBCOMMAND: kafka
     networks:
       - backend
-    restart: on-failure
+    restart: always
     volumes:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
