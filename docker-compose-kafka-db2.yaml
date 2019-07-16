@@ -36,12 +36,12 @@ services:
       - kafka
     environment:
 #     See https://github.com/Senzing/docker-mock-data-generator#configuration
-      SENZING_SUBCOMMAND: url-to-kafka
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
+      SENZING_SUBCOMMAND: url-to-kafka
     networks:
       - backend
     restart: on-failure
@@ -67,15 +67,15 @@ services:
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
-      SENZING_SUBCOMMAND: kafka
-      SENZING_DATA_SOURCE: PEOPLE
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
-      SENZING_ENTITY_TYPE: PEOPLE
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
+      SENZING_SUBCOMMAND: kafka
     networks:
       - backend
-    restart: on-failure
+    restart: always
     volumes:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 

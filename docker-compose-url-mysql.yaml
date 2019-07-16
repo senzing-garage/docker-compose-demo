@@ -55,15 +55,16 @@ services:
     image: senzing/stream-loader
     container_name: senzing-stream-loader
     environment:
+      LC_CTYPE: en_US.utf8
+
 #     See https://github.com/Senzing/stream-loader#configuration
-      SENZING_SUBCOMMAND: url
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
-      SENZING_DATA_SOURCE: PEOPLE
-      SENZING_ENTITY_TYPE: PEOPLE
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD: 60
-      LC_CTYPE: en_US.utf8
+      SENZING_SUBCOMMAND: url
     networks:
       - backend
     volumes:
