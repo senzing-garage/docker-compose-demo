@@ -1,0 +1,16 @@
+version: '3'
+services:
+
+  g2configinit:
+    image: senzing/g2-configuration-initializer:latest
+    container_name: senzing-g2-configuration-initializer
+    environment:
+      SENZING_SUBCOMMAND: initialize
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+networks:
+  backend:

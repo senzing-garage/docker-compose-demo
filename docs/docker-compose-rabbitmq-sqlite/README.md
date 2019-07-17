@@ -98,10 +98,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-- **RABBITMQ_STORAGE** -
+* **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-sqlite/rabbitmq"
-- **SENZING_DIR** -
+* **SENZING_DIR** -
   Path on the local system where
   [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
   has been extracted.
@@ -125,11 +125,20 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     sudo chmod 777 ${RABBITMQ_STORAGE}
     ```
 
-1. Launch docker-compose formation.  Example:
+1. Initialize SQLite database.  Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
 
+    sudo \
+      SENZING_DIR=${SENZING_DIR} \
+      docker-compose --file docker-compose-sqlite2-initialization.yaml up
+    ```
+
+1. Launch docker-compose formation.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
     sudo \
       RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
       SENZING_DIR=${SENZING_DIR} \
@@ -178,6 +187,7 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-sqlite2-initialization.yaml down
     sudo docker-compose --file docker-compose-rabbitmq-sqlite.yaml down
     ```
 
