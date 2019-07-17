@@ -2,11 +2,11 @@ version: '3'
 services:
 
   rabbitmq:
-    image: bitnami/rabbitmq:latest
     container_name: senzing-rabbitmq
     environment:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+    image: bitnami/rabbitmq:3.7.16
     networks:
       - backend
     ports:
@@ -17,7 +17,6 @@ services:
       - ${RABBITMQ_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq}:/bitnami
 
   mockdata:
-    image: senzing/mock-data-generator
     container_name: senzing-mock-data-generator
     depends_on:
       - rabbitmq
@@ -31,17 +30,18 @@ services:
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1)
     networks:
       - backend
     restart: on-failure
 
   db2:
-    image: senzing/db2express-c:latest
     command: db2start
     container_name: senzing-db2
     environment:
       LICENSE: accept
       DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
+    image: senzing/db2express-c:latest
     networks:
       - backend
     ports:
@@ -51,7 +51,6 @@ services:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   loader:
-    image: senzing/stream-loader
     container_name: senzing-stream-loader
     depends_on:
       - rabbitmq
@@ -67,8 +66,10 @@ services:
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_ENTRYPOINT_SLEEP: 60
       SENZING_SUBCOMMAND: rabbitmq
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-1}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.0.1)
     networks:
       - backend
     restart: always
@@ -76,7 +77,6 @@ services:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   api:
-    image: senzing/senzing-api-server
     container_name: senzing-api-server
     command:
       - -httpPort 8080
@@ -86,6 +86,7 @@ services:
       - db2
     environment:
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1)
     networks:
       - backend
     ports:

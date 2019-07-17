@@ -2,19 +2,18 @@ version: '3'
 services:
 
   zookeeper:
-    image: 'bitnami/zookeeper:latest'
     container_name: senzing-zookeeper
     environment:
 #     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
       ALLOW_ANONYMOUS_LOGIN: "yes"
+    image: bitnami/zookeeper:3.5.5
     networks:
       - backend
     ports:
-      - '2181:2181'
+      - 2181:2181
     restart: always
 
   kafka:
-    image: 'bitnami/kafka:latest'
     container_name: senzing-kafka
     depends_on:
       - zookeeper
@@ -23,14 +22,14 @@ services:
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: bitnami/kafka:2.3.0
     networks:
       - backend
     ports:
-      - '9092:9092'
+      - 9092:9092
     restart: always
 
   mockdata:
-    image: senzing/mock-data-generator
     container_name: senzing-mock-data-generator
     depends_on:
       - kafka
@@ -42,15 +41,16 @@ services:
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-kafka
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1)
     networks:
       - backend
     restart: on-failure
 
   sqliteweb:
-    image: coleifer/sqlite-web
     container_name: senzing-sqlite-web
     environment:
       SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:latest
     networks:
       - backend
     ports:
@@ -60,16 +60,18 @@ services:
       - ${SENZING_DIR:-/opt/senzing}/g2/sqldb:/data
 
   loader:
-    image: senzing/stream-loader
     container_name: senzing-stream-loader
+    depends_on:
+      - kafka
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
+      SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.0.1)
     networks:
       - backend
     restart: always
@@ -77,12 +79,12 @@ services:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   api:
-    image: senzing/senzing-api-server
     container_name: senzing-api-server
     command:
       - -httpPort 8080
       - -bindAddr all
       - -iniFile /opt/senzing/g2/python/G2Module.ini
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1)
     networks:
       - backend
     ports:

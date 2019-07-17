@@ -2,7 +2,6 @@ version: '3'
 services:
 
   mysql:
-    image: mysql:5.7
     container_name: senzing-mysql
     environment:
 #     See https://hub.docker.com/_/mysql/ "Environment Variables"
@@ -10,17 +9,19 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-G2}
       MYSQL_USER: ${MYSQL_USERNAME:-g2}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
-    restart: always
+    image: mysql:5.7
     networks:
       - backend
     ports:
       - 3306:3306
+    restart: always
     volumes:
       - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-mysql-demo}:/var/lib/mysql
 
   mysqlinit:
-    image: senzing/mysql-init
     container_name: senzing-mysql-init
+    depends_on:
+      - mysql
     environment:
       SENZING_SENTINEL_FILE: ${SENZING_DIR:-/opt/senzing}/mysql-init.sentinel
     command:
@@ -29,34 +30,33 @@ services:
       - --host=mysql
       - --database=${MYSQL_DATABASE:-G2}
       - --execute="source ${SENZING_DIR:-/opt/senzing}/g2/data/g2core-schema-mysql-create.sql"
+    image: senzing/mysql-init:latest
     networks:
       - backend
     volumes:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
-    depends_on:
-      - mysql
     restart: on-failure
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
     container_name: senzing-phpmyadmin
+    depends_on:
+      - mysql
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
+    image: phpmyadmin/phpmyadmin:4.9
     networks:
       - backend
     ports:
       - 8080:80
     restart: always
-    depends_on:
-      - mysql
 
   loader:
-    image: senzing/stream-loader
     container_name: senzing-stream-loader
+    depends_on:
+      - mysqlinit
     environment:
       LC_CTYPE: en_US.utf8
-
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
@@ -65,16 +65,14 @@ services:
       SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD: 60
       SENZING_SUBCOMMAND: url
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.0.1)
     networks:
       - backend
+    restart: always
     volumes:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
-    depends_on:
-      - mysqlinit
-    restart: always
 
   api:
-    image: senzing/senzing-api-server
     container_name: senzing-api-server
     command:
       - -httpPort 8080
@@ -84,6 +82,7 @@ services:
       - mysql
     environment:
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1)
     networks:
       - backend
     ports:

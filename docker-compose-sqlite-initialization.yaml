@@ -2,10 +2,10 @@ version: '3'
 services:
 
   g2configinit:
-    image: senzing/g2-configuration-initializer:latest
     container_name: senzing-g2-configuration-initializer
     environment:
       SENZING_SUBCOMMAND: initialize
+    image: senzing/g2-configuration-initializer:${SENZING_G2_CONFIGURATION_INITIALIZER_VERSION:-1.0.0)
     networks:
       - backend
     restart: on-failure
@@ -13,10 +13,10 @@ services:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   sqliteweb:
-    image: coleifer/sqlite-web
     container_name: senzing-sqlite-web
     environment:
       SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:latest
     networks:
       - backend
     ports:
