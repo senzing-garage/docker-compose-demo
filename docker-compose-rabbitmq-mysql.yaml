@@ -34,7 +34,7 @@ services:
     networks:
       - backend
     restart: on-failure
-  
+
   mysql:
     image: mysql:5.7
     container_name: senzing-mysql
@@ -51,25 +51,6 @@ services:
     restart: always
     volumes:
       - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql}:/var/lib/mysql
-
-  mysqlinit:
-    image: senzing/mysql-init
-    container_name: senzing-mysql-init
-    environment:
-      SENZING_SENTINEL_FILE: ${SENZING_DIR:-/opt/senzing}/mysql-init.sentinel
-    command:
-      - --user=${MYSQL_USERNAME:-g2}
-      - --password=${MYSQL_PASSWORD:-g2}
-      - --host=mysql
-      - --database=${MYSQL_DATABASE:-G2}
-      - --execute="source ${SENZING_DIR:-/opt/senzing}/g2/data/g2core-schema-mysql-create.sql"
-    networks:
-      - backend
-    volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
-    depends_on:
-      - mysql
-    restart: on-failure
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin

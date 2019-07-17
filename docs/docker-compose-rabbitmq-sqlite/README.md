@@ -125,14 +125,21 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     sudo chmod 777 ${RABBITMQ_STORAGE}
     ```
 
-1. Initialize SQLite database.  Example:
+1. Initialize database.  Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
 
     sudo \
       SENZING_DIR=${SENZING_DIR} \
-      docker-compose --file docker-compose-sqlite2-initialization.yaml up
+      docker-compose --file docker-compose-sqlite-initialization.yaml up
+    ```
+
+1. Bring down database initialization.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-sqlite-initialization.yaml down
     ```
 
 1. Launch docker-compose formation.  Example:
@@ -187,7 +194,6 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-sqlite2-initialization.yaml down
     sudo docker-compose --file docker-compose-rabbitmq-sqlite.yaml down
     ```
 

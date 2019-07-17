@@ -131,6 +131,24 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     export SENZING_DIR=/opt/senzing
     ```
 
+1. Initialize database.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      POSTGRES_DB=${POSTGRES_DB} \
+      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
+      SENZING_DIR=${SENZING_DIR} \
+      docker-compose --file docker-compose-postgresql-initialization.yaml up
+    ```
+
+1. Bring down database initialization.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-postgresql-initialization.yaml down
+    ```
+
 1. Launch docker-compose formation.  Example:
 
     ```console

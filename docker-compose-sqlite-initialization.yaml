@@ -12,5 +12,18 @@ services:
     volumes:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
+  sqliteweb:
+    image: coleifer/sqlite-web
+    container_name: senzing-sqlite-web
+    environment:
+      SQLITE_DATABASE: G2C.db
+    networks:
+      - backend
+    ports:
+      - 8080:8080
+    restart: always
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}/g2/sqldb:/data
+
 networks:
   backend:

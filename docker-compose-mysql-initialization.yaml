@@ -1,0 +1,69 @@
+version: '3'
+services:
+
+  mysql:
+    container_name: senzing-mysql
+    environment:
+#     See https://hub.docker.com/_/mysql/ "Environment Variables"
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-G2}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_USER: ${MYSQL_USERNAME:-g2}
+    image: mysql:5.7
+    networks:
+      - backend
+    ports:
+      - 3306:3306
+    restart: always
+    volumes:
+      - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-kafka-mysql/mysql}:/var/lib/mysql
+
+  mysqlinit:
+    container_name: senzing-mysql-init
+    command:
+      - --user=${MYSQL_USERNAME:-g2}
+      - --password=${MYSQL_PASSWORD:-g2}
+      - --host=mysql
+      - --database=${MYSQL_DATABASE:-G2}
+      - --execute="source ${SENZING_DIR:-/opt/senzing}/g2/data/g2core-schema-mysql-create.sql"
+    depends_on:
+      - mysql
+    environment:
+      SENZING_SENTINEL_FILE: ${SENZING_DIR:-/opt/senzing}/mysql-init.sentinel
+    image: senzing/mysql-init
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+  g2configinit:
+    container_name: senzing-g2-configuration-initializer
+    depends_on:
+      - mysqlinit
+    environment:
+      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+      SENZING_SUBCOMMAND: initialize
+    image: senzing/g2-configuration-initializer:latest
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+  phpmyadmin:
+    container_name: senzing-phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    image: phpmyadmin/phpmyadmin
+    networks:
+      - backend
+    ports:
+      - 8080:80
+    restart: always
+
+networks:
+  backend:
