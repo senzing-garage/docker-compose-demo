@@ -181,7 +181,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-
     sudo \
       MYSQL_DATABASE=${MYSQL_DATABASE} \
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \

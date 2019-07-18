@@ -30,7 +30,7 @@ services:
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1)
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1}
     networks:
       - backend
     restart: on-failure
@@ -76,7 +76,7 @@ services:
       - PHP_PG_ADMIN_USE_XHTML_STRICT=false
       - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
       - PHP_PG_ADMIN_AJAX_REFRESH=3
-    image: senzing/phppgadmin:${SENZING_PHPPGADMIN_VERSION:-1.0.0)
+    image: senzing/phppgadmin:${SENZING_PHPPGADMIN_VERSION:-1.0.0}
     networks:
       - backend
     ports:
@@ -104,7 +104,7 @@ services:
       SENZING_ENTRYPOINT_SLEEP: 60
       SENZING_SUBCOMMAND: rabbitmq
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-1}
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.0.1)
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.0.1}
     networks:
       - backend
     restart: always
@@ -121,7 +121,7 @@ services:
       - postgres
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1)
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1}
     networks:
       - backend
     ports:

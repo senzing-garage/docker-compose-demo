@@ -161,15 +161,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       docker-compose --file docker-compose-kafka-postgresql.yaml up
     ```
 
-### Initialize database
-
-1. The database will be initialized using phpPgAdmin at [localhost:8080](http://localhost:8080).
-1. Login to phpPgAdmin with Username: postgres and Password: value of `POSTGRES_PASSWORD`.
-1. In the left-hand navigation, highlight "G2" database.
-1. Click "SQL" tab.
-1. Click "Browse..." button and locate `/opt/senzing/g2/data/g2core-schema-postgresql-create.sql`
-1. Click "Execute" button.
-
 ### View data
 
 1. PostgreSQL is viewable at [localhost:8080](http://localhost:8080).

@@ -42,7 +42,7 @@ services:
       SENZING_RECORD_MONITOR: 100
       SENZING_RECORDS_PER_SECOND: 10
       SENZING_SUBCOMMAND: url-to-kafka
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1)
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1}
     networks:
       - backend
     restart: on-failure
@@ -88,7 +88,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.0.1)
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.0.1}
     networks:
       - backend
     restart: on-failure
