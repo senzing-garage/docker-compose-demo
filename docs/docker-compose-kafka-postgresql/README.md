@@ -131,6 +131,24 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     export SENZING_DIR=/opt/senzing
     ```
 
+1. Initialize database.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      POSTGRES_DB=${POSTGRES_DB} \
+      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
+      SENZING_DIR=${SENZING_DIR} \
+      docker-compose --file docker-compose-postgresql-initialization.yaml up
+    ```
+
+1. Bring down database initialization.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-postgresql-initialization.yaml down
+    ```
+
 1. Launch docker-compose formation.  Example:
 
     ```console
@@ -142,15 +160,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       SENZING_DIR=${SENZING_DIR} \
       docker-compose --file docker-compose-kafka-postgresql.yaml up
     ```
-
-### Initialize database
-
-1. The database will be initialized using phpPgAdmin at [localhost:8080](http://localhost:8080).
-1. Login to phpPgAdmin with Username: postgres and Password: value of `POSTGRES_PASSWORD`.
-1. In the left-hand navigation, highlight "G2" database.
-1. Click "SQL" tab.
-1. Click "Browse..." button and locate `/opt/senzing/g2/data/g2core-schema-postgresql-create.sql`
-1. Click "Execute" button.
 
 ### View data
 

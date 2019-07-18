@@ -148,11 +148,29 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     export SENZING_DIR=/opt/senzing
     ```
 
+1. Initialize database.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      MYSQL_DATABASE=${MYSQL_DATABASE} \
+      MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
+      MYSQL_STORAGE=${MYSQL_STORAGE} \
+      SENZING_DIR=${SENZING_DIR} \
+      docker-compose --file docker-compose-mysql-initialization.yaml up
+    ```
+
+1. Bring down database initialization.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-mysql-initialization.yaml down
+    ```
+
 1. Launch docker-compose formation.  Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-
     sudo \
       MYSQL_DATABASE=${MYSQL_DATABASE} \
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \

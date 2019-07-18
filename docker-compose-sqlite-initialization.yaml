@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  g2configinit:
+    container_name: senzing-g2-configuration-initializer
+    environment:
+      SENZING_SUBCOMMAND: initialize
+    image: senzing/g2-configuration-initializer:${SENZING_G2_CONFIGURATION_INITIALIZER_VERSION:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+  sqliteweb:
+    container_name: senzing-sqlite-web
+    environment:
+      SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:latest
+    networks:
+      - backend
+    ports:
+      - 8080:8080
+    restart: always
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}/g2/sqldb:/data
+
+networks:
+  backend:

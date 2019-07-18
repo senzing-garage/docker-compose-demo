@@ -171,7 +171,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-
     sudo \
       DB2_DB=${DB2_DB} \
       DB2_PASSWORD=${DB2_PASSWORD} \

@@ -1,0 +1,83 @@
+version: '3'
+services:
+
+  postgres:
+    container_name: senzing-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-G2}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+    image: postgres:11.3
+    networks:
+      - backend
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - ${POSTGRES_STORAGE:-/storage/docker/senzing/docker-compose-kafka-postgres/postgres}:/var/lib/postgresql/data
+
+  postgresinit:
+    container_name: senzing-postgresql-init
+    command:
+      - "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      - --file
+      - /opt/senzing/g2/data/g2core-schema-postgresql-create.sql
+    depends_on:
+      - postgres
+    image: jbergknoff/postgresql-client:latest
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+  g2configinit:
+    container_name: senzing-g2-configuration-initializer
+    depends_on:
+      - postgresinit
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_SUBCOMMAND: initialize
+    image: senzing/g2-configuration-initializer:${SENZING_G2_CONFIGURATION_INITIALIZER_VERSION:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+
+  phppgadmin:
+    container_name: senzing-phppgadmin
+    environment:
+      - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
+      - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
+      - PHP_PG_ADMIN_SERVER_PORT=5432
+      - PHP_PG_ADMIN_SERVER_SSL_MODE=allow
+      - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
+      - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
+      - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
+      - PHP_PG_ADMIN_DEFAULT_LANG=auto
+      - PHP_PG_ADMIN_AUTO_COMPLETE=default on
+      - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
+      - PHP_PG_ADMIN_OWNED_ONLY=false
+      - PHP_PG_ADMIN_SHOW_COMMENTS=true
+      - PHP_PG_ADMIN_SHOW_ADVANCED=false
+      - PHP_PG_ADMIN_SHOW_SYSTEM=false
+      - PHP_PG_ADMIN_MIN_PASSWORD_LENGTH=1
+      - PHP_PG_ADMIN_LEFT_WIDTH=200
+      - PHP_PG_ADMIN_THEME=default
+      - PHP_PG_ADMIN_SHOW_OIDS=false
+      - PHP_PG_ADMIN_MAX_ROWS=30
+      - PHP_PG_ADMIN_MAX_CHARS=50
+      - PHP_PG_ADMIN_USE_XHTML_STRICT=false
+      - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
+      - PHP_PG_ADMIN_AJAX_REFRESH=3
+    image: senzing/phppgadmin:${SENZING_PHPPGADMIN_VERSION:-1.0.0}
+    networks:
+      - backend
+    ports:
+      - "8080:80"
+      - "8443:443"
+    restart: always
+
+networks:
+  backend:

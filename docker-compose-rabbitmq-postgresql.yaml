@@ -2,11 +2,11 @@ version: '3'
 services:
 
   rabbitmq:
-    image: bitnami/rabbitmq:latest
     container_name: senzing-rabbitmq
     environment:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+    image: bitnami/rabbitmq:3.7.16
     networks:
       - backend
     ports:
@@ -17,7 +17,6 @@ services:
       - ${RABBITMQ_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq}:/bitnami
 
   mockdata:
-    image: senzing/mock-data-generator
     container_name: senzing-mock-data-generator
     depends_on:
       - rabbitmq
@@ -31,27 +30,27 @@ services:
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1}
     networks:
       - backend
     restart: on-failure
 
   postgres:
-    image: postgres
     container_name: senzing-postgres
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+    image: postgres:11.3
     networks:
       - backend
     ports:
       - 5432:5432
+    restart: always
     volumes:
       - ${POSTGRES_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres}:/var/lib/postgresql/data
-    restart: always
 
   phppgadmin:
-    image: senzing/phppgadmin
     container_name: senzing-phppgadmin
     environment:
       - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
@@ -61,7 +60,6 @@ services:
       - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
       - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
       - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
-
       - PHP_PG_ADMIN_DEFAULT_LANG=auto
       - PHP_PG_ADMIN_AUTO_COMPLETE=default on
       - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
@@ -78,18 +76,19 @@ services:
       - PHP_PG_ADMIN_USE_XHTML_STRICT=false
       - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
       - PHP_PG_ADMIN_AJAX_REFRESH=3
+    image: senzing/phppgadmin:${SENZING_PHPPGADMIN_VERSION:-1.0.0}
     networks:
       - backend
     ports:
-      - "8080:80"
-      - "8443:443"
+      - 8080:80
+      - 8443:443
     restart: always
 
   loader:
-    image: senzing/stream-loader
     container_name: senzing-stream-loader
     depends_on:
       - rabbitmq
+      - postgres
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
@@ -102,8 +101,10 @@ services:
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_ENTRYPOINT_SLEEP: 60
       SENZING_SUBCOMMAND: rabbitmq
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-1}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.0.1}
     networks:
       - backend
     restart: always
@@ -111,7 +112,6 @@ services:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   api:
-    image: senzing/senzing-api-server
     container_name: senzing-api-server
     command:
       - -httpPort 8080
@@ -121,6 +121,7 @@ services:
       - postgres
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1}
     networks:
       - backend
     ports:
