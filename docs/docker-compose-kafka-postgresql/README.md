@@ -43,7 +43,6 @@ This docker formation brings up the following docker containers:
 1. [Using docker-compose](#using-docker-compose)
     1. [Configuration](#configuration)
     1. [Run docker formation](#run-docker-formation)
-    1. [Initialize database](#initialize-database)
     1. [View data](#view-data)
     1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
@@ -153,7 +152,6 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-
     sudo \
       POSTGRES_DB=${POSTGRES_DB} \
       POSTGRES_STORAGE=${POSTGRES_STORAGE} \
