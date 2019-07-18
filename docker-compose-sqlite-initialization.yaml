@@ -5,7 +5,7 @@ services:
     container_name: senzing-g2-configuration-initializer
     environment:
       SENZING_SUBCOMMAND: initialize
-    image: senzing/g2-configuration-initializer:${SENZING_G2_CONFIGURATION_INITIALIZER_VERSION:-latest}
+    image: senzing/g2-configuration-initializer:${SENZING_G2_CONFIGURATION_INITIALIZER_VERSION:-1.0.0}
     networks:
       - backend
     restart: on-failure
