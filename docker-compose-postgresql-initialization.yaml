@@ -31,20 +31,6 @@ services:
     volumes:
       - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
-  g2configinit:
-    container_name: senzing-g2-configuration-initializer
-    depends_on:
-      - postgresinit
-    environment:
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-      SENZING_SUBCOMMAND: initialize
-    image: senzing/g2-configuration-initializer:${SENZING_G2_CONFIGURATION_INITIALIZER_VERSION:-1.0.0}
-    networks:
-      - backend
-    restart: on-failure
-    volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
-
   phppgadmin:
     container_name: senzing-phppgadmin
     environment:
@@ -78,6 +64,18 @@ services:
       - "8080:80"
       - "8443:443"
     restart: always
+
+  initcontainer:
+    container_name: senzing-init-container
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 30
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.1.0}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
 networks:
   backend:
