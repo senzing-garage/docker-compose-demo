@@ -90,37 +90,49 @@ The following software programs need to be installed:
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
     ```
 
-### Create SENZING_DIR
+### Volumes
 
-If you do not already have an `/opt/senzing` directory on your local system, visit
-[HOWTO - Create SENZING_DIR](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md).
+The output of `yum install senzingapi` placed files in different directories.
+Create a folder for each output directory.
+
+1. :pencil2: Option #1.
+   To mimic an actual RPM installation,
+   identify directories for RPM output in this manner:
+
+    ```console
+    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/1.0.0
+    export SENZING_ETC_DIR=/etc/opt/senzing
+    export SENZING_G2_DIR=/opt/senzing/g2
+    export SENZING_VAR_DIR=/var/opt/senzing
+    ```
+
+1. :pencil2: Option #2.
+   If Senzing directories were put in alternative directories,
+   set environment variables to reflect where the directories were placed.
+   Example:
+
+    ```console
+    export SENZING_VOLUME=/opt/my-senzing
+
+    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
+    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
+    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    ```
 
 ## Using docker-compose
 
-### Configuration
-
-* **SENZING_DIR** -
-  Path on the local system where
-  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
-  has been extracted.
-  See [Create SENZING_DIR](#create-senzing_dir).
-  No default.
-  Usually set to "/opt/senzing".
-
 ### Run docker formation
-
-1. :pencil2: Set environment variables.  Example:
-
-    ```console
-    export SENZING_DIR=/opt/senzing
-    ```
 
 1. Initialize database.  Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      SENZING_DIR=${SENZING_DIR} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file docker-compose-sqlite-initialization.yaml up
     ```
 
@@ -136,7 +148,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      SENZING_DIR=${SENZING_DIR} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file docker-compose-kafka-sqlite.yaml up
     ```
 

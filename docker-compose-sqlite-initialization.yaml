@@ -12,7 +12,7 @@ services:
       - 8080:8080
     restart: always
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}/g2/sqldb:/data
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
   initcontainer:
     container_name: senzing-init-container
@@ -21,7 +21,10 @@ services:
       - backend
     restart: on-failure
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
   backend:
