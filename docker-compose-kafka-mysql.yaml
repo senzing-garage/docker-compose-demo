@@ -80,6 +80,7 @@ services:
   loader:
     container_name: senzing-stream-loader
     depends_on:
+      - kafka
       - mysql
     environment:
       LC_CTYPE: en_US.utf8
@@ -95,14 +96,17 @@ services:
       - backend
     restart: always
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   api:
     container_name: senzing-api-server
     command:
       - -httpPort 8080
       - -bindAddr all
-      - -iniFile /opt/senzing/g2/python/G2Module.ini
+      - -iniFile /etc/opt/senzing/G2Module.ini
     depends_on:
       - mysql
     environment:
@@ -114,7 +118,10 @@ services:
       - 8889:8080
     restart: always
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
   backend:
