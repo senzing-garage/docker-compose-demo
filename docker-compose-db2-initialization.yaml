@@ -1,0 +1,29 @@
+version: '3'
+services:
+
+  db2driverinstaller:
+    container_name: senzing-db2-driver-installer
+    image: senzing/db2-driver-installer:${SENZING_DB2_DRIVER_INSTALLER_VERSION:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DB2_DIR:-/opt/IBM}:/opt/IBM
+
+  initcontainer:
+    container_name: senzing-init-container
+    environment:
+      SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 30
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.2.0}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+networks:
+  backend:

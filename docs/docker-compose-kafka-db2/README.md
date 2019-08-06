@@ -156,7 +156,21 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     export DB2_STORAGE=/storage/docker/senzing/docker-compose-kafka-db2/db2
     export DB2_USERNAME=db2inst1
     export DB2INST1_PASSWORD=db2inst1
-    export SENZING_DIR=/opt/senzing
+    export SENZING_DB2_DIR=/opt/IBM
+    ```
+
+1. Launch docker-compose formation.  Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      DB2_DB=${DB2_DB} \
+      DB2_PASSWORD=${DB2_PASSWORD} \
+      DB2_USERNAME=${DB2_USERNAME} \
+      DB2_STORAGE=${DB2_STORAGE} \
+      DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
+      SENZING_DB2_DIR=${SENZING_DB2_DIR} \
+      docker-compose --file docker-compose-db2-initialization.yaml up
     ```
 
 1. Launch docker-compose formation.  Example:
