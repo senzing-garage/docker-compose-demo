@@ -185,7 +185,6 @@ Create a folder for each output directory.
     ```console
     export POSTGRES_DB=G2
     export POSTGRES_STORAGE=/storage/docker/senzing/docker-compose-kafka-postgres/postgres
-    export SENZING_DIR=/opt/senzing
     ```
 
 1. Initialize database and Senzing.
@@ -276,10 +275,10 @@ In a separate (or reusable) terminal window:
     sudo rm -rf ${POSTGRES_STORAGE}
     ```
 
-1. Delete SENZING_DIR.
+1. Delete SENZING_VOLUME.
 
     ```console
-    sudo rm -rf ${SENZING_DIR}
+    sudo rm -rf ${SENZING_VOLUME}
     ```
 
 1. Delete git repository.
