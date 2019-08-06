@@ -25,7 +25,7 @@ services:
       - --password=${MYSQL_PASSWORD:-g2}
       - --host=mysql
       - --database=${MYSQL_DATABASE:-G2}
-      - --execute="/opt/senzing/g2/resources/schema/g2core-schema-mysql-create.sql"
+      - --execute="source /opt/senzing/g2/resources/schema/g2core-schema-mysql-create.sql"
     depends_on:
       - mysql
     image: senzing/mysql-init:latest
