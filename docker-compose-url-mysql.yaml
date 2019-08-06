@@ -22,8 +22,6 @@ services:
     container_name: senzing-mysql-init
     depends_on:
       - mysql
-    environment:
-      SENZING_SENTINEL_FILE: ${SENZING_DIR:-/opt/senzing}/mysql-init.sentinel
     command:
       - --user=${MYSQL_USERNAME:-g2}
       - --password=${MYSQL_PASSWORD:-g2}

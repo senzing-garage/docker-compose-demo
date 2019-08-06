@@ -40,10 +40,11 @@ This docker formation brings up the following docker containers:
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
-    1. [Create SENZING_DIR](#create-senzing_dir)
+    1. [EULA](#eula)
 1. [Using docker-compose](#using-docker-compose)
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
+    1. [Volumes](#volumes)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
     1. [Test Senzing API](#test-senzing-api)
@@ -77,6 +78,9 @@ The following software programs need to be installed:
 
 ### Clone repository
 
+For more information on environment variables,
+see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md).
+
 1. Set these environment variable values:
 
     ```console
@@ -93,10 +97,22 @@ The following software programs need to be installed:
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
     ```
 
-### Create SENZING_DIR
+### EULA
 
-If you do not already have an `/opt/senzing` directory on your local system, visit
-[HOWTO - Create SENZING_DIR](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md).
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
+
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   See
+   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
+   for the correct value.
+   Replace the double-quote character in the example with the correct value.
+   The use of the double-quote character is intentional to prevent simple copy/paste.
+   Example:
+
+    ```console
+    export SENZING_ACCEPT_EULA="
+    ```
 
 ## Using docker-compose
 
@@ -112,43 +128,84 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
-* **MYSQL_DATABASE** -
-  Database name.
-  Default: "G2"
-* **MYSQL_PASSWORD** -
-  Password for MYSQL_USERNAME.
-  Default: "g2"
-* **MYSQL_ROOT_PASSWORD** -
-  The password for the the database "root" user name.
-  Default: "root"
-* **MYSQL_STORAGE** -
-  Path on local system where the database files are stored.
-  Default: "/storage/docker/senzing/docker-compose-kafka-mysql/mysql"
-* **MYSQL_USERNAME** -
-  Non-root MySQL user.
-  Default: "g2"
-* **SENZING_DIR** -
-  Path on the local system where
-  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
-  has been extracted.
-  See [Create SENZING_DIR](#create-senzing_dir).
-  No default.
-  Usually set to "/opt/senzing".
-* See [github.com/Senzing/docker-mysql](https://github.com/Senzing/docker-mysql)
-  for more details on how to find values for other **MYSQL_** environment variables.
+Configuration values specified by environment variable or command line parameter.
+
+- **[MYSQL_DATABASE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_database)**
+- **[MYSQL_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_passwrod)**
+- **[MYSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_root-password)**
+- **[MYSQL_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_storage)**
+- **[MYSQL_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_username)**
+- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
+- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
+- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
+
+### Volumes
+
+The output of `yum install senzingapi` placed files in different directories.
+Create a folder for each output directory.
+
+1. :pencil2: Option #1.
+   To mimic an actual RPM installation,
+   identify directories for RPM output in this manner:
+
+    ```console
+    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/1.0.0
+    export SENZING_ETC_DIR=/etc/opt/senzing
+    export SENZING_G2_DIR=/opt/senzing/g2
+    export SENZING_VAR_DIR=/var/opt/senzing
+    ```
+
+1. :pencil2: Option #2.
+   If Senzing directories were put in alternative directories,
+   set environment variables to reflect where the directories were placed.
+   Example:
+
+    ```console
+    export SENZING_VOLUME=/opt/my-senzing
+
+    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
+    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
+    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    ```
 
 ### Run docker formation
 
-1. :pencil2: Set environment variables.  Example:
+1. If Senzing has not been installed, install Senzing.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      docker-compose --file docker-compose-senzing-installation.yaml up
+    ```
+
+1. Bring down senzing installer.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-sqlite-initialization.yaml down
+    ```
+
+1. :pencil2: Set environment variables.
+   Example:
 
     ```console
     export MYSQL_DATABASE=G2
     export MYSQL_ROOT_PASSWORD=root
     export MYSQL_STORAGE=/storage/docker/senzing/docker-compose-kafka-mysql/mysql
-    export SENZING_DIR=/opt/senzing
     ```
 
-1. Initialize database.  Example:
+1. Initialize database and Senzing.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
@@ -156,18 +213,23 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       MYSQL_DATABASE=${MYSQL_DATABASE} \
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
       MYSQL_STORAGE=${MYSQL_STORAGE} \
-      SENZING_DIR=${SENZING_DIR} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file docker-compose-mysql-initialization.yaml up
     ```
 
-1. Bring down database initialization.  Example:
+1. Bring down database initialization.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file docker-compose-mysql-initialization.yaml down
     ```
 
-1. Launch docker-compose formation.  Example:
+1. Launch docker-compose formation.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
@@ -175,7 +237,10 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       MYSQL_DATABASE=${MYSQL_DATABASE} \
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
       MYSQL_STORAGE=${MYSQL_STORAGE} \
-      SENZING_DIR=${SENZING_DIR} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file docker-compose-kafka-mysql.yaml up
     ```
 
@@ -229,10 +294,10 @@ In a separate (or reusable) terminal window:
     sudo rm -rf ${MYSQL_STORAGE}
     ```
 
-1. Delete SENZING_DIR.
+1. Delete SENZING_VOLUME.
 
     ```console
-    sudo rm -rf ${SENZING_DIR}
+    sudo rm -rf ${SENZING_VOLUME}
     ```
 
 1. Delete git repository.

@@ -25,17 +25,15 @@ services:
       - --password=${MYSQL_PASSWORD:-g2}
       - --host=mysql
       - --database=${MYSQL_DATABASE:-G2}
-      - --execute="source ${SENZING_DIR:-/opt/senzing}/g2/data/g2core-schema-mysql-create.sql"
+      - --execute="/opt/senzing/g2/resources/schema/g2core-schema-mysql-create.sql"
     depends_on:
       - mysql
-    environment:
-      SENZING_SENTINEL_FILE: ${SENZING_DIR:-/opt/senzing}/mysql-init.sentinel
     image: senzing/mysql-init:latest
     networks:
       - backend
     restart: on-failure
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   phpmyadmin:
     container_name: senzing-phpmyadmin
