@@ -21,7 +21,7 @@ services:
     command:
       - "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       - --file
-      - /opt/senzing/g2/data/g2core-schema-postgresql-create.sql
+      - /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
     depends_on:
       - postgres
     image: jbergknoff/postgresql-client:latest
@@ -29,7 +29,7 @@ services:
       - backend
     restart: on-failure
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   phppgadmin:
     container_name: senzing-phppgadmin
