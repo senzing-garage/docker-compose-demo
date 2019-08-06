@@ -70,12 +70,15 @@ services:
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.1.0}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.2.0}
     networks:
       - backend
     restart: on-failure
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
   backend:

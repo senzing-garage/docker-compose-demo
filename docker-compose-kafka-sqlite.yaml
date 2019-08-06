@@ -57,7 +57,7 @@ services:
       - 8080:8080
     restart: always
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}/g2/sqldb:/data
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
   loader:
     container_name: senzing-stream-loader
@@ -86,7 +86,7 @@ services:
     command:
       - -httpPort 8080
       - -bindAddr all
-      - -iniFile /opt/senzing/g2/python/G2Module.ini
+      - -iniFile /etc/opt/senzing/G2Module.ini
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1}
     networks:
       - backend

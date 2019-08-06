@@ -90,6 +90,35 @@ The following software programs need to be installed:
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
     ```
 
+### EULA
+
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
+
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   See
+   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
+   for the correct value.
+   Replace the double-quote character in the example with the correct value.
+   The use of the double-quote character is intentional to prevent simple copy/paste.
+   Example:
+
+    ```console
+    export SENZING_ACCEPT_EULA="
+    ```
+
+## Using docker-compose
+
+### Configuration
+
+Configuration values specified by environment variable or command line parameter.
+
+- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
+- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
+- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
+
 ### Volumes
 
 The output of `yum install senzingapi` placed files in different directories.
@@ -120,11 +149,32 @@ Create a folder for each output directory.
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
-## Using docker-compose
-
 ### Run docker formation
 
-1. Initialize database.  Example:
+1. If Senzing has not been installed, install Senzing.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      docker-compose --file docker-compose-senzing-installation.yaml up
+    ```
+
+1. Bring down senzing installer.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-sqlite-initialization.yaml down
+    ```
+
+1. Initialize database and Senzing.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
