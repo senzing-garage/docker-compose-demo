@@ -52,7 +52,7 @@ This docker formation brings up the following docker containers:
 
 ### Space
 
-This repository and demonstration requires 7 GB of free disk space.
+This repository and demonstration require 7 GB free disk space.
 
 ### Time
 
@@ -95,19 +95,22 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
     ```
 
-### Create SENZING_DIR
+### EULA
 
-If you do not already have an `/opt/senzing` directory on your local system, visit
-[HOWTO - Create SENZING_DIR](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md).
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
 
-### Db2 Client
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   See
+   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
+   for the correct value.
+   Replace the double-quote character in the example with the correct value.
+   The use of the double-quote character is intentional to prevent simple copy/paste.
+   Example:
 
-1. If the "[Manual download and extract](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/create-senzing-dir.md#manual-download-and-extract)"
-   method was used to create `SENZING_DIR`,
-   the Db2 Client must be added separately.
-   Visit
-   [HOWTO - Install IBM Db2 client](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-db2-client.md)
-   for instructions.
+    ```console
+    export SENZING_ACCEPT_EULA="
+    ```
 
 ## Using docker-compose
 
@@ -122,6 +125,20 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     ```
 
 ### Configuration
+
+- **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
+- **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**
+- **[DB2_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_storage)**
+- **[DB2_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_username)**
+- **[DB2INST1_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2inst_password)**
+- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
+- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
+- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_ibm_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
+
+
 
 * **DB2_DB** -
   The database schema name.
@@ -138,17 +155,63 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 * **DB2INST1_PASSWORD** -
   The password for the "db2inst1" user name.
   Default: "db2inst1"
-* **SENZING_DIR** -
-  Path on the local system where
-  [Senzing_API.tgz](https://s3.amazonaws.com/public-read-access/SenzingComDownloads/Senzing_API.tgz)
-  has been extracted.
-  See [Create SENZING_DIR](#create-senzing_dir).
-  No default.
-  Usually set to "/opt/senzing".
+
+### Volumes
+
+The output of `yum install senzingapi` placed files in different directories.
+Create a folder for each output directory.
+
+1. :pencil2: Option #1.
+   To mimic an actual RPM installation,
+   identify directories for RPM output in this manner:
+
+    ```console
+    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/1.0.0
+    export SENZING_ETC_DIR=/etc/opt/senzing
+    export SENZING_G2_DIR=/opt/senzing/g2
+    export SENZING_VAR_DIR=/var/opt/senzing
+    ```
+
+1. :pencil2: Option #2.
+   If Senzing directories were put in alternative directories,
+   set environment variables to reflect where the directories were placed.
+   Example:
+
+    ```console
+    export SENZING_VOLUME=/opt/my-senzing
+
+    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
+    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
+    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    ```
 
 ### Run docker formation
 
-1. :pencil2: Set environment variables.  Example:
+1. If Senzing has not been installed, install Senzing.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      docker-compose --file docker-compose-senzing-installation.yaml up
+    ```
+
+1. Bring down senzing installer.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-sqlite-initialization.yaml down
+    ```
+
+1. :pencil2: Set environment variables.
+   Example:
 
     ```console
     export DB2_DB=G2
@@ -159,7 +222,8 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
     export SENZING_DB2_DIR=/opt/IBM
     ```
 
-1. Launch docker-compose formation.  Example:
+1. Initialize database and Senzing.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
@@ -173,7 +237,16 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       docker-compose --file docker-compose-db2-initialization.yaml up
     ```
 
-1. Launch docker-compose formation.  Example:
+1. Bring down database initialization.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file docker-compose-db2-initialization.yaml down
+    ```
+
+1. Launch docker-compose formation.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
@@ -183,7 +256,9 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
       DB2_USERNAME=${DB2_USERNAME} \
       DB2_STORAGE=${DB2_STORAGE} \
       DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
-      SENZING_DIR=${SENZING_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_IBM_DIR=${SENZING_IBM_DIR} \      
       docker-compose --file docker-compose-kafka-db2.yaml up
     ```
 
