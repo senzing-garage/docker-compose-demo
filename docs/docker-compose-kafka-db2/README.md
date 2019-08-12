@@ -138,24 +138,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 - **[SENZING_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_ibm_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
-
-
-* **DB2_DB** -
-  The database schema name.
-  Default: "G2"
-* **DB2_PASSWORD** -
-  The password for the the database "root" user name.
-  Default: "db2inst1"
-* **DB2_STORAGE** -
-  Path on local system where the database files are stored.
-  Default: "/storage/docker/senzing/docker-compose-stream-loader-kafka-db2"
-* **DB2_USERNAME** -
-  The username for the the database "root" user name.
-  Default: "db2inst1"
-* **DB2INST1_PASSWORD** -
-  The password for the "db2inst1" user name.
-  Default: "db2inst1"
-
 ### Volumes
 
 The output of `yum install senzingapi` placed files in different directories.
@@ -258,7 +240,7 @@ Create a folder for each output directory.
       DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_IBM_DIR=${SENZING_IBM_DIR} \      
+      SENZING_IBM_DIR=${SENZING_IBM_DIR} \
       docker-compose --file docker-compose-kafka-db2.yaml up
     ```
 
