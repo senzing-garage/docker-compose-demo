@@ -38,11 +38,11 @@ This docker formation brings up the following docker containers:
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
-    1. [Create SENZING_DIR](#create-senzing_dir)
-    1. [Db2 Client](#db2-client)
+    1. [EULA](#eula)
 1. [Using docker-compose](#using-docker-compose)
     1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
+    1. [Volumes](#volumes)
     1. [Run docker formation](#run-docker-formation)
     1. [Initialize database](#initialize-database)
     1. [Test Senzing API](#test-senzing-api)
@@ -150,6 +150,7 @@ Create a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=/opt/senzing/data/1.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
+    export SENZING_IBM_DIR=/opt/IBM
     ```
 
 1. :pencil2: Option #2.
@@ -163,6 +164,7 @@ Create a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_IBM_DIR=${SENZING_VOLUME}/IBM
     ```
 
 ### Run docker formation
@@ -197,7 +199,6 @@ Create a folder for each output directory.
     export DB2_STORAGE=/storage/docker/senzing/docker-compose-kafka-db2/db2
     export DB2_USERNAME=db2inst1
     export DB2INST1_PASSWORD=db2inst1
-    export SENZING_IBM_DIR=/opt/IBM
     ```
 
 1. Initialize database and Senzing.
