@@ -147,7 +147,8 @@ Create a folder for each output directory.
    identify directories for RPM output in this manner:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/1.0.0
+    export SENZING_DATA_DIR=/opt/senzing/data
+    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
     export SENZING_IBM_DIR=/opt/IBM
@@ -161,7 +162,8 @@ Create a folder for each output directory.
     ```console
     export SENZING_VOLUME=/opt/my-senzing
 
-    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
+    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
+    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_IBM_DIR=${SENZING_VOLUME}/IBM
@@ -176,18 +178,18 @@ Create a folder for each output directory.
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       docker-compose --file docker-compose-senzing-installation.yaml up
     ```
 
-1. Bring down senzing installer.
+1. Bring down Senzing installer.
    Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-sqlite-initialization.yaml down
+    sudo docker-compose --file docker-compose-senzing-installation.yaml down
     ```
 
 1. :pencil2: Set environment variables.
