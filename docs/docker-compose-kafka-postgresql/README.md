@@ -126,7 +126,6 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
 
@@ -141,7 +140,6 @@ Create a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=/opt/senzing/data/1.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
-    export SENZING_VAR_DIR=/var/opt/senzing
     ```
 
 1. :pencil2: Option #2.
@@ -155,7 +153,6 @@ Create a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
 ### Run docker formation
@@ -170,7 +167,6 @@ Create a folder for each output directory.
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file docker-compose-senzing-installation.yaml up
     ```
 
@@ -201,7 +197,6 @@ Create a folder for each output directory.
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file docker-compose-postgresql-initialization.yaml up
     ```
 
@@ -224,7 +219,6 @@ Create a folder for each output directory.
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file docker-compose-kafka-postgresql.yaml up
     ```
 

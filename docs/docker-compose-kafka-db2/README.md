@@ -136,7 +136,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_ibm_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
 
@@ -151,7 +150,6 @@ Create a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=/opt/senzing/data/1.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
-    export SENZING_VAR_DIR=/var/opt/senzing
     ```
 
 1. :pencil2: Option #2.
@@ -165,7 +163,6 @@ Create a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
 ### Run docker formation
@@ -180,7 +177,6 @@ Create a folder for each output directory.
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file docker-compose-senzing-installation.yaml up
     ```
 
@@ -201,7 +197,7 @@ Create a folder for each output directory.
     export DB2_STORAGE=/storage/docker/senzing/docker-compose-kafka-db2/db2
     export DB2_USERNAME=db2inst1
     export DB2INST1_PASSWORD=db2inst1
-    export SENZING_DB2_DIR=/opt/IBM
+    export SENZING_IBM_DIR=/opt/IBM
     ```
 
 1. Initialize database and Senzing.
@@ -215,7 +211,7 @@ Create a folder for each output directory.
       DB2_USERNAME=${DB2_USERNAME} \
       DB2_STORAGE=${DB2_STORAGE} \
       DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
-      SENZING_DB2_DIR=${SENZING_DB2_DIR} \
+      SENZING_IBM_DIR=${SENZING_IBM_DIR} \
       docker-compose --file docker-compose-db2-initialization.yaml up
     ```
 
