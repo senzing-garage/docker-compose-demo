@@ -212,6 +212,23 @@ Create a folder for each output directory.
       docker-compose --file resources/db2/docker-compose-db2-initialization.yaml up
     ```
 
+1. Wait until containers have completed their work.
+   Examples:
+
+
+    ```console
+    senzing-db2-driver-installer exited with code 0
+    ```
+
+    ```console
+    senzing-init-container exited with code 0
+    ```
+
+    ```console
+    senzing-db2           | (*) Running 99-goodbye-world.sh ...
+    senzing-db2           | I'm done initializing. Goodbye, World.
+    ```
+
 1. Bring down database initialization.
    Example:
 

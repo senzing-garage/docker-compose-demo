@@ -41,28 +41,27 @@ services:
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-kafka
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1}
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
     networks:
       - backend
     restart: on-failure
 
   db2:
-    command: db2start
     container_name: senzing-db2
     environment:
       LICENSE: accept
       DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
-    image: senzing/db2express-c:latest
+    image: ibmcom/db2:11.5.0.0a
     networks:
       - backend
     ports:
       - 50000:50000
+    privileged: true
     volumes:
-      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/home/db2inst1/db2inst1
+      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
 
   loader:
     container_name: senzing-stream-loader
-    command: sleep
     depends_on:
       - kafka
       - db2
@@ -75,7 +74,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.1.1}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.2.0}
     networks:
       - backend
     restart: always
@@ -98,7 +97,7 @@ services:
       - db2
     environment:
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.0}
     networks:
       - backend
     ports:
