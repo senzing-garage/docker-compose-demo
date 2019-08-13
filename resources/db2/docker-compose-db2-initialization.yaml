@@ -11,10 +11,11 @@ services:
       - backend
     ports:
       - 50000:50000
+    privileged: true
     volumes:
       - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_DB2_INITIALIZATION_DIR:-resources/db2/initialization}:/var/custom
+      - ${DB2_CUSTOM_DIR}:/var/custom
 
   db2driverinstaller:
     container_name: senzing-db2-driver-installer

@@ -40,7 +40,6 @@ This docker formation brings up the following docker containers:
     1. [Clone repository](#clone-repository)
     1. [EULA](#eula)
 1. [Using docker-compose](#using-docker-compose)
-    1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [Run docker formation](#run-docker-formation)
@@ -129,7 +128,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Volumes
 
-The output of `yum install senzingapi` placed files in different directories.
+The output of `yum install senzingapi` places files in different directories.
 Create a folder for each output directory.
 
 1. :pencil2: Option #1.
@@ -179,7 +178,7 @@ Create a folder for each output directory.
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-senzing-installation.yaml down
+    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
     ```
 
 1. :pencil2: Set environment variables.
@@ -187,11 +186,11 @@ Create a folder for each output directory.
 
     ```console
     export DB2_DB=G2
+    export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
     export DB2_PASSWORD=db2inst1
     export DB2_STORAGE=/storage/docker/senzing/docker-compose-kafka-db2/db2
     export DB2_USERNAME=db2inst1
     export DB2INST1_PASSWORD=db2inst1
-    export SENZING_DB2_INITIALIZATION_DIR=????
     ```
 
 1. Initialize database and Senzing.
@@ -201,6 +200,7 @@ Create a folder for each output directory.
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       DB2_DB=${DB2_DB} \
+      DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
       DB2_PASSWORD=${DB2_PASSWORD} \
       DB2_STORAGE=${DB2_STORAGE} \
       DB2_USERNAME=${DB2_USERNAME} \
@@ -217,7 +217,7 @@ Create a folder for each output directory.
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-db2-initialization.yaml down
+    sudo docker-compose --file resources/db2/docker-compose-db2-initialization.yaml down
     ```
 
 1. Launch docker-compose formation.
@@ -235,7 +235,7 @@ Create a folder for each output directory.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_IBM_DIR=${SENZING_IBM_DIR} \
-      docker-compose --file docker-compose-kafka-db2.yaml up
+      docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
 
 ### Initialize database
@@ -297,7 +297,7 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-kafka-db2.yaml down
+    sudo docker-compose --file resources/db2/docker-compose-kafka-db2.yaml down
     ```
 
 1. Delete storage.
