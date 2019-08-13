@@ -43,7 +43,6 @@ This docker formation brings up the following docker containers:
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [Run docker formation](#run-docker-formation)
-    1. [Initialize database](#initialize-database)
     1. [Test Senzing API](#test-senzing-api)
 1. [Cleanup](#cleanup)
 
@@ -115,6 +114,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Configuration
 
+- **[DB2_CUSTOM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_custom_dir)**
 - **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
 - **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**
 - **[DB2_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_storage)**
@@ -217,16 +217,16 @@ Create a folder for each output directory.
 
 
     ```console
-    senzing-db2-driver-installer exited with code 0
+    yyyy-mm-dd hh:mm:ss,xxx senzing-50080298I Exit {...
     ```
 
     ```console
-    senzing-init-container exited with code 0
+    yyyy-mm-ss hh:mm:ss,xxx senzing-50070298I Exit {...
     ```
 
     ```console
-    senzing-db2           | (*) Running 99-goodbye-world.sh ...
-    senzing-db2           | I'm done initializing. Goodbye, World.
+    (*) Running 99-goodbye-world.sh ...
+    I'm done initializing. Goodbye, World.
     ```
 
 1. Bring down database initialization.
@@ -255,45 +255,24 @@ Create a folder for each output directory.
       docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
 
-### Initialize database
 
-1. Enter `senzing-db2`container.
-   Example:
-
-    ```console
-    sudo docker exec \
-      --interactive \
-      --tty \
-      senzing-db2 /bin/bash
-    ```
-
-1. Populate database.
-   In `senzing-db2` docker container, run:
-
-    ```console
-    su - db2inst1
-    db2 create database g2 using codeset utf-8 territory us
-    db2 connect to g2
-    db2 -tf /opt/senzing/g2/data/g2core-schema-db2-create.sql | tee /tmp/g2schema.out
-    db2 connect reset
-    exit
-    exit
-    ```
 
 ### Test Senzing API
 
-1. Wait for the following message in the terminal showing docker log.
+1. Wait until Senzing API server is running.
+   Look for the following in the docker log.
+   Example:
 
     ```console
-    senzing-api-server | Started Senzing REST API Server on port 8080.
-    senzing-api-server |
-    senzing-api-server | Server running at:
-    senzing-api-server | http://0.0.0.0:8080/
+    Starting Senzing REST API Server on port 8080....
+    Started Senzing REST API Server on port 8080.
+    Server running at:
+    http://0.0.0.0:8080/
     ```
 
 1. Test Senzing REST API server.
    *Note:*  In
-   [docker-compose-kafka-db2.yaml](../../docker-compose-kafka-db2.yaml)
+   [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
@@ -321,12 +300,6 @@ In a separate (or reusable) terminal window:
 
     ```console
     sudo rm -rf ${DB2_STORAGE}
-    ```
-
-1. Delete SENZING_DIR.
-
-    ```console
-    sudo rm -rf ${SENZING_DIR}
     ```
 
 1. Delete git repository.
