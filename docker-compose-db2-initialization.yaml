@@ -2,7 +2,7 @@ version: '3'
 services:
 
   db2:
-    command: db2start
+    command: /app/create-senzing-schema.sh
     container_name: senzing-db2
     environment:
       LICENSE: accept
@@ -12,22 +12,6 @@ services:
       - backend
     ports:
       - 50000:50000
-    volumes:
-      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/home/db2inst1/db2inst1
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
-
-  db2client:
-    command: /app/create-senzing-schema.sh
-    container_name: senzing-db2-client
-    depends_on:
-      - db2
-    environment:
-      LICENSE: accept
-      DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
-    image: senzing/db2express-c:latest
-    networks:
-      - backend
     volumes:
       - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/home/db2inst1/db2inst1
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
