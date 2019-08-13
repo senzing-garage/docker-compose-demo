@@ -2,20 +2,19 @@ version: '3'
 services:
 
   db2:
-    command: /app/create-senzing-schema.sh
     container_name: senzing-db2
     environment:
       LICENSE: accept
       DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
-    image: senzing/db2express-c:latest
+    image: ibmcom/db2:11.5.0.0a
     networks:
       - backend
     ports:
       - 50000:50000
     volumes:
-      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/home/db2inst1/db2inst1
+      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
+      - ${SENZING_DB2_INITIALIZATION_DIR:-resources/db2/initialization}:/var/custom
 
   db2driverinstaller:
     container_name: senzing-db2-driver-installer

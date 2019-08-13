@@ -114,16 +114,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ## Using docker-compose
 
-### Build docker images
-
-1. Build docker images.
-
-    ```console
-    sudo docker build \
-      --tag senzing/db2express-c \
-      https://github.com/senzing/docker-db2express-c.git
-    ```
-
 ### Configuration
 
 - **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
@@ -181,7 +171,7 @@ Create a folder for each output directory.
       SENZING_DATA_DIR=${SENZING_DATA_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      docker-compose --file docker-compose-senzing-installation.yaml up
+      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
 1. Bring down Senzing installer.
@@ -201,6 +191,7 @@ Create a folder for each output directory.
     export DB2_STORAGE=/storage/docker/senzing/docker-compose-kafka-db2/db2
     export DB2_USERNAME=db2inst1
     export DB2INST1_PASSWORD=db2inst1
+    export SENZING_DB2_INITIALIZATION_DIR=????
     ```
 
 1. Initialize database and Senzing.
@@ -218,7 +209,7 @@ Create a folder for each output directory.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_IBM_DIR=${SENZING_IBM_DIR} \
-      docker-compose --file docker-compose-db2-initialization.yaml up
+      docker-compose --file resources/db2/docker-compose-db2-initialization.yaml up
     ```
 
 1. Bring down database initialization.

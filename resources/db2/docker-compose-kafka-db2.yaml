@@ -59,10 +59,10 @@ services:
       - 50000:50000
     volumes:
       - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/home/db2inst1/db2inst1
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
 
   loader:
     container_name: senzing-stream-loader
+    command: sleep
     depends_on:
       - kafka
       - db2
@@ -83,14 +83,17 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
 
   api:
     container_name: senzing-api-server
     command:
-      - -httpPort 8080
-      - -bindAddr all
-      - -iniFile /etc/opt/senzing/G2Module.ini
+      - -httpPort
+      - "8080"
+      - -bindAddr
+      - all
+      - -iniFile
+      - /etc/opt/senzing/G2Module.ini
     depends_on:
       - db2
     environment:
@@ -105,7 +108,7 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
 
 networks:
   backend:
