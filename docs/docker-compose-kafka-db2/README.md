@@ -213,6 +213,7 @@ Create a folder for each output directory.
     ```
 
 1. Wait until containers have completed their work.
+   Look for the following in the docker log.
    Examples:
 
 
