@@ -265,12 +265,11 @@ Create a folder for each output directory.
       docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
 
-### View results
+### View data
 
-1. Open a web browser to
+1. Senzing Entity Search WebApp is viewable at
    [localhost:8888](http://localhost:8888).
-   The
-   [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
+   The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
 
 ### View Senzing API

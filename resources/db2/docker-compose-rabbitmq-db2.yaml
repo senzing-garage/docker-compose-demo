@@ -30,25 +30,24 @@ services:
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1}
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
     networks:
       - backend
     restart: on-failure
 
   db2:
-    command: db2start
     container_name: senzing-db2
     environment:
       LICENSE: accept
       DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
-    image: senzing/db2express-c:latest
+    image: ibmcom/db2:11.5.0.0a
     networks:
       - backend
     ports:
       - 50000:50000
+    privileged: true
     volumes:
-      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-db2/db2}:/home/db2inst1/db2inst1
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-db2/db2}:/database
 
   loader:
     container_name: senzing-stream-loader
@@ -75,26 +74,49 @@ services:
       - backend
     restart: always
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
 
   api:
     container_name: senzing-api-server
     command:
-      - -httpPort 8080
-      - -bindAddr all
-      - -iniFile /opt/senzing/g2/python/G2Module.ini
+      - -httpPort
+      - "8080"
+      - -bindAddr
+      - all
+      - -iniFile
+      - /etc/opt/senzing/G2Module.ini
     depends_on:
       - db2
     environment:
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.0}
     networks:
       - backend
     ports:
       - 8889:8080
     restart: always
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+  webapp:
+    container_name: senzing-webapp
+    depends_on:
+      - api
+    environment:
+      SENZING_API_SERVER_URL: "http://senzing-api-server:8080"
+      SENZING_WEB_SERVER_PORT: 8081
+    image: senzing/entity-search-web-app:${SENZING_API_SERVER_VERSION:-1.0.2}
+    networks:
+      - backend
+    ports:
+      - 8888:8081
+    restart: always
 
 networks:
   backend:
