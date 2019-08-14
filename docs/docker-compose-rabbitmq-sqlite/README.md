@@ -101,6 +101,8 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
+Configuration values specified by environment variable or command line parameter.
+
 * **RABBITMQ_STORAGE** -
   Path on local system where RabbitMQ files are stored.
   Default: "/storage/docker/senzing/docker-compose-rabbitmq-sqlite/rabbitmq"

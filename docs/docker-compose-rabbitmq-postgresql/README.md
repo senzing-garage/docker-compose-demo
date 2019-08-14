@@ -102,6 +102,8 @@ If you do not already have an `/opt/senzing` directory on your local system, vis
 
 ### Configuration
 
+Configuration values specified by environment variable or command line parameter.
+
 * **POSTGRES_DB** -
   The database schema name.
   Default: "G2"

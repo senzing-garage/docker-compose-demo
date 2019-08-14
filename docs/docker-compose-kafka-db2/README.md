@@ -117,6 +117,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Configuration
 
+Configuration values specified by environment variable or command line parameter.
+
 - **[DB2_CUSTOM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_custom_dir)**
 - **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
 - **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**

@@ -130,6 +130,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Configuration
 
+Configuration values specified by environment variable or command line parameter.
+
 - **[MYSQL_DATABASE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_database)**
 - **[MYSQL_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_passwrod)**
 - **[MYSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_root-password)**
