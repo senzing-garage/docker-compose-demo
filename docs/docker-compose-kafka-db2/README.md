@@ -14,6 +14,7 @@ The instructions show how to set up a system that:
 1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a Db2 database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
+1. Views resolved entities in a web app.
 
 The following diagram shows the relationship of the docker containers in this docker composition.
 
@@ -268,8 +269,8 @@ Create a folder for each output directory.
 
 1. Open a web browser to
    [localhost:8888](http://localhost:8888).
-
-   Example search:  **Name:** Jessica White
+   Example search:
+   - **Name:** Jessica White
 
 ### View Senzing API
 
