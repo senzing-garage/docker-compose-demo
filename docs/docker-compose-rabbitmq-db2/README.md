@@ -130,10 +130,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_ibm_dir)**
 
-* **RABBITMQ_STORAGE** -
-  Path on local system where RabbitMQ files are stored.
-  Default: "/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq"
-
 ### Volumes
 
 The output of `yum install senzingapi` places files in different directories.
