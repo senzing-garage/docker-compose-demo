@@ -114,7 +114,7 @@ services:
     depends_on:
       - api
     environment:
-      SENZING_API_SERVER_URL: "http://senzing-api-server:8889"
+      SENZING_API_SERVER_URL: "http://senzing-api-server:8080"
       SENZING_WEB_SERVER_PORT: 8081
     image: senzing/entity-search-web-app:${SENZING_API_SERVER_VERSION:-1.0.2}
     networks:

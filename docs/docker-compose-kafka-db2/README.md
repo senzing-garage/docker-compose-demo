@@ -262,22 +262,15 @@ Create a folder for each output directory.
       docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
 
+### View results
 
+1. Open a web browser to
+   [localhost:8888](http://localhost:8888)
+   and search for *Name* Jessica White.
 
-### Test Senzing API
+### View Senzing API
 
-1. Wait until Senzing API server is running.
-   Look for the following in the docker log.
-   Example:
-
-    ```console
-    Starting Senzing REST API Server on port 8080....
-    Started Senzing REST API Server on port 8080.
-    Server running at:
-    http://0.0.0.0:8080/
-    ```
-
-1. Test Senzing REST API server.
+1. View results from Senzing REST API server.
    *Note:*  In
    [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
