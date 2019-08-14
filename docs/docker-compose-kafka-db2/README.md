@@ -270,8 +270,9 @@ Create a folder for each output directory.
 
 1. Open a web browser to
    [localhost:8888](http://localhost:8888).
-   Example search:
-   - **Name:** Jessica White
+   The
+   [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
+   instructions will give a tour of the Senzing web app.
 
 ### View Senzing API
 
