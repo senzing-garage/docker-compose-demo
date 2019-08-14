@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository illustrates a reference implementations of Senzing using docker-compose.
+This repository illustrates reference implementations of Senzing using docker-compose.
 
 The instructions show how to set up a system that:
 
