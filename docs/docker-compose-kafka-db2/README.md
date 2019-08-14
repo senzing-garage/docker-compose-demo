@@ -23,7 +23,7 @@ This docker formation brings up the following docker containers:
 
 1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
 1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
-1. *[senzing/db2express-c](https://github.com/Senzing/docker-db2express-c)*
+1. *[ibmcom/db2](https://hub.docker.com/r/ibmcom/db2)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
