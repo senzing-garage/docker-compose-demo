@@ -17,6 +17,7 @@ The instructions show how to set up a system that:
 1. Views resolved entities in a web app.
 
 The following diagram shows the relationship of the docker containers in this docker composition.
+Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
 
