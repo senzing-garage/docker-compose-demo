@@ -277,6 +277,8 @@ Create a folder for each output directory.
 ### View Senzing API
 
 1. View results from Senzing REST API server.
+   The server supports the
+   [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
    *Note:*  In
    [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
