@@ -168,7 +168,7 @@ Create a folder for each output directory.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-senzing-installation.yaml up
+      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
 1. Bring down Senzing installer.
@@ -176,7 +176,7 @@ Create a folder for each output directory.
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/sqlite/docker-compose-sqlite-initialization.yaml down
+    sudo docker-compose --file resources/senzing/docker-compose-sqlite-initialization.yaml down
     ```
 
 1. Initialize database and Senzing.
@@ -243,7 +243,7 @@ Create a folder for each output directory.
    The server supports the
    [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
    *Note:*  In
-   [docker-compose-kafka-postgresql.yaml](../../resources/postgresql/docker-compose-kafka-postgresql.yaml)
+   [docker-compose-kafka-sqlite.yaml](../../resources/postgresql/docker-compose-kafka-sqlite.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
