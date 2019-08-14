@@ -221,23 +221,10 @@ Create a folder for each output directory.
    Look for the following in the docker logs.
    Examples:
 
-   senzing-db2-driver-installer
-
-    ```console
-    yyyy-mm-dd hh:mm:ss,xxx senzing-50080298I Exit {...
-    ```
-
    senzing-init-container
 
     ```console
     yyyy-mm-ss hh:mm:ss,xxx senzing-50070298I Exit {...
-    ```
-
-   senzing-db2
-
-    ```console
-    (*) Running 99-goodbye-world.sh ...
-    I'm done initializing. Goodbye, World.
     ```
 
 1. Bring down database initialization.
@@ -283,7 +270,7 @@ Create a folder for each output directory.
    The server supports the
    [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
    *Note:*  In
-   [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml)
+   [docker-compose-kafka-mysql.yaml](../../resources/mysql/docker-compose-kafka-mysql.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
