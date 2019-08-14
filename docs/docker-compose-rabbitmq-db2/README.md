@@ -312,7 +312,7 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-rabbitmq-db2.yaml down
+    sudo docker-compose --file resources/db2/docker-compose-rabbitmq-db2.yaml down
     ```
 
 1. Delete storage.
