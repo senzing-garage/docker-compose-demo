@@ -14,22 +14,24 @@ The instructions show how to set up a system that:
 1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a MySQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
+1. Views resolved entities in a web app.
 
 The following diagram shows the relationship of the docker containers in this docker composition.
+Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
 1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
+1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
 1. *[mysql](https://github.com/docker-library/mysql)*
 1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
+1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/mysql-init](https://github.com/Senzing/docker-mysql-init)*
-1. *[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base)*
-1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 
 ### Contents
 
@@ -47,7 +49,7 @@ This docker formation brings up the following docker containers:
     1. [Volumes](#volumes)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
-    1. [Test Senzing API](#test-senzing-api)
+    1. [View Senzing API](#view-senzing-api)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -128,8 +130,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Configuration
 
-Configuration values specified by environment variable or command line parameter.
-
 - **[MYSQL_DATABASE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_database)**
 - **[MYSQL_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_passwrod)**
 - **[MYSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_root-password)**
@@ -142,7 +142,7 @@ Configuration values specified by environment variable or command line parameter
 
 ### Volumes
 
-The output of `yum install senzingapi` placed files in different directories.
+The output of `yum install senzingapi` places files in different directories.
 Create a folder for each output directory.
 
 1. :pencil2: Option #1.
@@ -150,7 +150,8 @@ Create a folder for each output directory.
    identify directories for RPM output in this manner:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/1.0.0
+    export SENZING_DATA_DIR=/opt/senzing/data
+    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
     ```
@@ -163,7 +164,8 @@ Create a folder for each output directory.
     ```console
     export SENZING_VOLUME=/opt/my-senzing
 
-    export SENZING_DATA_VERSION_DIR=${SENZING_VOLUME}/data/1.0.0
+    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
+    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     ```
@@ -177,18 +179,18 @@ Create a folder for each output directory.
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      docker-compose --file docker-compose-senzing-installation.yaml up
+      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
-1. Bring down senzing installer.
+1. Bring down Senzing installer.
    Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-sqlite-initialization.yaml down
+    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
     ```
 
 1. :pencil2: Set environment variables.
@@ -212,7 +214,30 @@ Create a folder for each output directory.
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      docker-compose --file docker-compose-mysql-initialization.yaml up
+      docker-compose --file resources/mysql/docker-compose-mysql-initialization.yaml up
+    ```
+
+1. Wait until containers have completed their work.
+   Look for the following in the docker logs.
+   Examples:
+
+   senzing-db2-driver-installer
+
+    ```console
+    yyyy-mm-dd hh:mm:ss,xxx senzing-50080298I Exit {...
+    ```
+
+   senzing-init-container
+
+    ```console
+    yyyy-mm-ss hh:mm:ss,xxx senzing-50070298I Exit {...
+    ```
+
+   senzing-db2
+
+    ```console
+    (*) Running 99-goodbye-world.sh ...
+    I'm done initializing. Goodbye, World.
     ```
 
 1. Bring down database initialization.
@@ -220,7 +245,7 @@ Create a folder for each output directory.
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-mysql-initialization.yaml down
+    sudo docker-compose --file resources/mysql/docker-compose-mysql-initialization.yaml down
     ```
 
 1. Launch docker-compose formation.
@@ -235,30 +260,30 @@ Create a folder for each output directory.
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      docker-compose --file docker-compose-kafka-mysql.yaml up
+      docker-compose --file resources/mysql/docker-compose-kafka-mysql.yaml up
     ```
 
 ### View data
 
+1. Username and password for the following sites were either passed in as environment variables
+   or are the default values seen in
+   [docker-compose-kafka-mysql.yaml](../../resources/mysql/docker-compose-kafka-mysql.yaml).
 1. MySQL is viewable at [localhost:8080](http://localhost:8080).
     1. The records received from the queue can be viewed in the following Senzing tables:
         1. G2 > DSRC_RECORD
         1. G2 > OBS_ENT
+1. Senzing Entity Search WebApp is viewable at
+   [localhost:8888](http://localhost:8888).
+   The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
+   instructions will give a tour of the Senzing web app.
 
-### Test Senzing API
+### View Senzing API
 
-1. Wait for the following message in the terminal showing docker log.
-
-    ```console
-    senzing-api-server | Started Senzing REST API Server on port 8080.
-    senzing-api-server |
-    senzing-api-server | Server running at:
-    senzing-api-server | http://0.0.0.0:8080/
-    ```
-
-1. Test Senzing REST API server.
+1. View results from Senzing REST API server.
+   The server supports the
+   [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
    *Note:*  In
-   [docker-compose-kafka-mysql.yaml](../../docker-compose-kafka-mysql.yaml)
+   [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
@@ -279,19 +304,13 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file docker-compose-kafka-mysql.yaml down
+    sudo docker-compose --file resources/mysql/docker-compose-kafka-mysql.yaml down
     ```
 
 1. Delete storage.
 
     ```console
     sudo rm -rf ${MYSQL_STORAGE}
-    ```
-
-1. Delete SENZING_VOLUME.
-
-    ```console
-    sudo rm -rf ${SENZING_VOLUME}
     ```
 
 1. Delete git repository.

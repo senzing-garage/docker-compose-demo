@@ -266,6 +266,9 @@ Create a folder for each output directory.
 
 ### View data
 
+1. Username and password for the following sites were either passed in as environment variables
+   or are the default values seen in
+   [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml).
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8888](http://localhost:8888).
    The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
