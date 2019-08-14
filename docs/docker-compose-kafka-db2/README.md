@@ -265,8 +265,9 @@ Create a folder for each output directory.
 ### View results
 
 1. Open a web browser to
-   [localhost:8888](http://localhost:8888)
-   and search for *Name* Jessica White.
+   [localhost:8888](http://localhost:8888).
+
+   Example search:  **Name:** Jessica White
 
 ### View Senzing API
 
