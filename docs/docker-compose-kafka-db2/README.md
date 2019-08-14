@@ -29,7 +29,6 @@ This docker formation brings up the following docker containers:
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
-1. *[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 
 ### Contents
@@ -46,7 +45,7 @@ This docker formation brings up the following docker containers:
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [Run docker formation](#run-docker-formation)
-    1. [View results](#view-results)
+    1. [View data](#view-data)
     1. [View Senzing API](#view-senzing-api)
 1. [Cleanup](#cleanup)
 

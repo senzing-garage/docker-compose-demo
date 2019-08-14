@@ -28,7 +28,6 @@ This docker formation brings up the following docker containers:
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
-1. *[senzing/senzing-base](https://github.com/Senzing/docker-senzing-base)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 
 ### Contents
@@ -45,7 +44,7 @@ This docker formation brings up the following docker containers:
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [Run docker formation](#run-docker-formation)
-    1. [View results](#view-results)
+    1. [View data](#view-data)
     1. [View Senzing API](#view-senzing-api)
 1. [Cleanup](#cleanup)
 
@@ -264,8 +263,8 @@ Create a folder for each output directory.
     sudo \
       DB2_DB=${DB2_DB} \
       DB2_PASSWORD=${DB2_PASSWORD} \
-      DB2_USERNAME=${DB2_USERNAME} \
       DB2_STORAGE=${DB2_STORAGE} \
+      DB2_USERNAME=${DB2_USERNAME} \
       DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
       RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
@@ -279,6 +278,7 @@ Create a folder for each output directory.
 
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
+   Default username/password: user/bitnami
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8888](http://localhost:8888).
