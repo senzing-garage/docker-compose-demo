@@ -43,6 +43,7 @@ This docker formation brings up the following docker containers:
     1. [Clone repository](#clone-repository)
     1. [EULA](#eula)
 1. [Using docker-compose](#using-docker-compose)
+    1. [Build docker images](#build-docker-images)
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [Run docker formation](#run-docker-formation)
@@ -221,23 +222,10 @@ Create a folder for each output directory.
    Look for the following in the docker logs.
    Examples:
 
-   senzing-db2-driver-installer
-
-    ```console
-    yyyy-mm-dd hh:mm:ss,xxx senzing-50080298I Exit {...
-    ```
-
    senzing-init-container
 
     ```console
     yyyy-mm-ss hh:mm:ss,xxx senzing-50070298I Exit {...
-    ```
-
-   senzing-db2
-
-    ```console
-    (*) Running 99-goodbye-world.sh ...
-    I'm done initializing. Goodbye, World.
     ```
 
 1. Bring down database initialization.
