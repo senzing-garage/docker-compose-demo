@@ -213,17 +213,23 @@ Create a folder for each output directory.
     ```
 
 1. Wait until containers have completed their work.
-   Look for the following in the docker log.
+   Look for the following in the docker logs.
    Examples:
 
+
+   senzing-db2-driver-installer
 
     ```console
     yyyy-mm-dd hh:mm:ss,xxx senzing-50080298I Exit {...
     ```
 
+   senzing-init-container
+
     ```console
     yyyy-mm-ss hh:mm:ss,xxx senzing-50070298I Exit {...
     ```
+
+   senzing-db2
 
     ```console
     (*) Running 99-goodbye-world.sh ...
