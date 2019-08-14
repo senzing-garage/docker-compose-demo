@@ -269,7 +269,8 @@ Create a folder for each output directory.
    [docker-compose-rabbitmq-mysql.yaml](../../resources/mysql/docker-compose-rabbitmq-mysql.yaml).
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
-1. MySQL is viewable at [localhost:8080](http://localhost:8080).
+1. MySQL is viewable at
+   [localhost:8080](http://localhost:8080).
     1. The records received from the queue can be viewed in the following Senzing tables:
         1. G2 > DSRC_RECORD
         1. G2 > OBS_ENT

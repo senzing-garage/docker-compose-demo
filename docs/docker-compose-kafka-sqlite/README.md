@@ -178,7 +178,7 @@ Create a folder for each output directory.
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/senzing/docker-compose-sqlite-initialization.yaml down
+    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
     ```
 
 1. Initialize database and Senzing.
@@ -230,7 +230,8 @@ Create a folder for each output directory.
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
    [docker-compose-kafka-sqlite.yaml](../../resources/sqlite/docker-compose-kafka-sqlite.yaml).
-1. SQLite is viewable at [localhost:8080](http://localhost:8080).
+1. SQLite is viewable at
+   [localhost:8080](http://localhost:8080).
     1. The records received from the queue can be viewed in the following Senzing tables:
         1. G2 > DSRC_RECORD
         1. G2 > OBS_ENT
@@ -245,7 +246,7 @@ Create a folder for each output directory.
    The server supports the
    [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
    *Note:*  In
-   [docker-compose-kafka-sqlite.yaml](../../resources/postgresql/docker-compose-kafka-sqlite.yaml)
+   [docker-compose-kafka-sqlite.yaml](../../resources/sqlite/docker-compose-kafka-sqlite.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
    Example:
 
