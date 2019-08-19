@@ -39,10 +39,10 @@ This docker formation brings up the following docker containers:
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
-    1. [EULA](#eula)
 1. [Using docker-compose](#using-docker-compose)
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
+    1. [EULA](#eula)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
     1. [View Senzing API](#view-senzing-api)
@@ -95,23 +95,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
     ```
 
-### EULA
-
-To use the Senzing code, you must agree to the End User License Agreement (EULA).
-
-1. :warning: This step is intentionally tricky and not simply copy/paste.
-   This ensures that you make a conscious effort to accept the EULA.
-   See
-   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
-   for the correct value.
-   Replace the double-quote character in the example with the correct value.
-   The use of the double-quote character is intentional to prevent simple copy/paste.
-   Example:
-
-    ```console
-    export SENZING_ACCEPT_EULA="
-    ```
-
 ## Using docker-compose
 
 ### Configuration
@@ -161,6 +144,23 @@ Create a folder for each output directory.
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_IBM_DIR=${SENZING_VOLUME}/IBM
+    ```
+
+### EULA
+
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
+
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   See
+   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
+   for the correct value.
+   Replace the double-quote character in the example with the correct value.
+   The use of the double-quote character is intentional to prevent simple copy/paste.
+   Example:
+
+    ```console
+    export SENZING_ACCEPT_EULA="
     ```
 
 ### Run docker formation
