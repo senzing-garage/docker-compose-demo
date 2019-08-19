@@ -85,7 +85,7 @@ services:
       - all
       - -iniFile
       - /etc/opt/senzing/G2Module.ini
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.0}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.3}
     networks:
       - backend
     ports:
