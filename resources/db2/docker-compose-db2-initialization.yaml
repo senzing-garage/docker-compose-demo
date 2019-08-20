@@ -1,0 +1,47 @@
+version: '3'
+services:
+
+  db2:
+    container_name: senzing-db2
+    environment:
+      LICENSE: accept
+      DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
+    image: ibmcom/db2:11.5.0.0a
+    networks:
+      - backend
+    ports:
+      - 50000:50000
+    privileged: true
+    volumes:
+      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${DB2_CUSTOM_DIR}:/var/custom
+
+  db2driverinstaller:
+    container_name: senzing-db2-driver-installer
+    image: senzing/db2-driver-installer:${SENZING_DB2_DRIVER_INSTALLER_VERSION:-1.0.0}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+  initcontainer:
+    container_name: senzing-init-container
+    depends_on:
+      - db2
+    environment:
+      SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 60
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.2.1}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+networks:
+  backend:

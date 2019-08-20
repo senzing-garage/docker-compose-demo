@@ -41,7 +41,7 @@ services:
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-kafka
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.0.1}
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
     networks:
       - backend
     restart: on-failure
@@ -109,31 +109,52 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.1.1}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.2.0}
     networks:
       - backend
     restart: always
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   api:
     container_name: senzing-api-server
     command:
-      - -httpPort 8080
-      - -bindAddr all
-      - -iniFile /opt/senzing/g2/python/G2Module.ini
+      - -httpPort
+      - "8080"
+      - -bindAddr
+      - all
+      - -iniFile
+      - /etc/opt/senzing/G2Module.ini
     depends_on:
       - postgres
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.6.1}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.2}
     networks:
       - backend
     ports:
       - 8889:8080
     restart: always
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  webapp:
+    container_name: senzing-webapp
+    depends_on:
+      - api
+    environment:
+      SENZING_API_SERVER_URL: "http://senzing-api-server:8080"
+      SENZING_WEB_SERVER_PORT: 8081
+    image: senzing/entity-search-web-app:${SENZING_API_SERVER_VERSION:-1.0.2}
+    networks:
+      - backend
+    ports:
+      - 8888:8081
+    restart: always
 
 networks:
   backend:

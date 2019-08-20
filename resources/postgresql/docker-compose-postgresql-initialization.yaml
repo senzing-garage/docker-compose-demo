@@ -21,7 +21,7 @@ services:
     command:
       - "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       - --file
-      - /opt/senzing/g2/data/g2core-schema-postgresql-create.sql
+      - /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
     depends_on:
       - postgres
     image: jbergknoff/postgresql-client:latest
@@ -29,7 +29,7 @@ services:
       - backend
     restart: on-failure
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   phppgadmin:
     container_name: senzing-phppgadmin
@@ -70,12 +70,14 @@ services:
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.1.0}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.2.1}
     networks:
       - backend
     restart: on-failure
     volumes:
-      - ${SENZING_DIR:-/opt/senzing}:/opt/senzing
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
 networks:
   backend:
