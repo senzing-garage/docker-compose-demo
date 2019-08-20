@@ -92,7 +92,7 @@ services:
       - db2
     environment:
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.3}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.2}
     networks:
       - backend
     ports:

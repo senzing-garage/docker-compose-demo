@@ -126,7 +126,7 @@ services:
       - postgres
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.3}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.2}
     networks:
       - backend
     ports:
