@@ -231,11 +231,15 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
+    - Username: user
+    - Password: bitnami
 
 ### View PostgreSQL
 
 1. PostgreSQL is viewable at
    [localhost:8080](http://localhost:8080).
+    - Username: postgres
+    - Password: postgres
     1. The records received from the queue can be viewed in the following Senzing tables:
         1. G2 > DSRC_RECORD
         1. G2 > OBS_ENT
