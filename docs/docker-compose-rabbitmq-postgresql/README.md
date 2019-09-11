@@ -45,9 +45,13 @@ This docker formation brings up the following docker containers:
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
+    1. [Install Senzing](#install-senzing)
     1. [Run docker formation](#run-docker-formation)
-    1. [View data](#view-data)
+1. [View data](#view-data)
+    1. [View RabbitMQ](#view-rabbitmq)
+    1. [View PostgreSQL](#view-postgresql)
     1. [View Senzing API](#view-senzing-api)
+    1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 
 ## Expectations
@@ -118,11 +122,16 @@ Configuration values specified by environment variable or command line parameter
 
 - **[POSTGRES_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_db)**
 - **[POSTGRES_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_password)**
-- **[POSTGRES_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_username)**
 - **[POSTGRES_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_storage)**
+- **[POSTGRES_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_username)**
+- **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
 - **[RABBITMQ_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_storage)**
+- **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
+- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
+- **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
 - **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 
@@ -231,18 +240,18 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
-    - Username: user
-    - Password: bitnami
+    - **Username:** user
+    - **Password:** bitnami
 
 ### View PostgreSQL
 
 1. PostgreSQL is viewable at
    [localhost:8080](http://localhost:8080).
-    - Username: postgres
-    - Password: postgres
-    1. The records received from the queue can be viewed in the following Senzing tables:
-        1. G2 > DSRC_RECORD
-        1. G2 > OBS_ENT
+    - **Username:** postgres
+    - **Password:** postgres
+1. The records received from the queue can be viewed in the following Senzing tables:
+    1. G2 > DSRC_RECORD
+    1. G2 > OBS_ENT
 
 ### View Senzing API
 
