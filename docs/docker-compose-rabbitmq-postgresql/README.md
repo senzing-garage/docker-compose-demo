@@ -85,15 +85,29 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     ```console
     export GIT_ACCOUNT=senzing
     export GIT_REPOSITORY=docker-compose-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
     ```
 
 1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
 
-1. After the repository has been cloned, be sure the following are set:
+### Pull docker images
+
+
+1. :thinking: **Optional:** to speed up following steps, docker images may be pulled in advance.
+   Example:
 
     ```console
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+    sudo docker pull bitnami/rabbitmq:3.7.16
+    sudo docker pull postgres:11.3
+    sudo docker pull jbergknoff/postgresql-client:latest
+    sudo docker pull senzing/entity-search-web-app:1.0.2
+    sudo docker pull senzing/init-container:1.3.0
+    sudo docker pull senzing/mock-data-generator:1.1.0
+    sudo docker pull senzing/phppgadmin:1.0.0
+    sudo docker pull senzing/senzing-api-server:1.7.2
+    sudo docker pull senzing/stream-loader:1.2.0
+    sudo docker pull senzing/yum:1.1.0
     ```
 
 ## Using docker-compose
