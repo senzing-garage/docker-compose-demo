@@ -130,7 +130,6 @@ Configuration values specified by environment variable or command line parameter
 
 :thinking: The output of `yum install senzingapi` places files in different directories.
 Identify a folder for each output directory.
-Only one option needs to be performed.
 
 1. :pencil2: **Example #1:**
    To mimic an actual RPM installation,
