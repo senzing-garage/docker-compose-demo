@@ -262,15 +262,14 @@ The following shows how to bring up the prior docker formation again without ini
 
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
-    - **Username:** user
-    - **Password:** bitnami
+    1. **Defaults:** username: `user` password: `bitnami`
 
 ### View PostgreSQL
 
 1. PostgreSQL is viewable at
    [localhost:8080](http://localhost:8080).
-    - **Username:** postgres
-    - **Password:** postgres
+    1. **Defaults:** username: `postgres` password: `postgres`
+1. On left-hand navigation, select "G2" database to explore.
 1. The records received from the queue can be viewed in the following Senzing tables:
     1. G2 > DSRC_RECORD
     1. G2 > OBS_ENT
