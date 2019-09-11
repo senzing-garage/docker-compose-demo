@@ -47,6 +47,7 @@ This docker formation brings up the following docker containers:
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Run docker formation](#run-docker-formation)
+    1. [Re-run docker formation](#re-run-docker-formation)
 1. [View data](#view-data)
     1. [View RabbitMQ](#view-rabbitmq)
     1. [View PostgreSQL](#view-postgresql)
@@ -232,8 +233,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Re-run docker formation
 
-The original docker formation does initialization.
-The following shows how to bring up the prior docker formation without initialization.
+After the launch and shutdown of the original docker formation,
+the docker formation can be brought up again without requiring initialization steps.
+The following shows how to bring up the prior docker formation again without initialization.
 
 1. Launch docker-compose formation.
    Example:
