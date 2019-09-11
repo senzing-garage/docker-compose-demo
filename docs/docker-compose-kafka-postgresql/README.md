@@ -104,7 +104,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    sudo docker pull bitnami/rabbitmq:3.7.16
+    sudo docker pull bitnami/kafka:2.3.0
+    sudo docker pull bitnami/zookeeper:3.5.5
     sudo docker pull postgres:11.3
     sudo docker pull jbergknoff/postgresql-client:latest
     sudo docker pull senzing/entity-search-web-app:1.0.2
