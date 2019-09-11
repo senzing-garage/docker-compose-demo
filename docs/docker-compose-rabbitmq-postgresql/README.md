@@ -230,6 +230,26 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml up
     ```
 
+### Re-run docker formation
+
+The original docker formation does initialization.
+The following shows how to bring up the prior docker formation without initialization.
+
+1. Launch docker-compose formation.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      POSTGRES_DB=${POSTGRES_DB} \
+      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
+      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql-again.yaml up
+    ```
+
 ## View data
 
 1. Username and password for the following sites were either passed in as environment variables
@@ -296,6 +316,7 @@ In a separate (or reusable) terminal window:
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
     sudo docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml down
+    sudo docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql-again.yaml down
     ```
 
 1. Delete storage.
