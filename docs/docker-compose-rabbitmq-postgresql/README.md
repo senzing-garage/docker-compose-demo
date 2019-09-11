@@ -40,6 +40,7 @@ This docker formation brings up the following docker containers:
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
+    1. [Pull docker images](#pull-docker-images)
 1. [Using docker-compose](#using-docker-compose)
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
@@ -93,8 +94,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ### Pull docker images
 
-
-1. :thinking: **Optional:** to speed up following steps, docker images may be pulled in advance.
+1. :thinking: **Optional:** To speed up following steps, docker images may be pulled in advance.
    Example:
 
     ```console
@@ -128,10 +128,11 @@ Configuration values specified by environment variable or command line parameter
 
 ### Volumes
 
-The output of `yum install senzingapi` places files in different directories.
-Create a folder for each output directory.
+:thinking: The output of `yum install senzingapi` places files in different directories.
+Identify a folder for each output directory.
+Only one option needs to be performed.
 
-1. :pencil2: Option #1.
+1. :pencil2: **Example #1:**
    To mimic an actual RPM installation,
    identify directories for RPM output in this manner:
 
@@ -142,9 +143,8 @@ Create a folder for each output directory.
     export SENZING_G2_DIR=/opt/senzing/g2
     ```
 
-1. :pencil2: Option #2.
-   If Senzing directories were put in alternative directories,
-   set environment variables to reflect where the directories were placed.
+1. :pencil2: **Example #2:**
+   Senzing directories can be put in alternative directories.
    Example:
 
     ```console
@@ -173,7 +173,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_ACCEPT_EULA="
     ```
 
-### Run docker formation
+### Install Senzing
 
 1. If Senzing has not been installed, install Senzing.
    Example:
@@ -188,13 +188,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
-1. Bring down Senzing installer.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    ```
+### Run docker formation
 
 1. :pencil2: Set environment variables.
    Example:
@@ -213,38 +207,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     sudo chmod 777 ${RABBITMQ_STORAGE}
     ```
 
-1. Initialize database and Senzing.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      POSTGRES_DB=${POSTGRES_DB} \
-      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      docker-compose --file resources/postgresql/docker-compose-postgresql-initialization.yaml up
-    ```
-
-1. Wait until containers have completed their work.
-   Look for the following in the docker logs.
-   Examples:
-
-   senzing-init-container
-
-    ```console
-    yyyy-mm-ss hh:mm:ss,xxx senzing-50070298I Exit {...
-    ```
-
-1. Bring down database initialization.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/postgresql/docker-compose-postgresql-initialization.yaml down
-    ```
-
 1. Launch docker-compose formation.
    Example:
 
@@ -260,22 +222,24 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml up
     ```
 
-### View data
+## View data
 
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
    [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
+
+### View RabbitMQ
+
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
+
+### View PostgreSQL
+
 1. PostgreSQL is viewable at
    [localhost:8080](http://localhost:8080).
     1. The records received from the queue can be viewed in the following Senzing tables:
         1. G2 > DSRC_RECORD
         1. G2 > OBS_ENT
-1. Senzing Entity Search WebApp is viewable at
-   [localhost:8888](http://localhost:8888).
-   The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
-   instructions will give a tour of the Senzing web app.
 
 ### View Senzing API
 
@@ -285,15 +249,29 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    *Note:*  In
    [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
-   Example:
 
-    ```console
-    export SENZING_API_SERVICE=http://localhost:8889
+   1. From a web browser.
+      Examples:
+      1. [localhost:8889/heartbeat](http://localhost:8889/heartbeat)
+      1. [localhost:8889/license](http://localhost:8889/license)
+      1. [localhost:8889/entities/1](http://localhost:8889/entities/1)
+   1. From `curl`.
+      Example:
 
-    curl -X GET ${SENZING_API_SERVICE}/heartbeat
-    curl -X GET ${SENZING_API_SERVICE}/license
-    curl -X GET ${SENZING_API_SERVICE}/entities/1
-    ```
+        ```console
+        export SENZING_API_SERVICE=http://localhost:8889
+
+        curl -X GET ${SENZING_API_SERVICE}/heartbeat
+        curl -X GET ${SENZING_API_SERVICE}/license
+        curl -X GET ${SENZING_API_SERVICE}/entities/1
+        ```
+
+### View Senzing Entity Search WebApp
+
+1. Senzing Entity Search WebApp is viewable at
+   [localhost:8888](http://localhost:8888).
+   The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
+   instructions will give a tour of the Senzing web app.
 
 ## Cleanup
 
@@ -304,6 +282,7 @@ In a separate (or reusable) terminal window:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
     sudo docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml down
     ```
 

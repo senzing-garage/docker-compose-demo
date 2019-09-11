@@ -9,6 +9,7 @@ services:
     networks:
       - backend
     restart: on-failure
+    user: "0"
     volumes:
       - ${SENZING_DATA_DIR:-/opt/senzing/data}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
