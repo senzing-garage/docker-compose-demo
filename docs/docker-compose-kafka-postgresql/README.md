@@ -108,6 +108,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull bitnami/zookeeper:3.5.5
     sudo docker pull postgres:11.3
     sudo docker pull jbergknoff/postgresql-client:latest
+    sudo docker pull kafkamanager/kafka-manager:2.0.0.2
     sudo docker pull senzing/entity-search-web-app:1.0.2
     sudo docker pull senzing/init-container:1.3.0
     sudo docker pull senzing/mock-data-generator:1.1.0
@@ -246,11 +247,10 @@ The following shows how to bring up the prior docker formation again without ini
    or are the default values seen in
    [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
 
-### View RabbitMQ
+### View Kafka
 
-1. RabbitMQ is viewable at
-   [localhost:15672](http://localhost:15672).
-    1. **Defaults:** username: `user` password: `bitnami`
+1. Kafka is viewable at
+   [localhost:9002](http://localhost:9002).
 
 ### View PostgreSQL
 
