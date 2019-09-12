@@ -57,7 +57,7 @@ services:
     networks:
       - backend
     restart: on-failure
-    user: "0"    
+    user: "0"
     volumes:
       - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
 

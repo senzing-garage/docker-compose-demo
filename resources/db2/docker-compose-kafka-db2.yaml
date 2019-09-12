@@ -59,6 +59,8 @@ services:
     privileged: true
     volumes:
       - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${DB2_CUSTOM_DIR}:/var/custom
 
   db2driverinstaller:
     container_name: senzing-db2-driver-installer
@@ -66,7 +68,7 @@ services:
     networks:
       - backend
     restart: on-failure
-    user: "0"    
+    user: "0"
     volumes:
       - ${SENZING_IBM_DIR:-/opt/IBM}:/opt/IBM
 

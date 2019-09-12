@@ -59,6 +59,8 @@ services:
     privileged: true
     volumes:
       - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${DB2_CUSTOM_DIR}:/var/custom
 
   loader:
     container_name: senzing-stream-loader
