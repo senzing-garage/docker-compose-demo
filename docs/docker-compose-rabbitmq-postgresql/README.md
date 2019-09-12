@@ -233,7 +233,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Re-run docker formation
 
-After the launch and shutdown of the original docker formation,
+:thinking: **Optional:** After the launch and shutdown of the original docker formation,
 the docker formation can be brought up again without requiring initialization steps.
 The following shows how to bring up the prior docker formation again without initialization.
 
