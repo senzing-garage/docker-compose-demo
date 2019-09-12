@@ -42,8 +42,8 @@ This docker formation brings up the following docker containers:
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
     1. [Pull docker images](#pull-docker-images)
-1. [Using docker-compose](#using-docker-compose)
     1. [Build docker images](#build-docker-images)
+1. [Using docker-compose](#using-docker-compose)
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
@@ -52,7 +52,7 @@ This docker formation brings up the following docker containers:
     1. [Re-run docker formation](#re-run-docker-formation)
 1. [View data](#view-data)
     1. [View RabbitMQ](#view-rabbitmq)
-    1. [View PostgreSQL](#view-postgresql)
+    1. [View MySQL](#view-mysql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
@@ -283,7 +283,7 @@ The following shows how to bring up the prior docker formation again without ini
 
 1. MySQL is viewable at
    [localhost:8080](http://localhost:8080).
-    1. **Defaults:** username: `XXX` password: `XXX`
+    1. **Defaults:** username: `g2` password: `g2`
 1. On left-hand navigation, select "G2" database to explore.
 1. The records received from the queue can be viewed in the following Senzing tables:
     1. G2 > DSRC_RECORD
