@@ -103,6 +103,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
     ```console
     sudo docker pull bitnami/rabbitmq:3.7.16
+    sudo docker pull coleifer/sqlite-web:latest
     sudo docker pull senzing/entity-search-web-app:1.0.2
     sudo docker pull senzing/init-container:1.3.0
     sudo docker pull senzing/mock-data-generator:1.1.0
@@ -242,7 +243,6 @@ the docker formation can be brought up again by the same command.
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
     ```
-
 
 ## View data
 
