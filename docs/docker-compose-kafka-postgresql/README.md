@@ -50,7 +50,7 @@ This docker formation brings up the following docker containers:
     1. [Run docker formation](#run-docker-formation)
     1. [Re-run docker formation](#re-run-docker-formation)
 1. [View data](#view-data)
-    1. [View RabbitMQ](#view-rabbitmq)
+    1. [View Kafka](#view-kafka)
     1. [View PostgreSQL](#view-postgresql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
@@ -106,9 +106,9 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     ```console
     sudo docker pull bitnami/kafka:2.3.0
     sudo docker pull bitnami/zookeeper:3.5.5
-    sudo docker pull postgres:11.3
     sudo docker pull jbergknoff/postgresql-client:latest
     sudo docker pull kafkamanager/kafka-manager:2.0.0.2
+    sudo docker pull postgres:11.3
     sudo docker pull senzing/entity-search-web-app:1.0.2
     sudo docker pull senzing/init-container:1.3.0
     sudo docker pull senzing/mock-data-generator:1.1.0
