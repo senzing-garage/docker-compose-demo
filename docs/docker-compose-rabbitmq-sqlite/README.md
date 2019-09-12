@@ -302,7 +302,7 @@ In a separate (or reusable) terminal window:
     sudo rm -rf ${GIT_REPOSITORY_DIR}
     ```
 
-### Re-run docker formation
+## Re-run docker formation
 
 :thinking: **Optional:** After the launch and shutdown of the original docker formation,
 the docker formation can be brought up again by the same command.

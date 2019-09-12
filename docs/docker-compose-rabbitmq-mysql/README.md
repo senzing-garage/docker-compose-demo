@@ -137,6 +137,7 @@ Configuration values specified by environment variable or command line parameter
 - **[MYSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_root-password)**
 - **[MYSQL_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_storage)**
 - **[MYSQL_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_username)**
+- **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
 - **[RABBITMQ_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_storage)**
 - **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
@@ -325,7 +326,7 @@ In a separate (or reusable) terminal window:
     sudo rm -rf ${GIT_REPOSITORY_DIR}
     ```
 
-### Re-run docker formation
+## Re-run docker formation
 
 :thinking: **Optional:** After the launch and shutdown of the original docker formation,
 the docker formation can be brought up again without requiring initialization steps.
