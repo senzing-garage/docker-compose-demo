@@ -47,13 +47,13 @@ This docker formation brings up the following docker containers:
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Run docker formation](#run-docker-formation)
-    1. [Re-run docker formation](#re-run-docker-formation)
 1. [View data](#view-data)
     1. [View RabbitMQ](#view-rabbitmq)
     1. [View PostgreSQL](#view-postgresql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
+1. [Re-run docker formation](#re-run-docker-formation)
 
 ## Expectations
 
@@ -231,27 +231,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml up
     ```
 
-### Re-run docker formation
-
-:thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again without requiring initialization steps.
-The following shows how to bring up the prior docker formation again without initialization.
-
-1. Launch docker-compose formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      POSTGRES_DB=${POSTGRES_DB} \
-      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
-      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql-again.yaml up
-    ```
-
 ## View data
 
 1. Username and password for the following sites were either passed in as environment variables
@@ -331,4 +310,25 @@ In a separate (or reusable) terminal window:
 
     ```console
     sudo rm -rf ${GIT_REPOSITORY_DIR}
+    ```
+
+## Re-run docker formation
+
+:thinking: **Optional:** After the launch and shutdown of the original docker formation,
+the docker formation can be brought up again without requiring initialization steps.
+The following shows how to bring up the prior docker formation again without initialization.
+
+1. Launch docker-compose formation.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      POSTGRES_DB=${POSTGRES_DB} \
+      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
+      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql-again.yaml up
     ```
