@@ -29,6 +29,19 @@ services:
       - 9092:9092
     restart: always
 
+  kafkamanager:
+    container_name: senzing-kafka-manager
+    depends_on:
+      - kafka
+    environment:
+      ZK_HOSTS: "senzing-zookeeper:2181"
+    image: kafkamanager/kafka-manager:2.0.0.2
+    networks:
+      - backend
+    ports:
+      - 9002:9000
+    restart: always
+
   mockdata:
     container_name: senzing-mock-data-generator
     depends_on:
@@ -58,6 +71,19 @@ services:
     restart: always
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+
+  initcontainer:
+    container_name: senzing-init-container
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.3.0}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   loader:
     container_name: senzing-stream-loader
