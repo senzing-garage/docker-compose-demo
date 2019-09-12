@@ -229,6 +229,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       DB2_DB=${DB2_DB} \
+      DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
       DB2_PASSWORD=${DB2_PASSWORD} \
       DB2_STORAGE=${DB2_STORAGE} \
       DB2_USERNAME=${DB2_USERNAME} \
