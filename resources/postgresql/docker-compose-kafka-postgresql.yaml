@@ -29,6 +29,19 @@ services:
       - 9092:9092
     restart: always
 
+  kafkamanager:
+    container_name: senzing-kafka-manager
+    depends_on:
+      - kafka
+    environment:
+      ZK_HOSTS: "senzing-zookeeper:2181"
+    image: kafkamanager/kafka-manager:2.0.0.2
+    networks:
+      - backend
+    ports:
+      - 9002:9000
+    restart: always
+
   mockdata:
     container_name: senzing-mock-data-generator
     depends_on:
@@ -60,6 +73,21 @@ services:
     restart: always
     volumes:
       - ${POSTGRES_STORAGE:-/storage/docker/senzing/docker-compose-kafka-postgres/postgres}:/var/lib/postgresql/data
+
+  postgresinit:
+    container_name: senzing-postgresql-init
+    command:
+      - "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      - --file
+      - /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+    depends_on:
+      - postgres
+    image: jbergknoff/postgresql-client:latest
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   phppgadmin:
     container_name: senzing-phppgadmin
@@ -94,6 +122,21 @@ services:
       - 8080:80
       - 8443:443
     restart: always
+
+  initcontainer:
+    container_name: senzing-init-container
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 30
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.3.0}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   loader:
     container_name: senzing-stream-loader
