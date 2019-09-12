@@ -125,6 +125,9 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
+    depends_on:
+      - postgres
+      - postgresinit
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30

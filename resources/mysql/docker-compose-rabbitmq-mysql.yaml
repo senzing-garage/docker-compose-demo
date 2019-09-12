@@ -85,6 +85,9 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
+    depends_on:
+      - mysql
+      - mysqlinit
     environment:
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
