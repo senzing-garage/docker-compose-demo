@@ -114,7 +114,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull senzing/entity-search-web-app:1.0.2
     sudo docker pull senzing/init-container:1.3.0
     sudo docker pull senzing/mock-data-generator:1.1.0
-    sudo docker pull senzing/phppgadmin:1.0.0
     sudo docker pull senzing/senzing-api-server:1.7.2
     sudo docker pull senzing/stream-loader:1.2.0
     sudo docker pull senzing/yum:1.1.0
@@ -261,7 +260,7 @@ The following shows how to bring up the prior docker formation again without ini
 
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
-   [docker-compose-rabbitmq-mysql.yaml](../../resources/mysql/docker-compose-rabbitmq-mysql.yaml).
+   [docker-compose-kafka-mysql.yaml](../../resources/mysql/docker-compose-kafka-mysql.yaml).
 
 ### View Kafka
 
@@ -284,7 +283,7 @@ The following shows how to bring up the prior docker formation again without ini
    The server supports the
    [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
    *Note:*  In
-   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml)
+   [docker-compose-kafka-mysql.yaml](../../resources/mysql/docker-compose-kafka-mysql.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
 
    1. From a web browser.
