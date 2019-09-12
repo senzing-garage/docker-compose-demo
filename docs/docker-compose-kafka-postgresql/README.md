@@ -277,7 +277,7 @@ The following shows how to bring up the prior docker formation again without ini
       1. [localhost:8889/license](http://localhost:8889/license)
       1. [localhost:8889/entities/1](http://localhost:8889/entities/1)
    1. From `curl`.
-      Example:
+      Examples:
 
         ```console
         export SENZING_API_SERVICE=http://localhost:8889
