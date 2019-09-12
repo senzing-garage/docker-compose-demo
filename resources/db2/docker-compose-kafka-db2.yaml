@@ -29,6 +29,19 @@ services:
       - 9092:9092
     restart: always
 
+  kafkamanager:
+    container_name: senzing-kafka-manager
+    depends_on:
+      - kafka
+    environment:
+      ZK_HOSTS: "senzing-zookeeper:2181"
+    image: kafkamanager/kafka-manager:2.0.0.2
+    networks:
+      - backend
+    ports:
+      - 9002:9000
+    restart: always
+
   mockdata:
     container_name: senzing-mock-data-generator
     depends_on:
