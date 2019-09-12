@@ -245,7 +245,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
-   [docker-compose-rabbitmq-db2.yaml](../../resources/postgresql/docker-compose-rabbitmq-db2.yaml).
+   [docker-compose-rabbitmq-db2.yaml](../../resources/db2/docker-compose-rabbitmq-db2.yaml).
 
 ### View RabbitMQ
 
