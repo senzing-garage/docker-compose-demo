@@ -29,6 +29,19 @@ services:
       - 9092:9092
     restart: always
 
+  kafkamanager:
+    container_name: senzing-kafka-manager
+    depends_on:
+      - kafka
+    environment:
+      ZK_HOSTS: "senzing-zookeeper:2181"
+    image: kafkamanager/kafka-manager:2.0.0.2
+    networks:
+      - backend
+    ports:
+      - 9002:9000
+    restart: always
+
   mockdata:
     container_name: senzing-mock-data-generator
     depends_on:
@@ -63,6 +76,23 @@ services:
     volumes:
       - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-kafka-mysql/mysql}:/var/lib/mysql
 
+  mysqlinit:
+    container_name: senzing-mysql-init
+    command:
+      - --user=${MYSQL_USERNAME:-g2}
+      - --password=${MYSQL_PASSWORD:-g2}
+      - --host=mysql
+      - --database=${MYSQL_DATABASE:-G2}
+      - --execute="source /opt/senzing/g2/resources/schema/g2core-schema-mysql-create.sql"
+    depends_on:
+      - mysql
+    image: senzing/mysql-init:latest
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
   phpmyadmin:
     container_name: senzing-phpmyadmin
     depends_on:
@@ -76,6 +106,21 @@ services:
     ports:
       - 8080:80
     restart: always
+
+  initcontainer:
+    container_name: senzing-init-container
+    environment:
+      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 30
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.3.0}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   loader:
     container_name: senzing-stream-loader

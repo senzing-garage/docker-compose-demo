@@ -1,35 +1,59 @@
 version: '3'
 services:
 
-  rabbitmq:
-    container_name: senzing-rabbitmq
+  zookeeper:
+    container_name: senzing-zookeeper
     environment:
-      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-    image: bitnami/rabbitmq:3.7.16
+#     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    image: bitnami/zookeeper:3.5.5
     networks:
       - backend
     ports:
-      - 15672:15672
-      - 5672:5672
+      - 2181:2181
     restart: always
-    volumes:
-      - ${RABBITMQ_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq}:/bitnami
+
+  kafka:
+    container_name: senzing-kafka
+    depends_on:
+      - zookeeper
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-kafka#configuration
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_NUM_PARTITIONS: 5
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: bitnami/kafka:2.3.0
+    networks:
+      - backend
+    ports:
+      - 9092:9092
+    restart: always
+
+  kafkamanager:
+    container_name: senzing-kafka-manager
+    depends_on:
+      - kafka
+    environment:
+      ZK_HOSTS: "senzing-zookeeper:2181"
+    image: kafkamanager/kafka-manager:2.0.0.2
+    networks:
+      - backend
+    ports:
+      - 9002:9000
+    restart: always
 
   mockdata:
     container_name: senzing-mock-data-generator
     depends_on:
-      - rabbitmq
+      - kafka
     environment:
 #     See https://github.com/Senzing/docker-mock-data-generator#configuration
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_RABBITMQ_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
-      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_RECORD_MAX: 10000
       SENZING_RECORD_MONITOR: 1000
-      SENZING_SUBCOMMAND: url-to-rabbitmq
+      SENZING_SUBCOMMAND: url-to-kafka
     image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
     networks:
       - backend
@@ -50,24 +74,7 @@ services:
       - 3306:3306
     restart: always
     volumes:
-      - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql}:/var/lib/mysql
-
-  mysqlinit:
-    container_name: senzing-mysql-init
-    command:
-      - --user=${MYSQL_USERNAME:-g2}
-      - --password=${MYSQL_PASSWORD:-g2}
-      - --host=mysql
-      - --database=${MYSQL_DATABASE:-G2}
-      - --execute="source /opt/senzing/g2/resources/schema/g2core-schema-mysql-create.sql"
-    depends_on:
-      - mysql
-    image: senzing/mysql-init:latest
-    networks:
-      - backend
-    restart: on-failure
-    volumes:
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-kafka-mysql/mysql}:/var/lib/mysql
 
   phpmyadmin:
     container_name: senzing-phpmyadmin
@@ -83,41 +90,20 @@ services:
       - 8080:80
     restart: always
 
-  initcontainer:
-    container_name: senzing-init-container
-    environment:
-      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
-      SENZING_INIT_CONTAINER_SLEEP: 30
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.3.0}
-    networks:
-      - backend
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-
   loader:
     container_name: senzing-stream-loader
     depends_on:
-      - rabbitmq
+      - kafka
       - mysql
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
-      SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
-      SENZING_MONITORING_PERIOD: ${SENZING_MONITORING_PERIOD:-300}
-      SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
-      SENZING_RABBITMQ_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
-      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_SUBCOMMAND: rabbitmq
-      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-1}
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: senzing-kafka-topic
+      SENZING_SUBCOMMAND: kafka
     image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.2.0}
     networks:
       - backend
