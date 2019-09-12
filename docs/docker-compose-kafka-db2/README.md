@@ -102,8 +102,10 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    sudo docker pull bitnami/rabbitmq:3.7.16
+    sudo docker pull bitnami/kafka:2.3.0
+    sudo docker pull bitnami/zookeeper:3.5.5
     sudo docker pull ibmcom/db2:11.5.0.0a
+    sudo docker pull kafkamanager/kafka-manager:2.0.0.2
     sudo docker pull senzing/db2-driver-installer:1.0.0
     sudo docker pull senzing/entity-search-web-app:1.0.2
     sudo docker pull senzing/init-container:1.3.0
@@ -230,7 +232,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
 
-
 ## View data
 
 1. Username and password for the following sites were either passed in as environment variables
@@ -248,7 +249,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    The server supports the
    [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
    *Note:*  In
-   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml)
+   [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
 
    1. From a web browser.

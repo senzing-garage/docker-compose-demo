@@ -260,7 +260,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    The server supports the
    [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
    *Note:*  In
-   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml)
+   [docker-compose-rabbitmq-db2.yaml](../../resources/db2/docker-compose-rabbitmq-db2.yaml)
    port 8889 on the localhost has been mapped to port 8080 in the docker container.
 
    1. From a web browser.
