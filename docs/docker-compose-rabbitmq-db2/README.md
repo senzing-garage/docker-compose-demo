@@ -326,6 +326,7 @@ The following shows how to bring up the prior docker formation again without ini
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       DB2_DB=${DB2_DB} \
+      DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
       DB2_PASSWORD=${DB2_PASSWORD} \
       DB2_STORAGE=${DB2_STORAGE} \
       DB2_USERNAME=${DB2_USERNAME} \
