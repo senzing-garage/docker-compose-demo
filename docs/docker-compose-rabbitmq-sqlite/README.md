@@ -307,7 +307,6 @@ In a separate (or reusable) terminal window:
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
     sudo docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml down
-    sudo docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-again.yaml down
     ```
 
 1. Delete storage.

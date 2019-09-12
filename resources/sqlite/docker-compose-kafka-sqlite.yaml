@@ -61,10 +61,11 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.2.1}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.3.0}
     networks:
       - backend
     restart: on-failure
+    user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
