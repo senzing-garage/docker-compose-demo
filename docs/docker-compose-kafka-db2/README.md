@@ -123,8 +123,8 @@ Configuration values specified by environment variable or command line parameter
 
 - **[DB2_CUSTOM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_custom_dir)**
 - **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
+- **[DB2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_dir)**
 - **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**
-- **[DB2_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_storage)**
 - **[DB2_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_username)**
 - **[DB2INST1_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2inst_password)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
@@ -205,12 +205,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export DB2_DB=G2
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
-    export DB2_PASSWORD=db2inst1
-    export DB2_STORAGE=/storage/docker/senzing/docker-compose-kafka-db2/db2
-    export DB2_USERNAME=db2inst1
-    export DB2INST1_PASSWORD=db2inst1
+    export DB2_DIR=/storage/docker/senzing/docker-compose-kafka-db2/db2
     ```
 
 1. Launch docker-compose formation.
@@ -219,18 +215,18 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_DB=${DB2_DB} \
       DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_PASSWORD=${DB2_PASSWORD} \
-      DB2_STORAGE=${DB2_STORAGE} \
-      DB2_USERNAME=${DB2_USERNAME} \
-      DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
+      DB2_DIR=${DB2_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_IBM_DIR=${SENZING_IBM_DIR} \
       docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
+
+1. Allow time for the components to come up and initialize.
+   A good tool to monitor individual docker logs is
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
 
 ## View data
 
@@ -292,7 +288,7 @@ In a separate (or reusable) terminal window:
 1. Delete storage.
 
     ```console
-    sudo rm -rf ${DB2_STORAGE}
+    sudo rm -rf ${DB2_DIR}
     ```
 
 1. Delete git repository.
@@ -313,12 +309,8 @@ The following shows how to bring up the prior docker formation again without ini
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_DB=${DB2_DB} \
       DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_PASSWORD=${DB2_PASSWORD} \
-      DB2_STORAGE=${DB2_STORAGE} \
-      DB2_USERNAME=${DB2_USERNAME} \
-      DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
+      DB2_DIR=${DB2_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \

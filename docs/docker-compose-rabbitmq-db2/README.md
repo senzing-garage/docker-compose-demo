@@ -120,12 +120,12 @@ Configuration values specified by environment variable or command line parameter
 
 - **[DB2_CUSTOM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_custom_dir)**
 - **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
+- **[DB2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_dir)**
 - **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**
-- **[DB2_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_storage)**
 - **[DB2_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_username)**
 - **[DB2INST1_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2inst_password)**
+- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_dir)**
 - **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
-- **[RABBITMQ_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_storage)**
 - **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
@@ -205,21 +205,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export DB2_DB=G2
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
-    export DB2_PASSWORD=db2inst1
-    export DB2_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-db2/db2
-    export DB2_USERNAME=db2inst1
-    export DB2INST1_PASSWORD=db2inst1
-    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq
+    export DB2_DIR=/storage/docker/senzing/docker-compose-rabbitmq-db2/db2
+    export RABBITMQ_DIR=/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq
     ```
 
 1. Create directories.
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_STORAGE}
-    sudo chmod 777 ${RABBITMQ_STORAGE}
+    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
 1. Launch docker-compose formation.
@@ -228,19 +224,19 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_DB=${DB2_DB} \
       DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_PASSWORD=${DB2_PASSWORD} \
-      DB2_STORAGE=${DB2_STORAGE} \
-      DB2_USERNAME=${DB2_USERNAME} \
-      DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
-      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      DB2_DIR=${DB2_DIR} \
+      RABBITMQ_DIR=${RABBITMQ_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_IBM_DIR=${SENZING_IBM_DIR} \
       docker-compose --file resources/db2/docker-compose-rabbitmq-db2.yaml up
     ```
+
+1. Allow time for the components to come up and initialize.
+   A good tool to monitor individual docker logs is
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
 
 ## View data
 
@@ -303,8 +299,8 @@ In a separate (or reusable) terminal window:
 1. Delete storage.
 
     ```console
-    sudo rm -rf ${DB2_STORAGE}
-    sudo rm -rf ${RABBITMQ_STORAGE}
+    sudo rm -rf ${DB2_DIR}
+    sudo rm -rf ${RABBITMQ_DIR}
     ```
 
 1. Delete git repository.
@@ -325,13 +321,9 @@ The following shows how to bring up the prior docker formation again without ini
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_DB=${DB2_DB} \
       DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_PASSWORD=${DB2_PASSWORD} \
-      DB2_STORAGE=${DB2_STORAGE} \
-      DB2_USERNAME=${DB2_USERNAME} \
-      DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
-      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      DB2_DIR=${DB2_DIR} \
+      RABBITMQ_DIR=${RABBITMQ_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \

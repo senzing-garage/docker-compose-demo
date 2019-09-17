@@ -209,6 +209,10 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/sqlite/docker-compose-kafka-sqlite.yaml up
     ```
 
+1. Allow time for the components to come up and initialize.
+   A good tool to monitor individual docker logs is
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
+
 ## View data
 
 1. Username and password for the following sites were either passed in as environment variables

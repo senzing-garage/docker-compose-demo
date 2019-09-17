@@ -74,7 +74,7 @@ services:
       - 3306:3306
     restart: always
     volumes:
-      - ${MYSQL_STORAGE:-/storage/docker/senzing/docker-compose-kafka-mysql/mysql}:/var/lib/mysql
+      - ${MYSQL_DIR:-/storage/docker/senzing/docker-compose-kafka-mysql/mysql}:/var/lib/mysql
 
   mysqlinit:
     container_name: senzing-mysql-init
