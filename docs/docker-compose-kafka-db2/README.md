@@ -205,12 +205,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export DB2_DB=G2
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
-    export DB2_PASSWORD=db2inst1
     export DB2_STORAGE=/storage/docker/senzing/docker-compose-kafka-db2/db2
-    export DB2_USERNAME=db2inst1
-    export DB2INST1_PASSWORD=db2inst1
     ```
 
 1. Launch docker-compose formation.
@@ -219,12 +215,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_DB=${DB2_DB} \
       DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_PASSWORD=${DB2_PASSWORD} \
       DB2_STORAGE=${DB2_STORAGE} \
-      DB2_USERNAME=${DB2_USERNAME} \
-      DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
@@ -313,12 +305,8 @@ The following shows how to bring up the prior docker formation again without ini
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_DB=${DB2_DB} \
       DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_PASSWORD=${DB2_PASSWORD} \
       DB2_STORAGE=${DB2_STORAGE} \
-      DB2_USERNAME=${DB2_USERNAME} \
-      DB2INST1_PASSWORD=${DB2INST1_PASSWORD} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
