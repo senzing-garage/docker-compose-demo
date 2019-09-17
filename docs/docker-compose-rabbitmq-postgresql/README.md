@@ -104,8 +104,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
     ```console
     sudo docker pull bitnami/rabbitmq:3.7.16
-    sudo docker pull postgres:11.3
     sudo docker pull jbergknoff/postgresql-client:latest
+    sudo docker pull postgres:11.3
     sudo docker pull senzing/entity-search-web-app:1.0.2
     sudo docker pull senzing/init-container:1.3.0
     sudo docker pull senzing/mock-data-generator:1.1.0
@@ -122,11 +122,11 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 Configuration values specified by environment variable or command line parameter.
 
 - **[POSTGRES_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_db)**
+- **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_dir)**
 - **[POSTGRES_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_password)**
-- **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#POSTGRES_DIR)**
 - **[POSTGRES_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_username)**
+- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_dir)**
 - **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
-- **[RABBITMQ_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_storage)**
 - **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
@@ -203,17 +203,16 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export POSTGRES_DB=G2
     export POSTGRES_DIR=/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres
-    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq
+    export RABBITMQ_DIR=/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq
     ```
 
 1. Create directories.
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_STORAGE}
-    sudo chmod 777 ${RABBITMQ_STORAGE}
+    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
 1. Launch docker-compose formation.
@@ -222,14 +221,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      POSTGRES_DB=${POSTGRES_DB} \
       POSTGRES_DIR=${POSTGRES_DIR} \
-      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      RABBITMQ_DIR=${RABBITMQ_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml up
     ```
+
+1. Allow time for the components to come up and initialize.
+   A good tool to monitor individual docker logs is
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
 
 ## View data
 
@@ -303,7 +305,7 @@ In a separate (or reusable) terminal window:
 
     ```console
     sudo rm -rf ${POSTGRES_DIR}
-    sudo rm -rf ${RABBITMQ_STORAGE}
+    sudo rm -rf ${RABBITMQ_DIR}
     ```
 
 1. Delete git repository.
@@ -324,9 +326,8 @@ The following shows how to bring up the prior docker formation again without ini
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      POSTGRES_DB=${POSTGRES_DB} \
       POSTGRES_DIR=${POSTGRES_DIR} \
-      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      RABBITMQ_DIR=${RABBITMQ_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \

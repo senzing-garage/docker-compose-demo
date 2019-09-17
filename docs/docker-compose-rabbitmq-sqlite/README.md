@@ -118,8 +118,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 Configuration values specified by environment variable or command line parameter.
 
+- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_dir)**
 - **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
-- **[RABBITMQ_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_storage)**
 - **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
@@ -200,15 +200,15 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-sqlite/rabbitmq
+    export RABBITMQ_DIR=/storage/docker/senzing/docker-compose-rabbitmq-sqlite/rabbitmq
     ```
 
 1. Create directories.
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_STORAGE}
-    sudo chmod 777 ${RABBITMQ_STORAGE}
+    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
 1. Launch docker-compose formation.
@@ -217,13 +217,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      RABBITMQ_DIR=${RABBITMQ_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
     ```
+
+1. Allow time for the components to come up and initialize.
+   A good tool to monitor individual docker logs is
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
 
 ## View data
 
@@ -293,7 +297,7 @@ In a separate (or reusable) terminal window:
 1. Delete storage.
 
     ```console
-    sudo rm -rf ${RABBITMQ_STORAGE}
+    sudo rm -rf ${RABBITMQ_DIR}
     ```
 
 1. Delete git repository.
@@ -313,7 +317,7 @@ the docker formation can be brought up again by the same command.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
+      RABBITMQ_DIR=${RABBITMQ_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
