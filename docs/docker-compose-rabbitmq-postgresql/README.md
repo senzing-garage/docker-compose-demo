@@ -123,7 +123,7 @@ Configuration values specified by environment variable or command line parameter
 
 - **[POSTGRES_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_db)**
 - **[POSTGRES_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_password)**
-- **[POSTGRES_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_storage)**
+- **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#POSTGRES_DIR)**
 - **[POSTGRES_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_username)**
 - **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
 - **[RABBITMQ_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_storage)**
@@ -204,7 +204,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     ```console
     export POSTGRES_DB=G2
-    export POSTGRES_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres
+    export POSTGRES_DIR=/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres
     export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-postgres/rabbitmq
     ```
 
@@ -223,7 +223,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       POSTGRES_DB=${POSTGRES_DB} \
-      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
+      POSTGRES_DIR=${POSTGRES_DIR} \
       RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
@@ -302,7 +302,7 @@ In a separate (or reusable) terminal window:
 1. Delete storage.
 
     ```console
-    sudo rm -rf ${POSTGRES_STORAGE}
+    sudo rm -rf ${POSTGRES_DIR}
     sudo rm -rf ${RABBITMQ_STORAGE}
     ```
 
@@ -325,7 +325,7 @@ The following shows how to bring up the prior docker formation again without ini
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       POSTGRES_DB=${POSTGRES_DB} \
-      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
+      POSTGRES_DIR=${POSTGRES_DIR} \
       RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \

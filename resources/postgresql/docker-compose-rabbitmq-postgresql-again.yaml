@@ -48,7 +48,7 @@ services:
       - 5432:5432
     restart: always
     volumes:
-      - ${POSTGRES_STORAGE:-/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres}:/var/lib/postgresql/data
+      - ${POSTGRES_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-postgres/postgres}:/var/lib/postgresql/data
 
   phppgadmin:
     container_name: senzing-phppgadmin

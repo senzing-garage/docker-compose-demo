@@ -135,7 +135,7 @@ Configuration values specified by environment variable or command line parameter
 - **[MYSQL_DATABASE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_database)**
 - **[MYSQL_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_passwrod)**
 - **[MYSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_root-password)**
-- **[MYSQL_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_storage)**
+- **[MYSQL_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#MYSQL_DIR)**
 - **[MYSQL_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_username)**
 - **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
 - **[RABBITMQ_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_storage)**
@@ -217,7 +217,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     export MYSQL_DATABASE=G2
     export MYSQL_ROOT_PASSWORD=root
-    export MYSQL_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql
+    export MYSQL_DIR=/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql
     export RABBITMQ_STORAGE=/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq
     ```
 
@@ -237,7 +237,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     sudo \
       MYSQL_DATABASE=${MYSQL_DATABASE} \
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
-      MYSQL_STORAGE=${MYSQL_STORAGE} \
+      MYSQL_DIR=${MYSQL_DIR} \
       RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
@@ -316,7 +316,7 @@ In a separate (or reusable) terminal window:
 1. Delete storage.
 
     ```console
-    sudo rm -rf ${MYSQL_STORAGE}
+    sudo rm -rf ${MYSQL_DIR}
     sudo rm -rf ${RABBITMQ_STORAGE}
     ```
 
@@ -340,7 +340,7 @@ The following shows how to bring up the prior docker formation again without ini
     sudo \
       MYSQL_DATABASE=${MYSQL_DATABASE} \
       MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} \
-      MYSQL_STORAGE=${MYSQL_STORAGE} \
+      MYSQL_DIR=${MYSQL_DIR} \
       RABBITMQ_STORAGE=${RABBITMQ_STORAGE} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \

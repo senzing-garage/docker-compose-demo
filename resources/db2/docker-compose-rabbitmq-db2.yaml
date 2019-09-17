@@ -47,7 +47,7 @@ services:
       - 50000:50000
     privileged: true
     volumes:
-      - ${DB2_STORAGE:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
+      - ${DB2_DIR:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${DB2_CUSTOM_DIR}:/var/custom
 

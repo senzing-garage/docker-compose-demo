@@ -125,8 +125,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 Configuration values specified by environment variable or command line parameter.
 
 - **[POSTGRES_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_db)**
+- **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_dir)**
 - **[POSTGRES_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_password)**
-- **[POSTGRES_STORAGE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_storage)**
 - **[POSTGRES_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
@@ -204,7 +204,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     ```console
     export POSTGRES_DB=G2
-    export POSTGRES_STORAGE=/storage/docker/senzing/docker-compose-kafka-postgres/postgres
+    export POSTGRES_DIR=/storage/docker/senzing/docker-compose-kafka-postgres/postgres
     ```
 
 1. Launch docker-compose formation.
@@ -214,7 +214,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       POSTGRES_DB=${POSTGRES_DB} \
-      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
+      POSTGRES_DIR=${POSTGRES_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
@@ -291,7 +291,7 @@ In a separate (or reusable) terminal window:
 1. Delete storage.
 
     ```console
-    sudo rm -rf ${POSTGRES_STORAGE}
+    sudo rm -rf ${POSTGRES_DIR}
     ```
 
 1. Delete git repository.
@@ -313,7 +313,7 @@ The following shows how to bring up the prior docker formation again without ini
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       POSTGRES_DB=${POSTGRES_DB} \
-      POSTGRES_STORAGE=${POSTGRES_STORAGE} \
+      POSTGRES_DIR=${POSTGRES_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
