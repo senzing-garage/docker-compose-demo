@@ -211,7 +211,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Allow time for the components to come up and initialize.
    A good tool to monitor individual docker logs is
-   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/view-docker-formations.md#portainer).
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
 
 ## View data
 

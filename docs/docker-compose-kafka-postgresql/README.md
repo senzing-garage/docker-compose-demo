@@ -203,7 +203,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    export POSTGRES_DB=G2
     export POSTGRES_DIR=/storage/docker/senzing/docker-compose-kafka-postgres/postgres
     ```
 
@@ -213,7 +212,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      POSTGRES_DB=${POSTGRES_DB} \
       POSTGRES_DIR=${POSTGRES_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
@@ -223,7 +221,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Allow time for the components to come up and initialize.
    A good tool to monitor individual docker logs is
-   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/view-docker-formations.md#portainer).
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
 
 ## View data
 
@@ -316,7 +314,6 @@ The following shows how to bring up the prior docker formation again without ini
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      POSTGRES_DB=${POSTGRES_DB} \
       POSTGRES_DIR=${POSTGRES_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
