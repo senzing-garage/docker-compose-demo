@@ -230,14 +230,19 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```
 
 1. Allow time for the components to come up and initialize.
-   A good tool to monitor individual docker logs is
-   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
 
 ## View data
 
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
    [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
+
+### View docker containers
+
+1. A good tool to monitor individual docker logs is
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
+   When running, Portainer is viewable at
+   [localhost:9001](http://localhost:9001).
 
 ### View RabbitMQ
 
@@ -279,6 +284,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         curl -X GET ${SENZING_API_SERVICE}/license
         curl -X GET ${SENZING_API_SERVICE}/entities/1
         ```
+    1. From [OpenApi browser](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/issue-33.dockter.1/senzing-rest-api.yaml).
 
 ### View Senzing Entity Search WebApp
 
