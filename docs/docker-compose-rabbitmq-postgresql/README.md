@@ -113,7 +113,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull senzing/senzing-api-server:1.7.2
     sudo docker pull senzing/stream-loader:1.2.0
     sudo docker pull senzing/yum:1.1.0
-    sudo docker pull swaggerapi/swagger-editor:v3.6.35
     ```
 
 ## Using docker-compose
