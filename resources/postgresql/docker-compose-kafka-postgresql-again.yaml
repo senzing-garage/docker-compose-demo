@@ -39,7 +39,7 @@ services:
     networks:
       - backend
     ports:
-      - 9002:9000
+      - 9175:9000
     restart: always
 
   mockdata:
@@ -104,8 +104,8 @@ services:
     networks:
       - backend
     ports:
-      - 8080:80
-      - 8443:443
+      - 9171:80
+      - 9172:443
     restart: always
 
   loader:
@@ -135,7 +135,7 @@ services:
     container_name: senzing-api-server
     command:
       - -httpPort
-      - "8080"
+      - "8250"
       - -bindAddr
       - all
       - -iniFile
@@ -148,7 +148,7 @@ services:
     networks:
       - backend
     ports:
-      - 8889:8080
+      - 8250:8250
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
@@ -160,13 +160,13 @@ services:
     depends_on:
       - api
     environment:
-      SENZING_API_SERVER_URL: "http://senzing-api-server:8080"
-      SENZING_WEB_SERVER_PORT: 8081
+      SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
+      SENZING_WEB_SERVER_PORT: 8251
     image: senzing/entity-search-web-app:${SENZING_API_SERVER_VERSION:-1.0.2}
     networks:
       - backend
     ports:
-      - 8888:8081
+      - 8251:8251
     restart: always
 
 networks:
