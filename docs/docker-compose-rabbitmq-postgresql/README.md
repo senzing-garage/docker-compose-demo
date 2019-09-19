@@ -286,13 +286,14 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         curl -X GET ${SENZING_API_SERVICE}/entities/1
         ```
 
-   1. From [OpenApi browser](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/issue-33.dockter.1/senzing-rest-api.yaml).
+   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/issue-33.dockter.1/senzing-rest-api.yaml).
 
 ### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8888](http://localhost:8888).
-   The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
+
+1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
 
 ## Cleanup
