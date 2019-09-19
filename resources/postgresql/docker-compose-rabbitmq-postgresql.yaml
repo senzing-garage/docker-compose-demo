@@ -170,6 +170,15 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
+  openapi:
+    container_name: senzing-swagger-editor
+    image: swaggerapi/swagger-editor:v3.6.35
+    networks:
+      - backend
+    ports:
+      - 8887:8080
+    restart: always
+
   webapp:
     container_name: senzing-webapp
     depends_on:

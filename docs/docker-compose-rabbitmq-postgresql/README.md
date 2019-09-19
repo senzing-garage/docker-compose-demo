@@ -113,6 +113,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull senzing/senzing-api-server:1.7.2
     sudo docker pull senzing/stream-loader:1.2.0
     sudo docker pull senzing/yum:1.1.0
+    sudo docker pull swaggerapi/swagger-editor:v3.6.35
     ```
 
 ## Using docker-compose
@@ -284,7 +285,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         curl -X GET ${SENZING_API_SERVICE}/license
         curl -X GET ${SENZING_API_SERVICE}/entities/1
         ```
-    1. From [OpenApi browser](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/issue-33.dockter.1/senzing-rest-api.yaml).
+    1. From [OpenApi browser](http://localhost:8887/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/issue-33.dockter.1/senzing-rest-api.yaml).
 
 ### View Senzing Entity Search WebApp
 
