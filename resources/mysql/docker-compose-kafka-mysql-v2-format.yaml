@@ -75,7 +75,7 @@ services:
     networks:
       - backend
     ports:
-      - 8080:80
+      - 9173:80
     restart: always
 
   loader:

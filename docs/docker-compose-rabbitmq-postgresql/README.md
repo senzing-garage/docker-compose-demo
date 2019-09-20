@@ -242,7 +242,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 1. A good tool to monitor individual docker logs is
    [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
    When running, Portainer is viewable at
-   [localhost:9001](http://localhost:9001).
+   [localhost:9170](http://localhost:9170).
 
 ### View RabbitMQ
 
@@ -253,7 +253,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 ### View PostgreSQL
 
 1. PostgreSQL is viewable at
-   [localhost:8080](http://localhost:8080).
+   [localhost:9171](http://localhost:9171).
     1. **Defaults:** username: `postgres` password: `postgres`
 1. On left-hand navigation, select "G2" database to explore.
 1. The records received from the queue can be viewed in the following Senzing tables:
@@ -265,20 +265,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 1. View results from Senzing REST API server.
    The server supports the
    [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
-   *Note:*  In
-   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml)
-   port 8889 on the localhost has been mapped to port 8080 in the docker container.
 
    1. From a web browser.
       Examples:
-      1. [localhost:8889/heartbeat](http://localhost:8889/heartbeat)
-      1. [localhost:8889/license](http://localhost:8889/license)
-      1. [localhost:8889/entities/1](http://localhost:8889/entities/1)
+      1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
+      1. [localhost:8250/license](http://localhost:8250/license)
+      1. [localhost:8250/entities/1](http://localhost:8250/entities/1)
    1. From `curl`.
       Examples:
 
         ```console
-        export SENZING_API_SERVICE=http://localhost:8889
+        export SENZING_API_SERVICE=http://localhost:8250
 
         curl -X GET ${SENZING_API_SERVICE}/heartbeat
         curl -X GET ${SENZING_API_SERVICE}/license
@@ -290,7 +287,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 ### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
-   [localhost:8888](http://localhost:8888).
+   [localhost:8251](http://localhost:8251).
 
 1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
