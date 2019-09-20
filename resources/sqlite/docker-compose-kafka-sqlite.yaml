@@ -116,6 +116,8 @@ services:
       - all
       - -iniFile
       - /etc/opt/senzing/G2Module.ini
+      - -allowedOrigins
+      - "*"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.2}
     networks:
       - backend

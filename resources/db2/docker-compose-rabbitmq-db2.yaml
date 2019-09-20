@@ -119,6 +119,8 @@ services:
       - all
       - -iniFile
       - /etc/opt/senzing/G2Module.ini
+      - -allowedOrigins
+      - "*"
     depends_on:
       - db2
     environment:

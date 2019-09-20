@@ -140,6 +140,8 @@ services:
       - all
       - -iniFile
       - /etc/opt/senzing/G2Module.ini
+      - -allowedOrigins
+      - "*"
     depends_on:
       - postgres
     environment:
