@@ -242,14 +242,19 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```
 
 1. Allow time for the components to come up and initialize.
-   A good tool to monitor individual docker logs is
-   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
 
 ## View data
 
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
    [docker-compose-rabbitmq-mysql.yaml](../../resources/mysql/docker-compose-rabbitmq-mysql.yaml).
+
+### View docker containers
+
+1. A good tool to monitor individual docker logs is
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
+   When running, Portainer is viewable at
+   [localhost:9170](http://localhost:9170).
 
 ### View RabbitMQ
 
@@ -260,7 +265,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 ### View MySQL
 
 1. MySQL is viewable at
-   [localhost:8080](http://localhost:8080).
+   [localhost:9173](http://localhost:9173).
     1. **Defaults:** username: `g2` password: `g2`
 1. On left-hand navigation, select "G2" database to explore.
 1. The records received from the queue can be viewed in the following Senzing tables:
@@ -272,31 +277,31 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 1. View results from Senzing REST API server.
    The server supports the
    [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
-   *Note:*  In
-   [docker-compose-rabbitmq-mysql.yaml](../../resources/mysql/docker-compose-rabbitmq-mysql.yaml)
-   port 8889 on the localhost has been mapped to port 8080 in the docker container.
 
    1. From a web browser.
       Examples:
-      1. [localhost:8889/heartbeat](http://localhost:8889/heartbeat)
-      1. [localhost:8889/license](http://localhost:8889/license)
-      1. [localhost:8889/entities/1](http://localhost:8889/entities/1)
+      1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
+      1. [localhost:8250/license](http://localhost:8250/license)
+      1. [localhost:8250/entities/1](http://localhost:8250/entities/1)
    1. From `curl`.
       Examples:
 
         ```console
-        export SENZING_API_SERVICE=http://localhost:8889
+        export SENZING_API_SERVICE=http://localhost:8250
 
         curl -X GET ${SENZING_API_SERVICE}/heartbeat
         curl -X GET ${SENZING_API_SERVICE}/license
         curl -X GET ${SENZING_API_SERVICE}/entities/1
         ```
 
+   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/issue-33.dockter.1/senzing-rest-api.yaml).
+
 ### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
-   [localhost:8888](http://localhost:8888).
-   The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
+   [localhost:8251](http://localhost:8251).
+
+1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
 
 ## Cleanup
