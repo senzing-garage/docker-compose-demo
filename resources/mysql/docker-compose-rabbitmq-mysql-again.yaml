@@ -66,6 +66,17 @@ services:
       - 9173:80
     restart: always
 
+  debug:
+    container_name: senzing-debug
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.2.1}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
   loader:
     container_name: senzing-stream-loader
     depends_on:
