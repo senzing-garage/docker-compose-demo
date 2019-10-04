@@ -277,7 +277,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         curl -X GET ${SENZING_API_SERVICE}/entities/1
         ```
 
-   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/issue-33.dockter.1/senzing-rest-api.yaml).
+   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
 
 ### View Senzing Entity Search WebApp
 

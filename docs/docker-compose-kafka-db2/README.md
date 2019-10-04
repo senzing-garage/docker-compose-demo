@@ -136,6 +136,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_ibm_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
 
@@ -152,6 +153,7 @@ Identify a folder for each output directory.
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
     export SENZING_IBM_DIR=/opt/IBM
+    export SENZING_VAR_DIR=/var/opt/senzing
     ```
 
 1. :pencil2: **Example #2:**
@@ -166,6 +168,7 @@ Identify a folder for each output directory.
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_IBM_DIR=${SENZING_VOLUME}/IBM
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
 ### EULA
@@ -197,6 +200,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       SENZING_DATA_DIR=${SENZING_DATA_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
@@ -222,6 +226,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_IBM_DIR=${SENZING_IBM_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
 
@@ -267,7 +272,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
         curl -X GET ${SENZING_API_SERVICE}/entities/1
         ```
 
-   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/issue-33.dockter.1/senzing-rest-api.yaml).
+   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
 
 ### View Senzing Entity Search WebApp
 
@@ -321,5 +326,6 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_IBM_DIR=${SENZING_IBM_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/db2/docker-compose-kafka-db2-again.yaml up
     ```
