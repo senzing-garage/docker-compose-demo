@@ -108,7 +108,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.2.0}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.2.1}
     networks:
       - backend
     restart: always
@@ -129,7 +129,7 @@ services:
       - /etc/opt/senzing/G2Module.ini
       - -allowedOrigins
       - "*"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.2}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.7}
     networks:
       - backend
     ports:
@@ -148,7 +148,7 @@ services:
     environment:
       SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
       SENZING_WEB_SERVER_PORT: 8251
-    image: senzing/entity-search-web-app:${SENZING_API_SERVER_VERSION:-1.0.2}
+    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.0.3}
     networks:
       - backend
     ports:
