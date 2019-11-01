@@ -105,16 +105,16 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
    Example:
 
     ```console
-    sudo docker pull bitnami/rabbitmq:3.7.16
+    sudo docker pull bitnami/rabbitmq:3.8.0
     sudo docker pull mysql:5.7
     sudo docker pull phpmyadmin/phpmyadmin:4.9
-    sudo docker pull senzing/entity-search-web-app:1.0.2
-    sudo docker pull senzing/init-container:1.3.0
+    sudo docker pull senzing/entity-search-web-app:1.0.3
+    sudo docker pull senzing/init-container:1.3.1
     sudo docker pull senzing/mock-data-generator:1.1.0
-    sudo docker pull senzing/senzing-api-server:1.7.2
+    sudo docker pull senzing/senzing-api-server:1.7.8
     sudo docker pull senzing/senzing-debug:1.2.1
-    sudo docker pull senzing/stream-loader:1.2.0
-    sudo docker pull senzing/yum:1.1.0
+    sudo docker pull senzing/stream-loader:1.2.1
+    sudo docker pull senzing/yum:1.1.1
     ```
 
 ### Build docker images
