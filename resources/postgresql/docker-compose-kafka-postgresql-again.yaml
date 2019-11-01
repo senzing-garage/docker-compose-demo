@@ -65,7 +65,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
-    image: postgres:11.3
+    image: postgres:11.5
     networks:
       - backend
     ports:
