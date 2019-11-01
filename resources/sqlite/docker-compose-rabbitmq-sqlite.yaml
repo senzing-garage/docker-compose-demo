@@ -50,7 +50,7 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.3.0}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.3.1}
     networks:
       - backend
     restart: on-failure
@@ -111,7 +111,7 @@ services:
       - /etc/opt/senzing/G2Module.ini
       - -allowedOrigins
       - "*"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.7}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.8}
     networks:
       - backend
     ports:
