@@ -83,21 +83,6 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  sqliteweb:
-    container_name: senzing-sqlite-web
-    depends_on:
-      - initcontainer
-    environment:
-      SQLITE_DATABASE: G2C.db
-    image: coleifer/sqlite-web:latest
-    networks:
-      - backend
-    ports:
-      - 9174:8080
-    restart: always
-    volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
-
   loader:
     container_name: senzing-stream-loader
     depends_on:
@@ -156,6 +141,21 @@ services:
     ports:
       - 8251:8251
     restart: always
+
+  sqliteweb:
+    container_name: senzing-sqlite-web
+    depends_on:
+      - initcontainer
+    environment:
+      SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:latest
+    networks:
+      - backend
+    ports:
+      - 9174:8080
+    restart: always
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
 networks:
   backend:
