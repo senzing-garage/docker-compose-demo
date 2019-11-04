@@ -40,5 +40,6 @@ The following table indicates the instructions for variations in components.
     | Kafka    | SQLite     | [:page_facing_up:](docs/docker-compose-kafka-sqlite/README.md)        | [docker-compose-kafka-sqlite.yaml](resources/sqlite/docker-compose-kafka-sqlite.yaml) |
     | RabbitMQ | Db2        | [:page_facing_up:](docs/docker-compose-rabbitmq-db2/README.md)        | [docker-compose-rabbitmq-db2.yaml](resources/db2/docker-compose-rabbitmq-db2.yaml) |
     | RabbitMQ | MySQL      | [:page_facing_up:](docs/docker-compose-rabbitmq-mysql/README.md)      | [docker-compose-rabbitmq-mysql.yaml](resources/mysql/docker-compose-rabbitmq-mysql.yaml) |
+    | RabbitMQ | MSSQL      | [:page_facing_up:](docs/docker-compose-rabbitmq-mssql/README.md)      | [docker-compose-rabbitmq-mssql.yaml](resources/mssql/docker-compose-rabbitmq-mssql.yaml) |
     | RabbitMQ | PostgreSQL | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql/README.md) | [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) |
     | RabbitMQ | SQLite     | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite/README.md)     | [docker-compose-rabbitmq-sqlite.yaml](resources/sqlite/docker-compose-rabbitmq-sqlite.yaml) |
