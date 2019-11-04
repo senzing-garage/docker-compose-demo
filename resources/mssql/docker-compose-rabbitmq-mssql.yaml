@@ -54,7 +54,7 @@ services:
     command:
       - /opt/mssql-tools/bin/sqlcmd
       - -P
-      - Passw0rd
+      - ${MSSQL_SA_PASSWORD:-Passw0rd}
       - -Q
       - "CREATE DATABASE G2"
       - -S
@@ -70,6 +70,7 @@ services:
     restart: on-failure
 
   mssql-create-senzing:
+#   For command-line options, see https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility
     command:
       - /opt/mssql-tools/bin/sqlcmd
       - -d
@@ -77,13 +78,14 @@ services:
       - -i
       - /opt/senzing/g2/resources/schema/g2core-schema-mssql-create.sql
       - -o
-      - /var/opt/senzing/mssql.log
+      - /dev/stdout
       - -P
-      - Passw0rd
+      - ${MSSQL_SA_PASSWORD:-Passw0rd}
       - -S
       - senzing-mssql
       - -U
       - sa
+      - -e
     container_name: senzing-mssql-create-senzing
     depends_on:
       - mssql-create-db
@@ -93,7 +95,6 @@ services:
     restart: on-failure
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   initcontainer:
     container_name: senzing-init-container
