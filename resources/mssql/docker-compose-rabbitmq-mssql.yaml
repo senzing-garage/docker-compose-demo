@@ -1,6 +1,20 @@
 version: '3'
 services:
 
+  mssql:
+    container_name: senzing-mssql
+    environment:
+#     See https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables
+      ACCEPT_EULA: ${ACCEPT_EULA:-Y}
+      MSSQL_PID: ${MSSQL_PID:-Developer}
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    networks:
+      - backend
+    ports:
+      - 1433:1433
+    restart: always
+
   rabbitmq:
     container_name: senzing-rabbitmq
     environment:
@@ -35,26 +49,51 @@ services:
       - backend
     restart: on-failure
 
-  mssql:
-    container_name: senzing-mssql
-    environment:
-#     See https://hub.docker.com/_/mysql/ "Environment Variables"
-      ACCEPT_EULA: ${ACCEPT_EULA:-N}
-      MSSQL_PID: ${MSSQL_PID:-Developer}
-      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-g2}
 
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-G2}
-      MYSQL_PASSWORD:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
-      MYSQL_USER: ${MYSQL_USERNAME:-g2}
-    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+  mssql-create-db:
+    command:
+      - /opt/mssql-tools/bin/sqlcmd
+      - -P
+      - Passw0rd
+      - -Q
+      - "CREATE DATABASE G2"
+      - -S
+      - senzing-mssql
+      - -U
+      - sa
+    container_name: senzing-mssql-create-database
+    depends_on:
+      - mssql
+    image: mcr.microsoft.com/mssql-tools
     networks:
       - backend
-    ports:
-      - 1433:1433
-    restart: always
+    restart: on-failure
+
+  mssql-create-senzing:
+    command:
+      - /opt/mssql-tools/bin/sqlcmd
+      - -d
+      - G2
+      - -i
+      - /opt/senzing/g2/resources/schema/g2core-schema-mssql-create.sql
+      - -o
+      - /var/opt/senzing/mssql.log
+      - -P
+      - Passw0rd
+      - -S
+      - senzing-mssql
+      - -U
+      - sa
+    container_name: senzing-mssql-create-senzing
+    depends_on:
+      - mssql-create-db
+    image: mcr.microsoft.com/mssql-tools
+    networks:
+      - backend
+    restart: on-failure
     volumes:
-      - ${MSSQL_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mssql/mssql}:/var/opt/mssql
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   initcontainer:
     container_name: senzing-init-container
