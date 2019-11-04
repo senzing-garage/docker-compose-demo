@@ -230,7 +230,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     ```console
     sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
+    sudo chown $(id -u):$(id -g) ${RABBITMQ_DIR}
+    sudo mkdir -p ${MSSQL_DIR}
+    sudo chown $(id -u):$(id -g) ${MSSQL_DIR}
     ```
 
 1. Launch docker-compose formation.
