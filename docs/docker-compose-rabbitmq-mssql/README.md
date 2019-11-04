@@ -229,10 +229,14 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
+
+    export SENZING_CURRENT_USER=$(id -u)
+    export SENZING_CURRENT_GROUP=$(id -g)
+
     sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chown $(id -u):$(id -g) ${RABBITMQ_DIR}
+    sudo chown ${SENZING_CURRENT_USER}:${SENZING_CURRENT_GROUP} ${RABBITMQ_DIR}
     sudo mkdir -p ${MSSQL_DIR}
-    sudo chown $(id -u):$(id -g) ${MSSQL_DIR}
+    sudo chown ${SENZING_CURRENT_USER}:${SENZING_CURRENT_GROUP} ${MSSQL_DIR}
     ```
 
 1. Launch docker-compose formation.
