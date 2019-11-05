@@ -238,6 +238,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml up
     ```
