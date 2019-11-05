@@ -118,16 +118,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull senzing/yum:1.1.1
     ```
 
-### Build docker images
-
-1. Build docker images.
-
-    ```console
-    sudo docker build \
-      --tag senzing/mssql-init \
-      https://github.com/senzing/docker-mssql-init.git
-    ```
-
 ## Using docker-compose
 
 ### Configuration
@@ -165,6 +155,7 @@ Identify a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
+    export SENZING_OPT_MICROSOFT_DIR=/opt/microsoft
     export SENZING_VAR_DIR=/var/opt/senzing
     ```
 
@@ -179,6 +170,7 @@ Identify a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
