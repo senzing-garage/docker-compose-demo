@@ -28,7 +28,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq}:/bitnami
+      - ${RABBITMQ_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mssql/rabbitmq}:/bitnami
 
   mockdata:
     container_name: senzing-mock-data-generator
@@ -96,7 +96,7 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   mssql-driver:
-      command:
+    command:
       - -y
       - install
       - msodbcsql17
@@ -149,7 +149,7 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
-      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-g2}:${MSSQL_PASSWORD_USERNAME:-g2}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-300}
@@ -184,7 +184,7 @@ services:
     depends_on:
       - mssql-create-senzing
     environment:
-      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-g2}:${MSSQL_PASSWORD_USERNAME:-g2}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.8}
     networks:
       - backend
