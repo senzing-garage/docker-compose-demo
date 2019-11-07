@@ -113,7 +113,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull mysql:5.7
     sudo docker pull phpmyadmin/phpmyadmin:4.9
     sudo docker pull senzing/entity-search-web-app:1.0.3
-    sudo docker pull senzing/init-container:1.3.1
+    sudo docker pull senzing/init-container:1.3.3
     sudo docker pull senzing/mock-data-generator:1.1.0
     sudo docker pull senzing/senzing-api-server:1.7.8
     sudo docker pull senzing/senzing-debug:1.2.1
