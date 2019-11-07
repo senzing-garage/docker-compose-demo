@@ -47,6 +47,7 @@ This docker formation brings up the following docker containers:
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
+    1. [Install Senzing license](#install-senzing-license)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View Kafka](#view-kafka)
@@ -200,6 +201,30 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
+    ```
+
+### Install Senzing license
+
+:thinking: **Optional:**
+Senzing comes with a trial license that supports 10,000 records.
+If this is sufficient, there is no need to install a new license
+and this step may be skipped.
+
+1. If working with more than 10,000 records,
+   [obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
+
+1. :pencil2: Identify location of `g2.lic` on local workstation.
+   Example:
+
+    ```console
+    export G2_LICENSE_PATH=/path/to/local/g2.lic
+    ```
+
+1. Copy license to volume.
+   Example:
+
+    ```console
+    sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
     ```
 
 ### Run docker formation
