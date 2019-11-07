@@ -224,7 +224,7 @@ and this step may be skipped.
    Example:
 
     ```console
-    sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}
+    sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
     ```
 
 ### Run docker formation
