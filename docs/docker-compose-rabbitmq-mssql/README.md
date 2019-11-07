@@ -110,6 +110,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
     sudo docker pull mcr.microsoft.com/mssql-tools
     sudo docker pull phpmyadmin/phpmyadmin:4.9
+    sudo docker pull senzing/apt:1.0.0
+    sudo docker pull senzing/debug:1.2.1
     sudo docker pull senzing/entity-search-web-app:1.0.3
     sudo docker pull senzing/init-container:1.4.0
     sudo docker pull senzing/mock-data-generator:1.1.0
