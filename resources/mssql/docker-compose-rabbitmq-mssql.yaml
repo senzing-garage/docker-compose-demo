@@ -142,7 +142,6 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
-      - /opt/my-senzing/opt-microsoft/msodbcsql17/etc/odbc.ini:/etc/odbc.ini
 
   debug:
     cap_add:
