@@ -300,8 +300,8 @@ and this step may be skipped.
     1. **Password:** Passw0rd
     1. **Database:** G2
 1. The records received from the queue can be viewed in the following Senzing tables:
-    1. `select DSRC_RECORD`
-    1. `select OBS_ENT`
+    1. `DSRC_RECORD`
+    1. `OBS_ENT`
 
 ### View Senzing API
 
