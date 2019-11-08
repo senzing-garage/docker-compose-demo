@@ -293,7 +293,7 @@ and this step may be skipped.
 ### View MSSQL
 
 1. MSSQL is viewable at
-   [localhost:9173](http://localhost:9173).
+   [localhost:9177](http://localhost:9177).
     1. **Defaults:** username: `g2` password: `g2`
 1. On left-hand navigation, select "G2" database to explore.
 1. The records received from the queue can be viewed in the following Senzing tables:
