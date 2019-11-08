@@ -128,9 +128,9 @@ services:
       - mssql-create-db
       - mssql-create-senzing
     environment:
-      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-g2}:${MSSQL_PASSWORD:-g2}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
+#      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.4.0}
     networks:
@@ -142,6 +142,8 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbc.ini:/etc/odbc.ini
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbcinst.ini:/etc/odbcinst.ini
 
   debug:
     cap_add:
@@ -166,7 +168,7 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
-      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-g2}:${MSSQL_PASSWORD_USERNAME:-g2}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-300}
@@ -201,7 +203,7 @@ services:
     depends_on:
       - mssql-create-senzing
     environment:
-      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-g2}:${MSSQL_PASSWORD_USERNAME:-g2}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.8}
     networks:
       - backend
