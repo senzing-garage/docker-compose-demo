@@ -294,11 +294,14 @@ and this step may be skipped.
 
 1. MSSQL is viewable at
    [localhost:9177](http://localhost:9177).
-    1. **Defaults:** username: `g2` password: `g2`
-1. On left-hand navigation, select "G2" database to explore.
+    1. **System:** MS SQL (beta)
+    1. **Server:** senzing-mysql
+    1. **Username:** sa
+    1. **Password:** Passw0rd
+    1. **Database:** G2
 1. The records received from the queue can be viewed in the following Senzing tables:
-    1. G2 > DSRC_RECORD
-    1. G2 > OBS_ENT
+    1. `select DSRC_RECORD`
+    1. `select OBS_ENT`
 
 ### View Senzing API
 
