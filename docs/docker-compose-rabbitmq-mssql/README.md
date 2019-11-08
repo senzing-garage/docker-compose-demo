@@ -111,7 +111,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull mcr.microsoft.com/mssql-tools
     sudo docker pull senzing/adminer:1.0.0
     sudo docker pull senzing/apt:1.0.0
-    sudo docker pull senzing/debug:1.2.2
     sudo docker pull senzing/entity-search-web-app:1.0.3
     sudo docker pull senzing/init-container:1.4.0
     sudo docker pull senzing/mock-data-generator:1.1.0
