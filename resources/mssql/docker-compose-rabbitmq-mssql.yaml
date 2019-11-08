@@ -119,6 +119,8 @@ services:
     environment:
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-g2}:${MSSQL_PASSWORD:-g2}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
+      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
+      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.4.0}
     networks:
       - backend
@@ -128,10 +130,14 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+      - /opt/my-senzing/opt-microsoft/msodbcsql17/etc/odbc.ini:/etc/odbc.ini
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.2.1}
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.2.2}
     networks:
       - backend
     restart: always
@@ -139,6 +145,7 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
   loader:
     container_name: senzing-stream-loader
@@ -195,6 +202,7 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
   webapp:
     container_name: senzing-webapp
