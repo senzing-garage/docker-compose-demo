@@ -361,6 +361,7 @@ In a separate (or reusable) terminal window:
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
+    sudo docker-compose --file resources/mssql/docker-compose-mssql-driver down
     sudo docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml down
     sudo docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml down
     ```
