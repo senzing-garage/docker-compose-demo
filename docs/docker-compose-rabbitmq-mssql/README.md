@@ -42,13 +42,13 @@ This docker formation brings up the following docker containers:
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
     1. [Pull docker images](#pull-docker-images)
-    1. [Build docker images](#build-docker-images)
 1. [Using docker-compose](#using-docker-compose)
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
+    1. [Install MS SQL driver](#install-ms-sql-driver)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View RabbitMQ](#view-rabbitmq)
@@ -244,6 +244,7 @@ and this step may be skipped.
       SENZING_DATA_DIR=${SENZING_DATA_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml up
     ```
