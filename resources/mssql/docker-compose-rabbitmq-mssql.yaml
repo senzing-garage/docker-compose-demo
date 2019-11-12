@@ -14,6 +14,8 @@ services:
     ports:
       - 1433:1433
     restart: always
+    volumes:
+      - ${MSSQL_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mssql/mssql}:/var/opt/mssql
 
   adminer:
     container_name: senzing-adminer
@@ -115,7 +117,7 @@ services:
     environment:
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-#      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
+      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.4.0}
     networks:
@@ -171,6 +173,7 @@ services:
     networks:
       - backend
     restart: always
+    user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -200,6 +203,7 @@ services:
     ports:
       - 8250:8250
     restart: always
+    user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
