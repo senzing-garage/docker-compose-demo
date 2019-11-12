@@ -18,10 +18,11 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
+    command:
+      - initialize-files
     depends_on:
       - mssql-driver
     environment:
-      SENZING_SUBCOMMAND: initialize-files
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.4.0}
