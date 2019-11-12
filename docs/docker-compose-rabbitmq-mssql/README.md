@@ -233,6 +233,21 @@ and this step may be skipped.
     sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
     ```
 
+### Install MS SQL driver
+
+1. Install MS SQL driver and initialize files.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml up
+    ```
+
 ### Run docker formation
 
 1. :pencil2: Set environment variables.

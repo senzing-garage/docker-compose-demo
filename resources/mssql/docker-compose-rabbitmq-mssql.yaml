@@ -1,6 +1,24 @@
 version: '3'
 services:
 
+  mssql-driver:
+    command:
+      - -y
+      - install
+      - msodbcsql17
+      - "&&"
+      - touch
+      - /opt/microsoft/msodbcsql17/etc/odbc.ini
+    container_name: senzing-mssql-driver
+    environment:
+      ACCEPT_EULA: Y
+    image: senzing/apt:${SENZING_APT_VERSION:-1.0.0}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+
   mssql:
     container_name: senzing-mssql
     environment:
@@ -79,6 +97,20 @@ services:
       - backend
     restart: on-failure
 
+#  touch-odbc-ini:
+#    command:
+#      - touch
+#      - /opt/microsoft/msodbcsql17/etc/odbc.ini
+#    container_name: senzing-touch-odbc-ini
+#    depends_on:
+#      - mssql-driver
+#    image: alpine
+#    networks:
+#      - backend
+#    restart: on-failure
+#    volumes:
+#      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+
   mssql-create-senzing:
 #   For command-line options, see https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility
     command:
@@ -105,21 +137,6 @@ services:
     restart: on-failure
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-
-  mssql-driver:
-    command:
-      - -y
-      - install
-      - msodbcsql17
-    container_name: senzing-mssql-driver
-    environment:
-      ACCEPT_EULA: Y
-    image: senzing/apt:${SENZING_APT_VERSION:-1.0.0}
-    networks:
-      - backend
-    restart: on-failure
-    volumes:
-      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
   initcontainer:
     container_name: senzing-init-container
