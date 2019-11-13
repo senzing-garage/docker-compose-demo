@@ -24,11 +24,13 @@ Arrows represent data flow.
 This docker formation brings up the following docker containers:
 
 1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
-1. *[mssql](https://github.com/microsoft/mssql-docker)*
-1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
+1. *[mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04](https://github.com/Microsoft/mssql-docker)*
+1. *[mcr.microsoft.com/mssql-tools](https://github.com/Microsoft/mssql-docker)*
+1. *[senzing/adminer](https://github.com/Senzing/docker-adminer)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
-1. *FIXME: [senzing/mssql-init](FIXME:)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 
@@ -51,12 +53,15 @@ This docker formation brings up the following docker containers:
     1. [Install MS SQL driver](#install-ms-sql-driver)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
+    1. [View docker containers](#view-docker-containers)
     1. [View RabbitMQ](#view-rabbitmq)
     1. [View MSSQL](#view-mssql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 1. [Re-run docker formation](#re-run-docker-formation)
+1. [Notes](#notes)
+    1. [Running non-root](#running-non-root)
 
 ## Expectations
 
@@ -114,7 +119,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull senzing/entity-search-web-app:1.0.3
     sudo docker pull senzing/init-container:1.4.0
     sudo docker pull senzing/mock-data-generator:1.1.0
-    sudo docker pull senzing/senzing-api-server:1.7.8
+    sudo docker pull senzing/senzing-api-server:1.7.9
     sudo docker pull senzing/senzing-debug:1.2.2
     sudo docker pull senzing/stream-loader:1.3.0
     sudo docker pull senzing/yum:1.1.2
@@ -141,7 +146,6 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
 
@@ -158,7 +162,6 @@ Identify a folder for each output directory.
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
     export SENZING_OPT_MICROSOFT_DIR=/opt/microsoft
-    export SENZING_VAR_DIR=/var/opt/senzing
     ```
 
 1. :pencil2: **Example #2:**
@@ -173,7 +176,6 @@ Identify a folder for each output directory.
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
 ### EULA
@@ -205,7 +207,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       SENZING_DATA_DIR=${SENZING_DATA_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
@@ -245,7 +246,6 @@ and this step may be skipped.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml up
     ```
 
@@ -281,7 +281,6 @@ and this step may be skipped.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml up
     ```
 
@@ -396,7 +395,6 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml up
     ```
 
