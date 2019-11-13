@@ -35,7 +35,7 @@ The following table indicates the instructions for variations in components.
     | Queue    | Database   | Instructions | docker-compose.yaml |
     |----------|------------|:------------:|---------------------|
     | Kafka    | Db2        | [:page_facing_up:](docs/docker-compose-kafka-db2/README.md)           | [docker-compose-kafka-db2.yaml](resources/db2/docker-compose-kafka-db2.yaml) |
-    | Kafka    | MSSQL      | [:page_facing_up:](docs/docker-compose-kafka-mssql/README.md)         | [docker-compose-kafka-mssql.yaml](resources/mssql/docker-compose-kafka-mysql.yaml) |
+    | Kafka    | MSSQL      | [:page_facing_up:](docs/docker-compose-kafka-mssql/README.md)         | [docker-compose-kafka-mssql.yaml](resources/mssql/docker-compose-kafka-mssql.yaml) |
     | Kafka    | MySQL      | [:page_facing_up:](docs/docker-compose-kafka-mysql/README.md)         | [docker-compose-kafka-mysql.yaml](resources/mysql/docker-compose-kafka-mysql.yaml) |
     | Kafka    | PostgreSQL | [:page_facing_up:](docs/docker-compose-kafka-postgresql/README.md)    | [docker-compose-kafka-postgresql.yaml](resources/postgresql/docker-compose-kafka-postgresql.yaml) |
     | Kafka    | SQLite     | [:page_facing_up:](docs/docker-compose-kafka-sqlite/README.md)        | [docker-compose-kafka-sqlite.yaml](resources/sqlite/docker-compose-kafka-sqlite.yaml) |
