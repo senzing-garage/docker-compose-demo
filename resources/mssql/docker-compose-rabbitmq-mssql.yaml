@@ -173,7 +173,7 @@ services:
     networks:
       - backend
     restart: always
-    user: "0"
+    user: "65534"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -203,7 +203,7 @@ services:
     ports:
       - 8250:8250
     restart: always
-    user: "0"
+    user: "65534"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
