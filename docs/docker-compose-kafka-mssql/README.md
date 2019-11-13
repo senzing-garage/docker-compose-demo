@@ -45,13 +45,13 @@ This docker formation brings up the following docker containers:
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
     1. [Pull docker images](#pull-docker-images)
-    1. [Build docker images](#build-docker-images)
 1. [Using docker-compose](#using-docker-compose)
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
+    1. [Install MS SQL driver](#install-ms-sql-driver)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View docker containers](#view-docker-containers)
@@ -146,6 +146,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_OPT_MICROSOFT_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_opt_microsoft_dir)**
 
 ### Volumes
 
