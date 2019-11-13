@@ -114,7 +114,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     ```console
     sudo docker pull bitnami/kafka:2.3.1
     sudo docker pull bitnami/zookeeper:3.5.6
-    sudo docker pull kafkamanager/kafka-manager:2.0.0.2   
+    sudo docker pull kafkamanager/kafka-manager:2.0.0.2
     sudo docker pull mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
     sudo docker pull mcr.microsoft.com/mssql-tools
     sudo docker pull senzing/adminer:1.0.0
@@ -256,6 +256,14 @@ and this step may be skipped.
 
     ```console
     export MSSQL_DIR=/storage/docker/senzing/docker-compose-kafka-mssql/mssql
+    ```
+
+1. Create directories.
+   Example:
+
+    ```console
+    sudo mkdir -p ${MSSQL_DIR}
+    sudo chmod 777 ${MSSQL_DIR}
     ```
 
 1. Launch docker-compose formation.
