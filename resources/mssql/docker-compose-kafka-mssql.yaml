@@ -157,6 +157,8 @@ services:
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbcinst.ini:/etc/odbcinst.ini
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.2.2}
     networks:

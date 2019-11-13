@@ -87,6 +87,8 @@ services:
     restart: on-failure
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.2.2}
     networks:
@@ -104,7 +106,6 @@ services:
     container_name: senzing-stream-loader
     depends_on:
       - kafka
-      - mssql-create-senzing
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
@@ -138,8 +139,6 @@ services:
       - /etc/opt/senzing/G2Module.ini
       - -allowedOrigins
       - "*"
-    depends_on:
-      - mssql-create-senzing
     environment:
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.9}

@@ -133,6 +133,8 @@ services:
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbcinst.ini:/etc/odbcinst.ini
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.2.2}
     networks:
@@ -153,7 +155,6 @@ services:
       - mssql-create-senzing
     environment:
       LC_CTYPE: en_US.utf8
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
