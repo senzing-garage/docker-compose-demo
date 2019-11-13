@@ -1,0 +1,40 @@
+version: '3'
+services:
+
+  mssql-driver:
+    command:
+      - -y
+      - install
+      - msodbcsql17
+    container_name: senzing-mssql-driver
+    environment:
+      ACCEPT_EULA: Y
+    image: senzing/apt:${SENZING_APT_VERSION:-1.0.0}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+
+  initcontainer:
+    container_name: senzing-init-container
+    command:
+      - initialize-files
+    depends_on:
+      - mssql-driver
+    environment:
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 30
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.4.0}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+
+networks:
+  backend:

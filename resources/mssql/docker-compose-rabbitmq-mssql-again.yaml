@@ -1,0 +1,156 @@
+version: '3'
+services:
+
+  mssql:
+    container_name: senzing-mssql
+    environment:
+#     See https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables
+      ACCEPT_EULA: ${ACCEPT_EULA:-Y}
+      MSSQL_PID: ${MSSQL_PID:-Developer}
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
+    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    networks:
+      - backend
+    ports:
+      - 1433:1433
+    restart: always
+    volumes:
+      - ${MSSQL_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mssql/mssql}:/var/opt/mssql
+
+  adminer:
+    container_name: senzing-adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: senzing-mssql
+    image: senzing/adminer:${SENZING_ADMINER_VERSION:-1.0.0}
+    networks:
+      - backend
+    ports:
+      - 9177:8080
+    restart: always
+
+  rabbitmq:
+    container_name: senzing-rabbitmq
+    environment:
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+    image: bitnami/rabbitmq:3.8.0
+    networks:
+      - backend
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+    volumes:
+      - ${RABBITMQ_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mssql/rabbitmq}:/bitnami
+
+  mockdata:
+    container_name: senzing-mock-data-generator
+    depends_on:
+      - rabbitmq
+    environment:
+#     See https://github.com/Senzing/docker-mock-data-generator#configuration
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RECORD_MAX: 10000
+      SENZING_RECORD_MONITOR: 1000
+      SENZING_SUBCOMMAND: url-to-rabbitmq
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
+    networks:
+      - backend
+    restart: on-failure
+
+  debug:
+    cap_add:
+      - ALL
+    container_name: senzing-debug
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.2.2}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbc.ini:/etc/odbc.ini
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbcinst.ini:/etc/odbcinst.ini
+
+  loader:
+    container_name: senzing-stream-loader
+    depends_on:
+      - rabbitmq
+    environment:
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/stream-loader#configuration
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-300}
+      SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_SUBCOMMAND: rabbitmq
+      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-1}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.3.0}
+    networks:
+      - backend
+    restart: always
+    user: "65534"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbc.ini:/etc/odbc.ini
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbcinst.ini:/etc/odbcinst.ini
+
+  api:
+    container_name: senzing-api-server
+    command:
+      - -httpPort
+      - "8250"
+      - -bindAddr
+      - all
+      - -iniFile
+      - /etc/opt/senzing/G2Module.ini
+      - -allowedOrigins
+      - "*"
+    environment:
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.9}
+    networks:
+      - backend
+    ports:
+      - 8250:8250
+    restart: always
+    user: "65534"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbc.ini:/etc/odbc.ini
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbcinst.ini:/etc/odbcinst.ini
+
+  webapp:
+    container_name: senzing-webapp
+    depends_on:
+      - api
+    environment:
+      SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
+      SENZING_WEB_SERVER_PORT: 8251
+    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.0.3}
+    networks:
+      - backend
+    ports:
+      - 8251:8251
+    restart: always
+
+networks:
+  backend:
