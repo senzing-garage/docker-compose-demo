@@ -395,6 +395,7 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
       docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml up
     ```
 

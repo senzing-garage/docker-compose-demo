@@ -82,7 +82,6 @@ services:
     container_name: senzing-stream-loader
     depends_on:
       - rabbitmq
-      - mssql-create-senzing
     environment:
       LC_CTYPE: en_US.utf8
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
@@ -123,8 +122,6 @@ services:
       - /etc/opt/senzing/G2Module.ini
       - -allowedOrigins
       - "*"
-    depends_on:
-      - mssql-create-senzing
     environment:
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.9}
