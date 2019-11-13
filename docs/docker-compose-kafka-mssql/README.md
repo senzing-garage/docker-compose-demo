@@ -1,10 +1,10 @@
-# docker-compose-kafka-mysql
+# docker-compose-kafka-mssql
 
 ## Overview
 
 This repository illustrates a reference implementation of Senzing using
 Kafka as the queue and
-MySQL as the underlying database.
+MSSQL as the underlying database.
 
 The instructions show how to set up a system that:
 
@@ -12,7 +12,7 @@ The instructions show how to set up a system that:
 1. Sends each JSON line to a message queue.
     1. In this implementation, the queue is Kafka.
 1. Reads messages from the queue and inserts into Senzing.
-    1. In this implementation, Senzing keeps its data in a MySQL database.
+    1. In this implementation, Senzing keeps its data in a MSSQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
@@ -25,11 +25,13 @@ This docker formation brings up the following docker containers:
 
 1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
 1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
-1. *[mysql](https://github.com/docker-library/mysql)*
-1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
+1. *[mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04](https://github.com/Microsoft/mssql-docker)*
+1. *[mcr.microsoft.com/mssql-tools](https://github.com/Microsoft/mssql-docker)*
+1. *[senzing/adminer](https://github.com/Senzing/docker-adminer)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
-1. *[senzing/mysql-init](https://github.com/Senzing/docker-mysql-init)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 
@@ -52,12 +54,15 @@ This docker formation brings up the following docker containers:
     1. [Install Senzing license](#install-senzing-license)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
+    1. [View docker containers](#view-docker-containers)
     1. [View Kafka](#view-kafka)
-    1. [View MySQL](#view-mysql)
+    1. [View MSSQL](#view-mssql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 1. [Re-run docker formation](#re-run-docker-formation)
+1. [Notes](#notes)
+    1. [Running non-root](#running-non-root)
 
 ## Expectations
 
@@ -109,26 +114,18 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     ```console
     sudo docker pull bitnami/kafka:2.3.1
     sudo docker pull bitnami/zookeeper:3.5.6
-    sudo docker pull kafkamanager/kafka-manager:2.0.0.2
-    sudo docker pull mysql:5.7
-    sudo docker pull phpmyadmin/phpmyadmin:4.9
+    sudo docker pull kafkamanager/kafka-manager:2.0.0.2   
+    sudo docker pull mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    sudo docker pull mcr.microsoft.com/mssql-tools
+    sudo docker pull senzing/adminer:1.0.0
+    sudo docker pull senzing/apt:1.0.0
     sudo docker pull senzing/entity-search-web-app:1.0.3
-    sudo docker pull senzing/init-container:1.3.3
+    sudo docker pull senzing/init-container:1.4.0
     sudo docker pull senzing/mock-data-generator:1.1.0
-    sudo docker pull senzing/senzing-api-server:1.7.8
-    sudo docker pull senzing/senzing-debug:1.2.1
-    sudo docker pull senzing/stream-loader:1.2.1
-    sudo docker pull senzing/yum:1.1.1
-    ```
-
-### Build docker images
-
-1. Build docker images.
-
-    ```console
-    sudo docker build \
-      --tag senzing/mysql-init \
-      https://github.com/senzing/docker-mysql-init.git
+    sudo docker pull senzing/senzing-api-server:1.7.9
+    sudo docker pull senzing/senzing-debug:1.2.2
+    sudo docker pull senzing/stream-loader:1.3.0
+    sudo docker pull senzing/yum:1.1.2
     ```
 
 ## Using docker-compose
@@ -137,11 +134,11 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 Configuration values specified by environment variable or command line parameter.
 
-- **[MYSQL_DATABASE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_database)**
-- **[MYSQL_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_dir)**
-- **[MYSQL_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_passwrod)**
-- **[MYSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_root-password)**
-- **[MYSQL_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mysql_username)**
+- **[MSSQL_DATABASE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mssql_database)**
+- **[MSSQL_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mssql_dir)**
+- **[MSSQL_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mssql_passwrod)**
+- **[MSSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mssql_root-password)**
+- **[MSSQL_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#mssql_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
 - **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
@@ -149,7 +146,6 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
 
@@ -165,7 +161,7 @@ Identify a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
-    export SENZING_VAR_DIR=/var/opt/senzing
+    export SENZING_OPT_MICROSOFT_DIR=/opt/microsoft
     ```
 
 1. :pencil2: **Example #2:**
@@ -179,7 +175,7 @@ Identify a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
     ```
 
 ### EULA
@@ -211,7 +207,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       SENZING_DATA_DIR=${SENZING_DATA_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
@@ -239,13 +234,28 @@ and this step may be skipped.
     sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
     ```
 
+### Install MS SQL driver
+
+1. Install MS SQL driver and initialize files.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
+      docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml up
+    ```
+
 ### Run docker formation
 
 1. :pencil2: Set environment variables.
    Example:
 
     ```console
-    export MYSQL_DIR=/storage/docker/senzing/docker-compose-kafka-mysql/mysql
+    export MSSQL_DIR=/storage/docker/senzing/docker-compose-kafka-mssql/mssql
     ```
 
 1. Launch docker-compose formation.
@@ -254,12 +264,12 @@ and this step may be skipped.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      MYSQL_DIR=${MYSQL_DIR} \
+      MSSQL_DIR=${MSSQL_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/mysql/docker-compose-kafka-mysql.yaml up
+      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
+      docker-compose --file resources/mssql/docker-compose-kafka-mssql.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -268,7 +278,7 @@ and this step may be skipped.
 
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
-   [docker-compose-kafka-mysql.yaml](../../resources/mysql/docker-compose-kafka-mysql.yaml).
+   [docker-compose-kafka-mssql.yaml](../../resources/mssql/docker-compose-kafka-mssql.yaml).
 
 ### View docker containers
 
@@ -282,15 +292,18 @@ and this step may be skipped.
 1. Kafka is viewable at
    [localhost:9175](http://localhost:9175).
 
-### View MySQL
+### View MSSQL
 
-1. MySQL is viewable at
-   [localhost:9173](http://localhost:9173).
-    1. **Defaults:** username: `g2` password: `g2`
-1. On left-hand navigation, select "G2" database to explore.
+1. MSSQL is viewable at
+   [localhost:9177](http://localhost:9177).
+    1. **System:** MS SQL (beta)
+    1. **Server:** senzing-mysql
+    1. **Username:** sa
+    1. **Password:** Passw0rd
+    1. **Database:** G2
 1. The records received from the queue can be viewed in the following Senzing tables:
-    1. G2 > DSRC_RECORD
-    1. G2 > OBS_ENT
+    1. `DSRC_RECORD`
+    1. `OBS_ENT`
 
 ### View Senzing API
 
@@ -334,14 +347,15 @@ In a separate (or reusable) terminal window:
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/mysql/docker-compose-kafka-mysql.yaml down
-    sudo docker-compose --file resources/mysql/docker-compose-kafka-mysql-again.yaml down
+    sudo docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml down
+    sudo docker-compose --file resources/mssql/docker-compose-kafka-mssql.yaml down
+    sudo docker-compose --file resources/mssql/docker-compose-kafka-mssql-again.yaml down
     ```
 
 1. Delete storage.
 
     ```console
-    sudo rm -rf ${MYSQL_DIR}
+    sudo rm -rf ${MSSQL_DIR}
     ```
 
 1. Delete git repository.
@@ -362,10 +376,23 @@ The following shows how to bring up the prior docker formation again without ini
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      MYSQL_DIR=${MYSQL_DIR} \
+      MSSQL_DIR=${MSSQL_DIR} \
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/mysql/docker-compose-kafka-mysql-again.yaml up
+      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
+      docker-compose --file resources/mssql/docker-compose-kafka-mssql-again.yaml up
     ```
+
+## Notes
+
+### Running non-root
+
+1. The `senzing/stream-loader` and `senzing/senzing-api-server` containers are run under user `nobody` (65534).
+   The reason for this is that a UID need to be selected that has a "home" directory when using ODBC.
+   Rather than "hard-coding" docker images with a specific userid, an existing non-root userid is used.
+   This is a known issue:
+    1. [github.com/microsoft/mssql-docker/issues/431](https://github.com/microsoft/mssql-docker/issues/431).
+1. The practice of "hard-coding" docker images with a specific userid, specifically the use of `useradd`,
+   are problematic with system like OpenShift which determine the UID of a docker container based on the project.
+   See [OpenShift: Why do my applications run as a random user ID?](https://cookbook.openshift.org/users-and-role-based-access-control/why-do-my-applications-run-as-a-random-user-id.html)
