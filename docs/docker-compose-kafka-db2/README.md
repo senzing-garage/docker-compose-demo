@@ -136,7 +136,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_ibm_dir)**
+- **[SENZING_OPT_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_opt_ibm_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
@@ -153,7 +153,7 @@ Identify a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
-    export SENZING_IBM_DIR=/opt/IBM
+    export SENZING_OPT_IBM_DIR=/opt/IBM
     export SENZING_VAR_DIR=/var/opt/senzing
     ```
 
@@ -168,7 +168,7 @@ Identify a folder for each output directory.
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_IBM_DIR=${SENZING_VOLUME}/IBM
+    export SENZING_OPT_IBM_DIR=${SENZING_VOLUME}/opt-ibm
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
@@ -250,7 +250,7 @@ and this step may be skipped.
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_IBM_DIR=${SENZING_IBM_DIR} \
+      SENZING_OPT_IBM_DIR=${SENZING_OPT_IBM_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
@@ -350,7 +350,7 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_IBM_DIR=${SENZING_IBM_DIR} \
+      SENZING_OPT_IBM_DIR=${SENZING_OPT_IBM_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/db2/docker-compose-kafka-db2-again.yaml up
     ```
