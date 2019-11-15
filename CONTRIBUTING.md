@@ -83,7 +83,7 @@ The variables are used throughout the installation procedure.
 
 ```console
 export GIT_ACCOUNT=senzing
-export GIT_REPOSITORY=docker-compose-stream-loader-kafka-demo
+export GIT_REPOSITORY=docker-compose-demo
 ```
 
 Synthesize environment variables.
