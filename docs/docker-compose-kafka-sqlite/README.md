@@ -55,6 +55,16 @@ This docker formation brings up the following docker containers:
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 1. [Re-run docker formation](#re-run-docker-formation)
+1. [Notes](#notes)
+    1. [Running non-root](#running-non-root)
+
+### Legend
+
+1. :thinking: - A "thinker" icon means that a little extra thinking may be required.
+   Perhaps you'll need to make some choices.
+   Perhaps it's an optional step.
+1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
+1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
 ## Expectations
 
@@ -137,7 +147,7 @@ Configuration values specified by environment variable or command line parameter
 :thinking: The output of `yum install senzingapi` places files in different directories.
 Identify a folder for each output directory.
 
-1. :pencil2: **Example #1:**
+1. **Example #1:**
    To mimic an actual RPM installation,
    identify directories for RPM output in this manner:
 
@@ -161,6 +171,13 @@ Identify a folder for each output directory.
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    ```
+
+1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
+   Example:
+
+    ```console
+    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
     ```
 
 ### EULA
@@ -317,7 +334,8 @@ In a separate (or reusable) terminal window:
 ## Re-run docker formation
 
 :thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again by the same command.
+the docker formation can be brought up again without requiring initialization steps.
+The following shows how to bring up the prior docker formation again without initialization.
 
 1. Launch docker-compose formation.
    Example:
@@ -331,3 +349,16 @@ the docker formation can be brought up again by the same command.
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/sqlite/docker-compose-kafka-sqlite.yaml up
     ```
+
+## Notes
+
+### Running non-root
+
+1. The `senzing/stream-loader` and `senzing/senzing-api-server` containers are run under user `nobody` (65534).
+   The reason for this is that a UID need to be selected that has a "home" directory when using ODBC.
+   Rather than "hard-coding" docker images with a specific userid, an existing non-root userid is used.
+   This is a known issue:
+    1. [github.com/microsoft/mssql-docker/issues/431](https://github.com/microsoft/mssql-docker/issues/431).
+1. The practice of "hard-coding" docker images with a specific userid, specifically the use of `useradd`,
+   are problematic with system like OpenShift which determine the UID of a docker container based on the project.
+   See [OpenShift: Why do my applications run as a random user ID?](https://cookbook.openshift.org/users-and-role-based-access-control/why-do-my-applications-run-as-a-random-user-id.html)
