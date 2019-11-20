@@ -64,6 +64,14 @@ This docker formation brings up the following docker containers:
 1. [Notes](#notes)
     1. [Running non-root](#running-non-root)
 
+### Legend
+
+1. :thinking: - A "thinker" icon means that a little extra thinking may be required.
+   Perhaps you'll need to make some choices.
+   Perhaps it's an optional step.
+1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
+1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
+
 ## Expectations
 
 ### Space
@@ -153,7 +161,7 @@ Configuration values specified by environment variable or command line parameter
 :thinking: The output of `yum install senzingapi` places files in different directories.
 Identify a folder for each output directory.
 
-1. :pencil2: **Example #1:**
+1. **Example #1:**
    To mimic an actual RPM installation,
    identify directories for RPM output in this manner:
 
