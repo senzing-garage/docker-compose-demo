@@ -259,7 +259,9 @@ and this step may be skipped.
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml down
+    sudo docker-compose \
+      --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml \
+      down
     ```
 
 1. Copy database templates.
@@ -314,7 +316,7 @@ and this step may be skipped.
 
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
-   [docker-compose-rabbitmq-sqlite.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite.yaml).
+   [docker-compose-rabbitmq-sqlite-cluster.yaml](../../resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml).
 
 ### View docker containers
 
