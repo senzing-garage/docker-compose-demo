@@ -376,6 +376,8 @@ and this step may be skipped.
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
+    1. Example entity:
+       [localhost:8251/entity/1](http://localhost:8251/entity/1).
 
 1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
