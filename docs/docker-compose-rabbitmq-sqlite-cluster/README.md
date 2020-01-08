@@ -174,8 +174,6 @@ Identify a folder for each output directory.
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
-
-
 ### EULA
 
 To use the Senzing code, you must agree to the End User License Agreement (EULA).
@@ -252,7 +250,7 @@ and this step may be skipped.
    Example:
 
     ```console
-    senzing-init-container | 2020-01-08 19:13:45,098 senzing-50070298I Exit ...
+    senzing-init-container | yyyy-mm-dd hh:mm:ss,uuu senzing-50070298I Exit ...
     senzing-init-container exited with code 0
     ```
 
@@ -333,11 +331,20 @@ and this step may be skipped.
 
 ### View SQLite
 
-1. SQLite is viewable at
+1. SQLite for `G2C.db` is viewable at
    [localhost:9174](http://localhost:9174).
 1. The records received from the queue can be viewed in the following Senzing tables:
-    1. G2 > DSRC_RECORD
-    1. G2 > OBS_ENT
+    1. DSRC_RECORD
+    1. OBS_ENT
+1. SQLite for `G2C_LIBFEAT.db` is viewable at
+   [localhost:9175](http://localhost:9175).
+1. The records received from the queue can be viewed in the following Senzing tables:
+    1. LIB_FEAT
+1. SQLite for `G2C_RES.db`is viewable at
+   [localhost:9176](http://localhost:9176).
+1. The records received from the queue can be viewed in the following Senzing tables:
+    1. RES_FEAT_STAT
+    1. RES_FEAT_EKEY
 
 ### View Senzing API
 
