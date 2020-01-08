@@ -417,7 +417,7 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
+      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml up
     ```
 
 ## Notes
