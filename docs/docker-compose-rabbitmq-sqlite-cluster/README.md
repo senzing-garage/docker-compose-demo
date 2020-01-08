@@ -254,16 +254,6 @@ and this step may be skipped.
     senzing-init-container exited with code 0
     ```
 
-1. Bring down docker formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose \
-      --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml \
-      down
-    ```
-
 1. Copy database templates.
    Example:
 
@@ -392,7 +382,15 @@ In a separate (or reusable) terminal window:
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml down
+    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml down
+    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml down
+    ```
+
+1. Bring down docker formation.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
     ```
 
 1. Delete storage.
