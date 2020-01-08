@@ -377,20 +377,15 @@ and this step may be skipped.
 In a separate (or reusable) terminal window:
 
 1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
-1. Run `docker-compose` command.
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml down
-    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml down
-    ```
 
 1. Bring down docker formation.
    Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
+    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml down
+    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml down
     ```
 
 1. Delete storage.
