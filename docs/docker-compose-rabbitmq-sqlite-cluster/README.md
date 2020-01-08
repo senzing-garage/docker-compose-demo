@@ -174,12 +174,7 @@ Identify a folder for each output directory.
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
-1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
-   Example:
 
-    ```console
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
-    ```
 
 ### EULA
 
@@ -254,7 +249,12 @@ and this step may be skipped.
     ```
 
 1. Wait for completion.
-   **FIXME:** Describe when.
+   Example:
+
+    ```console
+    senzing-init-container | 2020-01-08 19:13:45,098 senzing-50070298I Exit ...
+    senzing-init-container exited with code 0
+    ```
 
 1. Bring down docker formation.
    Example:
@@ -268,7 +268,15 @@ and this step may be skipped.
    Example:
 
     ```console
-    cp ${SENZING_VAR_DIR}/
+    cp ${SENZING_VAR_DIR}/sqlite/G2C.db  ${SENZING_VAR_DIR}/sqlite/G2C_RES.db
+    cp ${SENZING_VAR_DIR}/sqlite/G2C.db  ${SENZING_VAR_DIR}/sqlite/G2C_LIBFEAT.db
+    ```
+
+1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
+   Example:
+
+    ```console
+    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
     ```
 
 ### Run docker formation
@@ -299,7 +307,7 @@ and this step may be skipped.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
+      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
