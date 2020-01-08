@@ -35,19 +35,6 @@ services:
       - backend
     restart: on-failure
 
-  initcontainer:
-    container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.3.3}
-    networks:
-      - backend
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
   debug:
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.2.1}
@@ -125,7 +112,7 @@ services:
     restart: always
 
   sqliteweb:
-    container_name: senzing-sqlite-web
+    container_name: senzing-sqlite-web-1
     depends_on:
       - initcontainer
     environment:

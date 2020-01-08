@@ -1,4 +1,4 @@
-# docker-compose-rabbitmq-sqlite
+# docker-compose-rabbitmq-sqlite-cluster
 
 ## Overview
 
@@ -46,6 +46,7 @@ This docker formation brings up the following docker containers:
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
+    1. [Prepare database cluster](#prepare-database-cluster)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View RabbitMQ](#view-rabbitmq)
@@ -235,6 +236,39 @@ and this step may be skipped.
 
     ```console
     sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
+    ```
+
+### Prepare database cluster
+
+1. Initialize Senzing environment.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
+      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
+      SENZING_G2_DIR=${SENZING_G2_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml up
+    ```
+
+1. Wait for completion.
+   **FIXME:** Describe when.
+
+1. Bring down docker formation.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml down
+    ```
+
+1. Copy database templates.
+   Example:
+
+    ```console
+    cp ${SENZING_VAR_DIR}/
     ```
 
 ### Run docker formation
