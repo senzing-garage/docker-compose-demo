@@ -207,6 +207,13 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
+1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
+   Example:
+
+    ```console
+    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
+    ```
+
 ### Install Senzing license
 
 :thinking: **Optional:**
@@ -229,44 +236,6 @@ and this step may be skipped.
 
     ```console
     sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
-    ```
-
-### Prepare database cluster
-
-1. Initialize Senzing environment.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml up
-    ```
-
-1. Wait for completion.
-   Example:
-
-    ```console
-    senzing-init-container | yyyy-mm-dd hh:mm:ss,uuu senzing-50070298I Exit ...
-    senzing-init-container exited with code 0
-    ```
-
-1. Copy database templates.
-   Example:
-
-    ```console
-    cp ${SENZING_VAR_DIR}/sqlite/G2C.db  ${SENZING_VAR_DIR}/sqlite/G2C_RES.db
-    cp ${SENZING_VAR_DIR}/sqlite/G2C.db  ${SENZING_VAR_DIR}/sqlite/G2C_LIBFEAT.db
-    ```
-
-1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
-   Example:
-
-    ```console
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
     ```
 
 ### Run docker formation
