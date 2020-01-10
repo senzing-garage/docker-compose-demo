@@ -154,6 +154,8 @@ services:
 
   sqliteweb1:
     container_name: senzing-sqlite-web-1
+    depends_on:
+      - initcontainer
     environment:
       SQLITE_DATABASE: G2C.db
     image: coleifer/sqlite-web:latest
@@ -167,6 +169,8 @@ services:
 
   sqliteweb2:
     container_name: senzing-sqlite-web-2
+    depends_on:
+      - initcontainer
     environment:
       SQLITE_DATABASE: G2C_LIBFEAT.db
     image: coleifer/sqlite-web:latest
@@ -180,6 +184,8 @@ services:
 
   sqliteweb3:
     container_name: senzing-sqlite-web-3
+    depends_on:
+      - initcontainer
     environment:
       SQLITE_DATABASE: G2C_RES.db
     image: coleifer/sqlite-web:latest
