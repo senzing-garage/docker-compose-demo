@@ -381,5 +381,5 @@ the docker formation can be brought up again.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml up
+      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml up
     ```
