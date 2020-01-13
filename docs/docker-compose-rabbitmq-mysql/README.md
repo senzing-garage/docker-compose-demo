@@ -57,8 +57,6 @@ This docker formation brings up the following docker containers:
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 1. [Re-run docker formation](#re-run-docker-formation)
-1. [Notes](#notes)
-    1. [Running non-root](#running-non-root)
 
 ### Legend
 
@@ -392,16 +390,3 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/mysql/docker-compose-rabbitmq-mysql-again.yaml up
     ```
-
-## Notes
-
-### Running non-root
-
-1. The `senzing/stream-loader` and `senzing/senzing-api-server` containers are run under user `nobody` (65534).
-   The reason for this is that a UID need to be selected that has a "home" directory when using ODBC.
-   Rather than "hard-coding" docker images with a specific userid, an existing non-root userid is used.
-   This is a known issue:
-    1. [github.com/microsoft/mssql-docker/issues/431](https://github.com/microsoft/mssql-docker/issues/431).
-1. The practice of "hard-coding" docker images with a specific userid, specifically the use of `useradd`,
-   are problematic with system like OpenShift which determine the UID of a docker container based on the project.
-   See [OpenShift: Why do my applications run as a random user ID?](https://cookbook.openshift.org/users-and-role-based-access-control/why-do-my-applications-run-as-a-random-user-id.html)

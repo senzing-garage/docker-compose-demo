@@ -46,7 +46,6 @@ This docker formation brings up the following docker containers:
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
-    1. [Prepare database cluster](#prepare-database-cluster)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View RabbitMQ](#view-rabbitmq)
@@ -55,8 +54,6 @@ This docker formation brings up the following docker containers:
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 1. [Re-run docker formation](#re-run-docker-formation)
-1. [Notes](#notes)
-    1. [Running non-root](#running-non-root)
 
 ### Legend
 
@@ -117,11 +114,11 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull bitnami/rabbitmq:3.8.0
     sudo docker pull coleifer/sqlite-web:latest
     sudo docker pull senzing/entity-search-web-app:1.0.3
-    sudo docker pull senzing/init-container:1.3.3
+    sudo docker pull senzing/init-container:1.4.2
     sudo docker pull senzing/mock-data-generator:1.1.0
     sudo docker pull senzing/senzing-api-server:1.7.8
     sudo docker pull senzing/senzing-debug:1.2.1
-    sudo docker pull senzing/stream-loader:1.2.1
+    sudo docker pull senzing/stream-loader:1.3.1
     sudo docker pull senzing/yum:1.1.1
     ```
 
@@ -138,6 +135,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
 - **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
 - **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ENGINE_CONFIGURATION_JSON](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_engine_configuration_json)**
 - **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
@@ -346,14 +344,12 @@ and this step may be skipped.
 In a separate (or reusable) terminal window:
 
 1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
-
 1. Bring down docker formation.
    Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster-init.yaml down
     sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml down
     ```
 
@@ -372,8 +368,7 @@ In a separate (or reusable) terminal window:
 ## Re-run docker formation
 
 :thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again without requiring initialization steps.
-The following shows how to bring up the prior docker formation again without initialization.
+the docker formation can be brought up again.
 
 1. Launch docker-compose formation.
    Example:
@@ -386,18 +381,5 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml up
+      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml up
     ```
-
-## Notes
-
-### Running non-root
-
-1. The `senzing/stream-loader` and `senzing/senzing-api-server` containers are run under user `nobody` (65534).
-   The reason for this is that a UID need to be selected that has a "home" directory when using ODBC.
-   Rather than "hard-coding" docker images with a specific userid, an existing non-root userid is used.
-   This is a known issue:
-    1. [github.com/microsoft/mssql-docker/issues/431](https://github.com/microsoft/mssql-docker/issues/431).
-1. The practice of "hard-coding" docker images with a specific userid, specifically the use of `useradd`,
-   are problematic with system like OpenShift which determine the UID of a docker container based on the project.
-   See [OpenShift: Why do my applications run as a random user ID?](https://cookbook.openshift.org/users-and-role-based-access-control/why-do-my-applications-run-as-a-random-user-id.html)
