@@ -54,8 +54,6 @@ This docker formation brings up the following docker containers:
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 1. [Re-run docker formation](#re-run-docker-formation)
-1. [Notes](#notes)
-    1. [Running non-root](#running-non-root)
 
 ### Legend
 
@@ -173,13 +171,6 @@ Identify a folder for each output directory.
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
-1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
-   Example:
-
-    ```console
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
-    ```
-
 ### EULA
 
 To use the Senzing code, you must agree to the End User License Agreement (EULA).
@@ -211,6 +202,13 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
+    ```
+
+1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
+   Example:
+
+    ```console
+    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
     ```
 
 ### Install Senzing license
@@ -291,7 +289,7 @@ and this step may be skipped.
 
 ### View SQLite
 
-1. SQLite is viewable at
+1. SQLite for `G2C.db` is viewable at
    [localhost:9174](http://localhost:9174).
 1. The records received from the queue can be viewed in the following Senzing tables:
     1. G2 > DSRC_RECORD
@@ -325,6 +323,8 @@ and this step may be skipped.
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
+    1. Example entity:
+       [localhost:8251/entity/1](http://localhost:8251/entity/1).
 
 1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
@@ -334,7 +334,8 @@ and this step may be skipped.
 In a separate (or reusable) terminal window:
 
 1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
-1. Run `docker-compose` command.
+1. Bring down docker formation.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
@@ -373,16 +374,3 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
     ```
-
-## Notes
-
-### Running non-root
-
-1. The `senzing/stream-loader` and `senzing/senzing-api-server` containers are run under user `nobody` (65534).
-   The reason for this is that a UID need to be selected that has a "home" directory when using ODBC.
-   Rather than "hard-coding" docker images with a specific userid, an existing non-root userid is used.
-   This is a known issue:
-    1. [github.com/microsoft/mssql-docker/issues/431](https://github.com/microsoft/mssql-docker/issues/431).
-1. The practice of "hard-coding" docker images with a specific userid, specifically the use of `useradd`,
-   are problematic with system like OpenShift which determine the UID of a docker container based on the project.
-   See [OpenShift: Why do my applications run as a random user ID?](https://cookbook.openshift.org/users-and-role-based-access-control/why-do-my-applications-run-as-a-random-user-id.html)
