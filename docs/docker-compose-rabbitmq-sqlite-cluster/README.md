@@ -368,8 +368,7 @@ In a separate (or reusable) terminal window:
 ## Re-run docker formation
 
 :thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again without requiring initialization steps.
-The following shows how to bring up the prior docker formation again without initialization.
+the docker formation can be brought up again.
 
 1. Launch docker-compose formation.
    Example:
