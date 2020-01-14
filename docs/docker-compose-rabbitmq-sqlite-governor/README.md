@@ -266,7 +266,7 @@ and this step may be skipped.
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_PLUGINS_DIR=${SENZING_PLUGINS_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
+      docker-compose --file resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -343,7 +343,7 @@ In a separate (or reusable) terminal window:
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml down
+    sudo docker-compose --file resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml down
     ```
 
 1. Delete storage.
@@ -375,5 +375,5 @@ the docker formation can be brought up again.
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_PLUGINS_DIR=${SENZING_PLUGINS_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
+      docker-compose --file resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml up
     ```
