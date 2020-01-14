@@ -54,6 +54,8 @@ This docker formation brings up the following docker containers:
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 1. [Re-run docker formation](#re-run-docker-formation)
+1. [Notes](#notes)
+    1. [Comparison with docker-compose-rabbimq-sqlite](#comparison-with-docker-compose-rabbimq-sqlite)
 
 ### Legend
 
@@ -377,3 +379,15 @@ the docker formation can be brought up again.
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml up
     ```
+
+## Notes
+
+### Comparison with docker-compose-rabbimq-sqlite
+
+1. Changes from [docker-compose-rabbit-sqlite-governor.yaml](resources/sqlite-governor/docker-compose-rabbit-sqlite-governor.yaml)
+    1. [docker-compose-rabbit-sqlite-governor.yaml](resources/sqlite-governor/docker-compose-rabbit-sqlite-governor.yaml)
+       sets `PYTHONPATH` and specifies a volume `${SENZING_PLUGINS_DIR}:/app/plugins.
+    1. To see the difference first hand,
+       use a tool like [DiffNow](https://www.diffnow.com/compare-urls) to compare these 2 URLs:
+        1. https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
+        1. https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml
