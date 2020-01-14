@@ -384,7 +384,7 @@ the docker formation can be brought up again.
 
 ### Comparison with docker-compose-rabbimq-sqlite
 
-1. Changes in [README.md](../docker-compose-rabbitmq-sqlite/README.md)
+1. Changes in this README.md file vs. [docker-compose-rabbitmq-sqlite/README.md](../docker-compose-rabbitmq-sqlite/README.md)
     1. The use of `SENZING_PLUGINS_DIR`
     1. The use of [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml)
        (not [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml))
