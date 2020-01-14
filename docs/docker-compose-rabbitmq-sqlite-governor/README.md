@@ -384,11 +384,12 @@ the docker formation can be brought up again.
 
 ### Comparison with docker-compose-rabbimq-sqlite
 
-1. Changes in this `README.md` file versus [docker-compose-rabbitmq-sqlite/README.md](../docker-compose-rabbitmq-sqlite/README.md)
-    1. The use of `SENZING_PLUGINS_DIR`
-    1. The use of [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml)
-       (not [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml))
-1. Changes from [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml)
+1. Changes from [docker-compose-rabbitmq-sqlite/README.md](../docker-compose-rabbitmq-sqlite/README.md)
+    1. This `README.md` file:
+        1. Uses `SENZING_PLUGINS_DIR`
+        1. Uses [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml),
+           not [docker-compose-rabbitmq-sqlite.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite.yaml)
+1. Changes from [docker-compose-rabbitmq-sqlite.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite.yaml)
     1. [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml) has changes for the `loader`.
         1. Sets `PYTHONPATH` environment variable
         1. Specifies `${SENZING_PLUGINS_DIR}:/app/plugins` volume
