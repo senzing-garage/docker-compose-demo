@@ -21,6 +21,7 @@ class Governor:
 
         self.counter = 0
         self.stride = 500
+        self.sleep_time = 15
 
     def govern(self):
         """
@@ -34,9 +35,8 @@ class Governor:
         self.counter += 1
 
         if self.counter % self.stride == 0:
-            sleep_time = 15
-            logging.info("Sample Governor is sleeping {0} seconds for record {1}.  Replace the Governor class with your code.".format(sleep_time, self.counter))
-            time.sleep(sleep_time)
+            logging.info("Sample Governor is sleeping {0} seconds for record {1}.  Replace the Governor class with your code.".format(self.sleep_time, self.counter))
+            time.sleep(self.sleep_time)
 
 
 if __name__ == '__main__':
