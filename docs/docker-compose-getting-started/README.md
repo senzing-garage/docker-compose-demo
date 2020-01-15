@@ -307,9 +307,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ## Cleanup
 
-In a separate (or reusable) terminal window:
-
-1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
 1. Bring down docker formation.
    Example:
 
