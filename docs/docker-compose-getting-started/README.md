@@ -120,14 +120,14 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 1. :thinking: Create parent directories.
    Choose one method.
-    1. Linux.
+    1. **Linux:**
        Example:
 
         ```console
         mkdir --parents ${GIT_ACCOUNT_DIR}
         ```
 
-    1. macOS.
+    1. **macOS:**
        Example:
 
         ```console
