@@ -1,4 +1,4 @@
-# docker-compose-rabbitmq-sqlite
+# docker-compose-getting-started
 
 ## Overview
 
@@ -38,14 +38,13 @@ This docker formation brings up the following docker containers:
     1. [Background knowledge](#background-knowledge)
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
-    1. [Clone repository](#clone-repository)
     1. [Pull docker images](#pull-docker-images)
+    1. [Clone repository](#clone-repository)
 1. [Using docker-compose](#using-docker-compose)
     1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
-    1. [Install Senzing license](#install-senzing-license)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View RabbitMQ](#view-rabbitmq)
@@ -53,7 +52,6 @@ This docker formation brings up the following docker containers:
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
-1. [Re-run docker formation](#re-run-docker-formation)
 
 ### Legend
 
@@ -89,22 +87,6 @@ The following software programs need to be installed:
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
 
-### Clone repository
-
-For more information on environment variables,
-see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md).
-
-1. Set these environment variable values:
-
-    ```console
-    export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-compose-demo
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    ```
-
-1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
-
 ### Pull docker images
 
 1. :thinking: **Optional:** To speed up following steps, docker images may be pulled in advance.
@@ -117,9 +99,47 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull senzing/init-container:1.3.3
     sudo docker pull senzing/mock-data-generator:1.1.0
     sudo docker pull senzing/senzing-api-server:1.7.8
-    sudo docker pull senzing/senzing-debug:1.2.1
     sudo docker pull senzing/stream-loader:1.2.1
     sudo docker pull senzing/yum:1.1.1
+    ```
+
+### Clone repository
+
+For more information on environment variables,
+see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md).
+
+1. Set these environment variable values:
+
+    ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-compose-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+    export GIT_REPOSITORY_URL="https://github.com/${GIT_ACCOUNT}/${GIT_REPOSITORY}.git"
+    ```
+
+1. :thinking: Create parent directories.
+   Choose one method.
+    1. Linux.
+       Example:
+
+        ```console
+        mkdir --parents ${GIT_ACCOUNT_DIR}
+        ```
+
+    1. macOS.
+       Example:
+
+        ```console
+        mkdir -p ${GIT_ACCOUNT_DIR}
+        ```
+
+1. Get repository.
+   Example:
+
+    ```console
+    cd  ${GIT_ACCOUNT_DIR}
+    git clone ${GIT_REPOSITORY_URL}
     ```
 
 ## Using docker-compose
@@ -128,14 +148,9 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 Configuration values specified by environment variable or command line parameter.
 
-- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_dir)**
-- **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
-- **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
-- **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
 - **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
@@ -211,46 +226,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
     ```
 
-### Install Senzing license
-
-:thinking: **Optional:**
-Senzing comes with a trial license that supports 10,000 records.
-If this is sufficient, there is no need to install a new license
-and this step may be skipped.
-
-1. If working with more than 10,000 records,
-   [obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
-
-1. :pencil2: Identify location of `g2.lic` on local workstation.
-   Example:
-
-    ```console
-    export G2_LICENSE_PATH=/path/to/local/g2.lic
-    ```
-
-1. Copy license to volume.
-   Example:
-
-    ```console
-    sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
-    ```
-
 ### Run docker formation
-
-1. :pencil2: Set environment variables.
-   Example:
-
-    ```console
-    export RABBITMQ_DIR=/storage/docker/senzing/docker-compose-rabbitmq-sqlite/rabbitmq
-    ```
-
-1. Create directories.
-   Example:
-
-    ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
-    ```
 
 1. Launch docker-compose formation.
    Example:
@@ -340,36 +316,11 @@ In a separate (or reusable) terminal window:
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml down
-    ```
-
-1. Delete storage.
-
-    ```console
-    sudo rm -rf ${RABBITMQ_DIR}
+    sudo docker-compose --file resources/sqlite/docker-compose-getting-started.yaml down
     ```
 
 1. Delete git repository.
 
     ```console
     sudo rm -rf ${GIT_REPOSITORY_DIR}
-    ```
-
-## Re-run docker formation
-
-:thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again.
-
-1. Launch docker-compose formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      RABBITMQ_DIR=${RABBITMQ_DIR} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
     ```
