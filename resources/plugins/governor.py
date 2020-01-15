@@ -17,6 +17,11 @@ class Governor:
         log_format = '%(asctime)s %(message)s'
         logging.basicConfig(format=log_format, level=logging.INFO)
 
+        # Instance variables.
+
+        self.counter = 0
+        self.stride = 500
+
     def govern(self):
         """
         Do the actual "governing".
@@ -26,9 +31,12 @@ class Governor:
 
         # Faux governance.  Replace with actual governance.
 
-        sleep_time = 15
-        logging.info("Governor is sleeping {0} seconds.  Replace the Governor class with your code".format(sleep_time))
-        time.sleep(sleep_time)
+        self.counter += 1
+
+        if self.counter % self.stride == 0:
+            sleep_time = 15
+            logging.info("Sample Governor is sleeping {0} seconds for record {1}.  Replace the Governor class with your code.".format(sleep_time, self.counter))
+            time.sleep(sleep_time)
 
 
 if __name__ == '__main__':
