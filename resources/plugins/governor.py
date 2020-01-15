@@ -35,7 +35,7 @@ class Governor:
         self.counter += 1
 
         if self.counter % self.stride == 0:
-            logging.info("Sample Governor is sleeping {0} seconds for record {1}.  Replace the Governor class with your code.".format(self.sleep_time, self.counter))
+            logging.info("Sample Governor is sleeping {0} seconds on record {1}.  Replace the Governor class with your code.".format(self.sleep_time, self.counter))
             time.sleep(self.sleep_time)
 
 
