@@ -248,7 +248,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. Username and password for the following sites were either passed in as environment variables
    or are the default values seen in
-   [docker-compose-rabbitmq-sqlite.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite.yaml).
+   [docker-compose-getting-started.yaml](../../resources/sqlite/docker-compose-getting-started.yaml).
 
 ### View docker containers
 
