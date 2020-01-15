@@ -219,7 +219,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
-1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
+1. For the SQLite database, ownership needs to be changed.
    Example:
 
     ```console
