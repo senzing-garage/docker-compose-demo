@@ -126,6 +126,7 @@ services:
     image: senzing/redoer:${SENZING_REDOER_VERSION:-latest}
     networks:
       - backend
+    privileged: true
     restart: on-failure
     user: "0"
     volumes:
