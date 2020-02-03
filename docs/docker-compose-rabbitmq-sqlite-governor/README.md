@@ -395,5 +395,5 @@ the docker formation can be brought up again.
         1. Specifies `${SENZING_PLUGINS_DIR}:/app/plugins` volume
     1. To see the difference first hand,
        use a tool like [DiffNow](https://www.diffnow.com/compare-urls) to compare these 2 URLs:
-        1. https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
-        1. https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml
+        1. [https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite/docker-compose-rabbitmq-sqlite.yaml](https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite/docker-compose-rabbitmq-sqlite.yaml)
+        1. [https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml](https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml)
