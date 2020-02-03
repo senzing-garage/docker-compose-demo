@@ -5,7 +5,7 @@ services:
     container_name: senzing-yum
     environment:
       SENZING_ACCEPT_EULA: "${SENZING_ACCEPT_EULA:-no}"
-    image: senzing/yum:${SENZING_YUM_VERSION:-1.1.1}
+    image: senzing/yum:${SENZING_YUM_VERSION:-1.1.3}
     networks:
       - backend
     restart: on-failure
