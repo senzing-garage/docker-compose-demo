@@ -145,7 +145,7 @@ services:
       - start.sh
       - jupyter
       - notebook
-      - --notebookApp.token=''
+      - "--NotebookApp.token=''"
     depends_on:
       - loader
     image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.2}
