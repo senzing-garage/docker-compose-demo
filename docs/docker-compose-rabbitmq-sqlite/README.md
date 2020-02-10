@@ -252,6 +252,26 @@ and this step may be skipped.
     sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
+1. :thinking: Choose a `docker-compose.yaml` file.
+
+    1. Standard demonstration.
+
+        ```console
+        export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
+        ```
+
+    1. Return information with each record added to Senzing.
+
+        ```console
+        export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-withinfo.yaml
+        ```
+
+    1. Add Jupyter notebook to standard demonstration.
+
+        ```console
+        export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-jupyter.yaml
+        ```
+
 1. Launch docker-compose formation.
    Example:
 
@@ -263,7 +283,7 @@ and this step may be skipped.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
+      docker-compose --file ${SENZING_DOCKER_COMPOSE_FILE} up
     ```
 
 1. Allow time for the components to come up and initialize.
