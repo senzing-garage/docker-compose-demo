@@ -1,4 +1,4 @@
-# docker-compose-rabbitmq-sqlite
+# docker-compose-rabbitmq-sqlite-jupyter
 
 ## Overview
 
@@ -48,12 +48,13 @@ This docker formation brings up the following docker containers:
     1. [Install Senzing license](#install-senzing-license)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
+    1. [View docker containers](#view-docker-containers)
     1. [View RabbitMQ](#view-rabbitmq)
     1. [View SQLite](#view-sqlite)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
+    1. [View Jupyter Notebooks](#view-jupyter-notebooks)
 1. [Cleanup](#cleanup)
-1. [Re-run docker formation](#re-run-docker-formation)
 
 ### Legend
 
@@ -115,6 +116,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull coleifer/sqlite-web:latest
     sudo docker pull senzing/entity-search-web-app:1.0.4
     sudo docker pull senzing/init-container:1.5.0
+    sudo docker pull senzing/jupyter:1.1.2
     sudo docker pull senzing/mock-data-generator:1.1.0
     sudo docker pull senzing/senzing-api-server:1.7.10
     sudo docker pull senzing/senzing-debug:1.3.0
@@ -252,26 +254,6 @@ and this step may be skipped.
     sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
-1. :thinking: Choose a `docker-compose.yaml` file.
-
-    1. Standard demonstration.
-
-        ```console
-        export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
-        ```
-
-    1. Return information with each record added to Senzing.
-
-        ```console
-        export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-withinfo.yaml
-        ```
-
-    1. Add Jupyter notebook to standard demonstration.
-
-        ```console
-        export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-jupyter.yaml
-        ```
-
 1. Launch docker-compose formation.
    Example:
 
@@ -283,7 +265,7 @@ and this step may be skipped.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file ${SENZING_DOCKER_COMPOSE_FILE} up
+      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-jupyter.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -349,6 +331,11 @@ and this step may be skipped.
 1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
 
+### View Jupyter Notebooks
+
+1. Senzing Jupyter Notebooks are viewable at
+   [localhost:9178](http://localhost:9178).
+
 ## Cleanup
 
 In a separate (or reusable) terminal window:
@@ -373,23 +360,4 @@ In a separate (or reusable) terminal window:
 
     ```console
     sudo rm -rf ${GIT_REPOSITORY_DIR}
-    ```
-
-## Re-run docker formation
-
-:thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again.
-
-1. Launch docker-compose formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      RABBITMQ_DIR=${RABBITMQ_DIR} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
     ```
