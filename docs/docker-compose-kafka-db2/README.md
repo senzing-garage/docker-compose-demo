@@ -126,8 +126,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
 
-
-
 ## Using docker-compose
 
 ### Configuration
@@ -159,13 +157,6 @@ Configuration values specified by environment variable or command line parameter
     export SENZING_VOLUME=/opt/my-senzing
     ```
 
-    1. :warning:
-       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#macos)
-       must be enabled for `SENZING_VOLUME`.
-    1. :warning:
-       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
-       must be enabled for `SENZING_VOLUME`.
-
 1. Identify the `data`, `data_version`, `etc`, `g2`, `opt/ibm`, and `var` directories.
    Example:
 
@@ -176,7 +167,17 @@ Configuration values specified by environment variable or command line parameter
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_OPT_IBM_DIR=${SENZING_VOLUME}/opt-ibm
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+
+    export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
+    export DB2_DIR=${SENZING_VAR_DIR}/db2
     ```
+
+1. :warning:
+   **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#macos)
+   must be enabled for `SENZING_VOLUME` and `GIT_REPOSITORY_DIR`.
+1. :warning:
+   **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
+   must be enabled for `SENZING_VOLUME` and `GIT_REPOSITORY_DIR`.
 
 ### EULA
 
@@ -236,14 +237,6 @@ and this step may be skipped.
     ```
 
 ### Run docker formation
-
-1. :pencil2: Set environment variables.
-   Example:
-
-    ```console
-    export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
-    export DB2_DIR=/storage/docker/senzing/docker-compose-kafka-db2/db2
-    ```
 
 1. Launch docker-compose formation.
    Example:
