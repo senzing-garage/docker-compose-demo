@@ -330,14 +330,14 @@ In a separate (or reusable) terminal window:
    Example:
 
     ```console
-    sudo rm -rf ${SENZING_VOLUME}
+    sudo rm -ri ${SENZING_VOLUME}
     ```
 
 1. Delete git repository.
    Example:
 
     ```console
-    sudo rm -rf ${GIT_REPOSITORY_DIR}
+    sudo rm -ri ${GIT_REPOSITORY_DIR}
     ```
 
 ## Re-run docker formation
