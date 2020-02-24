@@ -158,7 +158,7 @@ Configuration values specified by environment variable or command line parameter
 
 ### Volumes
 
-1. :pencil2: Specify the directory where Senzing should be installed.
+1. :pencil2: Specify the directory where Senzing should be installed on the local host.
    Example:
 
     ```console
@@ -172,7 +172,7 @@ Configuration values specified by environment variable or command line parameter
        **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
        must be enabled for `SENZING_VOLUME`.
 
-1. Identify the `data`, `data_version`, `etc`, `g2`, and `var` directories.
+1. Identify directories on the local host.
    Example:
 
     ```console
