@@ -168,13 +168,6 @@ Configuration values specified by environment variable or command line parameter
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     ```
 
-1. :thinking: For the SQLite database, permissions may need to be changed in `/var/opt/senzing`.
-   Example:
-
-    ```console
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
-    ```
-
 ### EULA
 
 To use the Senzing code, you must agree to the End User License Agreement (EULA).
