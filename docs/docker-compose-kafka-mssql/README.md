@@ -259,14 +259,7 @@ and this step may be skipped.
 
 ### Run docker formation
 
-1. XX :pencil2: Set environment variables.
-   Example:
-
-    ```console
-    export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
-    ```
-
-1. XX Create directories.
+1. Create directories.
    Example:
 
     ```console
