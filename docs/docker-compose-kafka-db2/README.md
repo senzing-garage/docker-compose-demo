@@ -320,12 +320,6 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file resources/db2/docker-compose-kafka-db2-again.yaml down
     ```
 
-1. Delete storage.
-
-    ```console
-    sudo rm -rf ${DB2_DIR}
-    ```
-
 1. Delete git repository.
 
     ```console
