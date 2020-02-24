@@ -183,7 +183,15 @@ Configuration values specified by environment variable or command line parameter
     export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
 
+    ```
+
+1. Create directories for MSSQL variable data.
+   Example:
+
+    ```console
     export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
+    sudo mkdir -p ${MSSQL_DIR}
+    sudo chown $(id -u):$(id -g) -R ${MSSQL_DIR}
     ```
 
 ### EULA
@@ -258,14 +266,6 @@ and this step may be skipped.
     ```
 
 ### Run docker formation
-
-1. Create directories.
-   Example:
-
-    ```console
-    sudo mkdir -p ${MSSQL_DIR}
-    sudo chown $(id -u):$(id -g) -R ${MSSQL_DIR}
-    ```
 
 1. Launch docker-compose formation.
    Example:
