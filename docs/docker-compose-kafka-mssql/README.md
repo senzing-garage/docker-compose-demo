@@ -263,7 +263,7 @@ and this step may be skipped.
 1. Wait until completion.
 
 1. Change directory permissions.
-   **Note:** Although the `MSSQL_DIR` directory has open permissions,
+   **Note:** Although the `MSSQL_DIR` directory will have open permissions,
    the directories created within `MSSQL_DIR` will be restricted.
    Example:
 
@@ -365,12 +365,6 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml down
     sudo docker-compose --file resources/mssql/docker-compose-kafka-mssql.yaml down
     sudo docker-compose --file resources/mssql/docker-compose-kafka-mssql-again.yaml down
-    ```
-
-1. Delete storage.
-
-    ```console
-    sudo rm -rf ${MSSQL_DIR}
     ```
 
 1. Delete git repository.
