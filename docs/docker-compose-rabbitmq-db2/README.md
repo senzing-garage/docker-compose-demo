@@ -150,35 +150,52 @@ Configuration values specified by environment variable or command line parameter
 
 ### Volumes
 
-:thinking: The output of `yum install senzingapi` places files in different directories.
-Identify a folder for each output directory.
-
-1. **Example #1:**
-   To mimic an actual RPM installation,
-   identify directories for RPM output in this manner:
-
-    ```console
-    export SENZING_DATA_DIR=/opt/senzing/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
-    export SENZING_ETC_DIR=/etc/opt/senzing
-    export SENZING_G2_DIR=/opt/senzing/g2
-    export SENZING_OPT_IBM_DIR=/opt/IBM
-    export SENZING_VAR_DIR=/var/opt/senzing
-    ```
-
-1. :pencil2: **Example #2:**
-   Senzing directories can be put in alternative directories.
+1. :pencil2: Specify the directory where Senzing should be installed on the local host.
    Example:
 
     ```console
     export SENZING_VOLUME=/opt/my-senzing
+    ```
 
+    1. :warning:
+       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#macos)
+       must be enabled for `SENZING_VOLUME` and `GIT_REPOSITORY_DIR`.
+    1. :warning:
+       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
+       must be enabled for `SENZING_VOLUME` and `GIT_REPOSITORY_DIR`.
+
+1. Identify directories on the local host.
+   Example:
+
+    ```console
     export SENZING_DATA_DIR=${SENZING_VOLUME}/data
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_OPT_IBM_DIR=${SENZING_VOLUME}/opt-ibm
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+
+    export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
+    export DB2_DIR=${SENZING_VAR_DIR}/db2
+
+    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
+    ```
+
+1. XXX Create directories.
+   Example:
+
+    ```console
+    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo chmod 777 ${RABBITMQ_DIR}
+    ```
+
+1. XXX Change directory permissions.
+   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
+   the directories created within `MSSQL_DIR` will be restricted.
+   Example:
+
+    ```console
+    sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
 ### EULA
@@ -239,23 +256,6 @@ and this step may be skipped.
     ```
 
 ### Run docker formation
-
-1. :pencil2: Set environment variables.
-   Example:
-
-    ```console
-    export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
-    export DB2_DIR=/storage/docker/senzing/docker-compose-rabbitmq-db2/db2
-    export RABBITMQ_DIR=/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq
-    ```
-
-1. Create directories.
-   Example:
-
-    ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
-    ```
 
 1. Launch docker-compose formation.
    Example:
@@ -323,16 +323,16 @@ and this step may be skipped.
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
+    1. Example entity:
+       [localhost:8251/entity/1](http://localhost:8251/entity/1).
 
 1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
 
 ## Cleanup
 
-In a separate (or reusable) terminal window:
-
-1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
-1. Run `docker-compose` command.
+1. Bring down docker formation.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
@@ -341,18 +341,13 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file resources/db2/docker-compose-rabbitmq-db2-again.yaml down
     ```
 
-1. Delete storage.
+1. Remove directories from host system.
+   The following directories were created during the demonstration:
 
-    ```console
-    sudo rm -ri ${DB2_DIR}
-    sudo rm -ri ${RABBITMQ_DIR}
-    ```
+    1. `${SENZING_VOLUME}`
+    1. `${GIT_REPOSITORY_DIR}`
 
-1. Delete git repository.
-
-    ```console
-    sudo rm -ri ${GIT_REPOSITORY_DIR}
-    ```
+   They may be safely deleted.
 
 ## Re-run docker formation
 
