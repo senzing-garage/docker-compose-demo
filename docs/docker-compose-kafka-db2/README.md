@@ -157,6 +157,13 @@ Configuration values specified by environment variable or command line parameter
     export SENZING_VOLUME=/opt/my-senzing
     ```
 
+    1. :warning:
+       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#macos)
+       must be enabled for `SENZING_VOLUME` and `GIT_REPOSITORY_DIR`.
+    1. :warning:
+       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
+       must be enabled for `SENZING_VOLUME` and `GIT_REPOSITORY_DIR`.
+
 1. Identify directories on the local host.
    Example:
 
@@ -171,13 +178,6 @@ Configuration values specified by environment variable or command line parameter
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
     export DB2_DIR=${SENZING_VAR_DIR}/db2
     ```
-
-1. :warning:
-   **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#macos)
-   must be enabled for `SENZING_VOLUME` and `GIT_REPOSITORY_DIR`.
-1. :warning:
-   **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
-   must be enabled for `SENZING_VOLUME` and `GIT_REPOSITORY_DIR`.
 
 ### EULA
 
@@ -302,15 +302,16 @@ and this step may be skipped.
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
+    1. Example entity:
+       [localhost:8251/entity/1](http://localhost:8251/entity/1).
 
 1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
 
 ## Cleanup
 
-In a separate (or reusable) terminal window:
-
-1. Run `docker-compose` command.
+1. Bring down docker formation.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}

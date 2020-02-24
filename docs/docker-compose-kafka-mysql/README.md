@@ -320,16 +320,16 @@ and this step may be skipped.
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
+    1. Example entity:
+       [localhost:8251/entity/1](http://localhost:8251/entity/1).
 
 1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
    instructions will give a tour of the Senzing web app.
 
 ## Cleanup
 
-In a separate (or reusable) terminal window:
-
-1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
-1. Run `docker-compose` command.
+1. Bring down docker formation.
+   Example:
 
     ```console
     cd ${GIT_REPOSITORY_DIR}
@@ -338,19 +338,13 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file resources/mysql/docker-compose-kafka-mysql-again.yaml down
     ```
 
-1. Delete Senzing installation.
-   Example:
+1. Remove directories from host system.
+   The following directories were created during the demonstration:
 
-    ```console
-    sudo rm -ri ${SENZING_VOLUME}
-    ```
+    1. `${SENZING_VOLUME}`
+    1. `${GIT_REPOSITORY_DIR}`
 
-1. Delete git repository.
-   Example:
-
-    ```console
-    sudo rm -ri ${GIT_REPOSITORY_DIR}
-    ```
+   They may be safely deleted.
 
 ## Re-run docker formation
 

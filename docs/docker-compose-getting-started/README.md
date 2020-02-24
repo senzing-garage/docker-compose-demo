@@ -312,16 +312,11 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     sudo docker-compose --file resources/sqlite/docker-compose-getting-started.yaml down
     ```
 
-1. Delete Senzing installation.
-   Example:
+1. Remove directories from host system.
+   The following directories were created during the demonstration:
 
-    ```console
-    sudo rm -ri ${SENZING_VOLUME}
-    ```
+    1. `${SENZING_VOLUME}`
+    1. `${GIT_REPOSITORY_DIR}`
 
-1. Delete git repository.
-   Example:
+   They may be safely deleted.
 
-    ```console
-    sudo rm -ri ${GIT_REPOSITORY_DIR}
-    ```
