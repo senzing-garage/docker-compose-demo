@@ -182,17 +182,8 @@ Configuration values specified by environment variable or command line parameter
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-    ```
 
-1. Create directories for MSSQL persistent data.
-   **Note:** Although the `MSSQL_DIR` directory has open permissions,
-   the directories created within `MSSQL_DIR` will be restricted.
-   Example:
-
-    ```console
     export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
-    sudo mkdir -p ${MSSQL_DIR}
-    sudo chmod 777 ${MSSQL_DIR}
     ```
 
 ### EULA
@@ -268,6 +259,15 @@ and this step may be skipped.
     ```
 
 1. Wait until completion.
+
+1. Change directory permissions.
+   **Note:** Although the `MSSQL_DIR` directory has open permissions,
+   the directories created within `MSSQL_DIR` will be restricted.
+   Example:
+
+    ```console
+    sudo chmod 777 ${MSSQL_DIR}
+    ```
 
 ### Run docker formation
 
