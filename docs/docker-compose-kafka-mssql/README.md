@@ -182,6 +182,8 @@ Configuration values specified by environment variable or command line parameter
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+
+    export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
     ```
 
 ### EULA
@@ -257,14 +259,14 @@ and this step may be skipped.
 
 ### Run docker formation
 
-1. :pencil2: Set environment variables.
+1. XX :pencil2: Set environment variables.
    Example:
 
     ```console
     export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
     ```
 
-1. Create directories.
+1. XX Create directories.
    Example:
 
     ```console
