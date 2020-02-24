@@ -181,20 +181,13 @@ Configuration values specified by environment variable or command line parameter
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     ```
 
-1. XXX Create directories.
+1. Create directory for RabbitMQ persistence.
+   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
+   the directories created within `RABBITMQ_DIR` will be restricted.
    Example:
 
     ```console
     sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
-    ```
-
-1. XXX Change directory permissions.
-   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
-   the directories created within `MSSQL_DIR` will be restricted.
-   Example:
-
-    ```console
     sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
