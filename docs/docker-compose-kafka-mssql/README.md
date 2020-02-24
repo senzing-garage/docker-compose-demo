@@ -185,7 +185,7 @@ Configuration values specified by environment variable or command line parameter
     ```
 
 1. Create directories for MSSQL persistent data.
-   Although the `MSSQL_DIR` directory has open permissions,
+   **Note:** Although the `MSSQL_DIR` directory has open permissions,
    the directories created within `MSSQL_DIR` will be restricted.
    Example:
 
