@@ -186,12 +186,14 @@ Configuration values specified by environment variable or command line parameter
     ```
 
 1. Create directories for MSSQL persistent data.
+   Although the `MSSQL_DIR` directory has open permissions,
+   the directories created within `MSSQL_DIR` will be restricted.
    Example:
 
     ```console
     export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
     sudo mkdir -p ${MSSQL_DIR}
-    sudo chown $(id -u):$(id -g) -R ${MSSQL_DIR}
+    sudo chmod 777 ${MSSQL_DIR}
     ```
 
 ### EULA
