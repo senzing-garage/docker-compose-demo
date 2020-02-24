@@ -310,7 +310,6 @@ and this step may be skipped.
 
 In a separate (or reusable) terminal window:
 
-1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
 1. Run `docker-compose` command.
 
     ```console
