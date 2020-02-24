@@ -259,6 +259,7 @@ and this step may be skipped.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
+      MSSQL_DIR=${MSSQL_DIR} \
       SENZING_DATA_DIR=${SENZING_DATA_DIR} \
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \

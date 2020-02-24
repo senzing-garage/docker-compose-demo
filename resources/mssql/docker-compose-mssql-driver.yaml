@@ -31,6 +31,7 @@ services:
     restart: on-failure
     user: "0"
     volumes:
+      - ${MSSQL_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mssql/mssql}:/var/opt/mssql
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
