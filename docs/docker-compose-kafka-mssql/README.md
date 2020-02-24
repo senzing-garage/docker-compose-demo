@@ -185,7 +185,7 @@ Configuration values specified by environment variable or command line parameter
 
     ```
 
-1. Create directories for MSSQL variable data.
+1. Create directories for MSSQL persistent data.
    Example:
 
     ```console
@@ -264,6 +264,8 @@ and this step may be skipped.
       SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
       docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml up
     ```
+
+1. Wait until completion.
 
 ### Run docker formation
 
