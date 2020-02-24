@@ -320,7 +320,15 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file resources/db2/docker-compose-kafka-db2-again.yaml down
     ```
 
+1. Delete Senzing installation.
+   Example:
+
+    ```console
+    sudo rm -rf ${SENZING_VOLUME}
+    ```
+
 1. Delete git repository.
+   Example:
 
     ```console
     sudo rm -rf ${GIT_REPOSITORY_DIR}

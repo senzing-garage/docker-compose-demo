@@ -156,6 +156,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_OPT_MICROSOFT_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_opt_microsoft_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
 
@@ -284,6 +285,7 @@ and this step may be skipped.
       SENZING_ETC_DIR=${SENZING_ETC_DIR} \
       SENZING_G2_DIR=${SENZING_G2_DIR} \
       SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
+      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/mssql/docker-compose-kafka-mssql.yaml up
     ```
 
@@ -367,7 +369,15 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file resources/mssql/docker-compose-kafka-mssql-again.yaml down
     ```
 
+1. Delete Senzing installation.
+   Example:
+
+    ```console
+    sudo rm -rf ${SENZING_VOLUME}
+    ```
+
 1. Delete git repository.
+   Example:
 
     ```console
     sudo rm -rf ${GIT_REPOSITORY_DIR}

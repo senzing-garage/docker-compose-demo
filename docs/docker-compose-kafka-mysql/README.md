@@ -162,33 +162,31 @@ Configuration values specified by environment variable or command line parameter
 
 ### Volumes
 
-:thinking: The output of `yum install senzingapi` places files in different directories.
-Identify a folder for each output directory.
-
-1. **Example #1:**
-   To mimic an actual RPM installation,
-   identify directories for RPM output in this manner:
-
-    ```console
-    export SENZING_DATA_DIR=/opt/senzing/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
-    export SENZING_ETC_DIR=/etc/opt/senzing
-    export SENZING_G2_DIR=/opt/senzing/g2
-    export SENZING_VAR_DIR=/var/opt/senzing
-    ```
-
-1. :pencil2: **Example #2:**
-   Senzing directories can be put in alternative directories.
+1. :pencil2: Specify the directory where Senzing should be installed on the local host.
    Example:
 
     ```console
     export SENZING_VOLUME=/opt/my-senzing
+    ```
 
+    1. :warning:
+       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#macos)
+       must be enabled for `SENZING_VOLUME`.
+    1. :warning:
+       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
+       must be enabled for `SENZING_VOLUME`.
+
+1. Identify directories on the local host.
+   Example:
+
+    ```console
     export SENZING_DATA_DIR=${SENZING_VOLUME}/data
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+
+    export MYSQL_DIR=${SENZING_VAR_DIR}/mysql
     ```
 
 ### EULA
@@ -249,13 +247,6 @@ and this step may be skipped.
     ```
 
 ### Run docker formation
-
-1. :pencil2: Set environment variables.
-   Example:
-
-    ```console
-    export MYSQL_DIR=/storage/docker/senzing/docker-compose-kafka-mysql/mysql
-    ```
 
 1. Launch docker-compose formation.
    Example:
@@ -347,13 +338,15 @@ In a separate (or reusable) terminal window:
     sudo docker-compose --file resources/mysql/docker-compose-kafka-mysql-again.yaml down
     ```
 
-1. Delete storage.
+1. Delete Senzing installation.
+   Example:
 
     ```console
-    sudo rm -rf ${MYSQL_DIR}
+    sudo rm -rf ${SENZING_VOLUME}
     ```
 
 1. Delete git repository.
+   Example:
 
     ```console
     sudo rm -rf ${GIT_REPOSITORY_DIR}
