@@ -89,6 +89,7 @@ The following software programs need to be installed:
 
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
+1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
 
 ### Clone repository
 
