@@ -234,10 +234,10 @@ Senzing comes with a trial license that supports 10,000 records.
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
-### View Kafka-manager
+### View Kafka
 
-1. Kafka-manager is viewable at
-   [localhost:9175](http://localhost:9175).
+1. Kafdrop is viewable at
+   [localhost:9179](http://localhost:9179).
 
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#kafka)
