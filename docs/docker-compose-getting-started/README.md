@@ -122,35 +122,11 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export GIT_REPOSITORY=docker-compose-demo
     export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    export GIT_REPOSITORY_URL="https://github.com/${GIT_ACCOUNT}/${GIT_REPOSITORY}.git"
     ```
 
-1. :thinking: Create parent directories.
-   Choose one method.
-    1. **Linux:**
-       Example:
-
-        ```console
-        mkdir --parents ${GIT_ACCOUNT_DIR}
-        ```
-
-    1. **macOS:**
-       Example:
-
-        ```console
-        mkdir -p ${GIT_ACCOUNT_DIR}
-        ```
-
-1. Get repository.
-   Example:
-
-    ```console
-    cd  ${GIT_ACCOUNT_DIR}
-    git clone ${GIT_REPOSITORY_URL}
-    ```
+1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
 
 ## Using docker-compose
-
 
 ### Volumes
 
@@ -201,13 +177,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
-1. For the SQLite database, directory ownership needs to be changed.
-   Example:
-
-    ```console
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
-    ```
-
 ### Run docker formation
 
 1. Launch docker-compose formation.
@@ -216,10 +185,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/sqlite/docker-compose-getting-started.yaml up
     ```
 
@@ -227,9 +193,12 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ## View data
 
-1. Username and password for the following sites were either passed in as environment variables
-   or are the default values seen in
-   [docker-compose-getting-started.yaml](../../resources/sqlite/docker-compose-getting-started.yaml).
+Once the docker-compose formation is running,
+different aspects of the formation can be viewed.
+
+Username and password for the following sites were either passed in as environment variables
+or are the default values seen in
+[docker-compose-getting-started.yaml](../../resources/sqlite/docker-compose-getting-started.yaml).
 
 ### View docker containers
 
@@ -243,50 +212,42 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
     1. **Defaults:** username: `user` password: `bitnami`
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#rabbitmq)
+   for working with RabbitMQ.
 
 ### View SQLite
 
-1. SQLite for `G2C.db` is viewable at
+1. SQLite is viewable at
    [localhost:9174](http://localhost:9174).
-1. The records received from the queue can be viewed in the following Senzing tables:
-    1. G2 > DSRC_RECORD
-    1. G2 > OBS_ENT
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#sqlite)
+   for working with SQLite.
 
 ### View Senzing API
 
-1. View results from Senzing REST API server.
-   The server supports the
-   [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
+View results from Senzing REST API server.
+The server supports the
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
 
-   1. From a web browser.
-      Examples:
-      1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
-      1. [localhost:8250/license](http://localhost:8250/license)
-      1. [localhost:8250/entities/1](http://localhost:8250/entities/1)
-   1. From `curl`.
-      Examples:
-
-        ```console
-        export SENZING_API_SERVICE=http://localhost:8250
-
-        curl -X GET ${SENZING_API_SERVICE}/heartbeat
-        curl -X GET ${SENZING_API_SERVICE}/license
-        curl -X GET ${SENZING_API_SERVICE}/entities/1
-        ```
-
-   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+1. Example Senzing REST API request:
+   [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
+   for working with Senzing API server.
 
 ### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
-    1. Example entity:
-       [localhost:8251/entity/1](http://localhost:8251/entity/1).
-
-1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
-   instructions will give a tour of the Senzing web app.
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+   for working with Senzing Entity Search WebApp.
 
 ## Cleanup
+
+When the docker-compose formation is no longer needed,
+it can be brought down and directories can be deleted.
 
 1. Bring down docker formation.
    Example:
