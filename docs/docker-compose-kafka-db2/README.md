@@ -284,9 +284,8 @@ View results from Senzing REST API server.
 The server supports the
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
 
-1. From a web browser.
-   Example:
-    1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
+1. Example Senzing REST API request:
+   [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
