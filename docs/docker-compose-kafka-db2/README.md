@@ -101,7 +101,7 @@ The following software programs need to be installed:
     sudo docker pull bitnami/kafka:2.4.0
     sudo docker pull bitnami/zookeeper:3.5.6
     sudo docker pull ibmcom/db2:11.5.0.0a
-    sudo docker pull kafkamanager/kafka-manager:2.0.0.2
+    sudo docker pull obsidiandynamics/kafdrop:3.23.0
     sudo docker pull senzing/db2-driver-installer:1.0.1
     sudo docker pull senzing/entity-search-web-app:1.0.4
     sudo docker pull senzing/init-container:1.5.0
