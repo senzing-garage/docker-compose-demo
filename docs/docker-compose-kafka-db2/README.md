@@ -174,7 +174,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    The use of the double-quote character is intentional to prevent simple copy/paste.
    Example:
 
-   export SENZING_ACCEPT_EULA="the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)"
+    ```console
+    export SENZING_ACCEPT_EULA="
+    ```
 
 ### Install Senzing
 
@@ -184,11 +186,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
-      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
@@ -208,13 +206,7 @@ Senzing comes with a trial license that supports 10,000 records.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_DIR=${DB2_DIR} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_OPT_IBM_DIR=${SENZING_OPT_IBM_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
     ```
 
@@ -308,13 +300,7 @@ The following shows how to bring up the prior docker formation again without ini
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_DIR=${DB2_DIR} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_OPT_IBM_DIR=${SENZING_OPT_IBM_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/db2/docker-compose-kafka-db2-again.yaml up
     ```
 
