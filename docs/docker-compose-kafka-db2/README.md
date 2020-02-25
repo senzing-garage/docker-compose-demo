@@ -274,7 +274,8 @@ and this step may be skipped.
 1. Kafka-manager is viewable at
    [localhost:9175](http://localhost:9175).
 
-1. [Additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#kafka)
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#kafka)
    for working with Kafka.
 
 ### View Senzing API
@@ -287,7 +288,8 @@ The server supports the
    Example:
     1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 
-1. [Additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
    for working with Senzing API server.
 
 ### View Senzing Entity Search WebApp
@@ -295,7 +297,8 @@ The server supports the
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
 
-1. [Additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
 
 ## Cleanup
