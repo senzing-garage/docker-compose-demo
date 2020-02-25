@@ -25,7 +25,9 @@ This docker formation brings up the following docker containers:
 
 1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
 1. *[coleifer/sqlite-web](https://github.com/coleifer/sqlite-web)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
@@ -41,17 +43,20 @@ This docker formation brings up the following docker containers:
     1. [Pull docker images](#pull-docker-images)
     1. [Clone repository](#clone-repository)
 1. [Using docker-compose](#using-docker-compose)
-    1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
+    1. [View docker containers](#view-docker-containers)
     1. [View RabbitMQ](#view-rabbitmq)
     1. [View SQLite](#view-sqlite)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
+1. [Advanced](#advanced)
+    1. [Re-run docker formation](#re-run-docker-formation)
+    1. [Configuration](#configuration)
 
 ### Legend
 
@@ -100,6 +105,7 @@ The following software programs need to be installed:
     sudo docker pull senzing/init-container:1.5.0
     sudo docker pull senzing/mock-data-generator:1.1.0
     sudo docker pull senzing/senzing-api-server:1.7.10
+    sudo docker pull senzing/senzing-debug:1.3.0
     sudo docker pull senzing/stream-loader:1.4.0
     sudo docker pull senzing/yum:1.1.3
     ```
@@ -145,16 +151,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ## Using docker-compose
 
-### Configuration
-
-Configuration values specified by environment variable or command line parameter.
-
-- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
-- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
-- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
-- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
 
@@ -189,16 +185,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. :warning: This step is intentionally tricky and not simply copy/paste.
    This ensures that you make a conscious effort to accept the EULA.
-   See
-   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
-   for the correct value.
-   Replace the double-quote character in the example with the correct value.
-   The use of the double-quote character is intentional to prevent simple copy/paste.
    Example:
 
-    ```console
-    export SENZING_ACCEPT_EULA="
-    ```
+    <code>export SENZING_ACCEPT_EULA="&lt;the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)&gt;"</code>
 
 ### Install Senzing
 
@@ -208,11 +197,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
-      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
@@ -319,4 +304,19 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     1. `${GIT_REPOSITORY_DIR}`
 
    They may be safely deleted.
+
+## Advanced
+
+The following topics discuss variations to the basic docker-compose demonstration.
+
+### Configuration
+
+Configuration values specified by environment variable or command line parameter.
+
+- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
+- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
+- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
+- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
