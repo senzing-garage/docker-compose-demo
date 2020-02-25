@@ -221,6 +221,8 @@ Senzing comes with a trial license that supports 10,000 records.
     ```
 
 1. Allow time for the components to come up and initialize.
+    1. There will be errors in some docker logs as they wait for dependent services to become available.
+       `docker-compose` isn't the best at orchestrating docker container dependencies.
 
 ## View data
 
