@@ -268,6 +268,9 @@ The server supports the
 
 ## Cleanup
 
+Once the docker-compose formation is no longer needed,
+it can be brought down and directories can be deleted.
+
 1. Bring down docker formation.
    Example:
 
