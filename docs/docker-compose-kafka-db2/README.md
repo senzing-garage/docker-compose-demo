@@ -167,27 +167,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. :warning: This step is intentionally tricky and not simply copy/paste.
    This ensures that you make a conscious effort to accept the EULA.
-   See
-   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
-   for the correct value.
-   Replace the double-quote character in the example with the correct value.
-   The use of the double-quote character is intentional to prevent simple copy/paste.
    Example:
 
-    ```console
-    export SENZING_ACCEPT_EULA="
-    ```
-
-<code>
-export SENZING_ACCEPT_EULA="the value from [this link]((https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)"
-</code>
-
   <code>export SENZING_ACCEPT_EULA="&lt;the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)&gt;"</code>
-
-
-<code>
-export SENZING_ACCEPT_EULA="&lt;the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)&gt;"
-</code>
 
 ### Install Senzing
 
