@@ -27,7 +27,9 @@ This docker formation brings up the following docker containers:
 1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
 1. *[mysql](https://github.com/docker-library/mysql)*
 1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/mysql-init](https://github.com/Senzing/docker-mysql-init)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
@@ -104,8 +106,8 @@ The following software programs need to be installed:
     ```console
     sudo docker pull bitnami/kafka:2.4.0
     sudo docker pull bitnami/zookeeper:3.5.6
-    sudo docker pull kafkamanager/kafka-manager:2.0.0.2
     sudo docker pull mysql:5.7
+    sudo docker pull obsidiandynamics/kafdrop:3.23.0
     sudo docker pull phpmyadmin/phpmyadmin:4.9
     sudo docker pull senzing/entity-search-web-app:1.0.4
     sudo docker pull senzing/init-container:1.5.0
