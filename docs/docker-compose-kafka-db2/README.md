@@ -178,6 +178,10 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     export SENZING_ACCEPT_EULA="
     ```
 
+    <code>
+    export SENZING_ACCEPT_EULA="the value from [this link]((https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)"
+    </code>
+
 ### Install Senzing
 
 1. If Senzing has not been installed, install Senzing.
