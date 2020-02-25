@@ -294,6 +294,8 @@ it can be brought down and directories can be deleted.
 
 ## Advanced
 
+The following topics discuss variations to the basic docker-compose demonstration.
+
 ### Re-run docker formation
 
 :thinking: **Optional:** After the launch and shutdown of the original docker formation,
