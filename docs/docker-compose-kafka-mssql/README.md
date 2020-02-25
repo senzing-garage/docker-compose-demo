@@ -259,7 +259,6 @@ or are the default values seen in
 
 1. Kafdrop is viewable at
    [localhost:9179](http://localhost:9179).
-
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#kafka)
    for working with Kafka.
@@ -273,9 +272,9 @@ or are the default values seen in
     1. **Username:** sa
     1. **Password:** Passw0rd
     1. **Database:** G2
-1. The records received from the queue can be viewed in the following Senzing tables:
-    1. `DSRC_RECORD`
-    1. `OBS_ENT`
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#ms-sql)
+   for working with MSSQL.
 
 ### View Senzing API
 
@@ -285,7 +284,6 @@ The server supports the
 
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
-
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
    for working with Senzing API server.
@@ -294,7 +292,6 @@ The server supports the
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
-
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
@@ -317,7 +314,6 @@ it can be brought down and directories can be deleted.
 
 1. Remove directories from host system.
    The following directories were created during the demonstration:
-
     1. `${SENZING_VOLUME}`
     1. `${GIT_REPOSITORY_DIR}`
 
