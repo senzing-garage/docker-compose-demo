@@ -174,9 +174,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    The use of the double-quote character is intentional to prevent simple copy/paste.
    Example:
 
-   <pre>
    export SENZING_ACCEPT_EULA="the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)"
-   </pre>
 
 ### Install Senzing
 
