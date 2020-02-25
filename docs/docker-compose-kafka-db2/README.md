@@ -42,7 +42,6 @@ This docker formation brings up the following docker containers:
     1. [Pull docker images](#pull-docker-images)
     1. [Clone repository](#clone-repository)
 1. [Using docker-compose](#using-docker-compose)
-    1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
@@ -53,7 +52,9 @@ This docker formation brings up the following docker containers:
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
-1. [Re-run docker formation](#re-run-docker-formation)
+1. [Advanced](#advanced)
+    1. [Re-run docker formation](#re-run-docker-formation)
+    1. [Configuration](#configuration)
 
 ### Legend
 
@@ -127,26 +128,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
 
 ## Using docker-compose
-
-### Configuration
-
-Configuration values specified by environment variable or command line parameter.
-
-- **[DB2_CUSTOM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_custom_dir)**
-- **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
-- **[DB2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_dir)**
-- **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**
-- **[DB2_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_username)**
-- **[DB2INST1_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2inst_password)**
-- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
-- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
-- **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
-- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
-- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
-- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_OPT_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_opt_ibm_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Volumes
 
@@ -320,7 +301,9 @@ The server supports the
 
    They may be safely deleted.
 
-## Re-run docker formation
+## Advanced
+
+### Re-run docker formation
 
 :thinking: **Optional:** After the launch and shutdown of the original docker formation,
 the docker formation can be brought up again without requiring initialization steps.
@@ -341,3 +324,23 @@ The following shows how to bring up the prior docker formation again without ini
       SENZING_VAR_DIR=${SENZING_VAR_DIR} \
       docker-compose --file resources/db2/docker-compose-kafka-db2-again.yaml up
     ```
+
+### Configuration
+
+Configuration values specified by environment variable or command line parameter.
+
+- **[DB2_CUSTOM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_custom_dir)**
+- **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
+- **[DB2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_dir)**
+- **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**
+- **[DB2_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_username)**
+- **[DB2INST1_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2inst_password)**
+- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
+- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
+- **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
+- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
+- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
+- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_OPT_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_opt_ibm_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
