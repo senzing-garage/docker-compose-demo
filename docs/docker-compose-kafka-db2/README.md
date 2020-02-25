@@ -224,7 +224,7 @@ Senzing comes with a trial license that supports 10,000 records.
 
 ## View data
 
-Once the docker-compose formation is running,
+When the docker-compose formation is running,
 different aspects of the formation can be viewed.
 
 Username and password for the following sites were either passed in as environment variables
