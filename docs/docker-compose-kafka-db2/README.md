@@ -49,7 +49,7 @@ This docker formation brings up the following docker containers:
     1. [Install Senzing license](#install-senzing-license)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
-    1. [View Kafka](#view-kafka)
+    1. [View Kafka-manager](#view-kafka-manager)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
@@ -269,44 +269,34 @@ and this step may be skipped.
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
-### View Kafka
+### View Kafka-manager
 
-1. Kafka is viewable at
+1. Kafka-manager is viewable at
    [localhost:9175](http://localhost:9175).
+
+1. [Additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#kafka)
+   for working with Kafka.
 
 ### View Senzing API
 
-1. View results from Senzing REST API server.
-   The server supports the
-   [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
+View results from Senzing REST API server.
+The server supports the
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
 
-   1. From a web browser.
-      Examples:
-      1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
-      1. [localhost:8250/license](http://localhost:8250/license)
-      1. [localhost:8250/entities/1](http://localhost:8250/entities/1)
-   1. From `curl`.
-      Examples:
+1. From a web browser.
+   Example:
+    1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 
-        ```console
-        export SENZING_API_SERVICE=http://localhost:8250
-
-        curl -X GET ${SENZING_API_SERVICE}/heartbeat
-        curl -X GET ${SENZING_API_SERVICE}/license
-        curl -X GET ${SENZING_API_SERVICE}/entities/1
-        ```
-
-   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+1. [Additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
+   for working with Senzing API server.
 
 ### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
-    1. Example entity:
-       [localhost:8251/entity/1](http://localhost:8251/entity/1).
 
-1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
-   instructions will give a tour of the Senzing web app.
+1. [Additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+   for working with Senzing Entity Search WebApp.
 
 ## Cleanup
 
