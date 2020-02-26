@@ -164,8 +164,8 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
 
-    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
+    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq    
     ```
 
 1. Create directory for RabbitMQ persistence.
@@ -176,17 +176,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     ```console
     sudo mkdir -p ${RABBITMQ_DIR}
     sudo chmod 777 ${RABBITMQ_DIR}
-    ```
-
-
-1. Change directory permissions.
-   **Note:** Although the `MSSQL_DIR` directory will have open permissions,
-   the directories created within `MSSQL_DIR` will be restricted.
-   Example:
-
-    ```console
-    sudo mkdir -p ${MSSQL_DIR}
-    sudo chmod 777 ${MSSQL_DIR}
     ```
 
 ### EULA
@@ -233,6 +222,15 @@ Senzing comes with a trial license that supports 10,000 records.
 
 1. Wait until completion.
 
+1. Change directory permissions.
+   **Note:** Although the `MSSQL_DIR` directory will have open permissions,
+   the directories created within `MSSQL_DIR` will be restricted.
+   Example:
+
+    ```console
+    sudo chmod 777 ${MSSQL_DIR}
+    ```
+
 ### Run docker formation
 
 1. Launch docker-compose formation.
@@ -270,6 +268,9 @@ or are the default values seen in
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
     1. **Defaults:** username: `user` password: `bitnami`
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#rabbitmq)
+   for working with RabbitMQ.
 
 ### View MSSQL
 
