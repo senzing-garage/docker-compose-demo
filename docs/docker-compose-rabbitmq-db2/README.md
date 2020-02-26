@@ -25,7 +25,9 @@ This docker formation brings up the following docker containers:
 
 1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
 1. *[ibmcom/db2](https://hub.docker.com/r/ibmcom/db2)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
@@ -41,18 +43,20 @@ This docker formation brings up the following docker containers:
     1. [Pull docker images](#pull-docker-images)
     1. [Clone repository](#clone-repository)
 1. [Using docker-compose](#using-docker-compose)
-    1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
+    1. [View docker containers](#view-docker-containers)
     1. [View RabbitMQ](#view-rabbitmq)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
-1. [Re-run docker formation](#re-run-docker-formation)
+1. [Advanced](#advanced)
+    1. [Re-run docker formation](#re-run-docker-formation)
+    1. [Configuration](#configuration)
 
 ### Legend
 
@@ -125,29 +129,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 ## Using docker-compose
 
-### Configuration
-
-Configuration values specified by environment variable or command line parameter.
-
-- **[DB2_CUSTOM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_custom_dir)**
-- **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
-- **[DB2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_dir)**
-- **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**
-- **[DB2_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_username)**
-- **[DB2INST1_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2inst_password)**
-- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_dir)**
-- **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
-- **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
-- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
-- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
-- **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
-- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
-- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
-- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_OPT_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_opt_ibm_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
-
 ### Volumes
 
 1. :pencil2: Specify the directory where Senzing should be installed on the local host.
@@ -197,16 +178,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. :warning: This step is intentionally tricky and not simply copy/paste.
    This ensures that you make a conscious effort to accept the EULA.
-   See
-   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
-   for the correct value.
-   Replace the double-quote character in the example with the correct value.
-   The use of the double-quote character is intentional to prevent simple copy/paste.
    Example:
 
-    ```console
-    export SENZING_ACCEPT_EULA="
-    ```
+    <code>export SENZING_ACCEPT_EULA="&lt;the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)&gt;"</code>
 
 ### Install Senzing
 
@@ -216,37 +190,17 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
-      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
 ### Install Senzing license
 
-:thinking: **Optional:**
 Senzing comes with a trial license that supports 10,000 records.
-If this is sufficient, there is no need to install a new license
-and this step may be skipped.
 
-1. If working with more than 10,000 records,
-   [obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
-
-1. :pencil2: Identify location of `g2.lic` on local workstation.
-   Example:
-
-    ```console
-    export G2_LICENSE_PATH=/path/to/local/g2.lic
-    ```
-
-1. Copy license to volume.
-   Example:
-
-    ```console
-    sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
-    ```
+1. :thinking: **Optional:**
+   If more than 10,000 records are desired, see
+   [Senzing license](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-license).
 
 ### Run docker formation
 
@@ -256,24 +210,22 @@ and this step may be skipped.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_DIR=${DB2_DIR} \
-      RABBITMQ_DIR=${RABBITMQ_DIR} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_OPT_IBM_DIR=${SENZING_OPT_IBM_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/db2/docker-compose-rabbitmq-db2.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
+    1. There will be errors in some docker logs as they wait for dependent services to become available.
+       `docker-compose` isn't the best at orchestrating docker container dependencies.
 
 ## View data
 
-1. Username and password for the following sites were either passed in as environment variables
-   or are the default values seen in
-   [docker-compose-rabbitmq-db2.yaml](../../resources/db2/docker-compose-rabbitmq-db2.yaml).
+Once the docker-compose formation is running,
+different aspects of the formation can be viewed.
+
+Username and password for the following sites were either passed in as environment variables
+or are the default values seen in
+[docker-compose-rabbitmq-db2.yaml](../../resources/db2/docker-compose-rabbitmq-db2.yaml).
 
 ### View docker containers
 
@@ -287,42 +239,34 @@ and this step may be skipped.
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
     1. **Defaults:** username: `user` password: `bitnami`
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#rabbitmq)
+   for working with RabbitMQ.
 
 ### View Senzing API
 
-1. View results from Senzing REST API server.
-   The server supports the
-   [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
+View results from Senzing REST API server.
+The server supports the
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
 
-   1. From a web browser.
-      Examples:
-      1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
-      1. [localhost:8250/license](http://localhost:8250/license)
-      1. [localhost:8250/entities/1](http://localhost:8250/entities/1)
-   1. From `curl`.
-      Examples:
-
-        ```console
-        export SENZING_API_SERVICE=http://localhost:8250
-
-        curl -X GET ${SENZING_API_SERVICE}/heartbeat
-        curl -X GET ${SENZING_API_SERVICE}/license
-        curl -X GET ${SENZING_API_SERVICE}/entities/1
-        ```
-
-   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+1. Example Senzing REST API request:
+   [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
+   for working with Senzing API server.
 
 ### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
-    1. Example entity:
-       [localhost:8251/entity/1](http://localhost:8251/entity/1).
-
-1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
-   instructions will give a tour of the Senzing web app.
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+   for working with Senzing Entity Search WebApp.
 
 ## Cleanup
+
+When the docker-compose formation is no longer needed,
+it can be brought down and directories can be deleted.
 
 1. Bring down docker formation.
    Example:
@@ -342,7 +286,11 @@ and this step may be skipped.
 
    They may be safely deleted.
 
-## Re-run docker formation
+## Advanced
+
+The following topics discuss variations to the basic docker-compose demonstration.
+
+### Re-run docker formation
 
 :thinking: **Optional:** After the launch and shutdown of the original docker formation,
 the docker formation can be brought up again without requiring initialization steps.
@@ -354,13 +302,29 @@ The following shows how to bring up the prior docker formation again without ini
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      DB2_CUSTOM_DIR=${DB2_CUSTOM_DIR} \
-      DB2_DIR=${DB2_DIR} \
-      RABBITMQ_DIR=${RABBITMQ_DIR} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_OPT_IBM_DIR=${SENZING_OPT_IBM_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/db2/docker-compose-rabbitmq-db2-again.yaml up
     ```
+
+### Configuration
+
+Configuration values specified by environment variable or command line parameter.
+
+- **[DB2_CUSTOM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_custom_dir)**
+- **[DB2_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_db)**
+- **[DB2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_dir)**
+- **[DB2_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_password)**
+- **[DB2_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2_username)**
+- **[DB2INST1_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#db2inst_password)**
+- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_dir)**
+- **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
+- **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
+- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
+- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
+- **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
+- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
+- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
+- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_OPT_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_opt_ibm_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
