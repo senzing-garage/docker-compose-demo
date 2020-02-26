@@ -14,7 +14,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-sqlite/rabbitmq}:/bitnami
+      - ${RABBITMQ_DIR}:/bitnami
 
   mockdata:
     container_name: senzing-mock-data-generator

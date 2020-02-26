@@ -14,7 +14,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mysql/rabbitmq}:/bitnami
+      - ${RABBITMQ_DIR}:/bitnami
 
   mockdata:
     container_name: senzing-mock-data-generator
@@ -50,7 +50,7 @@ services:
       - 3306:3306
     restart: always
     volumes:
-      - ${MYSQL_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mysql/mysql}:/var/lib/mysql
+      - ${MYSQL_DIR:-/var/lib/mysql}:/var/lib/mysql
 
   phpmyadmin:
     container_name: senzing-phpmyadmin
