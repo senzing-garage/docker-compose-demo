@@ -316,7 +316,6 @@ it can be brought down and directories can be deleted.
    The following directories were created during the demonstration:
     1. `${SENZING_VOLUME}`
     1. `${GIT_REPOSITORY_DIR}`
-
    They may be safely deleted.
 
 ## Advanced

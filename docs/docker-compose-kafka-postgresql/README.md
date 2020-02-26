@@ -280,7 +280,6 @@ it can be brought down and directories can be deleted.
 
 1. Remove directories from host system.
    The following directories were created during the demonstration:
-
     1. `${SENZING_VOLUME}`
     1. `${GIT_REPOSITORY_DIR}`
 
