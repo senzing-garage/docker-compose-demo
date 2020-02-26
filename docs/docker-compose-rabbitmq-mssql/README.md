@@ -165,7 +165,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
 
     export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
-    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq    
+    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     ```
 
 1. Create directory for RabbitMQ persistence.
