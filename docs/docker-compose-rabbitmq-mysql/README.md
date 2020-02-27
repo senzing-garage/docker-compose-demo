@@ -42,7 +42,6 @@ This docker formation brings up the following docker containers:
     1. [Background knowledge](#background-knowledge)
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
-    1. [Pull docker images](#pull-docker-images)
     1. [Clone repository](#clone-repository)
     1. [Build docker images](#build-docker-images)
 1. [Using docker-compose](#using-docker-compose)
@@ -96,24 +95,6 @@ The following software programs need to be installed:
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
 1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
-
-### Pull docker images
-
-1. :thinking: **Optional:** To speed up following steps, docker images may be pulled in advance.
-   Example:
-
-    ```console
-    sudo docker pull bitnami/rabbitmq:3.8.2
-    sudo docker pull mysql:5.7
-    sudo docker pull phpmyadmin/phpmyadmin:4.9
-    sudo docker pull senzing/entity-search-web-app:1.0.4
-    sudo docker pull senzing/init-container:1.5.0
-    sudo docker pull senzing/mock-data-generator:1.1.0
-    sudo docker pull senzing/senzing-api-server:1.7.10
-    sudo docker pull senzing/senzing-debug:1.3.0
-    sudo docker pull senzing/stream-loader:1.4.0
-    sudo docker pull senzing/yum:1.1.3
-    ```
 
 ### Clone repository
 
