@@ -352,13 +352,13 @@ In a separate (or reusable) terminal window:
 1. Delete storage.
 
     ```console
-    sudo rm -ri ${RABBITMQ_DIR}
+    sudo rm -rf ${RABBITMQ_DIR}
     ```
 
 1. Delete git repository.
 
     ```console
-    sudo rm -ri ${GIT_REPOSITORY_DIR}
+    sudo rm -rf ${GIT_REPOSITORY_DIR}
     ```
 
 ## Re-run docker formation
