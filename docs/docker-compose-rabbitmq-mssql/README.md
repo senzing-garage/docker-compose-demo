@@ -42,10 +42,9 @@ This docker formation brings up the following docker containers:
     1. [Background knowledge](#background-knowledge)
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
-    1. [Clone repository](#clone-repository)
     1. [Pull docker images](#pull-docker-images)
+    1. [Clone repository](#clone-repository)
 1. [Using docker-compose](#using-docker-compose)
-    1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
@@ -59,7 +58,9 @@ This docker formation brings up the following docker containers:
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
-1. [Re-run docker formation](#re-run-docker-formation)
+1. [Advanced](#advanced)
+    1. [Re-run docker formation](#re-run-docker-formation)
+    1. [Configuration](#configuration)
 1. [Notes](#notes)
     1. [Running non-root](#running-non-root)
 
@@ -96,22 +97,7 @@ The following software programs need to be installed:
 
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
-
-### Clone repository
-
-For more information on environment variables,
-see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md).
-
-1. Set these environment variable values:
-
-    ```console
-    export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-compose-demo
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    ```
-
-1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
+1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
 
 ### Pull docker images
 
@@ -133,7 +119,234 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     sudo docker pull senzing/yum:1.1.3
     ```
 
+### Clone repository
+
+For more information on environment variables,
+see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md).
+
+1. Set these environment variable values:
+
+    ```console
+    export GIT_ACCOUNT=senzing
+    export GIT_REPOSITORY=docker-compose-demo
+    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
+    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
+    ```
+
+1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
+
 ## Using docker-compose
+
+### Volumes
+
+1. :pencil2: Specify the directory where Senzing should be installed on the local host.
+   Example:
+
+    ```console
+    export SENZING_VOLUME=/opt/my-senzing
+    ```
+
+    1. :warning:
+       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#macos)
+       must be enabled for `SENZING_VOLUME`.
+    1. :warning:
+       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
+       must be enabled for `SENZING_VOLUME`.
+
+1. Identify directories on the local host.
+   Example:
+
+    ```console
+    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
+    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
+    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
+    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+
+    export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
+    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
+    ```
+
+1. Create directory for RabbitMQ persistence.
+   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
+   the directories created within `RABBITMQ_DIR` will be restricted.
+   Example:
+
+    ```console
+    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo chmod 777 ${RABBITMQ_DIR}
+    ```
+
+### EULA
+
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
+
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   Example:
+
+    <code>export SENZING_ACCEPT_EULA="&lt;the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)&gt;"</code>
+
+### Install Senzing
+
+1. If Senzing has not been installed, install Senzing.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
+    ```
+
+### Install Senzing license
+
+Senzing comes with a trial license that supports 10,000 records.
+
+1. :thinking: **Optional:**
+   If more than 10,000 records are desired, see
+   [Senzing license](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-license).
+
+### Install MS SQL driver
+
+1. Install MS SQL driver and initialize files.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml up
+    ```
+
+1. Wait until completion.
+
+1. Change directory permissions.
+   **Note:** Although the `MSSQL_DIR` directory will have open permissions,
+   the directories created within `MSSQL_DIR` will be restricted.
+   Example:
+
+    ```console
+    sudo chmod 777 ${MSSQL_DIR}
+    ```
+
+### Run docker formation
+
+1. Launch docker-compose formation.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml up
+    ```
+
+1. Allow time for the components to come up and initialize.
+    1. There will be errors in some docker logs as they wait for dependent services to become available.
+       `docker-compose` isn't the best at orchestrating docker container dependencies.
+
+## View data
+
+Once the docker-compose formation is running,
+different aspects of the formation can be viewed.
+
+Username and password for the following sites were either passed in as environment variables
+or are the default values seen in
+[docker-compose-rabbitmq-mssql.yaml](../../resources/mssql/docker-compose-rabbitmq-mssql.yaml).
+
+### View docker containers
+
+1. A good tool to monitor individual docker logs is
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
+   When running, Portainer is viewable at
+   [localhost:9170](http://localhost:9170).
+
+### View RabbitMQ
+
+1. RabbitMQ is viewable at
+   [localhost:15672](http://localhost:15672).
+    1. **Defaults:** username: `user` password: `bitnami`
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#rabbitmq)
+   for working with RabbitMQ.
+
+### View MSSQL
+
+1. MSSQL is viewable at
+   [localhost:9177](http://localhost:9177).
+    1. **System:** MS SQL (beta)
+    1. **Server:** senzing-mysql
+    1. **Username:** sa
+    1. **Password:** Passw0rd
+    1. **Database:** G2
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#ms-sql)
+   for working with MSSQL.
+
+### View Senzing API
+
+View results from Senzing REST API server.
+The server supports the
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
+
+1. Example Senzing REST API request:
+   [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
+   for working with Senzing API server.
+
+### View Senzing Entity Search WebApp
+
+1. Senzing Entity Search WebApp is viewable at
+   [localhost:8251](http://localhost:8251).
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+   for working with Senzing Entity Search WebApp.
+
+## Cleanup
+
+When the docker-compose formation is no longer needed,
+it can be brought down and directories can be deleted.
+
+1. Bring down docker formation.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
+    sudo docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml down
+    sudo docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml down
+    sudo docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml down
+    ```
+
+1. Remove directories from host system.
+   The following directories were created during the demonstration:
+    1. `${SENZING_VOLUME}`
+    1. `${GIT_REPOSITORY_DIR}`
+
+   They may be safely deleted.
+
+## Advanced
+
+The following topics discuss variations to the basic docker-compose demonstration.
+
+### Re-run docker formation
+
+:thinking: **Optional:** After the launch and shutdown of the original docker formation,
+the docker formation can be brought up again without requiring initialization steps.
+The following shows how to bring up the prior docker formation again without initialization.
+
+1. Launch docker-compose formation.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml up
+    ```
 
 ### Configuration
 
@@ -155,258 +368,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_OPT_MICROSOFT_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_opt_microsoft_dir)**
-
-### Volumes
-
-:thinking: The output of `yum install senzingapi` places files in different directories.
-Identify a folder for each output directory.
-
-1. **Example #1:**
-   To mimic an actual RPM installation,
-   identify directories for RPM output in this manner:
-
-    ```console
-    export SENZING_DATA_DIR=/opt/senzing/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
-    export SENZING_ETC_DIR=/etc/opt/senzing
-    export SENZING_G2_DIR=/opt/senzing/g2
-    export SENZING_OPT_MICROSOFT_DIR=/opt/microsoft
-    ```
-
-1. :pencil2: **Example #2:**
-   Senzing directories can be put in alternative directories.
-   Example:
-
-    ```console
-    export SENZING_VOLUME=/opt/my-senzing
-
-    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
-    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
-    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
-    ```
-
-### EULA
-
-To use the Senzing code, you must agree to the End User License Agreement (EULA).
-
-1. :warning: This step is intentionally tricky and not simply copy/paste.
-   This ensures that you make a conscious effort to accept the EULA.
-   See
-   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
-   for the correct value.
-   Replace the double-quote character in the example with the correct value.
-   The use of the double-quote character is intentional to prevent simple copy/paste.
-   Example:
-
-    ```console
-    export SENZING_ACCEPT_EULA="
-    ```
-
-### Install Senzing
-
-1. If Senzing has not been installed, install Senzing.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
-      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
-    ```
-
-### Install Senzing license
-
-:thinking: **Optional:**
-Senzing comes with a trial license that supports 10,000 records.
-If this is sufficient, there is no need to install a new license
-and this step may be skipped.
-
-1. If working with more than 10,000 records,
-   [obtain a Senzing license](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/obtain-senzing-license.md).
-
-1. :pencil2: Identify location of `g2.lic` on local workstation.
-   Example:
-
-    ```console
-    export G2_LICENSE_PATH=/path/to/local/g2.lic
-    ```
-
-1. Copy license to volume.
-   Example:
-
-    ```console
-    sudo cp ${G2_LICENSE_PATH} ${SENZING_ETC_DIR}/g2.lic
-    ```
-
-### Install MS SQL driver
-
-1. Install MS SQL driver and initialize files.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
-      docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml up
-    ```
-
-### Run docker formation
-
-1. :pencil2: Set environment variables.
-   Example:
-
-    ```console
-    export MSSQL_DIR=/storage/docker/senzing/docker-compose-rabbitmq-mssql/mssql
-    export RABBITMQ_DIR=/storage/docker/senzing/docker-compose-rabbitmq-mssql/rabbitmq
-    ```
-
-1. Create directories.
-   Example:
-
-    ```console
-    sudo mkdir -p ${MSSQL_DIR}
-    sudo chmod 777 ${MSSQL_DIR}
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
-    ```
-
-1. Launch docker-compose formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      MSSQL_DIR=${MSSQL_DIR} \
-      RABBITMQ_DIR=${RABBITMQ_DIR} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
-      docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml up
-    ```
-
-1. Allow time for the components to come up and initialize.
-
-## View data
-
-1. Username and password for the following sites were either passed in as environment variables
-   or are the default values seen in
-   [docker-compose-rabbitmq-mssql.yaml](../../resources/mssql/docker-compose-rabbitmq-mssql.yaml).
-
-### View docker containers
-
-1. A good tool to monitor individual docker logs is
-   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
-   When running, Portainer is viewable at
-   [localhost:9170](http://localhost:9170).
-
-### View RabbitMQ
-
-1. RabbitMQ is viewable at
-   [localhost:15672](http://localhost:15672).
-    1. **Defaults:** username: `user` password: `bitnami`
-
-### View MSSQL
-
-1. MSSQL is viewable at
-   [localhost:9177](http://localhost:9177).
-    1. **System:** MS SQL (beta)
-    1. **Server:** senzing-mysql
-    1. **Username:** sa
-    1. **Password:** Passw0rd
-    1. **Database:** G2
-1. The records received from the queue can be viewed in the following Senzing tables:
-    1. `DSRC_RECORD`
-    1. `OBS_ENT`
-
-### View Senzing API
-
-1. View results from Senzing REST API server.
-   The server supports the
-   [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
-
-   1. From a web browser.
-      Examples:
-      1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
-      1. [localhost:8250/license](http://localhost:8250/license)
-      1. [localhost:8250/entities/1](http://localhost:8250/entities/1)
-   1. From `curl`.
-      Examples:
-
-        ```console
-        export SENZING_API_SERVICE=http://localhost:8250
-
-        curl -X GET ${SENZING_API_SERVICE}/heartbeat
-        curl -X GET ${SENZING_API_SERVICE}/license
-        curl -X GET ${SENZING_API_SERVICE}/entities/1
-        ```
-
-   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
-
-### View Senzing Entity Search WebApp
-
-1. Senzing Entity Search WebApp is viewable at
-   [localhost:8251](http://localhost:8251).
-
-1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
-   instructions will give a tour of the Senzing web app.
-
-## Cleanup
-
-In a separate (or reusable) terminal window:
-
-1. Use environment variable describe in "[Clone repository](#clone-repository)" and "[Configuration](#configuration)".
-1. Run `docker-compose` command.
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml down
-    sudo docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml down
-    sudo docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml down
-    ```
-
-1. Delete storage.
-
-    ```console
-    sudo rm -rf ${MSSQL_DIR}
-    sudo rm -rf ${RABBITMQ_DIR}
-    ```
-
-1. Delete git repository.
-
-    ```console
-    sudo rm -rf ${GIT_REPOSITORY_DIR}
-    ```
-
-## Re-run docker formation
-
-:thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again without requiring initialization steps.
-The following shows how to bring up the prior docker formation again without initialization.
-
-1. Launch docker-compose formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      MSSQL_DIR=${MSSQL_DIR} \
-      RABBITMQ_DIR=${RABBITMQ_DIR} \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_OPT_MICROSOFT_DIR=${SENZING_OPT_MICROSOFT_DIR} \
-      docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml up
-    ```
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ## Notes
 

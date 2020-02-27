@@ -29,17 +29,19 @@ services:
       - 9092:9092
     restart: always
 
-  kafkamanager:
-    container_name: senzing-kafka-manager
+  kafdrop:
+    container_name: senzing-kafdrop
     depends_on:
       - kafka
     environment:
-      ZK_HOSTS: "senzing-zookeeper:2181"
-    image: kafkamanager/kafka-manager:2.0.0.2
+      KAFKA_BROKERCONNECT: "senzing-kafka:9092"
+      JVM_OPTS: "-Xms32M -Xmx64M"
+      SERVER_SERVLET_CONTEXTPATH: "/"
+    image: obsidiandynamics/kafdrop:3.23.0
     networks:
       - backend
     ports:
-      - 9175:9000
+      - 9179:9000
     restart: always
 
   mockdata:
@@ -71,9 +73,9 @@ services:
       - 50000:50000
     privileged: true
     volumes:
-      - ${DB2_DIR:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${DB2_CUSTOM_DIR}:/var/custom
+      - ${DB2_DIR}:/database
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   db2driverinstaller:
     container_name: senzing-db2-driver-installer

@@ -15,7 +15,7 @@ services:
       - 1433:1433
     restart: always
     volumes:
-      - ${MSSQL_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mssql/mssql}:/var/opt/mssql
+      - ${MSSQL_DIR:-/var/opt/mssql}:/var/opt/mssql
 
   adminer:
     container_name: senzing-adminer
@@ -41,7 +41,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-mssql/rabbitmq}:/bitnami
+      - ${RABBITMQ_DIR}:/bitnami
 
   mockdata:
     container_name: senzing-mock-data-generator
