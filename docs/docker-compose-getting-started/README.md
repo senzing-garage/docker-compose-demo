@@ -55,7 +55,6 @@ This docker formation brings up the following docker containers:
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
-    1. [Re-run docker formation](#re-run-docker-formation)
     1. [Configuration](#configuration)
 
 ### Legend
@@ -279,4 +278,3 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
-
