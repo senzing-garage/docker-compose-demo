@@ -53,7 +53,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_RECORD_MAX: 10000
+      SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-kafka
     image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
@@ -168,7 +168,7 @@ services:
       - "--NotebookApp.token=''"
     depends_on:
       - loader
-    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.2}
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
     networks:
       - backend
     ports:
