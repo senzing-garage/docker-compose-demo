@@ -53,6 +53,7 @@ This docker formation brings up the following docker containers:
     1. [View Kafka](#view-kafka)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
+    1. [View Jupyter notebooks](#view-jupyter-notebooks)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [Re-run docker formation](#re-run-docker-formation)
@@ -231,6 +232,14 @@ The server supports the
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
+
+### View Jupyter notebooks
+
+1. Jupyter Notebooks are viewable at
+   [localhost:9178](http://localhost:9178).
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#jupyter-notebooks)
+   for working with Jupyter Notebooks.
 
 ## Cleanup
 
