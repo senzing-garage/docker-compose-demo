@@ -12,7 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `kafdrop`; removed kafka-manager
 - Simplified localhost storage
-- Simplified README.md by using `sudo --preserve-env`
+- Simplified `README.md`
+    - Moved "advanced" topics into knowledge-base and linked to them.
+    - Using `sudo --preserve-env`
 
 ## [1.3.2] - 2020-02-27
 
