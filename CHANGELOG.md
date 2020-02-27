@@ -6,12 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.2] - 2020-02-03
+## [1.3.3] - 2020-02-27
+
+### Changed in 1.3.3
+
+- Added `kafdrop`; removed kafka-manager
+- Simplified localhost storage ("volumes:")
+- Simplified `README.md`
+    - Moved "advanced" topics into knowledge-base and linked to them.
+    - Using `sudo --preserve-env`
+
+## [1.3.2] - 2020-02-27
 
 ### Changed in 1.3.2
 
 - Update versions of docker images
 - Senzing docker images updated from `debian:9` to `debian:10.2`
+- Added simplified `docker-compose-getting-started`
+- Added `docker-compose-rabbitmq-sqlite-governor` example.
+- Added `docker-compose-rabbitmq-sqlite-jupyter` example.
+- Added spike for "withInfo"
 
 ## [1.3.1] - 2020-01-13
 

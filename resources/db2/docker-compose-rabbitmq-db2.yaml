@@ -14,7 +14,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR:-/storage/docker/senzing/docker-compose-rabbitmq-db2/rabbitmq}:/bitnami
+      - ${RABBITMQ_DIR}:/bitnami
 
   mockdata:
     container_name: senzing-mock-data-generator
@@ -47,9 +47,9 @@ services:
       - 50000:50000
     privileged: true
     volumes:
-      - ${DB2_DIR:-/storage/docker/senzing/docker-compose-kafka-db2/db2}:/database
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${DB2_CUSTOM_DIR}:/var/custom
+      - ${DB2_DIR}:/database
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   db2driverinstaller:
     container_name: senzing-db2-driver-installer

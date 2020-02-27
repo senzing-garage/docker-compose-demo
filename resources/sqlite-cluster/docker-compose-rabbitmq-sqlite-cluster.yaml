@@ -122,8 +122,9 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-mock-data-generator#configuration
       SENZING_LOG_LEVEL: debug
-      SENZING_SUBCOMMAND: sleep
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
+      SENZING_SUBCOMMAND: redo
+#   image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
+    image: senzing/redoer:latest
     networks:
       - backend
     privileged: true

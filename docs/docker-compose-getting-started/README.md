@@ -25,7 +25,9 @@ This docker formation brings up the following docker containers:
 
 1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
 1. *[coleifer/sqlite-web](https://github.com/coleifer/sqlite-web)*
+1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
@@ -41,17 +43,19 @@ This docker formation brings up the following docker containers:
     1. [Pull docker images](#pull-docker-images)
     1. [Clone repository](#clone-repository)
 1. [Using docker-compose](#using-docker-compose)
-    1. [Configuration](#configuration)
     1. [Volumes](#volumes)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
+    1. [View docker containers](#view-docker-containers)
     1. [View RabbitMQ](#view-rabbitmq)
     1. [View SQLite](#view-sqlite)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
 1. [Cleanup](#cleanup)
+1. [Advanced](#advanced)
+    1. [Configuration](#configuration)
 
 ### Legend
 
@@ -100,6 +104,7 @@ The following software programs need to be installed:
     sudo docker pull senzing/init-container:1.5.0
     sudo docker pull senzing/mock-data-generator:1.1.0
     sudo docker pull senzing/senzing-api-server:1.7.10
+    sudo docker pull senzing/senzing-debug:1.3.0
     sudo docker pull senzing/stream-loader:1.4.0
     sudo docker pull senzing/yum:1.1.3
     ```
@@ -116,70 +121,32 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export GIT_REPOSITORY=docker-compose-demo
     export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
     export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    export GIT_REPOSITORY_URL="https://github.com/${GIT_ACCOUNT}/${GIT_REPOSITORY}.git"
     ```
 
-1. :thinking: Create parent directories.
-   Choose one method.
-    1. **Linux:**
-       Example:
-
-        ```console
-        mkdir --parents ${GIT_ACCOUNT_DIR}
-        ```
-
-    1. **macOS:**
-       Example:
-
-        ```console
-        mkdir -p ${GIT_ACCOUNT_DIR}
-        ```
-
-1. Get repository.
-   Example:
-
-    ```console
-    cd  ${GIT_ACCOUNT_DIR}
-    git clone ${GIT_REPOSITORY_URL}
-    ```
+1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
 
 ## Using docker-compose
 
-### Configuration
-
-Configuration values specified by environment variable or command line parameter.
-
-- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
-- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
-- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
-- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
-
 ### Volumes
 
-:thinking: The output of `yum install senzingapi` places files in different directories.
-Identify a folder for each output directory.
-
-1. **Example #1:**
-   To mimic an actual RPM installation,
-   identify directories for RPM output in this manner:
-
-    ```console
-    export SENZING_DATA_DIR=/opt/senzing/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
-    export SENZING_ETC_DIR=/etc/opt/senzing
-    export SENZING_G2_DIR=/opt/senzing/g2
-    export SENZING_VAR_DIR=/var/opt/senzing
-    ```
-
-1. :pencil2: **Example #2:**
-   Senzing directories can be put in alternative directories.
+1. :pencil2: Specify the directory where Senzing should be installed on the local host.
    Example:
 
     ```console
     export SENZING_VOLUME=/opt/my-senzing
+    ```
 
+    1. :warning:
+       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#macos)
+       must be enabled for `SENZING_VOLUME`.
+    1. :warning:
+       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/share-directories-with-docker.md#windows)
+       must be enabled for `SENZING_VOLUME`.
+
+1. Identify directories on the local host.
+   Example:
+
+    ```console
     export SENZING_DATA_DIR=${SENZING_VOLUME}/data
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/1.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
@@ -193,16 +160,9 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 1. :warning: This step is intentionally tricky and not simply copy/paste.
    This ensures that you make a conscious effort to accept the EULA.
-   See
-   [SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)
-   for the correct value.
-   Replace the double-quote character in the example with the correct value.
-   The use of the double-quote character is intentional to prevent simple copy/paste.
    Example:
 
-    ```console
-    export SENZING_ACCEPT_EULA="
-    ```
+    <code>export SENZING_ACCEPT_EULA="&lt;the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)&gt;"</code>
 
 ### Install Senzing
 
@@ -212,19 +172,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      SENZING_ACCEPT_EULA=${SENZING_ACCEPT_EULA} \
-      SENZING_DATA_DIR=${SENZING_DATA_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
-    ```
-
-1. For the SQLite database, directory ownership needs to be changed.
-   Example:
-
-    ```console
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VAR_DIR}
     ```
 
 ### Run docker formation
@@ -235,10 +184,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo \
-      SENZING_DATA_VERSION_DIR=${SENZING_DATA_VERSION_DIR} \
-      SENZING_ETC_DIR=${SENZING_ETC_DIR} \
-      SENZING_G2_DIR=${SENZING_G2_DIR} \
-      SENZING_VAR_DIR=${SENZING_VAR_DIR} \
+      --preserve-env \
       docker-compose --file resources/sqlite/docker-compose-getting-started.yaml up
     ```
 
@@ -246,9 +192,12 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ## View data
 
-1. Username and password for the following sites were either passed in as environment variables
-   or are the default values seen in
-   [docker-compose-getting-started.yaml](../../resources/sqlite/docker-compose-getting-started.yaml).
+Once the docker-compose formation is running,
+different aspects of the formation can be viewed.
+
+Username and password for the following sites were either passed in as environment variables
+or are the default values seen in
+[docker-compose-getting-started.yaml](../../resources/sqlite/docker-compose-getting-started.yaml).
 
 ### View docker containers
 
@@ -262,50 +211,42 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
     1. **Defaults:** username: `user` password: `bitnami`
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#rabbitmq)
+   for working with RabbitMQ.
 
 ### View SQLite
 
-1. SQLite for `G2C.db` is viewable at
+1. SQLite is viewable at
    [localhost:9174](http://localhost:9174).
-1. The records received from the queue can be viewed in the following Senzing tables:
-    1. G2 > DSRC_RECORD
-    1. G2 > OBS_ENT
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#sqlite)
+   for working with SQLite.
 
 ### View Senzing API
 
-1. View results from Senzing REST API server.
-   The server supports the
-   [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
+View results from Senzing REST API server.
+The server supports the
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
 
-   1. From a web browser.
-      Examples:
-      1. [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
-      1. [localhost:8250/license](http://localhost:8250/license)
-      1. [localhost:8250/entities/1](http://localhost:8250/entities/1)
-   1. From `curl`.
-      Examples:
-
-        ```console
-        export SENZING_API_SERVICE=http://localhost:8250
-
-        curl -X GET ${SENZING_API_SERVICE}/heartbeat
-        curl -X GET ${SENZING_API_SERVICE}/license
-        curl -X GET ${SENZING_API_SERVICE}/entities/1
-        ```
-
-   1. From [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+1. Example Senzing REST API request:
+   [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
+   for working with Senzing API server.
 
 ### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
-    1. Example entity:
-       [localhost:8251/entity/1](http://localhost:8251/entity/1).
-
-1. The [demonstration](https://github.com/Senzing/knowledge-base/blob/master/demonstrations/docker-compose-web-app.md)
-   instructions will give a tour of the Senzing web app.
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+   for working with Senzing Entity Search WebApp.
 
 ## Cleanup
+
+When the docker-compose formation is no longer needed,
+it can be brought down and directories can be deleted.
 
 1. Bring down docker formation.
    Example:
@@ -316,8 +257,24 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     sudo docker-compose --file resources/sqlite/docker-compose-getting-started.yaml down
     ```
 
-1. Delete git repository.
+1. Remove directories from host system.
+   The following directories were created during the demonstration:
+    1. `${SENZING_VOLUME}`
+    1. `${GIT_REPOSITORY_DIR}`
 
-    ```console
-    sudo rm -rf ${GIT_REPOSITORY_DIR}
-    ```
+   They may be safely deleted.
+
+## Advanced
+
+The following topics discuss variations to the basic docker-compose demonstration.
+
+### Configuration
+
+Configuration values specified by environment variable or command line parameter.
+
+- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
+- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
+- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
+- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
