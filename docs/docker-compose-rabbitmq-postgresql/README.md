@@ -29,6 +29,7 @@ This docker formation brings up the following docker containers:
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
+1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
@@ -54,6 +55,7 @@ This docker formation brings up the following docker containers:
     1. [View PostgreSQL](#view-postgresql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
+    1. [View Jupyter notebooks](#view-jupyter-notebooks)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [Re-run docker formation](#re-run-docker-formation)
@@ -251,6 +253,14 @@ The server supports the
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
+
+### View Jupyter notebooks
+
+1. Jupyter Notebooks are viewable at
+   [localhost:9178](http://localhost:9178).
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#jupyter-notebooks)
+   for working with Jupyter Notebooks.
 
 ## Cleanup
 

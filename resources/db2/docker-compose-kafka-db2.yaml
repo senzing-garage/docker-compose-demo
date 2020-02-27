@@ -191,6 +191,8 @@ services:
       - "--NotebookApp.token=''"
     depends_on:
       - loader
+    environment:
+      SENZING_SQL_CONNECTION: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
     image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
     networks:
       - backend
