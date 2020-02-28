@@ -226,6 +226,7 @@ View results from Senzing REST API server.
 The server supports the
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
 
+1. View REST API using [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
