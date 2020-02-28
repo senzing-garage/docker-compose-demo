@@ -47,6 +47,7 @@ This docker formation brings up the following docker containers:
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
+    1. [Choose docker formation](#choose-docker-formation)
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View docker containers](#view-docker-containers)
@@ -210,6 +211,15 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer.yaml
+    ```
+
+#### Redoer and With-info formation
+
+1. Add `redoer` to standard demonstration.
+   Also, Return information with each record added to Senzing.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer-withinfo.yaml
     ```
 
 ### Run docker formation
