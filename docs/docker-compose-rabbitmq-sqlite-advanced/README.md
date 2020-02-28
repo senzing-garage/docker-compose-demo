@@ -185,6 +185,9 @@ Senzing comes with a trial license that supports 10,000 records.
 ### Choose docker formation
 
 1. :thinking: Choose a `docker-compose.yaml` file.
+   Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below.
+
+#### Standard formation
 
     1. Standard demonstration.
 
@@ -192,11 +195,15 @@ Senzing comes with a trial license that supports 10,000 records.
         export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
         ```
 
+#### With-info formation
+
     1. Return information with each record added to Senzing.
 
         ```console
         export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-withinfo.yaml
         ```
+
+#### Redoer formation
 
     1. Add `redoer` to standard demonstration.
 
