@@ -6,7 +6,7 @@ import time
 
 class Governor:
 
-    def __init__(self, g2_engine=None, hint=None):
+    def __init__(self, g2_engine=None, hint=None, *args, **kwargs):
 
         # Store parameters in instance variables.
 
@@ -24,7 +24,7 @@ class Governor:
         self.stride = 500
         self.sleep_time = 15
 
-    def govern(self):
+    def govern(self, *args, **kwargs):
         """
         Do the actual "governing".
         Do not return until the governance has been completed.
