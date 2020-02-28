@@ -192,7 +192,7 @@ Senzing comes with a trial license that supports 10,000 records.
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml up
+      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -206,7 +206,7 @@ different aspects of the formation can be viewed.
 
 Username and password for the following sites were either passed in as environment variables
 or are the default values seen in
-[docker-compose-rabbitmq-sqlite-cluster.yaml](../../resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml).
+[docker-compose-rabbitmq-sqlite-cluster.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml).
 
 ### View docker containers
 
@@ -267,6 +267,13 @@ The server supports the
 
 ### View Jupyter notebooks
 
+1. Change file permissions on SQLite database.
+   Example:
+
+    ```console
+    sudo chmod 777 -R ${SENZING_VAR_DIR}/sqlite
+    ```
+
 1. Jupyter Notebooks are viewable at
    [localhost:9178](http://localhost:9178).
 1. See
@@ -284,7 +291,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml down
+    sudo docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml down
     ```
 
 1. Remove directories from host system.
@@ -311,7 +318,7 @@ The following shows how to bring up the prior docker formation again without ini
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml up
+      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml up
     ```
 
 ### Configuration
