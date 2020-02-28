@@ -182,29 +182,5 @@ services:
       - 8251:8251
     restart: always
 
-  jupyter:
-    container_name: senzing-jupyter
-    command:
-      - start.sh
-      - jupyter
-      - notebook
-      - "--NotebookApp.token=''"
-    depends_on:
-      - loader
-    environment:
-      SENZING_SQL_CONNECTION: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
-    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
-    networks:
-      - backend
-    ports:
-      - 9178:8888
-    restart: always
-    volumes:
-      - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
 networks:
   backend:
