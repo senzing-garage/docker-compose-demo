@@ -44,4 +44,10 @@ The following table indicates the instructions for variations in components.
     | RabbitMQ | MySQL          | [:page_facing_up:](docs/docker-compose-rabbitmq-mysql/README.md)          | [docker-compose-rabbitmq-mysql.yaml](resources/mysql/docker-compose-rabbitmq-mysql.yaml) |
     | RabbitMQ | PostgreSQL     | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql/README.md)     | [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) |
     | RabbitMQ | SQLite         | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite/README.md)         | [docker-compose-rabbitmq-sqlite.yaml](resources/sqlite/docker-compose-rabbitmq-sqlite.yaml) |
-    | RabbitMQ | SQLite-cluster | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-cluster/README.md) | [docker-compose-rabbitmq-sqlite-cluster.yaml](resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml) |
+
+1. Advanced docker formations:
+
+    | Instructions | Notes               |
+    |:------------:|---------------------|
+    | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-advanced/README.md) | Various enhancements built upon RabbitMQ and SQLite. |
+    | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-cluster/README.md) | Clustered SQLite databases |
