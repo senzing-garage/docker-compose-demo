@@ -184,7 +184,7 @@ Senzing comes with a trial license that supports 10,000 records.
 
 ### Choose docker formation
 
-:thinking: Choose a `docker-compose.yaml` file.
+:thinking: Choose a *docker-compose.yaml* file.
 Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below.
 
 #### Standard formation
