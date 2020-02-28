@@ -200,7 +200,7 @@ Senzing comes with a trial license that supports 10,000 records.
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml up
+      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -287,7 +287,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml down
+    sudo docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml down
     ```
 
 1. Remove directories from host system.
@@ -314,7 +314,7 @@ The following shows how to bring up the prior docker formation again without ini
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml up
+      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml up
     ```
 
 ### Configuration
@@ -341,13 +341,13 @@ Configuration values specified by environment variable or command line parameter
 1. Changes from [docker-compose-rabbitmq-sqlite/README.md](../docker-compose-rabbitmq-sqlite/README.md)
     1. This `README.md` file:
         1. Uses `SENZING_PLUGINS_DIR`
-        1. Uses [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml),
+        1. Uses [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml),
            not [docker-compose-rabbitmq-sqlite.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite.yaml)
 1. Changes from [docker-compose-rabbitmq-sqlite.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite.yaml)
-    1. [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml) has changes for the `loader`.
+    1. [docker-compose-rabbitmq-sqlite-governor.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml) has changes for the `loader`.
         1. Sets `PYTHONPATH` environment variable
         1. Specifies `${SENZING_PLUGINS_DIR}:/app/plugins` volume
     1. To see the difference first hand,
        use a tool like [DiffNow](https://www.diffnow.com/compare-urls) to compare these 2 URLs:
         1. [https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite/docker-compose-rabbitmq-sqlite.yaml](https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite/docker-compose-rabbitmq-sqlite.yaml)
-        1. [https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml](https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite-governor/docker-compose-rabbitmq-sqlite-governor.yaml)
+        1. [https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml](https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml)
