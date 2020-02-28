@@ -26,10 +26,12 @@ This docker formation brings up the following docker containers:
 1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
 1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
 1. *[mysql](https://github.com/docker-library/mysql)*
+1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
+1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/mock-data-generator](https://github.com/Senzing/mock-data-generator)*
 1. *[senzing/mysql-init](https://github.com/Senzing/docker-mysql-init)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
@@ -43,7 +45,6 @@ This docker formation brings up the following docker containers:
     1. [Background knowledge](#background-knowledge)
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
-    1. [Pull docker images](#pull-docker-images)
     1. [Clone repository](#clone-repository)
     1. [Build docker images](#build-docker-images)
 1. [Using docker-compose](#using-docker-compose)
@@ -58,6 +59,7 @@ This docker formation brings up the following docker containers:
     1. [View MySQL](#view-mysql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
+    1. [View Jupyter notebooks](#view-jupyter-notebooks)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [Re-run docker formation](#re-run-docker-formation)
@@ -97,26 +99,6 @@ The following software programs need to be installed:
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
 1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
-
-### Pull docker images
-
-1. :thinking: **Optional:** To speed up following steps, docker images may be pulled in advance.
-   Example:
-
-    ```console
-    sudo docker pull bitnami/kafka:2.4.0
-    sudo docker pull bitnami/zookeeper:3.5.6
-    sudo docker pull mysql:5.7
-    sudo docker pull obsidiandynamics/kafdrop:3.23.0
-    sudo docker pull phpmyadmin/phpmyadmin:4.9
-    sudo docker pull senzing/entity-search-web-app:1.0.4
-    sudo docker pull senzing/init-container:1.5.0
-    sudo docker pull senzing/mock-data-generator:1.1.0
-    sudo docker pull senzing/senzing-api-server:1.7.10
-    sudo docker pull senzing/senzing-debug:1.3.0
-    sudo docker pull senzing/stream-loader:1.4.0
-    sudo docker pull senzing/yum:1.1.3
-    ```
 
 ### Clone repository
 
@@ -260,6 +242,7 @@ View results from Senzing REST API server.
 The server supports the
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api).
 
+1. View REST API using [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
@@ -273,6 +256,21 @@ The server supports the
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
+
+### View Jupyter notebooks
+
+1. Change file permissions on SQLite database.
+   Example:
+
+    ```console
+    sudo chmod 777 -R ${SENZING_VAR_DIR}/mysql
+    ```
+
+1. Jupyter Notebooks are viewable at
+   [localhost:9178](http://localhost:9178).
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#jupyter-notebooks)
+   for working with Jupyter Notebooks.
 
 ## Cleanup
 

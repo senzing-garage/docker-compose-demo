@@ -53,7 +53,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_RECORD_MAX: 10000
+      SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-kafka
     image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
@@ -167,8 +167,11 @@ services:
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-300}
+      SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.4.0}
+      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-1}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.1}
     networks:
       - backend
     restart: always
@@ -216,6 +219,29 @@ services:
     ports:
       - 8251:8251
     restart: always
+
+  jupyter:
+    container_name: senzing-jupyter
+    command:
+      - start.sh
+      - jupyter
+      - notebook
+      - "--NotebookApp.token=''"
+    depends_on:
+      - loader
+    environment:
+      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
+    networks:
+      - backend
+    ports:
+      - 9178:8888
+    restart: always
+    volumes:
+      - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
 networks:
   backend:

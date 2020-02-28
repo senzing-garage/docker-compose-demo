@@ -53,13 +53,28 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_RECORD_MAX: 10000
+      SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-kafka
     image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
     networks:
       - backend
     restart: on-failure
+
+  sqliteweb:
+    container_name: senzing-sqlite-web
+    depends_on:
+      - initcontainer
+    environment:
+      SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:latest
+    networks:
+      - backend
+    ports:
+      - 9174:8080
+    restart: always
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
   initcontainer:
     container_name: senzing-init-container
@@ -144,20 +159,27 @@ services:
       - 8251:8251
     restart: always
 
-  sqliteweb:
-    container_name: senzing-sqlite-web
+  jupyter:
+    container_name: senzing-jupyter
+    command:
+      - start.sh
+      - jupyter
+      - notebook
+      - "--NotebookApp.token=''"
     depends_on:
-      - initcontainer
-    environment:
-      SQLITE_DATABASE: G2C.db
-    image: coleifer/sqlite-web:latest
+      - loader
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
     networks:
       - backend
     ports:
-      - 9174:8080
+      - 9178:8888
     restart: always
     volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+      - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
   backend:

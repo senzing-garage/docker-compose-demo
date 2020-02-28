@@ -27,7 +27,7 @@ services:
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_RECORD_MAX: 10000
+      SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
     image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
@@ -180,6 +180,29 @@ services:
     ports:
       - 8251:8251
     restart: always
+
+  jupyter:
+    container_name: senzing-jupyter
+    command:
+      - start.sh
+      - jupyter
+      - notebook
+      - "--NotebookApp.token=''"
+    depends_on:
+      - loader
+    environment:
+      SENZING_SQL_CONNECTION: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/?schema=${MYSQL_DATABASE:-G2}"
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
+    networks:
+      - backend
+    ports:
+      - 9178:8888
+    restart: always
+    volumes:
+      - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
 networks:
   backend:

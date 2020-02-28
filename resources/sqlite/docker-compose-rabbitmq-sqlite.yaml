@@ -27,13 +27,28 @@ services:
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_RECORD_MAX: 10000
+      SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
     image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
     networks:
       - backend
     restart: on-failure
+
+  sqliteweb:
+    container_name: senzing-sqlite-web
+    depends_on:
+      - initcontainer
+    environment:
+      SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:latest
+    networks:
+      - backend
+    ports:
+      - 9174:8080
+    restart: always
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
   initcontainer:
     container_name: senzing-init-container
@@ -124,21 +139,6 @@ services:
       - 8251:8251
     restart: always
 
-  sqliteweb:
-    container_name: senzing-sqlite-web
-    depends_on:
-      - initcontainer
-    environment:
-      SQLITE_DATABASE: G2C.db
-    image: coleifer/sqlite-web:latest
-    networks:
-      - backend
-    ports:
-      - 9174:8080
-    restart: always
-    volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
-
   jupyter:
     container_name: senzing-jupyter
     command:
@@ -148,7 +148,7 @@ services:
       - "--NotebookApp.token=''"
     depends_on:
       - loader
-    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.2}
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
     networks:
       - backend
     ports:
