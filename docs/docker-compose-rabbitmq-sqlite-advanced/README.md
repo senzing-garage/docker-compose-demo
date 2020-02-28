@@ -206,6 +206,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 #### Redoer formation
 
 1. Add `redoer` to standard demonstration.
+   This will process the Senzing "redo records".
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer.yaml
