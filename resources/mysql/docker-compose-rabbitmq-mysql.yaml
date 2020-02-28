@@ -131,7 +131,6 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-1}
     image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.4.0}
     networks:
       - backend

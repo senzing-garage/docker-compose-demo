@@ -74,6 +74,21 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
+  sqliteweb:
+    container_name: senzing-sqlite-web
+    depends_on:
+      - initcontainer
+    environment:
+      SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:latest
+    networks:
+      - backend
+    ports:
+      - 9174:8080
+    restart: always
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+
   debug:
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.0}
@@ -112,13 +127,11 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-info-topic"
       SENZING_SUBCOMMAND: kafka
-      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
     image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.0}
     networks:
       - backend
@@ -129,19 +142,15 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-failure-topic"
       SENZING_SUBCOMMAND: kafka
-      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
     image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.0}
-
     networks:
       - backend
     restart: always
-
 
   api:
     container_name: senzing-api-server
@@ -180,20 +189,27 @@ services:
       - 8251:8251
     restart: always
 
-  sqliteweb:
-    container_name: senzing-sqlite-web
+  jupyter:
+    container_name: senzing-jupyter
+    command:
+      - start.sh
+      - jupyter
+      - notebook
+      - "--NotebookApp.token=''"
     depends_on:
-      - initcontainer
-    environment:
-      SQLITE_DATABASE: G2C.db
-    image: coleifer/sqlite-web:latest
+      - loader
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
     networks:
       - backend
     ports:
-      - 9174:8080
+      - 9178:8888
     restart: always
     volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+      - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
   backend:
