@@ -76,7 +76,6 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq-with-info
-      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
     image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.1}
     networks:
       - backend
@@ -100,7 +99,6 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-failure-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
     image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.0}
     networks:
       - backend
@@ -119,7 +117,6 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-info-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-      SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
     image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.0}
     networks:
       - backend
