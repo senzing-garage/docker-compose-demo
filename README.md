@@ -28,6 +28,7 @@ The following table indicates the instructions for variations in components.
     1. Database
         1. Postgres
         1. MySQL
+        1. MS SQL
         1. Db2
         1. SQLite
 1. Implementations of the docker formation:
