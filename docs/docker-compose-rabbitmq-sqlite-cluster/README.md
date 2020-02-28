@@ -192,7 +192,7 @@ Senzing comes with a trial license that supports 10,000 records.
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml up
+      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -206,7 +206,7 @@ different aspects of the formation can be viewed.
 
 Username and password for the following sites were either passed in as environment variables
 or are the default values seen in
-[docker-compose-rabbitmq-sqlite-cluster.yaml](../../resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml).
+[docker-compose-rabbitmq-sqlite-cluster.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml).
 
 ### View docker containers
 
@@ -228,18 +228,18 @@ or are the default values seen in
 
 1. SQLite for `G2C.db` is viewable at
    [localhost:9174](http://localhost:9174).
-1. The records received from the queue can be viewed in the following Senzing tables:
-    1. DSRC_RECORD
-    1. OBS_ENT
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. DSRC_RECORD
+        1. OBS_ENT
 1. SQLite for `G2C_LIBFEAT.db` is viewable at
    [localhost:9175](http://localhost:9175).
-1. The records received from the queue can be viewed in the following Senzing tables:
-    1. LIB_FEAT
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. LIB_FEAT
 1. SQLite for `G2C_RES.db`is viewable at
    [localhost:9176](http://localhost:9176).
-1. The records received from the queue can be viewed in the following Senzing tables:
-    1. RES_FEAT_STAT
-    1. RES_FEAT_EKEY
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. RES_FEAT_STAT
+        1. RES_FEAT_EKEY
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#sqlite)
    for working with SQLite.
@@ -267,6 +267,13 @@ The server supports the
 
 ### View Jupyter notebooks
 
+1. Change file permissions on SQLite database.
+   Example:
+
+    ```console
+    sudo chmod 777 -R ${SENZING_VAR_DIR}/sqlite
+    ```
+
 1. Jupyter Notebooks are viewable at
    [localhost:9178](http://localhost:9178).
 1. See
@@ -284,7 +291,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${GIT_REPOSITORY_DIR}
     sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml down
+    sudo docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml down
     ```
 
 1. Remove directories from host system.
@@ -311,7 +318,7 @@ The following shows how to bring up the prior docker formation again without ini
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file resources/sqlite-cluster/docker-compose-rabbitmq-sqlite-cluster.yaml up
+      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml up
     ```
 
 ### Configuration

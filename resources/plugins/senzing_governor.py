@@ -6,11 +6,12 @@ import time
 
 class Governor:
 
-    def __init__(self, g2_engine=None):
+    def __init__(self, g2_engine=None, hint=None, *args, **kwargs):
 
         # Store parameters in instance variables.
 
         self.g2_engine = g2_engine
+        self.hint = hint
 
         # Configure logging.
 
@@ -23,7 +24,7 @@ class Governor:
         self.stride = 500
         self.sleep_time = 15
 
-    def govern(self):
+    def govern(self, *args, **kwargs):
         """
         Do the actual "governing".
         Do not return until the governance has been completed.
@@ -35,7 +36,7 @@ class Governor:
         self.counter += 1
 
         if self.counter % self.stride == 0:
-            logging.info("Sample Governor is sleeping {0} seconds on record {1}.  Replace the Governor class with your code.".format(self.sleep_time, self.counter))
+            logging.info("Sample Governor is sleeping {0} seconds on record {1}. Hint: {2}. Replace the Governor class with your code.".format(self.sleep_time, self.counter, self.hint))
             time.sleep(self.sleep_time)
 
 
