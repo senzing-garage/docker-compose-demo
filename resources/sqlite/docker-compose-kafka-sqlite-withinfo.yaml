@@ -132,7 +132,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-info-topic"
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.0}
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.1}
     networks:
       - backend
     restart: always
@@ -147,7 +147,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-failure-topic"
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.0}
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.1}
     networks:
       - backend
     restart: always
