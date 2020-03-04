@@ -362,3 +362,30 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
+
+### Program parameter matrix
+
+1. The matrix for using RabbitMQ with `stream-loader.py` and `redoer.py` subcommands.
+
+    ```console
+    +-------------------------- stream-loader.py rabbitmq
+    |  +----------------------- stream-loader.py rabbitmq-withinfo
+    |  |  +-------------------- redoer.py redo
+    |  |  |  +----------------- redoer.py redo-withinfo-rabbitmq
+    |  |  |  |  +-------------- redoer.py write-to-rabbitmq
+    |  |  |  |  |  +----------- redoer.py read-from-rabbitmq
+    |  |  |  |  |  |  +-------- redoer.py read-from-rabbitmq-withinfo
+    |  |  |  |  |  |  |
+    v  v  v  v  v  v  v
+    X  .  .  .  .  .  .  docker-compose-rabbitmq-sqlite.yaml
+    X  .  X  .  .  .  .  docker-compose-rabbitmq-sqlite-redoer.yaml
+    X  .  .  X  .  .  .
+    X  .  .  .  X  X  .  docker-compose-rabbitmq-sqlite-redoer-rabbitmq.yaml
+    X  .  .  .  X  .  X
+    .  X  .  .  .  .  .  docker-compose-rabbitmq-sqlite-withinfo.yaml
+    .  X  X  .  .  .  .
+    .  X  .  X  .  .  .  docker-compose-rabbitmq-sqlite-redoer-withinfo.yaml
+    .  X  .  .  X  X  .
+    .  X  .  .  X  .  X  docker-compose-rabbitmq-sqlite-redoer-rabbitmq-withinfo.yaml
+    ```
+
