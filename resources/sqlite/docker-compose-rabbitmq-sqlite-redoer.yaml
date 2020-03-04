@@ -107,7 +107,6 @@ services:
       - loader
     environment:
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_LOG_LEVEL: debug
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
     networks:

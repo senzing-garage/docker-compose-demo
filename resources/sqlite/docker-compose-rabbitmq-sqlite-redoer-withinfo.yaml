@@ -90,7 +90,7 @@ services:
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_SUBCOMMAND: rabbitmq-with-info
+      SENZING_SUBCOMMAND: rabbitmq-withinfo
     image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.1}
     networks:
       - backend
@@ -107,12 +107,11 @@ services:
       - loader
     environment:
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_LOG_LEVEL: debug
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_RABBITMQ_INFO_QUEUE: senzing-rabbitmq-redo-info-queue
-      SENZING_SUBCOMMAND: redo-with-info-rabbitmq
+      SENZING_SUBCOMMAND: redo-withinfo-rabbitmq
     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
     networks:
       - backend

@@ -196,7 +196,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
     ```
 
-#### With-info formation
+#### Withinfo formation
 
 1. Return information with each record added to Senzing.
 
@@ -213,7 +213,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer.yaml
     ```
 
-#### Redoer and With-info formation
+#### Redoer and Withinfo formation
 
 1. Add `redoer` to standard demonstration.
    Also, Return information with each record added to Senzing.
