@@ -388,28 +388,3 @@ Configuration values specified by environment variable or command line parameter
     .  X  .  .  X  X  .
     .  X  .  .  X  .  X  docker-compose-rabbitmq-sqlite-redoer-rabbitmq-withinfo.yaml
     ```
-
-1. The matrix for using Kafka with `stream-loader.py` and `redoer.py` subcommands.
-
-    ```console
-    +-------------------------- stream-loader.py kafka
-    |  +----------------------- stream-loader.py kafka-withinfo
-    |  |  +-------------------- redoer.py redo
-    |  |  |  +----------------- redoer.py redo-withinfo-kafka
-    |  |  |  |  +-------------- redoer.py write-to-kafka
-    |  |  |  |  |  +----------- redoer.py read-from-kafka
-    |  |  |  |  |  |  +-------- redoer.py read-from-rabbitmq-withinfo
-    |  |  |  |  |  |  |
-    v  v  v  v  v  v  v
-    X  .  .  .  .  .  .  docker-compose-kafka-sqlite.yaml
-    X  .  X  .  .  .  .  docker-compose-kafka-sqlite-redoer.yaml
-    X  .  .  X  .  .  .
-    X  .  .  .  X  X  .  docker-compose-kafka-sqlite-redoer-kafka.yaml
-    X  .  .  .  X  .  X
-    .  X  .  .  .  .  .  docker-compose-kafka-sqlite-withinfo.yaml
-    .  X  X  .  .  .  .
-    .  X  .  X  .  .  .  docker-compose-kafka-sqlite-redoer-withinfo.yaml
-    .  X  .  .  X  X  .
-    .  X  .  .  X  .  X  docker-compose-kafka-sqlite-redoer-kafka-withinfo.yaml
-    ```
-

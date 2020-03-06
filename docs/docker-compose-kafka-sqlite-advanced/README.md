@@ -183,7 +183,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 1. Standard demonstration.
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-kafkamq-sqlite.yaml
     ```
 
 #### Withinfo formation
@@ -191,7 +191,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 1. Return information with each record added to Senzing.
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-withinfo.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-kafka-sqlite-withinfo.yaml
     ```
 
 #### Redoer formation
@@ -200,7 +200,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
    This will process the Senzing "redo records".
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-kafka-sqlite-redoer.yaml
     ```
 
 #### Redoer and Withinfo formation
@@ -209,7 +209,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
    Also, Return information with each record added to Senzing.
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer-withinfo.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-kafka-sqlite-redoer-withinfo.yaml
     ```
 
 ### Run docker formation
@@ -360,7 +360,7 @@ Configuration values specified by environment variable or command line parameter
     |  |  |  +----------------- redoer.py redo-withinfo-kafka
     |  |  |  |  +-------------- redoer.py write-to-kafka
     |  |  |  |  |  +----------- redoer.py read-from-kafka
-    |  |  |  |  |  |  +-------- redoer.py read-from-rabbitmq-withinfo
+    |  |  |  |  |  |  +-------- redoer.py read-from-kafka-withinfo
     |  |  |  |  |  |  |
     v  v  v  v  v  v  v
     X  .  .  .  .  .  .  docker-compose-kafka-sqlite.yaml
