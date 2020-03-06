@@ -135,7 +135,7 @@ services:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_TOPIC: "senzing-kafka-redo-topic"
+      SENZING_KAFKA_REDO_TOPIC: "senzing-kafka-redo-topic"
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: write-to-kafka
     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
@@ -159,7 +159,7 @@ services:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_TOPIC: "senzing-kafka-redo-topic"
+      SENZING_KAFKA_REDO_TOPIC: "senzing-kafka-redo-topic"
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: read-from-kafka
     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
