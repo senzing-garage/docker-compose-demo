@@ -127,10 +127,11 @@ services:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   redoerwriter:
-    container_name: senzing-redoer-write-to-rabbitmq
+    container_name: senzing-redoer-write-to-kafka
     depends_on:
       - loader
     environment:
+      SENZING_LOG_LEVEL: debug
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
@@ -150,10 +151,11 @@ services:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   redoerreader:
-    container_name: senzing-redoer-read-from-rabbitmq
+    container_name: senzing-redoer-read-from-kafka
     depends_on:
       - loader
     environment:
+      SENZING_LOG_LEVEL: debug
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
