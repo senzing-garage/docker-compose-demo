@@ -115,7 +115,7 @@ services:
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
-      SENZING_SUBCOMMAND: kafka
+      SENZING_SUBCOMMAND: kafka-withinfo
     image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.1}
     networks:
       - backend
@@ -134,7 +134,10 @@ services:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
-      SENZING_SUBCOMMAND: redo
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_FAILURE_TOPIC: senzing-kafka-redo-failure-topic
+      SENZING_KAFKA_INFO_TOPIC: senzing-kafka-redo-info-topic
+      SENZING_SUBCOMMAND: redo-withinfo-kafka
     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
     networks:
       - backend
@@ -146,6 +149,54 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+  failurelogger:
+    container_name: senzing-stream-logger-failure
+    depends_on:
+      - kafka
+    environment:
+#     See https://github.com/Senzing/stream-logger#configuration
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: senzing-kafka-failure-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: kafka
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.1}
+    networks:
+      - backend
+    restart: always
+
+  infologger:
+    container_name: senzing-stream-logger-info
+    depends_on:
+      - kafka
+    environment:
+#     See https://github.com/Senzing/stream-logger#configuration
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: senzing-kafka-info-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: kafka
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.1}
+    networks:
+      - backend
+    restart: always
+
+  redoinfologger:
+    container_name: senzing-stream-logger-redo-info
+    depends_on:
+      - kafka
+    environment:
+#     See https://github.com/Senzing/stream-logger#configuration
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: senzing-kafka-redo-info-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: kafka
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.1}
+    networks:
+      - backend
+    restart: always
 
   api:
     container_name: senzing-api-server

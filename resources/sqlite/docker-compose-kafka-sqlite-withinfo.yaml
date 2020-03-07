@@ -52,7 +52,7 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-mock-data-generator#configuration
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
+      SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
@@ -109,10 +109,12 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_SUBCOMMAND: kafka-withinfo
     image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.1}
     networks:
@@ -124,32 +126,32 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
-  infologger:
-    container_name: senzing-stream-logger-info
+  failurelogger:
+    container_name: senzing-stream-logger-failure
     depends_on:
       - kafka
     environment:
-      # See https://github.com/Senzing/stream-logger#configuration
+#     See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_TOPIC: "senzing-kafka-info-topic"
+      SENZING_KAFKA_TOPIC: senzing-kafka-failure-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: kafka
     image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.1}
     networks:
       - backend
     restart: always
 
-  failurelogger:
-    container_name: senzing-stream-logger-failure
+  infologger:
+    container_name: senzing-stream-logger-info
     depends_on:
       - kafka
     environment:
-      # See https://github.com/Senzing/stream-logger#configuration
+#     See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_TOPIC: "senzing-kafka-failure-topic"
+      SENZING_KAFKA_TOPIC: senzing-kafka-info-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: kafka
     image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.0.1}
     networks:
