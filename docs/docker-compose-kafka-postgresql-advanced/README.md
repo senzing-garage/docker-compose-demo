@@ -185,7 +185,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 1. Standard demonstration.
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafkamq-postgresql.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql.yaml
     ```
 
 #### Withinfo formation
