@@ -1,0 +1,300 @@
+version: '3'
+services:
+
+  zookeeper:
+    container_name: senzing-zookeeper
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    image: bitnami/zookeeper:3.5.6
+    networks:
+      - backend
+    ports:
+      - 2181:2181
+    restart: always
+
+  kafka:
+    container_name: senzing-kafka
+    depends_on:
+      - zookeeper
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-kafka#configuration
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_NUM_PARTITIONS: 5
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: bitnami/kafka:2.4.0
+    networks:
+      - backend
+    ports:
+      - 9092:9092
+    restart: always
+
+  kafdrop:
+    container_name: senzing-kafdrop
+    depends_on:
+      - kafka
+    environment:
+#     See https://github.com/obsidiandynamics/kafdrop#environment-variables
+      KAFKA_BROKERCONNECT: "senzing-kafka:9092"
+      JVM_OPTS: "-Xms32M -Xmx64M"
+      SERVER_SERVLET_CONTEXTPATH: "/"
+    image: obsidiandynamics/kafdrop:3.23.0
+    networks:
+      - backend
+    ports:
+      - 9179:9000
+    restart: always
+
+  mockdata:
+    container_name: senzing-mock-data-generator
+    depends_on:
+      - kafka
+    environment:
+#     See https://github.com/Senzing/docker-mock-data-generator#configuration
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: senzing-kafka-topic
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_RECORD_MAX: 5000
+      SENZING_RECORD_MONITOR: 1000
+      SENZING_SUBCOMMAND: url-to-kafka
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
+    networks:
+      - backend
+    restart: on-failure
+
+  postgres:
+    container_name: senzing-postgres
+    environment:
+#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
+      POSTGRES_DB: ${POSTGRES_DB:-G2}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+    image: postgres:11.6
+    networks:
+      - backend
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/var/lib/postgresql/data
+
+  postgresinit:
+    container_name: senzing-postgresql-init
+    command:
+      - "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      - --file
+      - /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+    depends_on:
+      - postgres
+    image: jbergknoff/postgresql-client:latest
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  phppgadmin:
+    container_name: senzing-phppgadmin
+    environment:
+#     See https://github.com/dockage/phppgadmin#available-configuration-parameters
+      - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
+      - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
+      - PHP_PG_ADMIN_SERVER_PORT=5432
+      - PHP_PG_ADMIN_SERVER_SSL_MODE=allow
+      - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
+      - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
+      - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
+      - PHP_PG_ADMIN_DEFAULT_LANG=auto
+      - PHP_PG_ADMIN_AUTO_COMPLETE=default on
+      - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
+      - PHP_PG_ADMIN_OWNED_ONLY=false
+      - PHP_PG_ADMIN_SHOW_COMMENTS=true
+      - PHP_PG_ADMIN_SHOW_ADVANCED=false
+      - PHP_PG_ADMIN_SHOW_SYSTEM=false
+      - PHP_PG_ADMIN_MIN_PASSWORD_LENGTH=1
+      - PHP_PG_ADMIN_LEFT_WIDTH=200
+      - PHP_PG_ADMIN_THEME=default
+      - PHP_PG_ADMIN_SHOW_OIDS=false
+      - PHP_PG_ADMIN_MAX_ROWS=30
+      - PHP_PG_ADMIN_MAX_CHARS=50
+      - PHP_PG_ADMIN_USE_XHTML_STRICT=false
+      - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
+      - PHP_PG_ADMIN_AJAX_REFRESH=3
+    image: senzing/phppgadmin:${SENZING_PHPPGADMIN_VERSION:-1.0.0}
+    networks:
+      - backend
+    ports:
+      - 9171:80
+      - 9172:443
+    restart: always
+
+  initcontainer:
+    container_name: senzing-init-container
+    depends_on:
+      - postgres
+      - postgresinit
+    environment:
+#     See https://github.com/Senzing/docker-init-container#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 30
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.0}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  debug:
+    container_name: senzing-debug
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.0}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  loader:
+    container_name: senzing-stream-loader
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/stream-loader#configuration
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_TOPIC: senzing-kafka-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
+      SENZING_SUBCOMMAND: kafka
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.1}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  redoerwriter:
+    container_name: senzing-redoer-write-to-kafka
+    depends_on:
+      - loader
+    environment:
+#     See https://github.com/Senzing/redoer#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_REDO_TOPIC: senzing-kafka-redo-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: write-to-kafka
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
+    networks:
+      - backend
+    privileged: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  redoerreader:
+    container_name: senzing-redoer-read-from-kafka
+    depends_on:
+      - loader
+    environment:
+#     See https://github.com/Senzing/redoer#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_REDO_TOPIC: senzing-kafka-redo-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: read-from-kafka
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
+    networks:
+      - backend
+    privileged: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  api:
+    container_name: senzing-api-server
+    command:
+      - -httpPort
+      - "8250"
+      - -bindAddr
+      - all
+      - -iniFile
+      - /etc/opt/senzing/G2Module.ini
+      - -allowedOrigins
+      - "*"
+    depends_on:
+      - postgres
+    environment:
+#     See https://github.com/Senzing/senzing-api-server#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.10}
+    networks:
+      - backend
+    ports:
+      - 8250:8250
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  webapp:
+    container_name: senzing-webapp
+    depends_on:
+      - api
+    environment:
+#     See https://github.com/Senzing/entity-search-web-app#configuration
+      SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
+      SENZING_WEB_SERVER_PORT: 8251
+    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.0.4}
+    networks:
+      - backend
+    ports:
+      - 8251:8251
+    restart: always
+
+  jupyter:
+    container_name: senzing-jupyter
+    command:
+      - start.sh
+      - jupyter
+      - notebook
+      - "--NotebookApp.token=''"
+    depends_on:
+      - loader
+    environment:
+#     See https://github.com/Senzing/docker-jupyter#configuration
+      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
+    networks:
+      - backend
+    ports:
+      - 9178:8888
+    restart: always
+    volumes:
+      - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+networks:
+  backend:
