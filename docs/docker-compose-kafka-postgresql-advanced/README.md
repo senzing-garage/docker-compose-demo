@@ -205,13 +205,36 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer.yaml
     ```
 
-#### Redoer and Withinfo formation
+#### Redoer queuing formation
+
+1. Add multiple `redoer`s to standard demonstration.
+   This will process the Senzing "redo records".
+   One `redoer` will populate Kafka with redo records.
+   One or more `redoer`s will read redo records from Kafka topic and send to the Senzing Engine.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka.yaml
+    ```
+
+#### Withinfo and Redoer formation
 
 1. Add `redoer` to standard demonstration.
-   Also, Return information with each record added to Senzing.
+   Also, return information with each record added to Senzing.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-withinfo.yaml
+    ```
+
+#### Withinfo and Redoer queuing formation
+
+1. Add multiple `redoer`s to standard demonstration.
+   This will process the Senzing "redo records".
+   One `redoer` will populate Kafka with redo records.
+   One or more `redoer`s will read redo records from Kafka topic and send to the Senzing Engine.
+   Also, return information with each record added to Senzing.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka-withinfo.yaml
     ```
 
 ### Run docker formation
