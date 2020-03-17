@@ -24,6 +24,7 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-mock-data-generator#configuration
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_LOG_LEVEL: debug
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
@@ -36,10 +37,10 @@ services:
       - backend
     restart: on-failure
 
-
   postgres:
     container_name: senzing-postgres
     environment:
+#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
@@ -70,6 +71,7 @@ services:
   phppgadmin:
     container_name: senzing-phppgadmin
     environment:
+#     See https://github.com/dockage/phppgadmin#available-configuration-parameters
       - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
       - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
       - PHP_PG_ADMIN_SERVER_PORT=5432
@@ -103,6 +105,14 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
+    depends_on:
+      - postgres
+      - postgresinit
+    environment:
+#     See https://github.com/Senzing/docker-init-container#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_INIT_CONTAINER_SLEEP: 30
+      SENZING_LOG_LEVEL: debug
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.0}
     networks:
       - backend
@@ -112,7 +122,6 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   debug:
     container_name: senzing-debug
@@ -129,12 +138,15 @@ services:
     container_name: senzing-stream-loader
     depends_on:
       - rabbitmq
+      - postgres
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
+      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
@@ -142,7 +154,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.1}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.2}
     networks:
       - backend
     restart: always
@@ -150,7 +162,6 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   redoerwriter:
     container_name: senzing-redoer-write-to-rabbitmq
@@ -158,7 +169,9 @@ services:
       - loader
     environment:
 #     See https://github.com/Senzing/redoer#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
+      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
@@ -175,7 +188,6 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   redoerreader:
     container_name: senzing-redoer-read-from-rabbitmq
@@ -183,7 +195,9 @@ services:
       - loader
     environment:
 #     See https://github.com/Senzing/redoer#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
+      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
@@ -200,7 +214,6 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   api:
     container_name: senzing-api-server
@@ -213,6 +226,11 @@ services:
       - /etc/opt/senzing/G2Module.ini
       - -allowedOrigins
       - "*"
+    depends_on:
+      - postgres
+    environment:
+#     See https://github.com/Senzing/senzing-api-server#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.10}
     networks:
       - backend
@@ -223,7 +241,6 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   webapp:
     container_name: senzing-webapp
@@ -249,6 +266,9 @@ services:
       - "--NotebookApp.token=''"
     depends_on:
       - loader
+    environment:
+#     See https://github.com/Senzing/docker-jupyter#configuration
+      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
     image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
     networks:
       - backend
@@ -260,7 +280,6 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
   backend:

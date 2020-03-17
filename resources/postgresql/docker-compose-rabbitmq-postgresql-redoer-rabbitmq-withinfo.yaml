@@ -24,7 +24,6 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-mock-data-generator#configuration
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_LOG_LEVEL: debug
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue

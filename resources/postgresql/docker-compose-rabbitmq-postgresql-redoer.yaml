@@ -24,6 +24,7 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-mock-data-generator#configuration
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_LOG_LEVEL: debug
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
@@ -39,6 +40,7 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
+#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
@@ -69,6 +71,7 @@ services:
   phppgadmin:
     container_name: senzing-phppgadmin
     environment:
+#     See https://github.com/dockage/phppgadmin#available-configuration-parameters
       - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
       - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
       - PHP_PG_ADMIN_SERVER_PORT=5432
@@ -106,8 +109,10 @@ services:
       - postgres
       - postgresinit
     environment:
+#     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
+      SENZING_LOG_LEVEL: debug
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.0}
     networks:
       - backend
@@ -141,6 +146,7 @@ services:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
+      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
@@ -162,8 +168,11 @@ services:
     depends_on:
       - loader
     environment:
-      SENZING_DELAY_IN_SECONDS: 60
+#     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_LOG_LEVEL: debug
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
     networks:
@@ -175,25 +184,6 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
-  configurator:
-    container_name: senzing-configurator
-    depends_on:
-      - loader
-    environment:
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-      SENZING_SUBCOMMAND: redo
-    image: senzing/configurator:${SENZING_CONFIGURATOR:-latest}
-    networks:
-      - backend
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   api:
     container_name: senzing-api-server
@@ -209,6 +199,7 @@ services:
     depends_on:
       - postgres
     environment:
+#     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.10}
     networks:

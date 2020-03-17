@@ -39,6 +39,7 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
+#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
@@ -69,6 +70,7 @@ services:
   phppgadmin:
     container_name: senzing-phppgadmin
     environment:
+#     See https://github.com/dockage/phppgadmin#available-configuration-parameters
       - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
       - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
       - PHP_PG_ADMIN_SERVER_PORT=5432
@@ -106,8 +108,10 @@ services:
       - postgres
       - postgresinit
     environment:
+#     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
+      SENZING_LOG_LEVEL: debug
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.0}
     networks:
       - backend
@@ -141,9 +145,12 @@ services:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
+      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
+      SENZING_RABBITMQ_FAILURE_QUEUE: senzing-rabbitmq-failure-queue
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_INFO_QUEUE: senzing-rabbitmq-info-queue
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
@@ -208,6 +215,7 @@ services:
     depends_on:
       - postgres
     environment:
+#     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.10}
     networks:
@@ -245,6 +253,7 @@ services:
     depends_on:
       - loader
     environment:
+#     See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
     image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
     networks:
