@@ -30,7 +30,7 @@ services:
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.0}
+    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.2.0}
     networks:
       - backend
     restart: on-failure
