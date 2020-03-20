@@ -111,7 +111,6 @@ services:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-      SENZING_LOG_LEVEL: debug
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.0}
     networks:
       - backend
@@ -145,7 +144,6 @@ services:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
-      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_RABBITMQ_FAILURE_QUEUE: senzing-rabbitmq-failure-queue
@@ -155,7 +153,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq-withinfo
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.2}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.3}
     networks:
       - backend
     restart: always

@@ -24,7 +24,6 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-mock-data-generator#configuration
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_LOG_LEVEL: debug
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
@@ -112,7 +111,6 @@ services:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-      SENZING_LOG_LEVEL: debug
     image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.0}
     networks:
       - backend
@@ -146,7 +144,6 @@ services:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
-      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_RABBITMQ_FAILURE_QUEUE: senzing-rabbitmq-failure-queue
@@ -156,7 +153,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq-withinfo
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.2}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.3}
     networks:
       - backend
     restart: always
@@ -173,14 +170,13 @@ services:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_REDO_QUEUE: senzing-rabbitmq-redo-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: write-to-rabbitmq
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.2.1}
     networks:
       - backend
     privileged: true
@@ -199,7 +195,6 @@ services:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_LOG_LEVEL: debug
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_RABBITMQ_FAILURE_QUEUE: senzing-rabbitmq-redo-failure-queue
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
@@ -208,7 +203,7 @@ services:
       SENZING_RABBITMQ_REDO_QUEUE: senzing-rabbitmq-redo-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: read-from-rabbitmq-withinfo
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.2.1}
     networks:
       - backend
     privileged: true

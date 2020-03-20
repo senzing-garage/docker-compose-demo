@@ -168,7 +168,6 @@ services:
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-      SENZING_LOG_LEVEL: debug
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
@@ -176,7 +175,7 @@ services:
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_SUBCOMMAND: kafka-withinfo
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.2}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.3}
     networks:
       - backend
     restart: always
@@ -193,14 +192,13 @@ services:
     environment:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-      SENZING_LOG_LEVEL: debug
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_FAILURE_TOPIC: senzing-kafka-redo-failure-topic
       SENZING_KAFKA_INFO_TOPIC: senzing-kafka-redo-info-topic
       SENZING_SUBCOMMAND: redo-withinfo-kafka
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.1.0}
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.2.1}
     networks:
       - backend
     privileged: true

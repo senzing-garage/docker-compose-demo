@@ -137,7 +137,7 @@ services:
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.2}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.3}
     networks:
       - backend
     restart: always
