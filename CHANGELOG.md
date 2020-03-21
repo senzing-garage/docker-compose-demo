@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.4] - 2020-03-21
+
+### Added in 1.3.4
+
+- Added advanced scenarios for PostgreSQL, RabbitMQ, and Kafka
+
+### Changed in 1.3.4
+
+- Rename "With-info" to "Withinfo"
+- Update docker image versions
+  - postgres:11.5 to postgres:11.6
+  - senzing/init-container 1.3.3 to 1.5.0
+  - senzing/debug 1.2.1 to 1.3.0
+  - senzing/stream-loader 1.4.0 to 1.5.3
+  - senzing/stream-logger 1.0.0 to 1.0.1
+  - senzing/redoer 1.1.0 to 1.2.1
+
 ## [1.3.3] - 2020-02-27
 
 ### Changed in 1.3.3
