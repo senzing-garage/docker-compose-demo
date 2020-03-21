@@ -1,18 +1,18 @@
-# docker-compose-rabbitmq-sqlite-advanced
+# docker-compose-kafka-postgresql-advanced
 
 ## Overview
 
 This repository illustrates a reference implementation of Senzing using
-RabbitMQ as the queue and
-SQLite as the underlying database.
+Kafka as the queue and
+PostgreSQL as the underlying database.
 
 The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet.
 1. Sends each JSON line to a message queue.
-    1. In this implementation, the queue is RabbitMQ.
+    1. In this implementation, the queue is Kafka.
 1. Reads messages from the queue and inserts into Senzing.
-    1. In this implementation, Senzing keeps its data in a SQLite database.
+    1. In this implementation, Senzing keeps its data in a PostgreSQL database.
 1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
@@ -23,8 +23,11 @@ Arrows represent data flow.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
-1. *[coleifer/sqlite-web](https://github.com/coleifer/sqlite-web)*
+1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
+1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
+1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
+1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
+1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
@@ -51,15 +54,14 @@ This docker formation brings up the following docker containers:
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View docker containers](#view-docker-containers)
-    1. [View RabbitMQ](#view-rabbitmq)
-    1. [View SQLite](#view-sqlite)
+    1. [View Kafka](#view-kafka)
+    1. [View PostgreSQL](#view-postgresql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
     1. [View Jupyter notebooks](#view-jupyter-notebooks)
 1. [Cleanup](#cleanup)
-1. [Advanced](#advanced)
-    1. [Re-run docker formation](#re-run-docker-formation)
-    1. [Configuration](#configuration)
+1. [Configuration](#configuration)
+1. [Program parameter matrix](#program-parameter-matrix)
 
 ### Legend
 
@@ -140,17 +142,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
 
-    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
-    ```
-
-1. Create directory for RabbitMQ persistence.
-   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
-   the directories created within `RABBITMQ_DIR` will be restricted.
-   Example:
-
-    ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
+    export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
     ```
 
 ### EULA
@@ -193,7 +185,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 1. Standard demonstration.
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql.yaml
     ```
 
 #### Withinfo formation
@@ -201,7 +193,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 1. Return information with each record added to Senzing.
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-withinfo.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-withinfo.yaml
     ```
 
 #### Redoer formation
@@ -210,16 +202,39 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
    This will process the Senzing "redo records".
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer.yaml
     ```
 
-#### Redoer and Withinfo formation
+#### Redoer queuing formation
 
-1. Add `redoer` to standard demonstration.
-   Also, Return information with each record added to Senzing.
+1. Add multiple `redoer`s to standard demonstration.
+   This will process the Senzing "redo records".
+   One `redoer` will populate Kafka with redo records.
+   One or more `redoer`s will read redo records from Kafka topic and send to the Senzing Engine.
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer-withinfo.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka.yaml
+    ```
+
+#### Withinfo and Redoer formation
+
+1. Add `redoer` to standard demonstration.
+   Also, return information with each record added to Senzing.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-withinfo.yaml
+    ```
+
+#### Withinfo and Redoer queuing formation
+
+1. Add multiple `redoer`s to standard demonstration.
+   This will process the Senzing "redo records".
+   One `redoer` will populate Kafka with redo records.
+   One or more `redoer`s will read redo records from Kafka topic and send to the Senzing Engine.
+   Also, return information with each record added to Senzing.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka-withinfo.yaml
     ```
 
 ### Run docker formation
@@ -245,7 +260,7 @@ different aspects of the formation can be viewed.
 
 Username and password for the following sites were either passed in as environment variables
 or are the default values seen in
-[docker-compose-rabbitmq-sqlite.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite.yaml).
+[docker-compose-kafka-postgresql.yaml](../../resources/postgresql/docker-compose-kafka-postgresql.yaml).
 
 ### View docker containers
 
@@ -254,22 +269,22 @@ or are the default values seen in
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
-### View RabbitMQ
+### View Kafka
 
-1. RabbitMQ is viewable at
-   [localhost:15672](http://localhost:15672).
-    1. **Defaults:** username: `user` password: `bitnami`
+1. Kafdrop is viewable at
+   [localhost:9179](http://localhost:9179).
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#rabbitmq)
-   for working with RabbitMQ.
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#kafka)
+   for working with Kafka.
 
-### View SQLite
+### View PostgreSQL
 
-1. SQLite is viewable at
-   [localhost:9174](http://localhost:9174).
+1. PostgreSQL is viewable at
+   [localhost:9171](http://localhost:9171).
+    1. **Defaults:** username: `postgres` password: `postgres`
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#sqlite)
-   for working with SQLite.
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#postgresql)
+   for working with PostgreSQL.
 
 ### View Senzing API
 
@@ -294,11 +309,11 @@ The server supports the
 
 ### View Jupyter notebooks
 
-1. Change file permissions on SQLite database.
+1. Change file permissions on postgresql database.
    Example:
 
     ```console
-    sudo chmod 777 -R ${SENZING_VAR_DIR}/sqlite
+    sudo chmod 777 -R ${SENZING_VAR_DIR}/postgres
     ```
 
 1. Jupyter Notebooks are viewable at
@@ -327,33 +342,14 @@ it can be brought down and directories can be deleted.
 
    They may be safely deleted.
 
-## Advanced
-
-The following topics discuss variations to the basic docker-compose demonstration.
-
-### Re-run docker formation
-
-:thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again without requiring initialization steps.
-The following shows how to bring up the prior docker formation again without initialization.
-
-1. Launch docker-compose formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/sqlite/docker-compose-rabbitmq-sqlite.yaml up
-    ```
-
-### Configuration
+## Configuration
 
 Configuration values specified by environment variable or command line parameter.
 
-- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_dir)**
-- **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
-- **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
+- **[POSTGRES_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_db)**
+- **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_dir)**
+- **[POSTGRES_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_password)**
+- **[POSTGRES_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_username)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
 - **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
@@ -363,28 +359,28 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
-### Program parameter matrix
+## Program parameter matrix
 
-1. The matrix for using RabbitMQ with `stream-loader.py` and `redoer.py` subcommands.
+1. The matrix for using Kafka with `stream-loader.py` and `redoer.py` subcommands.
 
     ```console
-    +-------------------------- stream-loader.py rabbitmq
-    |  +----------------------- stream-loader.py rabbitmq-withinfo
+    +-------------------------- stream-loader.py kafka
+    |  +----------------------- stream-loader.py kafka-withinfo
     |  |  +-------------------- redoer.py redo
-    |  |  |  +----------------- redoer.py redo-withinfo-rabbitmq
-    |  |  |  |  +-------------- redoer.py write-to-rabbitmq
-    |  |  |  |  |  +----------- redoer.py read-from-rabbitmq
-    |  |  |  |  |  |  +-------- redoer.py read-from-rabbitmq-withinfo
+    |  |  |  +----------------- redoer.py redo-withinfo-kafka
+    |  |  |  |  +-------------- redoer.py write-to-kafka
+    |  |  |  |  |  +----------- redoer.py read-from-kafka
+    |  |  |  |  |  |  +-------- redoer.py read-from-kafka-withinfo
     |  |  |  |  |  |  |
     v  v  v  v  v  v  v
-    X  .  .  .  .  .  .  docker-compose-rabbitmq-sqlite.yaml
-    X  .  X  .  .  .  .  docker-compose-rabbitmq-sqlite-redoer.yaml
+    X  .  .  .  .  .  .  docker-compose-kafka-postgresql.yaml
+    X  .  X  .  .  .  .  docker-compose-kafka-postgresql-redoer.yaml
     X  .  .  X  .  .  .
-    X  .  .  .  X  X  .  docker-compose-rabbitmq-sqlite-redoer-rabbitmq.yaml
+    X  .  .  .  X  X  .  docker-compose-kafka-postgresql-redoer-kafka.yaml
     X  .  .  .  X  .  X
-    .  X  .  .  .  .  .  docker-compose-rabbitmq-sqlite-withinfo.yaml
+    .  X  .  .  .  .  .  docker-compose-kafka-postgresql-withinfo.yaml
     .  X  X  .  .  .  .
-    .  X  .  X  .  .  .  docker-compose-rabbitmq-sqlite-redoer-withinfo.yaml
+    .  X  .  X  .  .  .  docker-compose-kafka-postgresql-redoer-withinfo.yaml
     .  X  .  .  X  X  .
-    .  X  .  .  X  .  X  docker-compose-rabbitmq-sqlite-redoer-rabbitmq-withinfo.yaml
+    .  X  .  .  X  .  X  docker-compose-kafka-postgresql-redoer-kafka-withinfo.yaml
     ```

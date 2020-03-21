@@ -188,7 +188,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.4.0}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.3}
     networks:
       - backend
     restart: always

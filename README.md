@@ -50,6 +50,7 @@ The following table indicates the instructions for variations in components.
 
     | Instructions | Notes               |
     |:------------:|---------------------|
-    | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-advanced/README.md) | Various enhancements built upon RabbitMQ and SQLite. |
+    | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) | Various enhancements built upon RabbitMQ and PostgreSQL. |
+    | [:page_facing_up:](docs/docker-compose-kafka-postgresql-advanced/README.md) | Various enhancements built upon Kafka and PostgreSQL. |
     | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-cluster/README.md) | Clustered SQLite databases |
-    | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-governor/README.md) | Using a "governor" to monitor  ingestion |
+    | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-governor/README.md) | Using a "governor" to monitor ingestion |
