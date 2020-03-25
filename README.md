@@ -30,7 +30,6 @@ The following table indicates the instructions for variations in components.
         1. MySQL
         1. MS SQL
         1. Db2
-        1. SQLite
 1. Implementations of the docker formation:
 
     | Queue    | Database       | Instructions | docker-compose.yaml |
@@ -39,12 +38,10 @@ The following table indicates the instructions for variations in components.
     | Kafka    | MSSQL          | [:page_facing_up:](docs/docker-compose-kafka-mssql/README.md)             | [docker-compose-kafka-mssql.yaml](resources/mssql/docker-compose-kafka-mssql.yaml) |
     | Kafka    | MySQL          | [:page_facing_up:](docs/docker-compose-kafka-mysql/README.md)             | [docker-compose-kafka-mysql.yaml](resources/mysql/docker-compose-kafka-mysql.yaml) |
     | Kafka    | PostgreSQL     | [:page_facing_up:](docs/docker-compose-kafka-postgresql/README.md)        | [docker-compose-kafka-postgresql.yaml](resources/postgresql/docker-compose-kafka-postgresql.yaml) |
-    | Kafka    | SQLite         | [:page_facing_up:](docs/docker-compose-kafka-sqlite/README.md)            | [docker-compose-kafka-sqlite.yaml](resources/sqlite/docker-compose-kafka-sqlite.yaml) |
     | RabbitMQ | Db2            | [:page_facing_up:](docs/docker-compose-rabbitmq-db2/README.md)            | [docker-compose-rabbitmq-db2.yaml](resources/db2/docker-compose-rabbitmq-db2.yaml) |
     | RabbitMQ | MSSQL          | [:page_facing_up:](docs/docker-compose-rabbitmq-mssql/README.md)          | [docker-compose-rabbitmq-mssql.yaml](resources/mssql/docker-compose-rabbitmq-mssql.yaml) |
     | RabbitMQ | MySQL          | [:page_facing_up:](docs/docker-compose-rabbitmq-mysql/README.md)          | [docker-compose-rabbitmq-mysql.yaml](resources/mysql/docker-compose-rabbitmq-mysql.yaml) |
     | RabbitMQ | PostgreSQL     | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql/README.md)     | [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) |
-    | RabbitMQ | SQLite         | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite/README.md)         | [docker-compose-rabbitmq-sqlite.yaml](resources/sqlite/docker-compose-rabbitmq-sqlite.yaml) |
 
 1. Advanced docker formations:
 
@@ -52,5 +49,3 @@ The following table indicates the instructions for variations in components.
     |:------------:|---------------------|
     | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) | Various enhancements built upon RabbitMQ and PostgreSQL. |
     | [:page_facing_up:](docs/docker-compose-kafka-postgresql-advanced/README.md) | Various enhancements built upon Kafka and PostgreSQL. |
-    | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-cluster/README.md) | Clustered SQLite databases |
-    | [:page_facing_up:](docs/docker-compose-rabbitmq-sqlite-governor/README.md) | Using a "governor" to monitor ingestion |
