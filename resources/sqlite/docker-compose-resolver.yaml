@@ -1,0 +1,60 @@
+version: '3'
+services:
+
+  initcontainer:
+    container_name: senzing-init-container
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.0}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+  sqliteweb:
+    container_name: senzing-sqlite-web
+    depends_on:
+      - initcontainer
+    environment:
+      SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:latest
+    networks:
+      - backend
+    ports:
+      - 9174:8080
+    restart: always
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+
+  debug:
+    container_name: senzing-debug
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.0}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+  resolver:
+    container_name: senzing-resolver
+    environment:
+#     See https://github.com/Senzing/resolver#configuration
+      SENZING_SUBCOMMAND: service
+    image: senzing/resolver:${SENZING_RESOLVER_VERSION:-1.2.0}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+networks:
+  backend:
