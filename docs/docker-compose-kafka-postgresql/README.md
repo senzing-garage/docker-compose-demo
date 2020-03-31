@@ -247,7 +247,7 @@ The server supports the
 
 ### View Jupyter notebooks
 
-1. Change file permissions on SQLite database.
+1. Change file permissions on Postgres database.
    Example:
 
     ```console
