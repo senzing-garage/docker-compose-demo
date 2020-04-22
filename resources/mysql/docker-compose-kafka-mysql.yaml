@@ -118,7 +118,7 @@ services:
     environment:
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.0}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.2}
     networks:
       - backend
     restart: on-failure
