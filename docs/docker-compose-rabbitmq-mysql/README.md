@@ -58,6 +58,7 @@ This docker formation brings up the following docker containers:
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
     1. [View Jupyter notebooks](#view-jupyter-notebooks)
+    1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [Re-run docker formation](#re-run-docker-formation)
@@ -281,6 +282,16 @@ The server supports the
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#jupyter-notebooks)
    for working with Jupyter Notebooks.
+
+### View X-Term
+
+The web-based Senzing X-term can be used to run Senzing command-line programs.
+
+1. Senzing X-term is viewable at
+   [localhost:8254](http://localhost:8254).
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-x-term)
+   for working with Senzing X-Term.
 
 ## Cleanup
 
