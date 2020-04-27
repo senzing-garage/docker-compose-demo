@@ -187,7 +187,7 @@ services:
 
   xterm:
     container_name: senzing-xterm
-    image: senzing/xterm:${SENZING_XTERM:-1.0.0}
+    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.0}
     networks:
       - backend
     ports:
