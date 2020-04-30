@@ -14,8 +14,6 @@ services:
       - 15672:15672
       - 5672:5672
     restart: always
-    volumes:
-      - ${RABBITMQ_DIR}:/bitnami
 
   mockdata:
     container_name: senzing-mock-data-generator
@@ -127,6 +125,8 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.0}
     networks:
