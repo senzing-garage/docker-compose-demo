@@ -57,9 +57,11 @@ This docker formation brings up the following docker containers:
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
     1. [View Jupyter notebooks](#view-jupyter-notebooks)
+    1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
-1. [Configuration](#configuration)
-1. [Program parameter matrix](#program-parameter-matrix)
+1. [Advanced](#advanced)
+    1. [Configuration](#configuration)
+    1. [Program parameter matrix](#program-parameter-matrix)
 
 ### Legend
 
@@ -162,7 +164,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    This ensures that you make a conscious effort to accept the EULA.
    Example:
 
-    <code>export SENZING_ACCEPT_EULA="&lt;the value from [this link](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)&gt;"</code>
+    <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
 
 ### Install Senzing
 
@@ -332,6 +334,16 @@ The server supports the
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#jupyter-notebooks)
    for working with Jupyter Notebooks.
 
+### View X-Term
+
+The web-based Senzing X-term can be used to run Senzing command-line programs.
+
+1. Senzing X-term is viewable at
+   [localhost:8254](http://localhost:8254).
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-x-term)
+   for working with Senzing X-Term.
+
 ## Cleanup
 
 When the docker-compose formation is no longer needed,
@@ -352,7 +364,9 @@ it can be brought down and directories can be deleted.
 
    They may be safely deleted.
 
-## Configuration
+## Advanced
+
+### Configuration
 
 Configuration values specified by environment variable or command line parameter.
 
@@ -369,7 +383,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
-## Program parameter matrix
+### Program parameter matrix
 
 1. The matrix for using rabbitmq with `stream-loader.py` and `redoer.py` subcommands.
 
