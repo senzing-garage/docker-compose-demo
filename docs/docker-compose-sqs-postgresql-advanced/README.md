@@ -51,7 +51,6 @@ This docker formation brings up the following docker containers:
     1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View docker containers](#view-docker-containers)
-    1. [View RabbitMQ](#view-rabbitmq)
     1. [View PostgreSQL](#view-postgresql)
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
@@ -142,17 +141,6 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
 
     export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
-    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
-    ```
-
-1. Create directory for RabbitMQ persistence.
-   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
-   the directories created within `RABBITMQ_DIR` will be restricted.
-   Example:
-
-    ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
 ### EULA
@@ -179,10 +167,10 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
 ### Install Senzing license
 
-Senzing comes with a trial license that supports 10,000 records.
+Senzing comes with a trial license that supports 5000 records.
 
 1. :thinking: **Optional:**
-   If more than 10,000 records are desired, see
+   If more than 5,000 records are desired, see
    [Senzing license](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-license).
 
 ### Choose docker formation
