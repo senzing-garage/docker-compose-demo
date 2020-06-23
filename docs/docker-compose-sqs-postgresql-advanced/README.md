@@ -165,6 +165,32 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
+### AWS credentials
+
+1. :pencil2: Specify AWS credentials.
+   Example:
+
+    ```console
+    export AWS_ACCESS_KEY_ID=$(aws configure get default.aws_access_key_id)
+    export AWS_SECRET_ACCESS_KEY=$(aws configure get default.aws_secret_access_key)
+    export AWS_DEFAULT_REGION=$(aws configure get default.region)
+    ```
+
+### AWS SQS queues
+
+1. Create AWS SQS queues at
+   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
+
+1. :pencil2: Specify AWS SQS queues:
+   Example:
+
+    ```console
+    export SENZING_SQS_FAILURE_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-failure-queue"
+    export SENZING_SQS_INFO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-info-queue"
+    export SENZING_SQS_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-queue"
+    export SENZING_SQS_REDO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-redo-queue"
+    ```
+
 ### Install Senzing license
 
 Senzing comes with a trial license that supports 5000 records.
@@ -267,14 +293,10 @@ or are the default values seen in
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
-### View sqs
+### View AWS SQS
 
-1. sqs is viewable at
-   [localhost:15672](http://localhost:15672).
-    1. **Defaults:** username: `user` password: `bitnami`
-1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#sqs)
-   for working with sqs.
+1. AWS SQS is viewable at
+   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
 
 ### View PostgreSQL
 
