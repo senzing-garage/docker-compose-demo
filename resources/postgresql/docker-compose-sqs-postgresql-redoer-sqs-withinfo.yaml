@@ -14,7 +14,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-sqs
-    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.0}
+    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.1}
     networks:
       - backend
     restart: on-failure
@@ -186,8 +186,10 @@ services:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SQS_FAILURE_QUEUE_URL: ${SENZING_SQS_FAILURE_QUEUE_URL}
+      SENZING_SQS_INFO_QUEUE_URL: ${SENZING_SQS_INFO_QUEUE_URL}
       SENZING_SQS_REDO_QUEUE_URL: ${SENZING_SQS_REDO_QUEUE_URL}
-      SENZING_SUBCOMMAND: read-from-sqs
+      SENZING_SUBCOMMAND: read-from-sqs-withinfo
     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.2.1}
     networks:
       - backend

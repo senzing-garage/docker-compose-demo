@@ -14,7 +14,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-sqs
-    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.0}
+    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.1}
     networks:
       - backend
     restart: on-failure
