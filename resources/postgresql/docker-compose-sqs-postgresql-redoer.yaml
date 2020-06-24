@@ -98,7 +98,7 @@ services:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.3}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.4}
     networks:
       - backend
     restart: on-failure
@@ -112,7 +112,7 @@ services:
     cap_add:
       - ALL
     container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.0}
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.4}
     networks:
       - backend
     restart: always
@@ -138,7 +138,7 @@ services:
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: sqs
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.3}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.4}
     networks:
       - backend
     restart: always
@@ -156,7 +156,8 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.2.1}
+      SENZING_THREADS_PER_PROCESS: 1
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.0}
     networks:
       - backend
     privileged: true
@@ -183,7 +184,7 @@ services:
     environment:
 #     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.10}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}
     networks:
       - backend
     ports:
@@ -202,7 +203,7 @@ services:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
       SENZING_WEB_SERVER_PORT: 8251
-    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.0.4}
+    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.2.1}
     networks:
       - backend
     ports:
