@@ -146,7 +146,7 @@ services:
       SENZING_INIT_CONTAINER_SLEEP: 30
       LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.2}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.4}
     networks:
       - backend
     restart: on-failure
@@ -163,7 +163,7 @@ services:
     cap_add:
       - ALL
     container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.0}
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.4}
     networks:
       - backend
     restart: always
@@ -189,7 +189,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.3}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.4}
     networks:
       - backend
     restart: always
@@ -217,7 +217,7 @@ services:
       - mssql-create-senzing
     environment:
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.7.10}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}
     networks:
       - backend
     ports:
@@ -239,7 +239,7 @@ services:
     environment:
       SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
       SENZING_WEB_SERVER_PORT: 8251
-    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.0.4}
+    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.2.1}
     networks:
       - backend
     ports:
@@ -248,7 +248,7 @@ services:
 
   xterm:
     container_name: senzing-xterm
-    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.0}
+    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.2}
     networks:
       - backend
     ports:

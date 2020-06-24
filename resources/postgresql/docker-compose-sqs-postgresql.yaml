@@ -1,38 +1,20 @@
 version: '3'
 services:
 
-  rabbitmq:
-    container_name: senzing-rabbitmq
+  producer:
+    container_name: senzing-stream-producer
     environment:
-#     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
-      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-    image: bitnami/rabbitmq:3.8.2
-    networks:
-      - backend
-    ports:
-      - 15672:15672
-      - 5672:5672
-    restart: always
-    volumes:
-      - ${RABBITMQ_DIR}:/bitnami
-
-  mockdata:
-    container_name: senzing-mock-data-generator
-    depends_on:
-      - rabbitmq
-    environment:
-#     See https://github.com/Senzing/docker-mock-data-generator#configuration
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+#     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_RABBITMQ_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
-      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_RECORD_MAX: 5000
+      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
+      SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
+      SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
-      SENZING_SUBCOMMAND: url-to-rabbitmq
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.1}
+      SENZING_SUBCOMMAND: json-to-sqs
+    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.1}
     networks:
       - backend
     restart: on-failure
@@ -127,6 +109,8 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.4}
     networks:
@@ -140,9 +124,11 @@ services:
   loader:
     container_name: senzing-stream-loader
     depends_on:
-      - rabbitmq
       - postgres
     environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
@@ -150,12 +136,8 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
-      SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
-      SENZING_RABBITMQ_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
-      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_SUBCOMMAND: rabbitmq
+      SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
+      SENZING_SUBCOMMAND: sqs
     image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.4}
     networks:
       - backend
@@ -227,17 +209,6 @@ services:
     restart: always
     volumes:
       - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-
-  poc:
-    container_name: senzing-poc
-    image: senzing/senzing-poc-utility:${SENZING_POC_UTILITY_VERSION:-latest}
-    networks:
-      - backend
-    restart: always
-    volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
