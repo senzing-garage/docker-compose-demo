@@ -161,7 +161,7 @@ services:
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_FAILURE_QUEUE_URL}
       SENZING_SUBCOMMAND: sqs
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.0}
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.1}
     networks:
       - backend
     restart: always
@@ -178,7 +178,7 @@ services:
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_INFO_QUEUE_URL}
       SENZING_SUBCOMMAND: sqs
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.0}
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.1}
     networks:
       - backend
     restart: always
