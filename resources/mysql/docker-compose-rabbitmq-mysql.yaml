@@ -17,11 +17,11 @@ services:
       - ${RABBITMQ_DIR}:/bitnami
 
   mockdata:
-    container_name: senzing-mock-data-generator
+    container_name: senzing-stream-producer
     depends_on:
       - rabbitmq
     environment:
-#     See https://github.com/Senzing/docker-mock-data-generator#configuration
+#     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
@@ -31,7 +31,7 @@ services:
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: url-to-rabbitmq
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.1}
+    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.1}
     networks:
       - backend
     restart: on-failure
