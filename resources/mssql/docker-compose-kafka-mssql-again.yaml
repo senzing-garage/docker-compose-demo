@@ -76,7 +76,7 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/docker-mock-data-generator#configuration
+#     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
