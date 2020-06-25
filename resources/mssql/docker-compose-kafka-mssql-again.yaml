@@ -72,7 +72,7 @@ services:
     restart: always
 
   mockdata:
-    container_name: senzing-stream-loader
+    container_name: senzing-stream-producer
     depends_on:
       - kafka
     environment:
