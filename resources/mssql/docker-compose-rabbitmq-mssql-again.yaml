@@ -43,13 +43,13 @@ services:
     volumes:
       - ${RABBITMQ_DIR}:/bitnami
 
-  mockdata:
+  producer:
     container_name: senzing-stream-producer
     depends_on:
       - rabbitmq
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
-      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_DELAY_IN_SECONDS: 30
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
@@ -57,7 +57,7 @@ services:
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
-      SENZING_SUBCOMMAND: url-to-rabbitmq
+      SENZING_SUBCOMMAND: json-to-rabbitmq
     image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.1}
     networks:
       - backend
