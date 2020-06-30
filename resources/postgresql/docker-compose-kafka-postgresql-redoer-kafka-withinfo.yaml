@@ -45,20 +45,21 @@ services:
       - 9179:9000
     restart: always
 
-  mockdata:
-    container_name: senzing-mock-data-generator
+  producer:
+    container_name: senzing-stream-producer
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/docker-mock-data-generator#configuration
-      SENZING_DELAY_IN_SECONDS: 60
+#     See https://github.com/Senzing/docker-stream-producer#configuration
+      SENZING_DELAY_IN_SECONDS: 30
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
-      SENZING_SUBCOMMAND: url-to-kafka
-    image: senzing/mock-data-generator:${SENZING_MOCK_DATA_GENERATOR_VERSION:-1.1.1}
+      SENZING_SUBCOMMAND: json-to-kafka
+    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.1}
+
     networks:
       - backend
     restart: on-failure
