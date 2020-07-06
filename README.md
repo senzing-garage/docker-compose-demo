@@ -42,7 +42,7 @@ The following table indicates the instructions for variations in components.
     | RabbitMQ | MSSQL          | [instructions](docs/docker-compose-rabbitmq-mssql/README.md)          | [docker-compose-rabbitmq-mssql.yaml](resources/mssql/docker-compose-rabbitmq-mssql.yaml) |
     | RabbitMQ | MySQL          | [instructions](docs/docker-compose-rabbitmq-mysql/README.md)          | [docker-compose-rabbitmq-mysql.yaml](resources/mysql/docker-compose-rabbitmq-mysql.yaml) |
     | RabbitMQ | PostgreSQL     | [instructions](docs/docker-compose-rabbitmq-postgresql/README.md)     | [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) |
-    | AWS SQS  | PostgreSQL     | [instructions](docs/docker-compose-sqs-postgresql/README.md)     | [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-sqs-postgresql.yaml) |
+    | AWS SQS  | PostgreSQL     | [instructions](docs/docker-compose-sqs-postgresql/README.md)     | [docker-compose-sqs-postgresql.yaml](resources/postgresql/docker-compose-sqs-postgresql.yaml) |
 
 
 1. Advanced docker formations:
