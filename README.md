@@ -34,18 +34,19 @@ The following table indicates the instructions for variations in components.
 
     | Queue    | Database       | Instructions | docker-compose.yaml |
     |----------|----------------|:------------:|---------------------|
-    | Kafka    | Db2            | [:page_facing_up:](docs/docker-compose-kafka-db2/README.md)               | [docker-compose-kafka-db2.yaml](resources/db2/docker-compose-kafka-db2.yaml) |
-    | Kafka    | MSSQL          | [:page_facing_up:](docs/docker-compose-kafka-mssql/README.md)             | [docker-compose-kafka-mssql.yaml](resources/mssql/docker-compose-kafka-mssql.yaml) |
-    | Kafka    | MySQL          | [:page_facing_up:](docs/docker-compose-kafka-mysql/README.md)             | [docker-compose-kafka-mysql.yaml](resources/mysql/docker-compose-kafka-mysql.yaml) |
-    | Kafka    | PostgreSQL     | [:page_facing_up:](docs/docker-compose-kafka-postgresql/README.md)        | [docker-compose-kafka-postgresql.yaml](resources/postgresql/docker-compose-kafka-postgresql.yaml) |
-    | RabbitMQ | Db2            | [:page_facing_up:](docs/docker-compose-rabbitmq-db2/README.md)            | [docker-compose-rabbitmq-db2.yaml](resources/db2/docker-compose-rabbitmq-db2.yaml) |
-    | RabbitMQ | MSSQL          | [:page_facing_up:](docs/docker-compose-rabbitmq-mssql/README.md)          | [docker-compose-rabbitmq-mssql.yaml](resources/mssql/docker-compose-rabbitmq-mssql.yaml) |
-    | RabbitMQ | MySQL          | [:page_facing_up:](docs/docker-compose-rabbitmq-mysql/README.md)          | [docker-compose-rabbitmq-mysql.yaml](resources/mysql/docker-compose-rabbitmq-mysql.yaml) |
-    | RabbitMQ | PostgreSQL     | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql/README.md)     | [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) |
+    | Kafka    | Db2            | [instructions](docs/docker-compose-kafka-db2/README.md)               | [docker-compose-kafka-db2.yaml](resources/db2/docker-compose-kafka-db2.yaml) |
+    | Kafka    | MSSQL          | [instructions](docs/docker-compose-kafka-mssql/README.md)             | [docker-compose-kafka-mssql.yaml](resources/mssql/docker-compose-kafka-mssql.yaml) |
+    | Kafka    | MySQL          | [instructions](docs/docker-compose-kafka-mysql/README.md)             | [docker-compose-kafka-mysql.yaml](resources/mysql/docker-compose-kafka-mysql.yaml) |
+    | Kafka    | PostgreSQL     | [instructions](docs/docker-compose-kafka-postgresql/README.md)        | [docker-compose-kafka-postgresql.yaml](resources/postgresql/docker-compose-kafka-postgresql.yaml) |
+    | RabbitMQ | Db2            | [instructions](docs/docker-compose-rabbitmq-db2/README.md)            | [docker-compose-rabbitmq-db2.yaml](resources/db2/docker-compose-rabbitmq-db2.yaml) |
+    | RabbitMQ | MSSQL          | [instructions](docs/docker-compose-rabbitmq-mssql/README.md)          | [docker-compose-rabbitmq-mssql.yaml](resources/mssql/docker-compose-rabbitmq-mssql.yaml) |
+    | RabbitMQ | MySQL          | [instructions](docs/docker-compose-rabbitmq-mysql/README.md)          | [docker-compose-rabbitmq-mysql.yaml](resources/mysql/docker-compose-rabbitmq-mysql.yaml) |
+    | RabbitMQ | PostgreSQL     | [instructions](docs/docker-compose-rabbitmq-postgresql/README.md)     | [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) |
 
 1. Advanced docker formations:
 
     | Instructions | Notes               |
     |:------------:|---------------------|
-    | [:page_facing_up:](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) | Various enhancements built upon RabbitMQ and PostgreSQL. |
-    | [:page_facing_up:](docs/docker-compose-kafka-postgresql-advanced/README.md) | Various enhancements built upon Kafka and PostgreSQL. |
+    | [instructions](docs/docker-compose-sqs-postgresql-advanced/README.md) | Various enhancements built upon Amazon SQS and PostgreSQL. |
+    | [instructions](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) | Various enhancements built upon RabbitMQ and PostgreSQL. |
+    | [instructions](docs/docker-compose-kafka-postgresql-advanced/README.md) | Various enhancements built upon Kafka and PostgreSQL. |
