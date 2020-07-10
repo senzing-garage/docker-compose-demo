@@ -180,7 +180,28 @@ services:
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbc.ini:/etc/odbc.ini
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbcinst.ini:/etc/odbcinst.ini
-
+      
+redoer: 
+     container_name: senzing-redoer 
+     depends_on: 
+       - loader 
+     environment: 
+ #     See https://github.com/Senzing/redoer#configuration 
+       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
+       SENZING_DELAY_IN_SECONDS: 60 
+       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60} 
+       SENZING_SUBCOMMAND: redo 
+     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.0} 
+     networks: 
+       - backend 
+     privileged: true 
+     restart: on-failure 
+     user: "0" 
+     volumes: 
+       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data 
+       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing 
+       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+       
   api:
     container_name: senzing-api-server
     command:
