@@ -202,7 +202,7 @@ services:
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbc.ini:/etc/odbc.ini
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}/msodbcsql17/etc/odbcinst.ini:/etc/odbcinst.ini
       
-redoer: 
+  redoer: 
      container_name: senzing-redoer 
      depends_on: 
        - loader 
