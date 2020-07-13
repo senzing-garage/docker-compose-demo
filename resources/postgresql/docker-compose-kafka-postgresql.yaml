@@ -189,7 +189,7 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       
-redoer: 
+  redoer: 
      container_name: senzing-redoer 
      depends_on: 
        - loader 
