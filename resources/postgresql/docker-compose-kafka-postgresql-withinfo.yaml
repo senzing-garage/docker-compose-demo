@@ -221,7 +221,7 @@ services:
       - backend
     restart: always
     
-redoer: 
+  redoer: 
      container_name: senzing-redoer 
      depends_on: 
        - loader 
