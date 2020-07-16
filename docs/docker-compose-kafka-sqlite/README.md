@@ -13,7 +13,7 @@ The instructions show how to set up a system that:
     1. In this implementation, the queue is Kafka.
 1. Reads messages from the queue and inserts into Senzing.
     1. In this implementation, Senzing keeps its data in a SQLite database.
-1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api) server.
+1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
 The following diagram shows the relationship of the docker containers in this docker composition.
@@ -225,9 +225,9 @@ or are the default values seen in
 
 View results from Senzing REST API server.
 The server supports the
-[Senzing REST API](https://github.com/Senzing/senzing-rest-api).
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
 
-1. View REST API using [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api/master/senzing-rest-api.yaml).
+1. View REST API using [OpenApi "Swagger" editor](http://editor.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml).
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
