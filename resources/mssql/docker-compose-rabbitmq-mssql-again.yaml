@@ -144,7 +144,7 @@ services:
       - "*"
     environment:
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.0}
     networks:
       - backend
     ports:
