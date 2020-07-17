@@ -71,7 +71,7 @@ services:
 
   debug:
     container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.4}
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.5}
     networks:
       - backend
     restart: always
