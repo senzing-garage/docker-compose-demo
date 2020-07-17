@@ -233,7 +233,7 @@ services:
     environment:
 #     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.0}
     networks:
       - backend
     ports:
