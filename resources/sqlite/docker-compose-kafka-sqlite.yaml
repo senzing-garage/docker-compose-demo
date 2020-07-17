@@ -65,7 +65,7 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.4}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.5}
     networks:
       - backend
     restart: on-failure
