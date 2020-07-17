@@ -163,7 +163,7 @@ services:
       - mysql
     environment:
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.0}
     networks:
       - backend
     ports:
