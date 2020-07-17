@@ -146,7 +146,7 @@ services:
       SENZING_INIT_CONTAINER_SLEEP: 30
       LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.4}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.5}
     networks:
       - backend
     restart: on-failure
