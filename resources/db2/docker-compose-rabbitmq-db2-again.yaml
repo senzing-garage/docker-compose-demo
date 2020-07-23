@@ -54,7 +54,7 @@ services:
 
   debug:
     container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.4}
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.5}
     networks:
       - backend
     restart: always
@@ -128,7 +128,7 @@ services:
       - db2
     environment:
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.0}
     networks:
       - backend
     ports:
@@ -147,7 +147,7 @@ services:
     environment:
       SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
       SENZING_WEB_SERVER_PORT: 8251
-    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.2.1}
+    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-2.0.0}
     networks:
       - backend
     ports:
@@ -156,7 +156,7 @@ services:
 
   xterm:
     container_name: senzing-xterm
-    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.2}
+    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.3}
     networks:
       - backend
     ports:

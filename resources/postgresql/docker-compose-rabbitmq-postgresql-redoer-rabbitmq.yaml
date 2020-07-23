@@ -116,7 +116,7 @@ services:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_INIT_CONTAINER_SLEEP: 30
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.4}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.5}
     networks:
       - backend
     restart: on-failure
@@ -130,7 +130,7 @@ services:
     cap_add:
       - ALL
     container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.4}
+    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.5}
     networks:
       - backend
     restart: always
@@ -233,7 +233,7 @@ services:
     environment:
 #     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-1.8.3}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.0}
     networks:
       - backend
     ports:
@@ -252,7 +252,7 @@ services:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
       SENZING_WEB_SERVER_PORT: 8251
-    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-1.2.1}
+    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-2.0.0}
     networks:
       - backend
     ports:
@@ -285,7 +285,7 @@ services:
 
   xterm:
     container_name: senzing-xterm
-    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.2}
+    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.3}
     networks:
       - backend
     ports:
