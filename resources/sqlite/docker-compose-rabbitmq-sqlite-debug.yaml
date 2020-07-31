@@ -33,7 +33,7 @@ services:
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
-    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.1.1}
+    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.2.2}
     networks:
       - backend
     restart: on-failure
@@ -43,7 +43,7 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_LOG_LEVEL: debug
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.5}
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.6}
     networks:
       - backend
     restart: on-failure
@@ -99,7 +99,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.4}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.5}
     networks:
       - backend
     restart: always
