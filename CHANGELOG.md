@@ -6,6 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2020-07-31
+
+### Changed in 1.5.0
+
+- Works with senzing version 2.0.0 and above
+- Added "senzing/redoer:1.3.1" to formations
+- Update docker image versions
+  - senzing/entity-search-web-app:1.2.1 to senzing/entity-search-web-app:2.0.0
+  - senzing/init-container:1.5.4 to senzing/init-container:1.5.6
+  - senzing/redoer:1.3.0 to senzing/redoer:1.3.1
+  - senzing/resolver:1.2.0 to senzing/resolver:1.3.0
+  - senzing/senzing-api-server:1.8.3 to senzing/senzing-api-server:2.0.0
+  - senzing/senzing-debug:1.3.4 to senzing/senzing-debug:1.3.5
+  - senzing/stream-loader:1.5.4 to senzing/stream-loader:1.5.5
+  - senzing/stream-producer: 1.1.1 to senzing/stream-producer:1.2.2
+  - senzing/xterm:1.0.2 to senzing/xterm:1.0.3
+
 ## [1.4.0] - 2020-07-07
 
 ### Changed in 1.4.0
