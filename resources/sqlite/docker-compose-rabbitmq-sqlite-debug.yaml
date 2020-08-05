@@ -22,7 +22,7 @@ services:
     depends_on:
       - rabbitmq
     environment:
-#     See https://github.com/Senzing/docker-stream-producer#configuration
+#     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_LOG_LEVEL: debug
@@ -70,6 +70,8 @@ services:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.5}
     networks:
@@ -109,6 +111,27 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
+  redoer:
+    container_name: senzing-redoer
+    depends_on:
+      - loader
+    environment:
+#     See https://github.com/Senzing/redoer#configuration
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: redo
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.1}
+    networks:
+      - backend
+    privileged: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
   api:
     container_name: senzing-api-server
     command:
@@ -138,8 +161,12 @@ services:
       - api
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
-      SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
+      SENZING_API_SERVER_URL: http://senzing-api-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
+      SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
+      SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
     image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-2.0.0}
     networks:
       - backend

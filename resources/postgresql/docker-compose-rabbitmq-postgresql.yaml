@@ -14,13 +14,15 @@ services:
       - 15672:15672
       - 5672:5672
     restart: always
+    volumes:
+      - ${RABBITMQ_DIR}:/bitnami
 
   producer:
     container_name: senzing-stream-producer
     depends_on:
       - rabbitmq
     environment:
-#     See https://github.com/Senzing/docker-stream-producer#configuration
+#     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RABBITMQ_HOST: senzing-rabbitmq

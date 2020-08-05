@@ -31,6 +31,7 @@ services:
   rabbitmq:
     container_name: senzing-rabbitmq
     environment:
+#     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:3.8.2
@@ -168,8 +169,13 @@ services:
     depends_on:
       - api
     environment:
-      SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
+#     See https://github.com/Senzing/entity-search-web-app#configuration
+      SENZING_API_SERVER_URL: http://senzing-api-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
+      SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
+      SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
     image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-2.0.0}
     networks:
       - backend
