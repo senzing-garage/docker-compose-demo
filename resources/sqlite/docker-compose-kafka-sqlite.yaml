@@ -35,8 +35,8 @@ services:
       - kafka
     environment:
 #     See https://github.com/obsidiandynamics/kafdrop#environment-variables
-      KAFKA_BROKERCONNECT: "senzing-kafka:9092"
       JVM_OPTS: "-Xms32M -Xmx64M"
+      KAFKA_BROKERCONNECT: "senzing-kafka:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
     image: obsidiandynamics/kafdrop:3.23.0
     networks:
@@ -52,9 +52,9 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-kafka
