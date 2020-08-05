@@ -35,8 +35,8 @@ services:
       - kafka
     environment:
 #     See https://github.com/obsidiandynamics/kafdrop#environment-variables
-      KAFKA_BROKERCONNECT: "senzing-kafka:9092"
       JVM_OPTS: "-Xms32M -Xmx64M"
+      KAFKA_BROKERCONNECT: "senzing-kafka:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
     image: obsidiandynamics/kafdrop:3.23.0
     networks:
@@ -50,16 +50,15 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/docker-stream-producer#configuration
+#     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RECORD_MAX: 5000
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-kafka
     image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.2.2}
-
     networks:
       - backend
     restart: on-failure
@@ -103,29 +102,29 @@ services:
     container_name: senzing-phppgadmin
     environment:
 #     See https://github.com/dockage/phppgadmin#available-configuration-parameters
+      - PHP_PG_ADMIN_AJAX_REFRESH=3
+      - PHP_PG_ADMIN_AUTO_COMPLETE=default on
+      - PHP_PG_ADMIN_DEFAULT_LANG=auto
+      - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
+      - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
+      - PHP_PG_ADMIN_LEFT_WIDTH=200
+      - PHP_PG_ADMIN_MAX_CHARS=50
+      - PHP_PG_ADMIN_MAX_ROWS=30
+      - PHP_PG_ADMIN_MIN_PASSWORD_LENGTH=1
+      - PHP_PG_ADMIN_OWNED_ONLY=false
+      - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
       - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
       - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
+      - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
+      - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
       - PHP_PG_ADMIN_SERVER_PORT=5432
       - PHP_PG_ADMIN_SERVER_SSL_MODE=allow
-      - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
-      - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
-      - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
-      - PHP_PG_ADMIN_DEFAULT_LANG=auto
-      - PHP_PG_ADMIN_AUTO_COMPLETE=default on
-      - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
-      - PHP_PG_ADMIN_OWNED_ONLY=false
-      - PHP_PG_ADMIN_SHOW_COMMENTS=true
       - PHP_PG_ADMIN_SHOW_ADVANCED=false
-      - PHP_PG_ADMIN_SHOW_SYSTEM=false
-      - PHP_PG_ADMIN_MIN_PASSWORD_LENGTH=1
-      - PHP_PG_ADMIN_LEFT_WIDTH=200
-      - PHP_PG_ADMIN_THEME=default
+      - PHP_PG_ADMIN_SHOW_COMMENTS=true
       - PHP_PG_ADMIN_SHOW_OIDS=false
-      - PHP_PG_ADMIN_MAX_ROWS=30
-      - PHP_PG_ADMIN_MAX_CHARS=50
+      - PHP_PG_ADMIN_SHOW_SYSTEM=false
+      - PHP_PG_ADMIN_THEME=default
       - PHP_PG_ADMIN_USE_XHTML_STRICT=false
-      - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
-      - PHP_PG_ADMIN_AJAX_REFRESH=3
     image: senzing/phppgadmin:${SENZING_PHPPGADMIN_VERSION:-1.0.0}
     networks:
       - backend
@@ -154,6 +153,8 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.5}
     networks:
@@ -172,8 +173,8 @@ services:
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
-      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
@@ -269,8 +270,12 @@ services:
       - api
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
-      SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
+      SENZING_API_SERVER_URL: http://senzing-api-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
+      SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
+      SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
     image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-2.0.0}
     networks:
       - backend
@@ -290,7 +295,7 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
-    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.2.0}
     networks:
       - backend
     ports:

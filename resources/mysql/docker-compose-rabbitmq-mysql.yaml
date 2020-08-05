@@ -4,8 +4,9 @@ services:
   rabbitmq:
     container_name: senzing-rabbitmq
     environment:
-      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+#     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:3.8.2
     networks:
       - backend
@@ -103,6 +104,8 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   debug:
+    cap_add:
+      - ALL
     container_name: senzing-debug
     image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.5}
     networks:
@@ -121,8 +124,8 @@ services:
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
-      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-TEST}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
@@ -142,25 +145,25 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   redoer:
-     container_name: senzing-redoer
-     depends_on:
-       - loader
-     environment:
- #     See https://github.com/Senzing/redoer#configuration
-       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
-       SENZING_DELAY_IN_SECONDS: 60
-       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
-       SENZING_SUBCOMMAND: redo
-     image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.1}
-     networks:
-       - backend
-     privileged: true
-     restart: on-failure
-     user: "0"
-     volumes:
-       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
-       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+    container_name: senzing-redoer
+    depends_on:
+      - loader
+    environment:
+#     See https://github.com/Senzing/redoer#configuration
+      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: redo
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.1}
+    networks:
+      - backend
+    privileged: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   api:
     container_name: senzing-api-server
@@ -176,6 +179,7 @@ services:
     depends_on:
       - mysql
     environment:
+#     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/${MYSQL_DATABASE:-G2}"
     image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.0}
     networks:
@@ -193,8 +197,13 @@ services:
     depends_on:
       - api
     environment:
-      SENZING_API_SERVER_URL: "http://senzing-api-server:8250"
+#     See https://github.com/Senzing/entity-search-web-app#configuration
+      SENZING_API_SERVER_URL: http://senzing-api-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
+      SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
+      SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
     image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-2.0.0}
     networks:
       - backend
@@ -212,8 +221,9 @@ services:
     depends_on:
       - loader
     environment:
+#     See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_SQL_CONNECTION: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/?schema=${MYSQL_DATABASE:-G2}"
-    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.1.5}
+    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.2.0}
     networks:
       - backend
     ports:
