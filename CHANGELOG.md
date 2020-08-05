@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.1] - 2020-08-05
+
+### Changed in 1.5.1
+
+- Update invocation to `webapp:`
+- Fix database connectivity issues with `redoer:` for Db2 and MS SQL.
+- Update docker image versions
+  - senzing/jupyter 1.5.5 to 1.2.0
+
 ## [1.5.0] - 2020-07-31
 
 ### Changed in 1.5.0
