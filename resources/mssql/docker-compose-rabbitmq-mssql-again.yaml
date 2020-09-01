@@ -147,6 +147,7 @@ services:
       - /etc/opt/senzing/G2Module.ini
       - -allowedOrigins
       - "*"
+      - -enableAdmin
     environment:
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
