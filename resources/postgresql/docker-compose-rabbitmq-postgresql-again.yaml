@@ -166,6 +166,7 @@ services:
       - /etc/opt/senzing/G2Module.ini
       - -allowedOrigins
       - "*"
+      - -enableAdmin
     depends_on:
       - postgres
     environment:
