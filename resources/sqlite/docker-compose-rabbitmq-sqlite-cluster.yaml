@@ -151,6 +151,7 @@ services:
       - /etc/opt/senzing/G2Module.ini
       - -allowedOrigins
       - "*"
+      - -enableAdmin
       - -initEnvVar
       - SENZING_ENGINE_CONFIGURATION_JSON
     environment:
