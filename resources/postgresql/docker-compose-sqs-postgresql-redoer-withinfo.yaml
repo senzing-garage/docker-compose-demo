@@ -159,6 +159,7 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
@@ -185,13 +186,14 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
 #     See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_FAILURE_QUEUE_URL}
       SENZING_SUBCOMMAND: sqs
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.1}
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.2}
     networks:
       - backend
     restart: always
@@ -202,13 +204,14 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
 #     See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_INFO_QUEUE_URL}
       SENZING_SUBCOMMAND: sqs
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.1}
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.2}
     networks:
       - backend
     restart: always
@@ -219,13 +222,14 @@ services:
       AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
 #     See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_REDO_QUEUE_URL}
       SENZING_SUBCOMMAND: sqs
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.1}
+    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.2}
     networks:
       - backend
     restart: always
