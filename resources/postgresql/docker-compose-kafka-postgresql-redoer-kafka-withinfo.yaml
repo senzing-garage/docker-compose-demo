@@ -55,7 +55,7 @@ services:
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
-      SENZING_RECORD_MAX: 5000
+      SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-kafka
     image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.2.2}
@@ -183,7 +183,7 @@ services:
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
       SENZING_SUBCOMMAND: kafka-withinfo
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.5.5}
+    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.6.1}
     networks:
       - backend
     restart: always
@@ -204,7 +204,7 @@ services:
       SENZING_KAFKA_REDO_TOPIC: senzing-kafka-redo-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: write-to-kafka
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.1}
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.2}
     networks:
       - backend
     privileged: true
@@ -229,7 +229,7 @@ services:
       SENZING_KAFKA_REDO_TOPIC: senzing-kafka-redo-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: read-from-kafka-withinfo
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.1}
+    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.2}
     networks:
       - backend
     privileged: true
@@ -305,7 +305,7 @@ services:
     environment:
 #     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.0}
+    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.1}
     networks:
       - backend
     ports:
