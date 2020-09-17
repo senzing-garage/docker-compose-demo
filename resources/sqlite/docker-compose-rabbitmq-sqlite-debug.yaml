@@ -144,7 +144,7 @@ services:
       - -allowedOrigins
       - "*"
       - -enableAdmin
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.1}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.0.1}
     networks:
       - backend
     ports:
