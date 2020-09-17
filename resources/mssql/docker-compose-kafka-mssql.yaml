@@ -244,7 +244,7 @@ services:
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@senzing-mssql:1433/${MSSQL_DATABASE:-G2}"
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.1}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.0.1}
     networks:
       - backend
     ports:
