@@ -9,7 +9,7 @@ services:
     container_name: senzing-mssql-driver
     environment:
       ACCEPT_EULA: Y
-    image: senzing/apt:${SENZING_APT_VERSION:-1.0.4}
+    image: senzing/apt:${SENZING_DOCKER_IMAGE_VERSION_APT:-1.0.4}
     networks:
       - backend
     restart: on-failure
