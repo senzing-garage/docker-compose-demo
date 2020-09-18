@@ -71,7 +71,7 @@ services:
     environment:
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.5}
+    image: senzing/senzing-debug:${SENZING_DOCKER_IMAGE_VERSION_SENZING_DEBUG:-1.3.5}
     networks:
       - backend
     restart: always
