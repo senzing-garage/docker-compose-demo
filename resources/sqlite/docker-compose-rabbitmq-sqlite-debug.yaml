@@ -43,7 +43,7 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_LOG_LEVEL: debug
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.7}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.5.7}
     networks:
       - backend
     restart: on-failure
