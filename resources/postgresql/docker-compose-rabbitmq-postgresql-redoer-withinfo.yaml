@@ -11,7 +11,7 @@ services:
     networks:
       - backend
     ports:
-      - 15672:15672SENZING_DOCKER_IMAGE_VERSION_JUPYTER
+      - 15672:15672
       - 5672:5672
     restart: always
     volumes:
