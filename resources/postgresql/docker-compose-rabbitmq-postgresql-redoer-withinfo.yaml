@@ -65,7 +65,7 @@ services:
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432/${POSTGRES_DB:-G2}"
       SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
-    image: senzing/postgresql-client:${SENZING_POSTGRES_CLIENT_VERSION:-1.0.0}
+    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-1.0.0}
     networks:
       - backend
     restart: on-failure
