@@ -296,7 +296,7 @@ services:
     environment:
 #     See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
-    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.2.0}
+    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-1.2.0}
     networks:
       - backend
     ports:
