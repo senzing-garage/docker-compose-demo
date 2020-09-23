@@ -179,7 +179,7 @@ services:
       - "--NotebookApp.token=''"
     depends_on:
       - loader
-    image: senzing/jupyter:${SENZING_JUPYTER_VERSION:-1.2.0}
+    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-1.2.0}
     networks:
       - backend
     ports:
