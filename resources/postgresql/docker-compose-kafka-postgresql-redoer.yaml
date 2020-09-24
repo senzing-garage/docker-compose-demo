@@ -201,7 +201,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.2}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.2}
     networks:
       - backend
     privileged: true
