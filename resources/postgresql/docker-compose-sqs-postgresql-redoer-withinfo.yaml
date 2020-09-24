@@ -170,7 +170,7 @@ services:
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_REDO_QUEUE_URL}
       SENZING_SUBCOMMAND: redo-withinfo-sqs
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.2}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.2}
     networks:
       - backend
     privileged: true
