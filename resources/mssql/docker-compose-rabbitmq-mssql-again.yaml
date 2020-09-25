@@ -189,7 +189,7 @@ services:
     environment:
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.3}
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.0.3}
     networks:
       - backend
     ports:
