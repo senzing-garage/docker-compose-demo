@@ -202,7 +202,7 @@ services:
       SENZING_KAFKA_TOPIC: senzing-kafka-failure-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.2}
+    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-1.1.2}
     networks:
       - backend
     restart: always
@@ -218,7 +218,7 @@ services:
       SENZING_KAFKA_TOPIC: senzing-kafka-info-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.2}
+    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-1.1.2}
     networks:
       - backend
     restart: always
