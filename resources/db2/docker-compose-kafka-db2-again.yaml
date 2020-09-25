@@ -14,7 +14,7 @@ services:
     restart: always
 
   kafka:
-    container_name: senzing-kafkaSENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER
+    container_name: senzing-kafka
     depends_on:
       - zookeeper
     environment:
