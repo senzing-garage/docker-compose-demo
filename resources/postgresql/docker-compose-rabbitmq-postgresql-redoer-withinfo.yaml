@@ -208,7 +208,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-failure-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.2}
+    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-1.1.2}
     networks:
       - backend
     restart: always
@@ -226,7 +226,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-info-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.2}
+    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-1.1.2}
     networks:
       - backend
     restart: always
@@ -244,7 +244,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-redo-info-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-logger:${SENZING_STREAM_LOGGER_VERSION:-1.1.2}
+    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-1.1.2}
     networks:
       - backend
     restart: always
