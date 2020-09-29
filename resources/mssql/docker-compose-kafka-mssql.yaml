@@ -97,7 +97,7 @@ services:
       - -Q
       - "CREATE DATABASE G2"
       - -S
-      - senzing-mssql
+      - ${MSSQL_HOST:-senzing-mssql},${MSSQL_PORT:-1433}
       - -U
       - sa
     container_name: senzing-mssql-create-database
