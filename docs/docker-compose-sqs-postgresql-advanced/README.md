@@ -262,6 +262,16 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-sqs-postgresql-redoer-sqs-withinfo.yaml
     ```
 
+#### Debugging
+
+1. Run with `SENZING_LOG_LEVEL=debug` and `--cap-add ALL`
+   in stream-loader and redoer containers.
+   This will return `pstack` data in the log.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-rabbitmq-postgresql-debug.yaml
+    ```
+
 ### Run docker formation
 
 1. Launch docker-compose formation.
