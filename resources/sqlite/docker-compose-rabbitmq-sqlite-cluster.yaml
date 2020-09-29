@@ -32,14 +32,14 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
-    image: senzing/stream-producer:${SENZING_STREAM_PRODUCER_VERSION:-1.2.2}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.2.2}
     networks:
       - backend
     restart: on-failure
 
   initcontainer:
     container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.9}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.5.9}
     networks:
       - backend
     restart: on-failure
@@ -54,7 +54,7 @@ services:
     cap_add:
       - ALL
     container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DEBUG_VERSION:-1.3.5}
+    image: senzing/senzing-debug:${SENZING_DOCKER_IMAGE_VERSION_SENZING_DEBUG:-1.3.5}
     networks:
       - backend
     restart: always
@@ -109,7 +109,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_STREAM_LOADER_VERSION:-1.6.1}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.6.1}
     networks:
       - backend
     restart: always
@@ -128,7 +128,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_REDOER_VERSION:-1.3.2}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.2}
     networks:
       - backend
     privileged: true
@@ -184,7 +184,7 @@ services:
             "LIB_FEAT_HKEY": "C2"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_API_SERVER_VERSION:-2.0.1}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.0.1}
     networks:
       - backend
     ports:
@@ -208,7 +208,7 @@ services:
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
-    image: senzing/entity-search-web-app:${SENZING_ENTITY_SEARCH_WEB_APP_VERSION:-2.0.0}
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.0.0}
     networks:
       - backend
     ports:
@@ -262,7 +262,7 @@ services:
 
   xterm:
     container_name: senzing-xterm
-    image: senzing/xterm:${SENZING_XTERM_VERSION:-1.0.3}
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.0.3}
     networks:
       - backend
     ports:
