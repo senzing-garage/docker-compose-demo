@@ -55,7 +55,7 @@ services:
 
   db2driverinstaller:
     container_name: senzing-db2-driver-installer
-    image: senzing/db2-driver-installer:${SENZING_DB2_DRIVER_INSTALLER_VERSION:-1.0.1}
+    image: senzing/db2-driver-installer:${SENZING_DOCKER_IMAGE_VERSION_DB2_DRIVER_INSTALLER:-1.0.1}
     networks:
       - backend
     restart: on-failure
