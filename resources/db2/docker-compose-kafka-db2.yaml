@@ -95,8 +95,8 @@ services:
       - db2driverinstaller
     environment:
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@senzing-db2:50000/${DB2_DB:-G2}"
-      SENZING_INIT_CONTAINER_SLEEP: 60
-    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.7}
+      SENZING_DELAY_IN_SECONDS: 60
+    image: senzing/init-container:${SENZING_INIT_CONTAINER_VERSION:-1.5.9}
     networks:
       - backend
     restart: on-failure
