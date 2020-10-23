@@ -165,7 +165,7 @@ services:
       SENZING_SQS_REDO_QUEUE_URL: ${SENZING_SQS_REDO_QUEUE_URL}
       SENZING_SUBCOMMAND: write-to-sqs
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.2}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.3}
     networks:
       - backend
     privileged: true
@@ -192,7 +192,7 @@ services:
       SENZING_SQS_REDO_QUEUE_URL: ${SENZING_SQS_REDO_QUEUE_URL}
       SENZING_SUBCOMMAND: read-from-sqs
       SENZING_THREADS_PER_PROCESS: ${SENZING_THREADS_PER_PROCESS:-4}
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.2}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.3}
     networks:
       - backend
     privileged: true
@@ -220,7 +220,7 @@ services:
     environment:
 #     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.0.1}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.2.1}
     networks:
       - backend
     ports:
