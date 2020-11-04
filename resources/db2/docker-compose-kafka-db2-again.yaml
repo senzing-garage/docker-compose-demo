@@ -197,6 +197,7 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
 
 networks:
   backend:
