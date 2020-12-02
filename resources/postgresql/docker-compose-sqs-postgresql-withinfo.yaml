@@ -143,7 +143,7 @@ services:
       SENZING_SQS_INFO_QUEUE_URL: ${SENZING_SQS_INFO_QUEUE_URL}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: sqs-withinfo
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.6.4}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.6.5}
     networks:
       - backend
     restart: always
@@ -226,7 +226,7 @@ services:
     environment:
 #     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.2.1}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.3.0}
     networks:
       - backend
     ports:
