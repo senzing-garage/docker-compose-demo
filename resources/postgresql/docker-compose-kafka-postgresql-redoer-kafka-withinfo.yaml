@@ -204,7 +204,7 @@ services:
       SENZING_KAFKA_REDO_TOPIC: senzing-kafka-redo-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: write-to-kafka
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.3}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.4}
     networks:
       - backend
     privileged: true
@@ -229,7 +229,7 @@ services:
       SENZING_KAFKA_REDO_TOPIC: senzing-kafka-redo-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: read-from-kafka-withinfo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.3}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.4}
     networks:
       - backend
     privileged: true
