@@ -1,0 +1,377 @@
+version: '3'
+services:
+
+  rabbitmq:
+    container_name: senzing-rabbitmq
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+    image: bitnami/rabbitmq:3.8.2
+    networks:
+      - backend
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+    volumes:
+      - ${RABBITMQ_DIR}:/bitnami
+
+  producer:
+    container_name: senzing-stream-producer
+    depends_on:
+      - rabbitmq
+    environment:
+#     See https://github.com/Senzing/stream-producer#configuration
+      SENZING_DELAY_IN_SECONDS: 30
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
+      SENZING_RECORD_MONITOR: 1000
+      SENZING_SUBCOMMAND: json-to-rabbitmq
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.2.3}
+    networks:
+      - backend
+    restart: on-failure
+
+  db2:
+    container_name: senzing-db2
+    environment:
+      DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
+      LICENSE: accept
+    image: ibmcom/db2:11.5.0.0a
+    networks:
+      - backend
+    ports:
+      - 50000:50000
+    privileged: true
+    volumes:
+      - ${DB2_CUSTOM_DIR}:/var/custom
+      - ${DB2_DIR}:/database
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  db2_libfeat:
+    container_name: senzing-db2-libfeat
+    environment:
+      DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
+      LICENSE: accept
+    image: ibmcom/db2:11.5.0.0a
+    networks:
+      - backend
+    ports:
+      - 50001:50000
+    privileged: true
+    volumes:
+      - ${DB2_CUSTOM_DIR}:/var/custom
+      - ${DB2_DIR_LIBFEAT}:/database
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  db2_res:
+    container_name: senzing-db2-res
+    environment:
+      DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
+      LICENSE: accept
+    image: ibmcom/db2:11.5.0.0a
+    networks:
+      - backend
+    ports:
+      - 50002:50000
+    privileged: true
+    volumes:
+      - ${DB2_CUSTOM_DIR}:/var/custom
+      - ${DB2_DIR_RES}:/database
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  db2driverinstaller:
+    container_name: senzing-db2-driver-installer
+    image: senzing/db2-driver-installer:${SENZING_DOCKER_IMAGE_VERSION_DB2_DRIVER_INSTALLER:-1.0.2}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+  initcontainer:
+    container_name: senzing-init-container
+    depends_on:
+      - db2
+      - db2_libfeat
+      - db2_res
+      - db2driverinstaller
+    environment:
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_OPT_IBM_DB2_CLIDRIVER_CFG_DB2DSDRIVER_CFG_CONTENTS: '
+        <configuration>
+          <databases>
+            <database host="senzing-db2" name="G2" port="50000">
+              <parameter name="TCPIP"/>
+            </database>
+            <database host="senzing-db2-res" name="G2" port="50000">
+              <parameter name="TCPIP"/>
+            </database>
+            <database host="senzing-db2-libfeat" name="G2" port="50000">
+              <parameter name="TCPIP"/>
+            </database>
+          </databases>
+          <dsncollection>
+            <dsn alias="G2" host="senzing-db2" name="G2" port="50000"/>
+            <dsn alias="G2_RES" host="senzing-db2-res" name="G2" port="50000"/>
+            <dsn alias="G2_LIBFEAT" host="senzing-db2-libfeat" name="G2" port="50000"/>
+          </dsncollection>
+        </configuration>'
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "HYBRID",
+            "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB_RES:-G2_RES}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB_LIBFEAT:-G2_LIBFEAT}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
+          }
+        }
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.4}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+  debug:
+    cap_add:
+      - ALL
+    container_name: senzing-debug
+    image: senzing/senzing-debug:${SENZING_DOCKER_IMAGE_VERSION_SENZING_DEBUG:-1.3.5}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+  loader:
+    container_name: senzing-stream-loader
+    depends_on:
+      - rabbitmq
+      - db2
+      - db2_libfeat
+      - db2_res
+    environment:
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/stream-loader#configuration
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "HYBRID",
+            "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB_RES:-G2_RES}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB_LIBFEAT:-G2_LIBFEAT}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
+          }
+        }
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_PROCESSES: ${SENZING_PROCESSES:-1}
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_SUBCOMMAND: rabbitmq
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.6.5}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+  redoer:
+    container_name: senzing-redoer
+    depends_on:
+      - loader
+    environment:
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "HYBRID",
+            "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB_RES:-G2_RES}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB_LIBFEAT:-G2_LIBFEAT}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
+          }
+        }      
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: redo
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.4}
+    networks:
+      - backend
+    privileged: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+  api:
+    container_name: senzing-api-server
+    command:
+      - -httpPort
+      - "8250"
+      - -bindAddr
+      - all
+      - -iniFile
+      - /etc/opt/senzing/G2Module.ini
+      - -allowedOrigins
+      - "*"
+      - -enableAdmin
+    depends_on:
+      - db2
+      - db2_libfeat
+      - db2_res
+    environment:
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "HYBRID",
+            "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB_RES:-G2_RES}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB_LIBFEAT:-G2_LIBFEAT}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
+          }
+        }
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.3.0}
+    networks:
+      - backend
+    ports:
+      - 8250:8250
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+  webapp:
+    container_name: senzing-webapp
+    depends_on:
+      - api
+    environment:
+#     See https://github.com/Senzing/entity-search-web-app#configuration
+      SENZING_API_SERVER_URL: http://senzing-api-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
+      SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_API_PATH: /api
+      SENZING_WEB_SERVER_PORT: 8251
+      SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.1.1}
+    networks:
+      - backend
+    ports:
+      - 8251:8251
+    restart: always
+
+  xterm:
+    container_name: senzing-xterm
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.0.3}
+    networks:
+      - backend
+    ports:
+      - 8254:5000
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
+
+networks:
+  backend:
