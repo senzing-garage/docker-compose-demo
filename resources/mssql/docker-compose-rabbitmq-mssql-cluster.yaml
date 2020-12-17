@@ -335,7 +335,7 @@ services:
             "LIB_FEAT_HKEY": "C2"
           }
         }
-    image: senzing/init-container:latest #${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.3}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.4}
     networks:
       - backend
     restart: on-failure
