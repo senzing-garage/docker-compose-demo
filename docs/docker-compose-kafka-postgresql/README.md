@@ -169,6 +169,8 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
       docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
     ```
 
+    1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
+    
 ### Install Senzing license
 
 Senzing comes with a trial license that supports 10,000 records.
