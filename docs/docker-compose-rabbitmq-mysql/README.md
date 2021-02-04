@@ -165,7 +165,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
     ```console
     sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
+    sudo chmod 770 ${RABBITMQ_DIR}
     ```
 
 ### EULA
