@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.2] - 2021-02-10
+
+### Added in 1.5.2
+
+
 ## [1.5.1] - 2020-08-05
 
 ### Changed in 1.5.1
