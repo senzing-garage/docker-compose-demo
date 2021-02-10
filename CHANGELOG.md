@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added in 1.5.2
 
+- `swaggerapi/swagger-ui` container
+
+### Changed in 1.5.1
+
+- Documentation improvements
+- Updated versions of containers
 
 ## [1.5.1] - 2020-08-05
 
