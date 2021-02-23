@@ -27,7 +27,7 @@ This docker formation brings up the following docker containers:
 1. *[mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04](https://github.com/Microsoft/mssql-docker)*
 1. *[mcr.microsoft.com/mssql-tools](https://github.com/Microsoft/mssql-docker)*
 1. *[senzing/adminer](https://github.com/Senzing/docker-adminer)*
-1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
+1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
