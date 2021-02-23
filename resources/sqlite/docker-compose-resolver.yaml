@@ -29,9 +29,9 @@ services:
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
-  debug:
-    container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DOCKER_IMAGE_VERSION_SENZING_DEBUG:-1.3.5}
+  console:
+    container_name: senzing-console
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.0}
     networks:
       - backend
     restart: always

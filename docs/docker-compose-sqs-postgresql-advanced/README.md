@@ -25,7 +25,7 @@ This docker formation brings up the following docker containers:
 
 1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
 1. *[postgres](https://hub.docker.com/_/postgres)*
-1. *[senzing/debug](https://github.com/Senzing/docker-senzing-debug)*
+1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*

@@ -129,11 +129,11 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  debug:
+  console:
     cap_add:
       - ALL
-    container_name: senzing-debug
-    image: senzing/senzing-debug:${SENZING_DOCKER_IMAGE_VERSION_SENZING_DEBUG:-1.3.5}
+    container_name: senzing-console
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.0}
     networks:
       - backend
     restart: always
