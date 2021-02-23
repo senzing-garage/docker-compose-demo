@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added in 1.5.3
 
-- Jupyter container added to cluster databases
+- `senzing/jupyter` added to cluster databases
 
 ### Changed in 1.5.3
 
