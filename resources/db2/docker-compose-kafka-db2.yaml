@@ -121,7 +121,8 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
-
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      
   loader:
     container_name: senzing-stream-loader
     depends_on:
