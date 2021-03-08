@@ -105,7 +105,8 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      
   loader:
     container_name: senzing-stream-loader
     depends_on:
@@ -225,6 +226,24 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  sshd:
+    cap_add:
+      - ALL
+    container_name: senzing-sshd
+    environment:
+      ROOT_PASSWORD: ${SENZING_SSHD_PASSWORD:-senzingsshdpassword}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.0.3}
+    networks:
+      - backend
+    ports:
+      - "${SENZING_SSHD_PORT:-22}:22"
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   xterm:
     container_name: senzing-xterm
