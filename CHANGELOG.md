@@ -6,11 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.5.3] - 2021-02-23
+## [1.5.3] - 2021-04-15
 
 ### Added in 1.5.3
 
 - `senzing/jupyter` added to cluster databases
+- `senzing/sshd` added for ssh/scp access
+- `KAFKA_ADVERTISED_LISTENERS` for Kafka
+
+### Changed in 1.5.3
+
+- Removed `senzing/debug` and added `senzing/console` in its place
+- Update docker image versions
+  - senzing/stream-producer:1.3.1 to senzing/stream-producer:1.3.3
+  - senzing/stream-loader:1.7.0 to senzing/stream-loader:1.7.2
+  - senzing/redoer:1.3.4 to senzing/redoer:1.3.5
+  - senzing/senzing-api-server:2.3.1 to senzing/senzing-api-server:2.3.2
+  - senzing/xterm:1.0.5 to senzing/xterm:1.1.0
 
 ### Changed in 1.5.3
 
