@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2021-04-19
+
+### Added in 1.6.0
+
+### Changed in 1.6.0
+
+- Update docker image versions
+  - senzing/stream-producer:1.3.1 to senzing/stream-producer:1.3.3
+
 ## [1.5.3] - 2021-04-15
 
 ### Added in 1.5.3

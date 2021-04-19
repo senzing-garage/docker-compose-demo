@@ -59,7 +59,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
-    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.3.3}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.4.0}
     networks:
       - backend
     restart: on-failure
@@ -71,7 +71,7 @@ services:
     environment:
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.0}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.1}
     networks:
       - backend
     restart: always
@@ -101,7 +101,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.7.2}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.7.5}
     networks:
       - backend
     restart: always
@@ -152,7 +152,7 @@ services:
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.3.2}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.5.0}
     networks:
       - backend
     ports:
@@ -177,7 +177,7 @@ services:
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
-    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.1}
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.3}
     networks:
       - backend
     ports:
@@ -190,7 +190,7 @@ services:
     container_name: senzing-sshd
     environment:
       ROOT_PASSWORD: ${SENZING_SSHD_PASSWORD:-senzingsshdpassword}
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.0.3}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.1.0}
     networks:
       - backend
     ports:
