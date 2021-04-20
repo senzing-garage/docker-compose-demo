@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.0] - 2021-04-19
+
+### Changed in 1.6.0
+
+- Migration to `senzingdata-2.0.0`
+- Update docker image versions
+  - senzing/console:1.0.0 to senzing/console:1.0.1
+  - senzing/entity-search-web-app:2.2.1 to senzing/entity-search-web-app:2.2.3
+  - senzing/init-container:1.6.6 to senzing/init-container:1.6.9
+  - senzing/senzing-api-server:2.3.2 to senzing/senzing-api-server:2.5.0
+  - senzing/sshd:1.0.3 to senzing/sshd:1.1.0
+  - senzing/stream-loader:1.7.2 to senzing/stream-loader:1.7.5
+  - senzing/stream-producer:1.3.3 to senzing/stream-producer:1.4.0
+  - senzing/yum:1.1.3 to senzing/yum:1.1.4
+
 ## [1.5.3] - 2021-04-15
 
 ### Added in 1.5.3

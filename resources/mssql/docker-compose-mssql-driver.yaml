@@ -25,14 +25,14 @@ services:
     environment:
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
       SENZING_DELAY_IN_SECONDS: 30
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.6}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.9}
     networks:
       - backend
     restart: on-failure
     user: "0"
     volumes:
       - ${MSSQL_DIR:-/var/opt/mssql}:/var/opt/mssql
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft

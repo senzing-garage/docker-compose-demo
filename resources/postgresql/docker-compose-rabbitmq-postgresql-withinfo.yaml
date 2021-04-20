@@ -32,7 +32,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
-    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.3.3}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.4.0}
     networks:
       - backend
     restart: on-failure
@@ -116,13 +116,13 @@ services:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 30
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.6}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.9}
     networks:
       - backend
     restart: on-failure
     user: "0"
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -130,12 +130,12 @@ services:
     cap_add:
       - ALL
     container_name: senzing-console
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.0}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.1}
     networks:
       - backend
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -161,12 +161,12 @@ services:
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
       SENZING_SUBCOMMAND: rabbitmq-withinfo
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.7.2}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.7.5}
     networks:
       - backend
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -224,7 +224,7 @@ services:
     restart: on-failure
     user: "0"
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -245,14 +245,14 @@ services:
     environment:
 #     See https://github.com/Senzing/senzing-api-server#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.3.2}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.5.0}
     networks:
       - backend
     ports:
       - 8250:8250
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -268,7 +268,7 @@ services:
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
-    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.1}
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.3}
     networks:
       - backend
     ports:
@@ -295,7 +295,7 @@ services:
     restart: always
     volumes:
       - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -305,14 +305,14 @@ services:
     container_name: senzing-sshd
     environment:
       ROOT_PASSWORD: ${SENZING_SSHD_PASSWORD:-senzingsshdpassword}
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.0.3}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.1.0}
     networks:
       - backend
     ports:
       - "${SENZING_SSHD_PORT:-22}:22"
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -326,7 +326,7 @@ services:
       - 8254:5000
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing

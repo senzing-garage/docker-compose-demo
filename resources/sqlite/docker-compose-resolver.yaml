@@ -3,13 +3,13 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.6}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.9}
     networks:
       - backend
     restart: on-failure
     user: "0"
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -31,12 +31,12 @@ services:
 
   console:
     container_name: senzing-console
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.0}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.1}
     networks:
       - backend
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -51,7 +51,7 @@ services:
       - backend
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
