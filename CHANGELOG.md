@@ -8,10 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.6.0] - 2021-04-19
 
-### Added in 1.6.0
-
 ### Changed in 1.6.0
 
+- Migration to `senzingdata-2.0.0`
 - Update docker image versions
   - senzing/console:1.0.0 to senzing/console:1.0.1
   - senzing/entity-search-web-app:2.2.1 to senzing/entity-search-web-app:2.2.3
