@@ -175,7 +175,7 @@ services:
     networks:
       - backend
     ports:
-      - "${SENZING_SSHD_PORT:-22}:22"
+      - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
