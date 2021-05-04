@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2021-05-04
+
+### Changed in 1.6.1
+
+- Change default senzing/sshd port from 22 to 9181
+
 ## [1.6.0] - 2021-04-19
 
 ### Changed in 1.6.0
