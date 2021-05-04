@@ -150,7 +150,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export DB2_DIR=${SENZING_VAR_DIR}/db2
     ```
 ### SSH port
-If you do not plan on using the senzing/sshd container then these ssh sections can be ignored
+:thinking: **Optional** If you do not plan on using the senzing/sshd container then these ssh sections can be ignored
 
 :thinking: Normally port 22 is already in use for `ssh`.
 So a different port may be needed by the running docker container.
@@ -166,14 +166,14 @@ So a different port may be needed by the running docker container.
    Example:
 
     ```console
-    export SENZING_SSHD_PORT=922
+    export SENZING_SSHD_PORT=9181
     ```
 
 1. Construct parameter for `docker run`.
    Example:
 
     ```console
-    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-22}:22"
+    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
     ```
 
 ### Set sshd password
