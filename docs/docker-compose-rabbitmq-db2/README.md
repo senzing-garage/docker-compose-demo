@@ -149,6 +149,16 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     ```
 
+1. Create directory for RabbitMQ persistence.
+   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
+   the directories created within `RABBITMQ_DIR` will be restricted.
+   Example:
+
+    ```console
+    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo chmod 770 ${RABBITMQ_DIR}
+    ```
+    
 ### SSH port
 :thinking: **Optional** If you do not plan on using the senzing/sshd container then these ssh sections can be ignored
 
@@ -184,16 +194,6 @@ So a different port may be needed by the running docker container.
 ```console
 export SENZING_SSHD_PASSWORD=<Pass_You_Want>
 ```
-
-1. Create directory for RabbitMQ persistence.
-   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
-   the directories created within `RABBITMQ_DIR` will be restricted.
-   Example:
-
-    ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 770 ${RABBITMQ_DIR}
-    ```
 
 ### EULA
 
