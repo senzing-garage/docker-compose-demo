@@ -48,19 +48,22 @@ This docker formation brings up the following docker containers:
     1. [Clone repository](#clone-repository)
 1. [Using docker-compose](#using-docker-compose)
     1. [Volumes](#volumes)
-    1. [EULA](#eula)
-    1. [Install Senzing](#install-senzing)
-    1. [Install Senzing license](#install-senzing-license)
-    1. [Choose docker formation](#choose-docker-formation)
-    1. [Run docker formation](#run-docker-formation)
+    2. [SSH port](#ssh-port)
+    3. [Set sshd password](#set-sshd-password)
+    3. [EULA](#eula)
+    4. [Install Senzing](#install-senzing)
+    5. [Install Senzing license](#install-senzing-license)
+    6. [Choose docker formation](#choose-docker-formation)
+    7. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View docker containers](#view-docker-containers)
-    1. [View Kafka](#view-kafka)
-    1. [View PostgreSQL](#view-postgresql)
-    1. [View Senzing API](#view-senzing-api)
-    1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-    1. [View Jupyter notebooks](#view-jupyter-notebooks)
-    1. [View X-Term](#view-x-term)
+    2. [Use SSH](#use-ssh)
+    3. [View Kafka](#view-kafka)
+    4. [View PostgreSQL](#view-postgresql)
+    5. [View Senzing API](#view-senzing-api)
+    6. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
+    7. [View Jupyter notebooks](#view-jupyter-notebooks)
+    8. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [Configuration](#configuration)
@@ -147,6 +150,42 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
     export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
     ```
+
+### SSH port
+:thinking: **Optional** If you do not plan on using the senzing/sshd container then these ssh sections can be ignored
+
+:thinking: Normally port 22 is already in use for `ssh`.
+So a different port may be needed by the running docker container.
+
+1. :thinking: **Optional:** See if port 22 is already in use.
+   Example:
+
+    ```console
+    sudo lsof -i -P -n | grep LISTEN | grep :22
+    ````
+
+1. :pencil2: Choose port for docker container.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PORT=9181
+    ```
+
+1. Construct parameter for `docker run`.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+    ```
+
+### Set sshd password
+
+:thinking: **Optional** The default password set for the sshd containers is `senzingsshdpassword`. However, this can be set by setting the following variable
+
+:pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container
+```console
+export SENZING_SSHD_PASSWORD=<Pass_You_Want>
+```
 
 ### EULA
 
@@ -273,6 +312,10 @@ or are the default values seen in
    [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
+
+### Use SSH
+
+Instructions to use the senzing/sshd container are viewable in the [senzing/docker-sshd](https://github.com/Senzing/docker-sshd/blob/master/README.md#ssh-into-container) repository
 
 ### View Kafka
 
