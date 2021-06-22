@@ -165,7 +165,7 @@ The following instructions need to be performed on an internet connected system.
     ```console
     tar \
       --create \
-      --file= ~/senzing-package.tar.gz \
+      --file=~/senzing-package.tar.gz \
       --gzip \
       --verbose \
       ${SENZING_OUTPUT_DIR}
