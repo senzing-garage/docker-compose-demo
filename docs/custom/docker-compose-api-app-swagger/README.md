@@ -85,23 +85,6 @@ The following software programs need to be installed:
 
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
-1. [git](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-git.md)
-
-### Clone repository
-
-For more information on environment variables,
-see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md).
-
-1. Set these environment variable values:
-
-    ```console
-    export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-compose-demo
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    ```
-
-1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
 
 ## Air-gapped
 
@@ -182,7 +165,7 @@ The following instructions need to be performed on an internet connected system.
     ```console
     tar \
       --create \
-      --file= ~/senzing-package.tar.gz
+      --file= ~/senzing-package.tar.gz \
       --gzip \
       --verbose \
       ${SENZING_OUTPUT_DIR}
