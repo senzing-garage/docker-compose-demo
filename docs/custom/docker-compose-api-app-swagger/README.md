@@ -2,23 +2,8 @@
 
 ## Overview
 
-This repository illustrates a reference implementation of Senzing using
-RabbitMQ as the queue and
-PostgreSQL as the underlying database.
-
-The instructions show how to set up a system that:
-
-1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line to a message queue.
-    1. In this implementation, the queue is RabbitMQ.
-1. Reads messages from the queue and inserts into Senzing.
-    1. In this implementation, Senzing keeps its data in a PostgreSQL database.
-1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
-1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
-
-The following diagram shows the relationship of the docker containers in this docker composition.
-Arrows represent data flow.
-
+This repository illustrates how to package a few docker artifacts for use
+in an air-gapped environment.
 
 This docker formation brings up the following docker containers:
 
@@ -34,22 +19,21 @@ This docker formation brings up the following docker containers:
     1. [Background knowledge](#background-knowledge)
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
-    1. [Clone repository](#clone-repository)
+1. [Air-gapped](#air-gapped)
+    1. [Save docker images](#save-docker-images)
+    1. [Copy artifacts to air-gapped system](#copy-artifacts-to-air-gapped-system)
+    1. [Load](#load)
 1. [Using docker-compose](#using-docker-compose)
     1. [Volumes](#volumes)
-    6. [Run docker formation](#run-docker-formation)
+    1. [Databases](#databases)
+    1. [SwaggerUI](#swaggerui)
+    1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View docker containers](#view-docker-containers)
-    2. [Use SSH](#use-ssh)
-    3. [View RabbitMQ](#view-rabbitmq)
-    4. [View PostgreSQL](#view-postgresql)
-    5. [View Senzing API](#view-senzing-api)
-    6. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-    7. [View Jupyter notebooks](#view-jupyter-notebooks)
-    8. [View X-Term](#view-x-term)
+    1. [View Senzing API](#view-senzing-api)
+    1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
+    1. [View SwaggerUI](#view-swaggerui)
 1. [Cleanup](#cleanup)
-1. [Advanced](#advanced)
-    1. [Re-run docker formation](#re-run-docker-formation)
     1. [Configuration](#configuration)
 
 ### Legend
@@ -172,7 +156,7 @@ The following instructions need to be performed on an internet connected system.
       .
     ```
 
-### Copy artifacts to air-gapped system.
+### Copy artifacts to air-gapped system
 
 Copy the `senzing-package.tar.gz` file to the air-gapped system.
 
@@ -249,6 +233,15 @@ The following instructions are performed on the air-gapped system.
     export SENZING_DATABASE_CONNECTION_LIBFEAT="postgresql://postgres:postgres@10.1.1.22:5432:G2"
     ```
 
+### SwaggerUI
+
+1. :pencil2: Identify directory holding Senzing OpenAPI specification.
+   Example:
+
+    ```console
+    export SENZING_SWAGGERUI_DIR=${SENZING_INPUT_DIR}
+    ```
+
 ### Run docker formation
 
 1. Launch docker-compose formation.
@@ -296,6 +289,10 @@ The server supports the
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
 
+### View SwaggerUI
+
+1. Swagger's UI  is viewable at
+   [localhost:9180](http://localhost:9180).
 
 ## Cleanup
 
@@ -316,23 +313,10 @@ it can be brought down and directories can be deleted.
 
    They may be safely deleted.
 
-
 ### Configuration
 
 Configuration values specified by environment variable or command line parameter.
 
-- **[POSTGRES_DB](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_db)**
-- **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_dir)**
-- **[POSTGRES_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_password)**
-- **[POSTGRES_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#postgres_username)**
-- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_dir)**
-- **[RABBITMQ_PASSWORD](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_password)**
-- **[RABBITMQ_USERNAME](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#rabbitmq_username)**
-- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula)**
-- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
-- **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
 - **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
