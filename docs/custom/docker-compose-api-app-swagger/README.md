@@ -235,7 +235,7 @@ The following instructions are performed on the air-gapped system.
 
 ### SwaggerUI
 
-1. :pencil2: Identify directory holding Senzing OpenAPI specification.
+1. :pencil2: Identify directory holding Senzing OpenAPI specification (i.e. `senzing-rest-api.yaml`).
    Example:
 
     ```console
