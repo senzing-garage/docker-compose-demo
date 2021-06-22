@@ -165,10 +165,11 @@ The following instructions need to be performed on an internet connected system.
     ```console
     tar \
       --create \
+      --directory=${SENZING_OUTPUT_DIR} \
       --file=senzing-package.tar.gz \
       --gzip \
       --verbose \
-      ${SENZING_OUTPUT_DIR}
+      .
     ```
 
 ### Copy artifacts to air-gapped system.
