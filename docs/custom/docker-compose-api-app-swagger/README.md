@@ -22,7 +22,7 @@ This docker formation brings up the following docker containers:
 1. [Air-gapped](#air-gapped)
     1. [Save docker images](#save-docker-images)
     1. [Copy artifacts to air-gapped system](#copy-artifacts-to-air-gapped-system)
-    1. [Load](#load)
+    1. [Load docker images](#load-docker-images)
 1. [Using docker-compose](#using-docker-compose)
     1. [Volumes](#volumes)
     1. [Databases](#databases)
@@ -74,9 +74,9 @@ The following software programs need to be installed:
 
 ### Save docker images
 
-The following instructions need to be performed on an internet connected system.
+The following instructions need to be performed on an internet-connected system.
 
-1. :pencil2: Identify output directory.
+1. :pencil2: Identify a new output directory.
    Example:
 
     ```console
@@ -145,19 +145,6 @@ The following instructions need to be performed on an internet connected system.
       https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/custom/docker-compose-api-app-swagger.yaml
     ```
 
-1. Create single compressed file.
-   Example:
-
-    ```console
-    tar \
-      --create \
-      --directory=${SENZING_OUTPUT_DIR} \
-      --file=senzing-package.tar.gz \
-      --gzip \
-      --verbose \
-      .
-    ```
-
 1. Capture docker image versions into a file that can be `sourced`.
    Example:
 
@@ -171,11 +158,24 @@ The following instructions need to be performed on an internet connected system.
     EOF
     ```
 
+1. Create single compressed file.
+   Example:
+
+    ```console
+    tar \
+      --create \
+      --directory=${SENZING_OUTPUT_DIR} \
+      --file=senzing-package.tar.gz \
+      --gzip \
+      --verbose \
+      .
+    ```
+
 ### Copy artifacts to air-gapped system
 
 Copy the `senzing-package.tar.gz` file to the air-gapped system.
 
-### Load
+### Load docker images
 
 The following instructions are performed on the air-gapped system.
 
@@ -225,9 +225,20 @@ The following instructions are performed on the air-gapped system.
 
 ## Using docker-compose
 
+The following instructions are performed on the air-gapped system.
+
+### Identify docker versions
+
+1. Set environment variables for docker image versions used.
+   Example:
+
+    ```console
+    source ${SENZING_INPUT_DIR}/docker-versions.sh
+    ```
+
 ### Volumes
 
-1. :pencil2: Identify directories on the local host.
+1. :pencil2: Identify Senzing directories on the local host.
    Example:
 
     ```console
@@ -269,10 +280,6 @@ The following instructions are performed on the air-gapped system.
       docker-compose --file docker-compose.yaml up
     ```
 
-1. Allow time for the components to come up and initialize.
-    1. There will be errors in some docker logs as they wait for dependent services to become available.
-       `docker-compose` isn't the best at orchestrating docker container dependencies.
-
 ## View data
 
 ### View docker containers
@@ -306,7 +313,7 @@ The server supports the
 
 ### View SwaggerUI
 
-1. Swagger's UI  is viewable at
+1. Swagger's UI is viewable at
    [localhost:9180](http://localhost:9180).
 
 ## Cleanup

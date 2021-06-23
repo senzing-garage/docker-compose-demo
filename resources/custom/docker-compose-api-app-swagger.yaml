@@ -38,7 +38,7 @@ services:
             "RES_FEAT_STAT": "C1"
           }
         }
-    image: senzing/senzing-api-server:2.6.1
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.1}
     networks:
       - backend
     ports:
@@ -54,13 +54,14 @@ services:
     depends_on:
       - api
     environment:
+#     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-api-server:8250
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
-    image: senzing/entity-search-web-app:2.2.3
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.3}
     networks:
       - backend
     ports:
@@ -71,7 +72,7 @@ services:
     container_name: senzing-swaggerui
     environment:
       SWAGGER_JSON: "/data/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:v3.50.0
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.50.0}
     networks:
       - backend
     ports:
