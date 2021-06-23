@@ -16,7 +16,7 @@ This docker formation brings up the following docker containers:
 1. [Expectations](#expectations)
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
-1. [create package for air-gapped system](#create-package-for-air-gapped-system)
+1. [Create package for air-gapped system](#create-package-for-air-gapped-system)
     1. [Save docker images](#save-docker-images)
     1. [Add files](#add-files)
     1. [Create compressed file](#create-compressed-file)
