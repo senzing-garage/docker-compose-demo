@@ -233,7 +233,7 @@ The following instructions are performed on the air-gapped system.
 
 ### Volumes
 
-1. :pencil2: Identify Senzing directories on the local host.
+1. :pencil2: Identify Senzing directories on the air-gapped system.
    Example:
 
     ```console
@@ -311,6 +311,21 @@ The server supports the
 
 1. Swagger's UI is viewable at
    [localhost:9180](http://localhost:9180).
+
+## Stop and restart
+
+1. The docker-compose formation can be stopped by bringing down the docker formation.
+   Example:
+
+    ```console
+    cd ${SENZING_INPUT_DIR}
+    sudo docker-compose --file docker-compose.yaml down
+    ```
+
+1. The docker-compose formation can be restarted by setting
+   environment variables and bring docker-compose formation "up"
+   as seen in the instructions beginning at
+   [Using docker-compose](#using-docker-compose).
 
 ## Cleanup
 
