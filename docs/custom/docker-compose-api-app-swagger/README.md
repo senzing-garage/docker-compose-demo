@@ -65,11 +65,12 @@ on both the internet-connected and air-gapped systems:
 On the air-gapped system:
 
 1. [Senzing API](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-api.md)
-   The installation of the Senzing SDK API must also be initialized.
+
+   The installation of the Senzing SDK API must be initialized and configured.
    This may be done by creating a
    [Senzing project using `G2CreateProject.py`](https://senzing.zendesk.com/hc/en-us/articles/115002408867-Quickstart-Guide)
    or by using an
-   [init-container](https://github.com/Senzing/docker-init-container).
+   [init-container](https://github.com/Senzing/docker-init-container) on a system install.
 
 ## Create package for air-gapped system
 
@@ -91,7 +92,7 @@ The following instructions need to be performed on an internet-connected system.
     mkdir -p ${SENZING_OUTPUT_DIR}/docker-images
     ```
 
-1. Identify docker image versions.
+1. Retrieve latest docker image version numbers.
    Example:
 
     ```console
@@ -151,19 +152,6 @@ The following instructions need to be performed on an internet-connected system.
     curl -X GET \
       --output ${SENZING_OUTPUT_DIR}/docker-compose.yaml \
       https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/custom/docker-compose-api-app-swagger.yaml
-    ```
-
-1. Add file of docker image versions that can be `sourced`.
-   Example:
-
-    ```console
-    cat > ${SENZING_OUTPUT_DIR}/docker-versions.sh <<EOF
-    #!/usr/bin/env bash
-
-    export SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP=${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP}
-    export SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER=${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER}
-    export SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI=${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI}
-    EOF
     ```
 
 ### Create compressed file
@@ -249,6 +237,7 @@ The following instructions are performed on the air-gapped system.
 ### Volumes
 
 1. :pencil2: Identify Senzing directories on the air-gapped system.
+
    System install example:
 
     ```console
@@ -272,7 +261,7 @@ The following instructions are performed on the air-gapped system.
    Connection format: `postgresql://Username:Password@Host:Port:Name`
 
    If a single database is used, all three database connections should point to the same database.
-   Single database example:
+   Example:
 
     ```console
     export SENZING_DATABASE_CONNECTION_CORE="postgresql://senzing:password@10.1.1.20:5432:G2"
@@ -281,7 +270,7 @@ The following instructions are performed on the air-gapped system.
     ```
 
    If a Senzing database cluster is used, each database connection refers to the appropriate database.
-   Cluster example:
+   Example:
 
     ```console
     export SENZING_DATABASE_CONNECTION_CORE="postgresql://senzing:password@10.1.1.20:5432:G2"
