@@ -14,9 +14,6 @@ This docker formation brings up the following docker containers:
 ### Contents
 
 1. [Expectations](#expectations)
-    1. [Space](#space)
-    1. [Time](#time)
-    1. [Background knowledge](#background-knowledge)
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
 1. [create package for air-gapped system](#create-package-for-air-gapped-system)
@@ -48,20 +45,11 @@ This docker formation brings up the following docker containers:
 
 ## Expectations
 
-### Space
-
-This repository and demonstration require 3 GB free disk space.
-
-### Time
-
-Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
-
-### Background knowledge
-
-This repository assumes a working knowledge of:
-
-1. [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
-1. [Docker-compose](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker-compose.md)
+- **Space:** This repository and demonstration require 3 GB free disk space.
+- **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
+- **Background knowledge:** This repository assumes a working knowledge of:
+  - [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
+  - [Docker-compose](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker-compose.md)
 
 ## Preparation
 
