@@ -91,6 +91,8 @@ The following instructions need to be performed on an internet connected system.
     ```
 
 1. :pencil2: Identify docker image versions.
+   Latest versions are listed in
+   [versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/master/lists/versions-latest.sh)
    Example:
 
     ```console
@@ -154,6 +156,19 @@ The following instructions need to be performed on an internet connected system.
       --gzip \
       --verbose \
       .
+    ```
+
+1. Capture docker image versions into a file that can be `sourced`.
+   Example:
+
+    ```console
+    cat > ${SENZING_OUTPUT_DIR}/docker-versions.sh <<EOF
+    #!/usr/bin/env bash
+
+    export SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP=${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP}
+    export SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER=${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER}
+    export SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI=${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI}
+    EOF
     ```
 
 ### Copy artifacts to air-gapped system
