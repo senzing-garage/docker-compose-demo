@@ -62,6 +62,16 @@ on both the internet-connected and air-gapped systems:
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
 
+On the air-gapped system:
+
+1. [Senzing API](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-api.md)
+
+   The installation of the Senzing SDK API must be initialized and configured.
+   This may be done by creating a
+   [Senzing project using `G2CreateProject.py`](https://senzing.zendesk.com/hc/en-us/articles/115002408867-Quickstart-Guide)
+   or by using an
+   [init-container](https://github.com/Senzing/docker-init-container) on a system install.
+
 ## Create package for air-gapped system
 
 ### Save docker images
@@ -82,39 +92,44 @@ The following instructions need to be performed on an internet-connected system.
     mkdir -p ${SENZING_OUTPUT_DIR}/docker-images
     ```
 
-1. :pencil2: Identify docker image versions.
-   Latest versions are listed in
-   [versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/master/lists/versions-latest.sh)
+1. Retrieve latest docker image version numbers.
    Example:
 
     ```console
-    export SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP=2.2.3
-    export SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER=2.6.1
-    export SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI=v3.50.0
+    curl -X GET \
+      --output ${SENZING_OUTPUT_DIR}/docker-versions.sh \
+      https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/versions-latest.sh
+    ```
+
+1. Set environment variables for docker image versions used.
+   Example:
+
+    ```console
+    source ${SENZING_OUTPUT_DIR}/docker-versions.sh
     ```
 
 1. Pull docker images.
    Example:
 
     ```console
-    docker pull senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP}
-    docker pull senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER}
-    docker pull swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI}
+    sudo docker pull senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP}
+    sudo docker pull senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER}
+    sudo docker pull swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI}
     ```
 
 1. Save docker images to output directory.
    Example:
 
     ```console
-    docker save senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP} \
+    sudo docker save senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP} \
       | gzip \
       > ${SENZING_OUTPUT_DIR}/docker-images/senzing-entity-search-web-app-${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP}.tar.gz
 
-    docker save senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER} \
+    sudo docker save senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER} \
       | gzip \
       > ${SENZING_OUTPUT_DIR}/docker-images/senzing-senzing-api-server-${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER}.tar.gz
 
-    docker save swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI} \
+    sudo docker save swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI} \
       | gzip \
       > ${SENZING_OUTPUT_DIR}/docker-images/swaggerapi-swagger-ui-${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI}.tar.gz
     ```
@@ -137,19 +152,6 @@ The following instructions need to be performed on an internet-connected system.
     curl -X GET \
       --output ${SENZING_OUTPUT_DIR}/docker-compose.yaml \
       https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/custom/docker-compose-api-app-swagger.yaml
-    ```
-
-1. Add file of docker image versions that can be `sourced`.
-   Example:
-
-    ```console
-    cat > ${SENZING_OUTPUT_DIR}/docker-versions.sh <<EOF
-    #!/usr/bin/env bash
-
-    export SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP=${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP}
-    export SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER=${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER}
-    export SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI=${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI}
-    EOF
     ```
 
 ### Create compressed file
@@ -208,7 +210,7 @@ The following instructions are performed on the air-gapped system.
     for DOCKER_IMAGE_NAME in ${SENZING_INPUT_DIR}/docker-images/*;
     do
       echo "Loading ${DOCKER_IMAGE_NAME}"
-      docker load --input ${DOCKER_IMAGE_NAME}
+      sudo docker load --input ${DOCKER_IMAGE_NAME}
     done
     ```
 
@@ -216,7 +218,7 @@ The following instructions are performed on the air-gapped system.
    Example:
 
     ```console
-    docker images
+    sudo docker images
     ```
 
 ## Using docker-compose
@@ -235,7 +237,8 @@ The following instructions are performed on the air-gapped system.
 ### Volumes
 
 1. :pencil2: Identify Senzing directories on the air-gapped system.
-   Example:
+
+   System install example:
 
     ```console
     export SENZING_DATA_VERSION_DIR=/opt/my-senzing/data/2.0.0
@@ -243,16 +246,36 @@ The following instructions are performed on the air-gapped system.
     export SENZING_G2_DIR=/opt/my-senzing/g2
     ```
 
+   [Senzing project using `G2CreateProject.py`](https://senzing.zendesk.com/hc/en-us/articles/115002408867-Quickstart-Guide)
+   example:
+
+    ```console
+    export SENZING_DATA_VERSION_DIR=~/my-project/data
+    export SENZING_ETC_DIR=~/my-project/etc
+    export SENZING_G2_DIR=~/my-project
+    ```
+
 ### Databases
 
 1. :pencil2: Identify database connection information.
    Connection format: `postgresql://Username:Password@Host:Port:Name`
+
+   If a single database is used, all three database connections should point to the same database.
    Example:
 
     ```console
-    export SENZING_DATABASE_CONNECTION_CORE="postgresql://postgres:postgres@10.1.1.20:5432:G2"
-    export SENZING_DATABASE_CONNECTION_RES="postgresql://postgres:postgres@10.1.1.21:5432:G2"
-    export SENZING_DATABASE_CONNECTION_LIBFEAT="postgresql://postgres:postgres@10.1.1.22:5432:G2"
+    export SENZING_DATABASE_CONNECTION_CORE="postgresql://senzing:password@10.1.1.20:5432:G2"
+    export SENZING_DATABASE_CONNECTION_LIBFEAT="postgresql://senzing:password@10.1.1.20:5432:G2"
+    export SENZING_DATABASE_CONNECTION_RES="postgresql://senzing:password@10.1.1.20:5432:G2"
+    ```
+
+   If a Senzing database cluster is used, each database connection refers to the appropriate database.
+   Example:
+
+    ```console
+    export SENZING_DATABASE_CONNECTION_CORE="postgresql://senzing:password@10.1.1.20:5432:G2"
+    export SENZING_DATABASE_CONNECTION_LIBFEAT="postgresql://senzing:password@10.1.1.21:5432:G2"
+    export SENZING_DATABASE_CONNECTION_RES="postgresql://senzing:password@10.1.1.22:5432:G2"
     ```
 
 ### SwaggerUI
