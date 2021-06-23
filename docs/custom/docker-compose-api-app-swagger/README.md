@@ -19,12 +19,12 @@ This docker formation brings up the following docker containers:
     1. [Background knowledge](#background-knowledge)
 1. [Preparation](#preparation)
     1. [Prerequisite software](#prerequisite-software)
-1. [Air-gapped](#air-gapped)
+1. [create package for air-gapped system](#create-package-for-air-gapped-system)
     1. [Save docker images](#save-docker-images)
     1. [Add files](#add-files)
     1. [Create compressed file](#create-compressed-file)
-    1. [Copy artifacts to air-gapped system](#copy-artifacts-to-air-gapped-system)
-    1. [Load docker images](#load-docker-images)
+1. [Copy package to air-gapped system](#copy-package-to-air-gapped-system)
+1. [Load package on air-gapped system](#load-package-on-air-gapped-system)
 1. [Using docker-compose](#using-docker-compose)
     1. [Volumes](#volumes)
     1. [Databases](#databases)
@@ -36,7 +36,7 @@ This docker formation brings up the following docker containers:
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
     1. [View SwaggerUI](#view-swaggerui)
 1. [Cleanup](#cleanup)
-    1. [Configuration](#configuration)
+1. [Configuration](#configuration)
 
 ### Legend
 
@@ -73,7 +73,7 @@ on both the internet-connected and air-gapped systems:
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
 
-## Air-gapped
+## Create package for air-gapped system
 
 ### Save docker images
 
@@ -178,11 +178,11 @@ The following instructions need to be performed on an internet-connected system.
       .
     ```
 
-### Copy artifacts to air-gapped system
+## Copy package to air-gapped system
 
 Copy the `senzing-package.tar.gz` file to the air-gapped system.
 
-### Load docker images
+## Load package on air-gapped system
 
 The following instructions are performed on the air-gapped system.
 
@@ -295,6 +295,7 @@ The following instructions are performed on the air-gapped system.
    [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
+   This tool is not installed by the package created above.
 
 ### View Senzing API
 
@@ -342,7 +343,7 @@ it can be brought down and directories can be deleted.
 
    They may be safely deleted.
 
-### Configuration
+## Configuration
 
 Configuration values specified by environment variable or command line parameter.
 
