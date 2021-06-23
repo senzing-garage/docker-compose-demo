@@ -21,6 +21,8 @@ This docker formation brings up the following docker containers:
     1. [Prerequisite software](#prerequisite-software)
 1. [Air-gapped](#air-gapped)
     1. [Save docker images](#save-docker-images)
+    1. [Add files](#add-files)
+    1. [Create compressed file](#create-compressed-file)
     1. [Copy artifacts to air-gapped system](#copy-artifacts-to-air-gapped-system)
     1. [Load docker images](#load-docker-images)
 1. [Using docker-compose](#using-docker-compose)
@@ -127,6 +129,8 @@ The following instructions need to be performed on an internet-connected system.
       > ${SENZING_OUTPUT_DIR}/docker-images/swaggerapi-swagger-ui-${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI}.tar.gz
     ```
 
+### Add files
+
 1. Add Senzing OpenAPI specification.
    Example:
 
@@ -145,7 +149,7 @@ The following instructions need to be performed on an internet-connected system.
       https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/custom/docker-compose-api-app-swagger.yaml
     ```
 
-1. Capture docker image versions into a file that can be `sourced`.
+1. Add file of docker image versions that can be `sourced`.
    Example:
 
     ```console
@@ -157,6 +161,8 @@ The following instructions need to be performed on an internet-connected system.
     export SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI=${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI}
     EOF
     ```
+
+### Create compressed file
 
 1. Create single compressed file.
    Example:
