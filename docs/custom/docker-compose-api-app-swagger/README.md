@@ -32,6 +32,7 @@ This docker formation brings up the following docker containers:
     1. [View Senzing API](#view-senzing-api)
     1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
     1. [View SwaggerUI](#view-swaggerui)
+1. [Stop and restart](#stop-and-restart)
 1. [Cleanup](#cleanup)
 1. [Configuration](#configuration)
 
