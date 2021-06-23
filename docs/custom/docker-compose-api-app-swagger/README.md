@@ -67,7 +67,8 @@ This repository assumes a working knowledge of:
 
 ### Prerequisite software
 
-The following software programs need to be installed:
+The following software programs need to be installed
+on both the internet-connected and air-gapped systems:
 
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
