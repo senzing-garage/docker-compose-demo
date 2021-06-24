@@ -8,7 +8,7 @@ in an air-gapped environment.
 This docker formation brings up the following docker containers:
 
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
-1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[swaggerapi/swagger-ui](https://hub.docker.com/r/swaggerapi/swagger-ui)*
 
 ### Contents
