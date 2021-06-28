@@ -229,7 +229,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
-    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.4.0}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.4.1}
     networks:
       - backend
     restart: on-failure
@@ -411,7 +411,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.7.5}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.7.6}
     networks:
       - backend
     restart: always
@@ -461,7 +461,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.5}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.7}
     networks:
       - backend
     privileged: true
@@ -491,7 +491,7 @@ services:
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.5.0}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.1}
     networks:
       - backend
     ports:
@@ -561,7 +561,7 @@ services:
             "LIB_FEAT_HKEY": "C2"
           }
         }
-    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-1.2.0}
+    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-1.3.0}
     networks:
       - backend
     ports:
@@ -580,7 +580,7 @@ services:
     container_name: senzing-sshd
     environment:
       ROOT_PASSWORD: ${SENZING_SSHD_PASSWORD:-senzingsshdpassword}
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.1.0}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.2.0}
     networks:
       - backend
     ports:
@@ -614,7 +614,7 @@ services:
     container_name: senzing-swaggerui
     environment:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
     networks:
       - backend
     ports:
