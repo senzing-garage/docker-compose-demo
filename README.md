@@ -25,6 +25,10 @@ RedHat has explicitly stated that
 As such, these demonstrations of Senzing using `docker` and `docker-compose`
 do not run in a RedHat Enterprise Linux 8 environment.
 
+Likewise, `docker` is not a CentOS 8 supported project.
+
+
+
 ## Implementation
 
 The following table indicates the instructions for variations in components.
