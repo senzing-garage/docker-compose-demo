@@ -29,9 +29,6 @@ Likewise, `docker` is not a CentOS 8 supported project.
 Although with user-modification it has been shown that docker and docker-compose can run in these environments,
 the onus is on the user for proper operation of docker and docker networking.
 
-Senzing will provide support for these docker-compose demonstrations
-running on platforms that support docker and docker-compose.
-
 ## Implementation
 
 The following table indicates the instructions for variations in components.
