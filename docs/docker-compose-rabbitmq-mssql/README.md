@@ -304,7 +304,7 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
 1. MSSQL is viewable at
    [localhost:9177](http://localhost:9177).
     1. **System:** MS SQL (beta)
-    1. **Server:** senzing-mysql
+    1. **Server:** senzing-mssql
     1. **Username:** sa
     1. **Password:** Passw0rd
     1. **Database:** G2
