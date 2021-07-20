@@ -303,17 +303,6 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_HOST:-senzing-db2}:${DB2_PORT:-50000}/${DB2_DB:-G2}"
-          }
-        }
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
-        {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
-          "SQL": {
             "BACKEND": "HYBRID",
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           },

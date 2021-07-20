@@ -494,7 +494,24 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
+            "BACKEND": "HYBRID",
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE_RES:-G2_RES}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE_LIBFEAT:-G2_LIBFEAT}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
           }
         }
     image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.1}
