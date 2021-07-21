@@ -17,6 +17,18 @@ Arrows represent data flow.
 
 ![Image of architecture](docs/img-architecture/architecture.png)
 
+## Caveat
+
+This demonstration runs on platforms that support `docker` and `docker-compose`.
+
+RedHat has explicitly stated that
+[Docker is not supported in RHEL 8](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers).
+As such, these demonstrations of Senzing using `docker` and `docker-compose`
+do not run in a RedHat Enterprise Linux 8 environment natively.
+Likewise, `docker` is not a CentOS 8 supported project.
+Although with user-modification it has been shown that docker and docker-compose can run in these environments,
+the onus is on the user for proper operation of docker and docker networking.
+
 ## Implementation
 
 The following table indicates the instructions for variations in components.
