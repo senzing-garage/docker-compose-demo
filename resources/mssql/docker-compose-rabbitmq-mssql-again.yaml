@@ -8,7 +8,7 @@ services:
       ACCEPT_EULA: ${ACCEPT_EULA:-Y}
       MSSQL_PID: ${MSSQL_PID:-Developer}
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
-    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2019-GA-ubuntu-16.04}
     networks:
       - backend
     ports:
@@ -101,7 +101,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.0}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
     networks:
       - backend
     restart: always
@@ -203,7 +203,7 @@ services:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/1.0.0}:/opt/se`nzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing

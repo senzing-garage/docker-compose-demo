@@ -144,7 +144,7 @@ services:
       SENZING_SQS_INFO_QUEUE_URL: ${SENZING_SQS_INFO_QUEUE_URL}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
       SENZING_SUBCOMMAND: sqs-withinfo
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.0}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
     networks:
       - backend
     restart: always

@@ -68,7 +68,7 @@ services:
     environment:
       DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
       LICENSE: accept
-    image: ibmcom/db2:11.5.0.0a
+    image: ibmcom/db2:${SENZING_DOCKER_IMAGE_VERSION_IBMCOM_DB2:-11.5.5.1}
     networks:
       - backend
     ports:
@@ -137,7 +137,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.0}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
     networks:
       - backend
     restart: always

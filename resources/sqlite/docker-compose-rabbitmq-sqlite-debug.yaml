@@ -60,7 +60,7 @@ services:
       - initcontainer
     environment:
       SQLITE_DATABASE: G2C.db
-    image: coleifer/sqlite-web:latest
+    image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_SQLITE_WEB:-latest}
     networks:
       - backend
     ports:
@@ -100,7 +100,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.0}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
     networks:
       - backend
     restart: always

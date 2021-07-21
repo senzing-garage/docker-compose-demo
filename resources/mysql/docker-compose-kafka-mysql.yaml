@@ -71,7 +71,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_USER: ${MYSQL_USERNAME:-g2}
-    image: mysql:5.7
+    image: bitnami/mysql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_MYSQL:-5.7.34-debian-10-r70}
     networks:
       - backend
     ports:
@@ -104,7 +104,7 @@ services:
     environment:
       PMA_HOST: mysql
       PMA_PORT: 3306
-    image: phpmyadmin/phpmyadmin:4.9
+    image: bitnami/phpmyadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPMYADMIN:-5.1.1-debian-10-r29}
     networks:
       - backend
     ports:
@@ -157,7 +157,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.0}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
     networks:
       - backend
     restart: always

@@ -8,7 +8,7 @@ services:
       ACCEPT_EULA: ${ACCEPT_EULA:-Y}
       MSSQL_PID: ${MSSQL_PID:-Developer}
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
-    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2019-GA-ubuntu-16.04}
     networks:
       - backend
     ports:
@@ -31,7 +31,7 @@ services:
     container_name: senzing-mssql-create-database
     depends_on:
       - mssql
-    image: mcr.microsoft.com/mssql-tools
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
     restart: on-failure
@@ -56,7 +56,7 @@ services:
     container_name: senzing-mssql-create-senzing
     depends_on:
       - mssql-create-db
-    image: mcr.microsoft.com/mssql-tools
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
     restart: on-failure
@@ -70,7 +70,7 @@ services:
       ACCEPT_EULA: ${ACCEPT_EULA:-Y}
       MSSQL_PID: ${MSSQL_PID:-Developer}
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
-    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2019-GA-ubuntu-16.04}
     networks:
       - backend
     ports:
@@ -93,7 +93,7 @@ services:
     container_name: senzing-mssql-create-database-res
     depends_on:
       - mssql-res
-    image: mcr.microsoft.com/mssql-tools
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
     restart: on-failure
@@ -118,7 +118,7 @@ services:
     container_name: senzing-mssql-create-senzing-res
     depends_on:
       - mssql-create-db-res
-    image: mcr.microsoft.com/mssql-tools
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
     restart: on-failure
@@ -132,7 +132,7 @@ services:
       ACCEPT_EULA: ${ACCEPT_EULA:-Y}
       MSSQL_PID: ${MSSQL_PID:-Developer}
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
-    image: mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04
+    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2019-GA-ubuntu-16.04}
     networks:
       - backend
     ports:
@@ -155,7 +155,7 @@ services:
     container_name: senzing-mssql-create-database-libfeat
     depends_on:
       - mssql-libfeat
-    image: mcr.microsoft.com/mssql-tools
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
     restart: on-failure
@@ -180,7 +180,7 @@ services:
     container_name: senzing-mssql-create-senzing-libfeat
     depends_on:
       - mssql-create-db-libfeat
-    image: mcr.microsoft.com/mssql-tools
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
     restart: on-failure
@@ -248,7 +248,7 @@ services:
     container_name: senzing-mssql-create-database
     depends_on:
       - mssql
-    image: mcr.microsoft.com/mssql-tools
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
     restart: on-failure
@@ -273,7 +273,7 @@ services:
     container_name: senzing-mssql-create-senzing
     depends_on:
       - mssql-create-db
-    image: mcr.microsoft.com/mssql-tools
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
     restart: on-failure
@@ -411,7 +411,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.0}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
     networks:
       - backend
     restart: always
