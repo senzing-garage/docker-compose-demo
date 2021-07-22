@@ -75,7 +75,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: bitnami/postgres:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
     networks:
       - backend
     ports:
