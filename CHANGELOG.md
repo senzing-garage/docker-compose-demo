@@ -10,8 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed in 1.6.1
 
+- Updated README.md files
+  - Add information on SSH port
 - Change senzing-api-server parameters from command-line to environment variables
-- Update docker image versions
+- Update docker image version defaults
   - bitnami/kafka:2.4.0 to bitnami/kafka:2.8.0-debian-10-r55
   - bitnami/rabbitmq:3.8.2 to bitnami/rabbitmq:3.8.19-debian-10-r6
   - bitnami/zookeeper:3.5.6 to bitnami/zookeeper:3.7.0-debian-10-r87
@@ -19,16 +21,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - mysql:5.7 to bitnami/mysql:5.7.34-debian-10-r70
   - obsidiandynamics/kafdrop:3.23.0 to obsidiandynamics/kafdrop:3.27.0
   - phpmyadmin/phpmyadmin:4.9 to bitnami/phpmyadmin:5.1.1-debian-10-r29
-  - postgres:11.6 to bitnami/postgres:11.12.0-debian-10-r50
+  - postgres:11.6 to bitnami/postgresql:11.12.0-debian-10-r50
   - senzing/console:1.0.1 to senzing/console:1.0.3
   - senzing/init-container:1.6.9 to senzing/init-container:1.6.12
-  - senzing/redoer:1.3.7 to senzing/redoer:1.3.9
-  - senzing/senzing-api-server:2.6.1 to senzing/senzing-api-server:2.6.2
-  - senzing/sshd:1.2.0 to senzing/sshd:1.2.3
-  - senzing/stream-loader:1.7.6 to senzing/stream-loader:1.8.2
-  - senzing/stream-producer:1.4.1 to senzing/stream-producer:1.5.1
+  - senzing/jupyter:1.2.0 to senzing/jupyter:1.3.0
+  - senzing/redoer:1.3.5 to senzing/redoer:1.3.9
+  - senzing/resolver:1.3.1 to senzing/resolver:1.3.2
+  - senzing/senzing-api-server:2.5.0 to senzing/senzing-api-server:2.6.2
+  - senzing/sshd:1.1.0 to senzing/sshd:1.2.3
+  - senzing/stream-loader:1.7.5 to senzing/stream-loader:1.8.2
+  - senzing/stream-producer:1.4.0 to senzing/stream-producer:1.5.1
   - senzing/xterm:1.1.0 to senzing/xterm:1.1.2
-
+  - swaggerapi/swagger-ui to swaggerapi/swagger-ui:v3.51.0
 
 ## [1.6.0] - 2021-05-04
 
