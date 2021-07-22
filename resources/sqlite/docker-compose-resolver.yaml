@@ -3,7 +3,7 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.9}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.12}
     networks:
       - backend
     restart: on-failure
@@ -20,7 +20,7 @@ services:
       - initcontainer
     environment:
       SQLITE_DATABASE: G2C.db
-    image: coleifer/sqlite-web:latest
+    image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_SQLITE_WEB:-latest}
     networks:
       - backend
     ports:
@@ -31,7 +31,7 @@ services:
 
   console:
     container_name: senzing-console
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.1}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.3}
     networks:
       - backend
     restart: always

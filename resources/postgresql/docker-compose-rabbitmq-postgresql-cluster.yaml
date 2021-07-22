@@ -7,7 +7,7 @@ services:
 #     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-    image: bitnami/rabbitmq:3.8.2
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.8.19-debian-10-r6}
     networks:
       - backend
     ports:
@@ -32,7 +32,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
-    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.4.1}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.5.1}
     networks:
       - backend
     restart: on-failure
@@ -49,7 +49,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: postgres:11.6
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
     networks:
       - backend
     ports:
@@ -70,7 +70,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: postgres:11.6
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
     networks:
       - backend
     ports:
@@ -91,7 +91,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: postgres:11.6
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
     networks:
       - backend
     ports:
@@ -284,7 +284,7 @@ services:
           }
         }
       SENZING_GOVERNOR_URL: ${SENZING_GOVERNOR_URL}
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.9}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.12}
     networks:
       - backend
     restart: on-failure
@@ -298,7 +298,7 @@ services:
     cap_add:
       - ALL
     container_name: senzing-console
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.1}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.3}
     networks:
       - backend
     restart: always
@@ -307,7 +307,7 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      
+
   loader:
     container_name: senzing-stream-loader
     depends_on:
@@ -353,7 +353,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.7.6}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
     networks:
       - backend
     restart: always
@@ -399,7 +399,7 @@ services:
         }
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.7}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.9}
     networks:
       - backend
     privileged: true
@@ -412,19 +412,45 @@ services:
 
   api:
     container_name: senzing-api-server
-    command:
-      - -httpPort
-      - "8250"
-      - -bindAddr
-      - all
-      - -iniFile
-      - /etc/opt/senzing/G2Module.ini
-      - -allowedOrigins
-      - "*"
-      - -enableAdmin
     depends_on:
       - postgres
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.1}
+    environment:
+      SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
+      SENZING_API_SERVER_BIND_ADDR: 'all'
+      SENZING_API_SERVER_ENABLE_ADMIN: 'true'
+      SENZING_API_SERVER_PORT: '8250'
+      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
+      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
+      SENZING_API_SERVER_INIT_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "HYBRID",
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_RES:-G2_RES}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_LIBFEAT:-G2_LIBFEAT}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
+          }
+        }
+
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.2}
     networks:
       - backend
     ports:
@@ -528,14 +554,14 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      
+
   sshd:
     cap_add:
       - ALL
     container_name: senzing-sshd
     environment:
       ROOT_PASSWORD: ${SENZING_SSHD_PASSWORD:-senzingsshdpassword}
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.2.0}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.2.3}
     networks:
       - backend
     ports:
@@ -549,7 +575,7 @@ services:
 
   xterm:
     container_name: senzing-xterm
-    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.1.0}
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.1.2}
     networks:
       - backend
     ports:

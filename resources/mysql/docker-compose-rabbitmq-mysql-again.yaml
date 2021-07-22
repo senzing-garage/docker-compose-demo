@@ -7,7 +7,7 @@ services:
 #     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-    image: bitnami/rabbitmq:3.8.2
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.8.19-debian-10-r6}
     networks:
       - backend
     ports:
@@ -32,7 +32,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
-    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.4.1}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.5.1}
     networks:
       - backend
     restart: on-failure
@@ -45,7 +45,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_USER: ${MYSQL_USERNAME:-g2}
-    image: mysql:5.7
+    image: bitnami/mysql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_MYSQL:-5.7.34-debian-10-r70}
     networks:
       - backend
     ports:
@@ -59,20 +59,19 @@ services:
     depends_on:
       - mysql
     environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-    image: phpmyadmin/phpmyadmin:4.9
+      DATABASE_HOST: mysql
+    image: bitnami/phpmyadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPMYADMIN:-5.1.1-debian-10-r29}
     networks:
       - backend
     ports:
-      - 9173:80
+      - 9173:8080
     restart: always
 
   console:
     cap_add:
       - ALL
     container_name: senzing-console
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.1}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.3}
     networks:
       - backend
     restart: always
@@ -81,7 +80,7 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      
+
   loader:
     container_name: senzing-stream-loader
     depends_on:
@@ -100,7 +99,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.7.6}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
     networks:
       - backend
     restart: always
@@ -119,7 +118,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.7}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.9}
     networks:
       - backend
     privileged: true
@@ -132,22 +131,27 @@ services:
 
   api:
     container_name: senzing-api-server
-    command:
-      - -httpPort
-      - "8250"
-      - -bindAddr
-      - all
-      - -iniFile
-      - /etc/opt/senzing/G2Module.ini
-      - -allowedOrigins
-      - "*"
-      - -enableAdmin
     depends_on:
       - mysql
     environment:
-#     See https://github.com/Senzing/senzing-api-server#configuration
-      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/${MYSQL_DATABASE:-G2}"
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.1}
+      SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
+      SENZING_API_SERVER_BIND_ADDR: 'all'
+      SENZING_API_SERVER_ENABLE_ADMIN: 'true'
+      SENZING_API_SERVER_PORT: '8250'
+      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
+      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
+      SENZING_API_SERVER_INIT_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
+          }
+        }
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.2}
     networks:
       - backend
     ports:
@@ -207,7 +211,7 @@ services:
     container_name: senzing-sshd
     environment:
       ROOT_PASSWORD: ${SENZING_SSHD_PASSWORD:-senzingsshdpassword}
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.2.0}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.2.3}
     networks:
       - backend
     ports:
@@ -221,7 +225,7 @@ services:
 
   xterm:
     container_name: senzing-xterm
-    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.1.0}
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.1.2}
     networks:
       - backend
     ports:
