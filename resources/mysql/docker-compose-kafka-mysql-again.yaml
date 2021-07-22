@@ -85,13 +85,12 @@ services:
     depends_on:
       - mysql
     environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
+      DATABASE_HOST: mysql
     image: bitnami/phpmyadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPMYADMIN:-5.1.1-debian-10-r29}
     networks:
       - backend
     ports:
-      - 9173:80
+      - 9173:8080
     restart: always
 
   console:

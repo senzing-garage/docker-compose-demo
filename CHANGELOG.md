@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2021-07-22
+
+### Changed in 1.6.1
+
+- Update docker image versions
+  - senzing/senzing-api-server:2.6.1 to senzing/senzing-api-server:2.6.2
+  - bitnami/zookeeper:3.5.6 to bitnami/zookeeper:3.7.0-debian-10-r87
+  - bitnami/kafka:2.4.0 to bitnami/kafka:2.8.0-debian-10-r55
+  - obsidiandynamics/kafdrop:3.23.0 to obsidiandynamics/kafdrop:3.27.0
+  - senzing/stream-producer:1.4.1 to senzing/stream-producer:1.5.1
+  - ibmcom/db2:11.5.0.0a to ibmcom/db2:11.5.5.1
+  - senzing/console:1.0.1 to senzing/console:1.0.3
+
+
 ## [1.6.0] - 2021-05-04
 
 ### Changed in 1.6.0
