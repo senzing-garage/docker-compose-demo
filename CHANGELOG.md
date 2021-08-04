@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed in 1.7.0
 
-- Add SENZING_ENGINE_CONFIGURATION_JSON to some services
+- Add SENZING_ENGINE_CONFIGURATION_JSON to services
 
 ## [1.6.1] - 2021-07-22
 
