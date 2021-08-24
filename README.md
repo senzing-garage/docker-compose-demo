@@ -17,6 +17,9 @@ Arrows represent data flow.
 
 ![Image of architecture](docs/img-architecture/architecture.png)
 
+## CI/CD Test
+Here as a placeholder to test GH actions :)
+
 ## Caveat
 
 This demonstration runs on platforms that support `docker` and `docker-compose`.
