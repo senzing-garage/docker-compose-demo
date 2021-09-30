@@ -46,21 +46,21 @@ This docker formation brings up the following docker containers:
     1. [Clone repository](#clone-repository)
 1. [Using docker-compose](#using-docker-compose)
     1. [Volumes](#volumes)
-    2. [SSH port](#ssh-port)
-    3. [Set sshd password](#set-sshd-password)
-    3. [EULA](#eula)
-    4. [Install Senzing](#install-senzing)
-    5. [Install Senzing license](#install-senzing-license)
-    6. [Run docker formation](#run-docker-formation)
+    1. [SSH port](#ssh-port)
+    1. [Set sshd password](#set-sshd-password)
+    1. [EULA](#eula)
+    1. [Install Senzing](#install-senzing)
+    1. [Install Senzing license](#install-senzing-license)
+    1. [Run docker formation](#run-docker-formation)
 1. [View data](#view-data)
     1. [View docker containers](#view-docker-containers)
-    2. [Use SSH](#use-ssh)
-    3. [View RabbitMQ](#view-rabbitmq)
-    4. [View PostgreSQL](#view-postgresql)
-    5. [View Senzing API](#view-senzing-api)
-    6. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-    7. [View Jupyter notebooks](#view-jupyter-notebooks)
-    8. [View X-Term](#view-x-term)
+    1. [Use SSH](#use-ssh)
+    1. [View RabbitMQ](#view-rabbitmq)
+    1. [View PostgreSQL](#view-postgresql)
+    1. [View Senzing API](#view-senzing-api)
+    1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
+    1. [View Jupyter notebooks](#view-jupyter-notebooks)
+    1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [Re-run docker formation](#re-run-docker-formation)
@@ -160,6 +160,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
     ```
 
 ### SSH port
+
 :thinking: **Optional** If you do not plan on using the senzing/sshd container then these ssh sections can be ignored
 
 :thinking: Normally port 22 is already in use for `ssh`.
@@ -188,12 +189,15 @@ So a different port may be needed by the running docker container.
 
 ### Set sshd password
 
-:thinking: **Optional** The default password set for the sshd containers is `senzingsshdpassword`. However, this can be set by setting the following variable
+:thinking: **Optional:** The default password set for the sshd containers is `senzingsshdpassword`.
+However, this can be changed.
 
-:pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container
-```console
-export SENZING_SSHD_PASSWORD=<Pass_You_Want>
-```
+1. :pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PASSWORD=<Pass_You_Want>
+    ```
 
 ### EULA
 
@@ -204,6 +208,37 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
+
+### Pull docker images
+
+"latest" or "pinned" versions of containers can be used in the docker-compose formation.
+The following will be used to pull the pinned or most recent `latest` versions.
+
+1. :thinking: **Optional:** Pin versions of docker images by setting environment variables.
+   Example:
+
+    ```console
+    curl -X GET \
+      --output ~/docker-versions-latest.sh \
+      https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh
+
+    source ~/docker-versions-latest.sh
+    ```
+
+1. Pull docker images.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+
+    sudo \
+      --preserve-env \
+      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml pull
+
+    sudo \
+      --preserve-env \
+      docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml pull
+    ```
 
 ### Install Senzing
 
