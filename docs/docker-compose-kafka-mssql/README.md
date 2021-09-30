@@ -225,6 +225,10 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
     sudo \
       --preserve-env \
+      docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml pull
+
+    sudo \
+      --preserve-env \
       docker-compose --file resources/mssql/docker-compose-kafka-mssql.yaml pull
     ```
 
