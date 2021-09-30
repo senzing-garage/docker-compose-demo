@@ -124,7 +124,7 @@ The Git repository has files that will be used in the `docker-compose` command.
    Example:
 
     ```console
-    export SENZING_VOLUME=/opt/my-senzing
+    export SENZING_VOLUME=~/my-senzing
     ```
 
     1. :warning:
