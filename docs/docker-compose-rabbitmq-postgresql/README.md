@@ -1,5 +1,10 @@
 # docker-compose-rabbitmq-postgresql
 
+## Synopsis
+
+Using `docker-compose`, bring up a Senzing stack
+using Helm, RabbitMQ, and a PostgreSQL database.
+
 ## Overview
 
 This repository illustrates a reference implementation of Senzing using
@@ -8,12 +13,13 @@ PostgreSQL as the underlying database.
 
 The instructions show how to set up a system that:
 
-1. Reads JSON lines from a file on the internet.
-1. Sends each JSON line to a message queue.
+1. Reads JSON lines from a file on the internet and sends each JSON line to a message queue via the Senzing
+   [stream-producer](https://github.com/Senzing/stream-producer).
     1. In this implementation, the queue is RabbitMQ.
-1. Reads messages from the queue and inserts into Senzing.
+1. Reads messages from the queue and inserts into Senzing via the Senzing
+   [stream-loader](https://github.com/Senzing/stream-loader).
     1. In this implementation, Senzing keeps its data in a PostgreSQL database.
-1. Reads information from Senzing via [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification) server.
+1. Reads information from Senzing via [Senzing API Server](https://github.com/Senzing/senzing-api-server) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
 The following diagram shows the relationship of the docker containers in this docker composition.
@@ -21,30 +27,15 @@ Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
 
-This docker formation brings up the following docker containers:
-
-1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
-1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
-1. *[postgres](https://hub.docker.com/_/postgres)*
-1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
-1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
-1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
-1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
-1. *[senzing/redoer](https://github.com/Senzing/redoer)*
-1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
-1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
-1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
-
 ### Contents
 
+1. [Preamble](#preamble)
+1. [Related artifacts](#related-artifacts)
 1. [Expectations](#expectations)
-    1. [Space](#space)
-    1. [Time](#time)
-    1. [Background knowledge](#background-knowledge)
-1. [Preparation](#preparation)
+1. [Prerequisites](#prerequisites)
     1. [Prerequisite software](#prerequisite-software)
     1. [Clone repository](#clone-repository)
-1. [Using docker-compose](#using-docker-compose)
+1. [Demonstrate](#demonstrate)
     1. [Volumes](#volumes)
     1. [SSH port](#ssh-port)
     1. [Set sshd password](#set-sshd-password)
@@ -52,19 +43,33 @@ This docker formation brings up the following docker containers:
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
     1. [Run docker formation](#run-docker-formation)
-1. [View data](#view-data)
-    1. [View docker containers](#view-docker-containers)
-    1. [Use SSH](#use-ssh)
-    1. [View RabbitMQ](#view-rabbitmq)
-    1. [View PostgreSQL](#view-postgresql)
-    1. [View Senzing API](#view-senzing-api)
-    1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-    1. [View Jupyter notebooks](#view-jupyter-notebooks)
-    1. [View X-Term](#view-x-term)
+    1. [View data](#view-data)
+        1. [View docker containers](#view-docker-containers)
+        1. [Use SSH](#use-ssh)
+        1. [View RabbitMQ](#view-rabbitmq)
+        1. [View PostgreSQL](#view-postgresql)
+        1. [View Senzing API Server](#view-senzing-api-server)
+        1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
+        1. [View Jupyter notebooks](#view-jupyter-notebooks)
+        1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [Re-run docker formation](#re-run-docker-formation)
     1. [Configuration](#configuration)
+1. [Errors](#errors)
+1. [References](#references)
+
+## Preamble
+
+At [Senzing](http://senzing.com),
+we strive to create GitHub documentation in a
+"[don't make me think](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/dont-make-me-think.md)" style.
+For the most part, instructions are copy and paste.
+Whenever thinking is needed, it's marked with a "thinking" icon :thinking:.
+Whenever customization is needed, it's marked with a "pencil" icon :pencil2:.
+If the instructions are not clear, please let us know by opening a new
+[Documentation issue](https://github.com/Senzing/kubernetes-demo/issues/new?assignees=&labels=&template=documentation_request.md)
+describing where we can improve.   Now on with the show...
 
 ### Legend
 
@@ -74,28 +79,21 @@ This docker formation brings up the following docker containers:
 1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
 1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
+## Related artifacts
+
+1. [DockerHub](https://hub.docker.com/r/senzing)
+
 ## Expectations
 
-### Space
+- **Space:** This repository and demonstration require 7 GB free disk space.
+- **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
+- **Background knowledge:** This repository assumes a working knowledge of:
+  - [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
+  - [Docker-compose](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker-compose.md)
 
-This repository and demonstration require 7 GB free disk space.
-
-### Time
-
-Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
-
-### Background knowledge
-
-This repository assumes a working knowledge of:
-
-1. [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
-1. [Docker-compose](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker-compose.md)
-
-## Preparation
+## Prerequisites
 
 ### Prerequisite software
-
-The following software programs need to be installed:
 
 1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
@@ -103,10 +101,9 @@ The following software programs need to be installed:
 
 ### Clone repository
 
-For more information on environment variables,
-see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md).
+The Git repository has files that will be used in the `docker-compose` command.
 
-1. Set these environment variable values:
+1. Using these environment variable values:
 
     ```console
     export GIT_ACCOUNT=senzing
@@ -117,7 +114,7 @@ see [Environment Variables](https://github.com/Senzing/knowledge-base/blob/maste
 
 1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/clone-repository.md) to install the Git repository.
 
-## Using docker-compose
+## Demonstrate
 
 ### Volumes
 
@@ -405,6 +402,22 @@ The following shows how to bring up the prior docker formation again without ini
       docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql-again.yaml up
     ```
 
+### Docker images
+
+This docker formation brings up the following docker containers:
+
+1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
+1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
+1. *[postgres](https://hub.docker.com/_/postgres)*
+1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
+1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
+1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
+1. *[senzing/redoer](https://github.com/Senzing/redoer)*
+1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+
 ### Configuration
 
 Configuration values specified by environment variable or command line parameter.
@@ -424,3 +437,9 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
+
+## Errors
+
+1. See [docs/errors.md](docs/errors.md).
+
+## References
