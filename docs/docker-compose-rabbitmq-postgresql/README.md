@@ -40,6 +40,7 @@ Arrows represent data flow.
     1. [SSH port](#ssh-port)
     1. [Set sshd password](#set-sshd-password)
     1. [EULA](#eula)
+    1. [Pull docker images](#pull-docker-images)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
     1. [Run docker formation](#run-docker-formation)
@@ -55,6 +56,7 @@ Arrows represent data flow.
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [Re-run docker formation](#re-run-docker-formation)
+    1. [Docker images](#docker-images)
     1. [Configuration](#configuration)
 1. [Errors](#errors)
 1. [References](#references)
@@ -158,12 +160,13 @@ The Git repository has files that will be used in the `docker-compose` command.
 
 ### SSH port
 
-:thinking: **Optional** If you do not plan on using the senzing/sshd container then these ssh sections can be ignored
-
-:thinking: Normally port 22 is already in use for `ssh`.
+:thinking: **Optional:**
+If you do not plan on using the senzing/sshd container then these ssh sections can be ignored.
+Normally port 22 is already in use for `ssh`.
 So a different port may be needed by the running docker container.
 
-1. :thinking: **Optional:** See if port 22 is already in use.
+1. :thinking: See if port 22 is already in use.
+   If it is not in use, the next 2 steps are optional.
    Example:
 
     ```console
@@ -275,7 +278,7 @@ Senzing comes with a trial license that supports 10,000 records.
     1. There will be errors in some docker logs as they wait for dependent services to become available.
        `docker-compose` isn't the best at orchestrating docker container dependencies.
 
-## View data
+### View data
 
 Once the docker-compose formation is running,
 different aspects of the formation can be viewed.
@@ -284,18 +287,18 @@ Username and password for the following sites were either passed in as environme
 or are the default values seen in
 [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
 
-### View docker containers
+#### View docker containers
 
 1. A good tool to monitor individual docker logs is
    [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
-### Use SSH
+#### Use SSH
 
 Instructions to use the senzing/sshd container are viewable in the [senzing/docker-sshd](https://github.com/Senzing/docker-sshd/blob/master/README.md#ssh-into-container) repository
 
-### View RabbitMQ
+#### View RabbitMQ
 
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
@@ -304,7 +307,7 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#rabbitmq)
    for working with RabbitMQ.
 
-### View PostgreSQL
+#### View PostgreSQL
 
 1. PostgreSQL is viewable at
    [localhost:9171](http://localhost:9171).
@@ -313,7 +316,7 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#postgresql)
    for working with PostgreSQL.
 
-### View Senzing API
+#### View Senzing API Server
 
 View results from Senzing REST API server.
 The server supports the
@@ -327,7 +330,7 @@ The server supports the
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
    for working with Senzing API server.
 
-### View Senzing Entity Search WebApp
+#### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
@@ -335,7 +338,7 @@ The server supports the
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
 
-### View Jupyter notebooks
+#### View Jupyter notebooks
 
 1. Change file permissions on PostgreSQL database.
    Example:
@@ -350,7 +353,7 @@ The server supports the
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#jupyter-notebooks)
    for working with Jupyter Notebooks.
 
-### View X-Term
+#### View X-Term
 
 The web-based Senzing X-term can be used to run Senzing command-line programs.
 
