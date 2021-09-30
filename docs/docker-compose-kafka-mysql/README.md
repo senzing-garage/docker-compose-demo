@@ -236,6 +236,8 @@ The following will be used to pull the pinned or most recent `latest` versions.
       docker-compose --file resources/mysql/docker-compose-kafka-mysql.yaml pull
     ```
 
+   **Note:** Because it was built locally, the `senzing/mysql-init:latest` image will have an error.
+
 ### Install Senzing
 
 1. If Senzing has not been installed, install Senzing.
