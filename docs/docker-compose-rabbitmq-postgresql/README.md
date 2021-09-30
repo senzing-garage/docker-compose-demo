@@ -70,7 +70,7 @@ For the most part, instructions are copy and paste.
 Whenever thinking is needed, it's marked with a "thinking" icon :thinking:.
 Whenever customization is needed, it's marked with a "pencil" icon :pencil2:.
 If the instructions are not clear, please let us know by opening a new
-[Documentation issue](https://github.com/Senzing/kubernetes-demo/issues/new?assignees=&labels=&template=documentation_request.md)
+[Documentation issue](https://github.com/Senzing/docker-compose-demo/issues/new?assignees=&labels=&template=documentation_request.md)
 describing where we can improve.   Now on with the show...
 
 ### Legend
@@ -252,10 +252,10 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
 ### Install Senzing license
 
-Senzing comes with a trial license that supports 10,000 records.
+Senzing comes with a trial license that supports 100,000 records.
 
 1. :thinking: **Optional:**
-   If more than 10,000 records are desired, see
+   If more than 100,000 records are desired, see
    [Senzing license](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-license).
 
 ### Run docker formation
