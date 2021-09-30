@@ -32,7 +32,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
-    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.5.1}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
       - backend
     restart: on-failure
@@ -55,7 +55,7 @@ services:
 
   db2driverinstaller:
     container_name: senzing-db2-driver-installer
-    image: senzing/db2-driver-installer:${SENZING_DOCKER_IMAGE_VERSION_DB2_DRIVER_INSTALLER:-1.0.2}
+    image: senzing/db2-driver-installer:${SENZING_DOCKER_IMAGE_VERSION_DB2_DRIVER_INSTALLER:-latest}
     networks:
       - backend
     restart: on-failure
@@ -71,7 +71,7 @@ services:
     environment:
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_HOST:-senzing-db2}:${DB2_PORT:-50000}/${DB2_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.12}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
       - backend
     restart: on-failure
@@ -98,7 +98,7 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.3}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
       - backend
     restart: always
@@ -138,7 +138,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - backend
     restart: always
@@ -169,7 +169,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.9}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
       - backend
     privileged: true
@@ -214,7 +214,7 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.2}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
       - backend
     ports:
@@ -238,7 +238,7 @@ services:
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
-    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.3}
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
       - backend
     ports:
@@ -262,7 +262,7 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.2.3}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
     networks:
       - backend
     ports:
@@ -288,7 +288,7 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
-    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.1.2}
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
     networks:
       - backend
     ports:

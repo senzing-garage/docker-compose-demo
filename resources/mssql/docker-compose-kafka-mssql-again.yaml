@@ -65,7 +65,7 @@ services:
     container_name: senzing-adminer
     environment:
       ADMINER_DEFAULT_SERVER: senzing-mssql
-    image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_ADMINER:-1.0.0}
+    image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_ADMINER:-latest}
     networks:
       - backend
     ports:
@@ -85,7 +85,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-kafka
-    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.5.1}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
       - backend
     restart: on-failure
@@ -108,7 +108,7 @@ services:
         }
       ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.3}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
       - backend
     restart: always
@@ -145,7 +145,7 @@ services:
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - backend
     restart: always
@@ -179,7 +179,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.9}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
       - backend
     privileged: true
@@ -224,7 +224,7 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.2}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
       - backend
     ports:
@@ -249,7 +249,7 @@ services:
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
-    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.3}
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
       - backend
     ports:
@@ -273,7 +273,7 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.2.3}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
     networks:
       - backend
     ports:
@@ -301,7 +301,7 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.1.2}
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
     networks:
       - backend
     ports:

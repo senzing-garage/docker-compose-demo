@@ -59,7 +59,7 @@ services:
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-kafka
-    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-1.5.1}
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
       - backend
     restart: on-failure
@@ -92,7 +92,7 @@ services:
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
-    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-1.0.0}
+    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
     networks:
       - backend
     restart: on-failure
@@ -126,7 +126,7 @@ services:
       - PHP_PG_ADMIN_SHOW_SYSTEM=false
       - PHP_PG_ADMIN_THEME=default
       - PHP_PG_ADMIN_USE_XHTML_STRICT=false
-    image: senzing/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_PHPPGADMIN:-1.0.0}
+    image: senzing/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_PHPPGADMIN:-latest}
     networks:
       - backend
     ports:
@@ -143,7 +143,7 @@ services:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 30
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.12}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
       - backend
     restart: on-failure
@@ -169,7 +169,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.3}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
       - backend
     restart: always
@@ -206,7 +206,7 @@ services:
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: kafka-withinfo
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-1.8.2}
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - backend
     restart: always
@@ -226,7 +226,7 @@ services:
       SENZING_KAFKA_TOPIC: senzing-kafka-failure-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-1.1.2}
+    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-latest}
     networks:
       - backend
     restart: always
@@ -242,7 +242,7 @@ services:
       SENZING_KAFKA_TOPIC: senzing-kafka-info-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: kafka
-    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-1.1.2}
+    image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-latest}
     networks:
       - backend
     restart: always
@@ -268,7 +268,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-1.3.9}
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
       - backend
     privileged: true
@@ -312,7 +312,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-2.6.2}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
       - backend
     ports:
@@ -335,7 +335,7 @@ services:
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
-    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-2.2.3}
+    image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
       - backend
     ports:
@@ -365,7 +365,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-1.3.0}
+    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-latest}
     networks:
       - backend
     ports:
@@ -394,7 +394,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-1.2.3}
+    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
     networks:
       - backend
     ports:
@@ -420,7 +420,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-1.1.2}
+    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
     networks:
       - backend
     ports:
