@@ -223,7 +223,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
     sudo \
       --preserve-env \
-      docker-compose --file resources/db2/docker-compose-kafka-db2.yaml up
+      docker-compose --file resources/db2/docker-compose-kafka-db2.yaml pull
     ```
 
 ### Install Senzing
