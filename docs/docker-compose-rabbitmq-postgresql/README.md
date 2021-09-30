@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using Helm, RabbitMQ, and a PostgreSQL database.
+using RabbitMQ and a PostgreSQL database.
 
 ## Overview
 
