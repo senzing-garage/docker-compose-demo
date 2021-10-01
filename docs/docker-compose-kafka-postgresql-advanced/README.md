@@ -5,7 +5,7 @@
 Using `docker-compose`, bring up a Senzing stack
 using Kafka and PostgreSQL database.
 
-These instruction support multiple docker-compose.yaml files.
+These instructions support multiple docker-compose.yaml files.
 
 ## Overview
 
