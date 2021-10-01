@@ -42,10 +42,10 @@ Arrows represent data flow.
     1. [SSH port](#ssh-port)
     1. [Set sshd password](#set-sshd-password)
     1. [EULA](#eula)
+    1. [Choose docker formation](#choose-docker-formation)
     1. [Pull docker images](#pull-docker-images)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
-    1. [Choose docker formation](#choose-docker-formation)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
         1. [View docker containers](#view-docker-containers)
@@ -201,55 +201,6 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
 
-### Pull docker images
-
-"latest" or "pinned" versions of containers can be used in the docker-compose formation.
-The following will be used to pull the pinned or most recent `latest` versions.
-
-1. :thinking: **Optional:** Pin versions of docker images by setting environment variables.
-   Example:
-
-    ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
-    ```
-
-1. Pull docker images.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml pull
-
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/postgresql/docker-compose-kafka-postgresql.yaml pull
-    ```
-
-### Install Senzing
-
-1. If Senzing has not been installed, install Senzing.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
-    ```
-
-    1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
-
-### Install Senzing license
-
-Senzing comes with a trial license that supports 100,000 records.
-
-1. :thinking: **Optional:**
-   If more than 100,000 records are desired, see
-   [Senzing license](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-license).
-
 ### Choose docker formation
 
 :thinking: Choose a *docker-compose.yaml* file.
@@ -311,6 +262,55 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka-withinfo.yaml
     ```
+
+### Pull docker images
+
+"latest" or "pinned" versions of containers can be used in the docker-compose formation.
+The following will be used to pull the pinned or most recent `latest` versions.
+
+1. :thinking: **Optional:** Pin versions of docker images by setting environment variables.
+   Example:
+
+    ```console
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
+    ```
+
+1. Pull docker images.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+
+    sudo \
+      --preserve-env \
+      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml pull
+
+    sudo \
+      --preserve-env \
+      docker-compose --file ${SENZING_DOCKER_COMPOSE_FILE} pull
+    ```
+
+### Install Senzing
+
+1. If Senzing has not been installed, install Senzing.
+   Example:
+
+    ```console
+    cd ${GIT_REPOSITORY_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
+    ```
+
+    1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
+
+### Install Senzing license
+
+Senzing comes with a trial license that supports 100,000 records.
+
+1. :thinking: **Optional:**
+   If more than 100,000 records are desired, see
+   [Senzing license](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-license).
 
 ### Run docker formation
 
