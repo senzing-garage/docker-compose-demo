@@ -355,8 +355,7 @@ Once the docker-compose formation is running,
 different aspects of the formation can be viewed.
 
 Username and password for the following sites were either passed in as environment variables
-or are the default values seen in
-[docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
+or are the default values seen in `${SENZING_DOCKER_COMPOSE_FILE}`.
 
 #### View docker containers
 
