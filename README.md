@@ -36,7 +36,7 @@ the onus is on the user for proper operation of docker and docker networking.
 
 ## Implementation
 
-The following table indicates the instructions for variations in components.
+The following tables indicate the instructions for variations in components.
 
 1. Component variants:
     1. Queue
@@ -64,6 +64,6 @@ The following table indicates the instructions for variations in components.
 
     | Instructions | Notes               |
     |:------------:|---------------------|
-    | [instructions](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) | Various enhancements built upon RabbitMQ and PostgreSQL. |
-    | [instructions](docs/docker-compose-kafka-postgresql-advanced/README.md) | Various enhancements built upon Kafka and PostgreSQL. |
-    | [instructions](docs/docker-compose-sqs-postgresql-advanced/README.md) | Various enhancements built upon Amazon SQS and PostgreSQL. |
+    | [instructions](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) | Various enhancements built upon PostgreSQL and RabbitMQ. |
+    | [instructions](docs/docker-compose-kafka-postgresql-advanced/README.md)    | Various enhancements built upon PostgreSQL and Kafka.    |
+    | [instructions](docs/docker-compose-sqs-postgresql-advanced/README.md)      | Various enhancements built upon PostgreSQL and Amazon.   |
