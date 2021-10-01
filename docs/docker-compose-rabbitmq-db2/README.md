@@ -235,7 +235,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
     sudo \
       --preserve-env \
-      docker-compose --file resources/sqlite/docker-compose-kafka-sqlite.yaml pull
+      docker-compose --file resources/db2/docker-compose-rabbitmq-db2.yaml pull
     ```
 
 ### Install Senzing
