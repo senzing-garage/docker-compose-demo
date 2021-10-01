@@ -2,6 +2,8 @@
 
 ## Overview
 
+:no_entry: [DEPRECATED] Please use https://github.com/Senzing/docker-compose-air-gapper instead.
+
 This repository illustrates how to package a few docker artifacts for use
 in an air-gapped environment.
 

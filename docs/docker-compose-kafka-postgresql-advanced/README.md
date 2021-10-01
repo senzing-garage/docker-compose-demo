@@ -5,6 +5,8 @@
 Using `docker-compose`, bring up a Senzing stack
 using Kafka and PostgreSQL database.
 
+These instruction support multiple docker-compose.yaml files.
+
 ## Overview
 
 This repository illustrates a reference implementation of Senzing using
@@ -492,7 +494,7 @@ Configuration values specified by environment variable or command line parameter
     .  X  .  .  X  X  .
     .  X  .  .  X  .  X  docker-compose-kafka-postgresql-redoer-kafka-withinfo.yaml
     ```
-    
+
 ## Errors
 
 1. See [docs/errors.md](docs/errors.md).
