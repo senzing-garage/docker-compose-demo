@@ -5,6 +5,8 @@
 Using `docker-compose`, bring up a Senzing stack
 using RabbitMQ and a PostgreSQL database.
 
+These instruction support multiple docker-compose.yaml files.
+
 ## Overview
 
 This repository illustrates a reference implementation of Senzing using
