@@ -62,8 +62,8 @@ The following tables indicate the instructions for variations in components.
 
 1. Advanced docker formations:
 
-    | Instructions | Notes               |
-    |:------------:|---------------------|
-    | [instructions](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) | Various enhancements built upon PostgreSQL and RabbitMQ. |
-    | [instructions](docs/docker-compose-kafka-postgresql-advanced/README.md)    | Various enhancements built upon PostgreSQL and Kafka.    |
-    | [instructions](docs/docker-compose-sqs-postgresql-advanced/README.md)      | Various enhancements built upon PostgreSQL and Amazon.   |
+    | Description | Instructions |
+    |-------------|:------------:|
+    | Various enhancements built upon PostgreSQL and RabbitMQ. | [instructions](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) |
+    | Various enhancements built upon PostgreSQL and Kafka.    | [instructions](docs/docker-compose-kafka-postgresql-advanced/README.md)    |
+    | Various enhancements built upon PostgreSQL and Amazon.   | [instructions](docs/docker-compose-sqs-postgresql-advanced/README.md)      |
