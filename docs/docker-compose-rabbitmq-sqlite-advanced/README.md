@@ -342,11 +342,11 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
     1. The records received from the queue can be viewed in the following Senzing tables:
         1. DSRC_RECORD
         1. OBS_ENT
-1. SQLite for `G2C_LIBFEAT.db` is viewable at
+1. If using clustered database, SQLite for `G2C_LIBFEAT.db` is viewable at
    [localhost:9175](http://localhost:9175).
     1. The records received from the queue can be viewed in the following Senzing tables:
         1. LIB_FEAT
-1. SQLite for `G2C_RES.db`is viewable at
+1. If using clustered database, SQLite for `G2C_RES.db`is viewable at
    [localhost:9176](http://localhost:9176).
     1. The records received from the queue can be viewed in the following Senzing tables:
         1. RES_FEAT_STAT
