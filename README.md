@@ -65,4 +65,4 @@ The following tables indicate the instructions for variations in components.
     |-------------|:------------:|
     | Enhancements built upon PostgreSQL and RabbitMQ. | [instructions](docs/docker-compose-rabbitmq-postgresql-advanced/README.md) |
     | Enhancements built upon PostgreSQL and Kafka.    | [instructions](docs/docker-compose-kafka-postgresql-advanced/README.md)    |
-    | Enhancements built upon PostgreSQL and Amazon.   | [instructions](docs/docker-compose-sqs-postgresql-advanced/README.md)      |
+    | Enhancements built upon PostgreSQL and AWS SQS.  | [instructions](docs/docker-compose-sqs-postgresql-advanced/README.md)      |
