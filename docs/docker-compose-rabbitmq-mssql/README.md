@@ -240,7 +240,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
     sudo \
       --preserve-env \
-      docker-compose --file resources/mssql/docker-compose-kafka-mssql.yaml pull
+      docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml pull
     ```
 
 ### Install Senzing
