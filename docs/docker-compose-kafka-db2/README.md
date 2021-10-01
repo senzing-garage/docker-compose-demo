@@ -382,15 +382,15 @@ This docker formation brings up the following docker containers:
 1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
 1. *[ibmcom/db2](https://hub.docker.com/r/ibmcom/db2)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
-1. *[senzing/db2-driver-installer](https://github.com/Senzing/docker-db2-driver-installer)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
+1. *[senzing/db2-driver-installer](https://github.com/Senzing/docker-db2-driver-installer)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
-1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
 
 ### Configuration
 

@@ -234,6 +234,14 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-redoer.yaml
     ```
 
+#### Cluster formation
+
+1. Add database cluster to standard demonstration.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml
+    ```
+
 ### Pull docker images
 
 "latest" or "pinned" versions of containers can be used in the docker-compose formation.
@@ -329,8 +337,20 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
 
 #### View SQLite
 
-1. SQLite is viewable at
+1. SQLite for `G2C.db` is viewable at
    [localhost:9174](http://localhost:9174).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. DSRC_RECORD
+        1. OBS_ENT
+1. SQLite for `G2C_LIBFEAT.db` is viewable at
+   [localhost:9175](http://localhost:9175).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. LIB_FEAT
+1. SQLite for `G2C_RES.db`is viewable at
+   [localhost:9176](http://localhost:9176).
+    1. The records received from the queue can be viewed in the following Senzing tables:
+        1. RES_FEAT_STAT
+        1. RES_FEAT_EKEY
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#sqlite)
    for working with SQLite.
@@ -434,9 +454,9 @@ This docker formation brings up the following docker containers:
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
-1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
 
 ### Configuration
 
@@ -449,6 +469,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_dir)**
 - **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_source)**
 - **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ENGINE_CONFIGURATION_JSON](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_engine_configuration_json)**
 - **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
