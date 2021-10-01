@@ -59,7 +59,6 @@ The following tables indicate the instructions for variations in components.
     | Kafka    | MSSQL          | [instructions](docs/docker-compose-kafka-mssql/README.md)         | [docker-compose-kafka-mssql.yaml](resources/mssql/docker-compose-kafka-mssql.yaml) |
     | AWS SQS  | PostgreSQL     | [instructions](docs/docker-compose-sqs-postgresql/README.md)      | [docker-compose-sqs-postgresql.yaml](resources/postgresql/docker-compose-sqs-postgresql.yaml) |
 
-
 1. Advanced docker formations:
 
     | Description | Instructions |
