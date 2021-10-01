@@ -435,6 +435,8 @@ it can be brought down and directories can be deleted.
 
 ## Advanced
 
+The following topics discuss variations to the basic docker-compose demonstration.
+
 ### Docker images
 
 This docker formation brings up the following docker containers:
