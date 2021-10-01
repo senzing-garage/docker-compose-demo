@@ -241,6 +241,21 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml
     ```
+    
+#### Using a Governor formation
+
+1. Add database cluster to standard demonstration.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml
+    ```    
+    
+1. :pencil2: Identify the directory containing the "governor" plugin.
+   Example:
+
+    ```console
+    export SENZING_PLUGINS_DIR=${GIT_REPOSITORY_DIR}/resources/plugins
+    ```
 
 ### Pull docker images
 
@@ -473,6 +488,7 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_PLUGINS_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_plugins_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_var_dir)**
 
 ### Program parameter matrix
