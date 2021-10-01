@@ -220,7 +220,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
     sudo \
       --preserve-env \
-      docker-compose --file resources/postgresql/docker-compose-kafka-postgresql.yaml pull
+      docker-compose --file resources/sqlite/docker-compose-kafka-sqlite.yaml pull
     ```
 
 ### Install Senzing
