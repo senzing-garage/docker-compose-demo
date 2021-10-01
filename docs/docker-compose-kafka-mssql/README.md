@@ -321,7 +321,7 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#kafka)
    for working with Kafka.
 
-### View MSSQL
+#### View MSSQL
 
 1. MSSQL is viewable at
    [localhost:9177](http://localhost:9177).

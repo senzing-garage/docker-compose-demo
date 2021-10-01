@@ -324,7 +324,7 @@ or are the default values seen in
 
 Instructions to use the senzing/sshd container are viewable in the [senzing/docker-sshd](https://github.com/Senzing/docker-sshd/blob/master/README.md#ssh-into-container) repository
 
-### View RabbitMQ
+#### View RabbitMQ
 
 1. RabbitMQ is viewable at
    [localhost:15672](http://localhost:15672).
@@ -333,7 +333,7 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#rabbitmq)
    for working with RabbitMQ.
 
-### View MSSQL
+#### View MSSQL
 
 1. MSSQL is viewable at
    [localhost:9177](http://localhost:9177).
