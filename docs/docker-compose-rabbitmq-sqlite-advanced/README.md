@@ -43,6 +43,10 @@ Arrows represent data flow.
     1. [Set sshd password](#set-sshd-password)
     1. [EULA](#eula)
     1. [Choose docker formation](#choose-docker-formation)
+        1. [Standard formation](#standard-formation)
+        1. [Redoer formation](#redoer-formation)
+        1. [Cluster formation](#cluster-formation)
+        1. [Governor formation](#governor-formation)
     1. [Pull docker images](#pull-docker-images)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
@@ -241,15 +245,15 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-cluster.yaml
     ```
-    
-#### Using a Governor formation
+
+#### Governor formation
 
 1. Add database cluster to standard demonstration.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-governor.yaml
-    ```    
-    
+    ```
+
 1. :pencil2: Identify the directory containing the "governor" plugin.
    Example:
 
