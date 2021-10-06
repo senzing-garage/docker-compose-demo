@@ -223,7 +223,7 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   api:
-    container_name: senzing-api-server
+    container_name: senzing-poc-server
     environment:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
