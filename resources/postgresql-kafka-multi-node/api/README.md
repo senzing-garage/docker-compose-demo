@@ -40,7 +40,7 @@ on top of the Senzing Engine.
     export POSTGRES_USERNAME=my-username
     ```
 
-2. Senzing Engine configuration.
+1. Senzing Engine configuration.
    This is a "single-database" example.
    Using "bash shell parameter expansion",
    the database connectivity information is used

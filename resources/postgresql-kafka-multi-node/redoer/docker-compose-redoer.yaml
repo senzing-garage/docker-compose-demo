@@ -1,14 +1,18 @@
 version: '3'
 services:
 
-  initcontainer:
-    container_name: senzing-init-container
+  redoer:
+    container_name: senzing-redoer
+    depends_on:
+      - loader
     environment:
-#     See https://github.com/Senzing/docker-init-container#configuration
+#     See https://github.com/Senzing/redoer#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+      SENZING_SUBCOMMAND: redo
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
       - backend
+    privileged: true
     restart: on-failure
     user: "0"
     volumes:
