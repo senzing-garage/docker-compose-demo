@@ -25,11 +25,9 @@ services:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
-      SENZING_RABBITMQ_ROUTING_KEY: senzing.records
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
@@ -77,35 +75,13 @@ services:
   phppgadmin:
     container_name: senzing-phppgadmin
     environment:
-#     See https://github.com/dockage/phppgadmin#available-configuration-parameters
-      - PHP_PG_ADMIN_AJAX_REFRESH=3
-      - PHP_PG_ADMIN_AUTO_COMPLETE=default on
-      - PHP_PG_ADMIN_DEFAULT_LANG=auto
-      - PHP_PG_ADMIN_EXTRA_LOGIN_SECURITY=false
-      - PHP_PG_ADMIN_HELP_BASE=http://www.postgresql.org/docs/%s/interactive/
-      - PHP_PG_ADMIN_LEFT_WIDTH=200
-      - PHP_PG_ADMIN_MAX_CHARS=50
-      - PHP_PG_ADMIN_MAX_ROWS=30
-      - PHP_PG_ADMIN_MIN_PASSWORD_LENGTH=1
-      - PHP_PG_ADMIN_OWNED_ONLY=false
-      - PHP_PG_ADMIN_SERVER_DEFAULT_DB=template1
-      - PHP_PG_ADMIN_SERVER_DESC=PostgreSQL
-      - PHP_PG_ADMIN_SERVER_HOST=senzing-postgres
-      - PHP_PG_ADMIN_SERVER_PG_DUMPALL_PATH=/usr/bin/pg_dumpall
-      - PHP_PG_ADMIN_SERVER_PG_DUMP_PATH=/usr/bin/pg_dump
-      - PHP_PG_ADMIN_SERVER_PORT=5432
-      - PHP_PG_ADMIN_SERVER_SSL_MODE=allow
-      - PHP_PG_ADMIN_SHOW_ADVANCED=false
-      - PHP_PG_ADMIN_SHOW_COMMENTS=true
-      - PHP_PG_ADMIN_SHOW_OIDS=false
-      - PHP_PG_ADMIN_SHOW_SYSTEM=false
-      - PHP_PG_ADMIN_THEME=default
-      - PHP_PG_ADMIN_USE_XHTML_STRICT=false
-    image: senzing/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_PHPPGADMIN:-latest}
+#     See https://hub.docker.com/r/bitnami/phppgadmin
+      - DATABASE_HOST=senzing-postgres
+    image: bitnami/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPPGADMIN:-latest}
     networks:
       - backend
     ports:
-      - 9171:80
+      - 9171:8080
       - 9172:443
     restart: always
 
@@ -225,7 +201,9 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   api:
-    container_name: senzing-poc-server
+    container_name: senzing-api-server
+    depends_on:
+      - postgres
     environment:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
@@ -233,13 +211,6 @@ services:
       SENZING_API_SERVER_PORT: '8250'
       SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
       SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
-      SENZING_RABBITMQ_LOAD_EXCHANGE: senzing-rabbitmq-exchange
-      SENZING_RABBITMQ_LOAD_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_LOAD_PORT: 5672
-      SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
-      SENZING_RABBITMQ_LOAD_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_LOAD_ROUTING_KEY: senzing.records
-      SENZING_RABBITMQ_LOAD_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_API_SERVER_INIT_JSON: >-
         {
           "PIPELINE": {
@@ -262,7 +233,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-    image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
       - backend
     ports:
@@ -285,7 +256,6 @@ services:
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
-      SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-api-server:8250/ws
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
       - backend
