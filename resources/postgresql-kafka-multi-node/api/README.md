@@ -52,11 +52,14 @@ on top of the Senzing Engine.
    Using "bash shell parameter expansion",
    the database connectivity information is used
    to construct `SENZING_ENGINE_CONFIGURATION_JSON`.
-   Example:
+
+   Condensed example:
 
     ```console
     export SENZING_ENGINE_CONFIGURATION_JSON="{\"PIPELINE\":{\"CONFIGPATH\":\"/etc/opt/senzing\",\"RESOURCEPATH\":\"/opt/senzing/g2/resources\",\"SUPPORTPATH\":\"/opt/senzing/data\"},\"SQL\":{\"CONNECTION\":\"postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}:${POSTGRES_DB}/\"}}"
     ```
+
+   Formatted example;
 
     ```console
     export SENZING_ENGINE_CONFIGURATION_JSON=" \

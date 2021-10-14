@@ -202,8 +202,8 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  api:
-    container_name: senzing-api-server
+  pocserver:
+    container_name: senzing-poc-server
     depends_on:
       - postgres
     environment:
@@ -256,7 +256,7 @@ services:
   webapp:
     container_name: senzing-webapp
     depends_on:
-      - api
+      - pocserver
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-api-server:8250
