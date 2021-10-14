@@ -58,6 +58,19 @@ on top of the Senzing Engine.
     export SENZING_ENGINE_CONFIGURATION_JSON="{\"PIPELINE\":{\"CONFIGPATH\":\"/etc/opt/senzing\",\"RESOURCEPATH\":\"/opt/senzing/g2/resources\",\"SUPPORTPATH\":\"/opt/senzing/data\"},\"SQL\":{\"CONNECTION\":\"postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}:${POSTGRES_DB}/\"}}"
     ```
 
+    ```console
+    export SENZING_ENGINE_CONFIGURATION_JSON=" \
+        {\
+            \"PIPELINE\":{\
+                \"CONFIGPATH\":\"/etc/opt/senzing\",\
+                \"RESOURCEPATH\":\"/opt/senzing/g2/resources\",\
+                \"SUPPORTPATH\":\"/opt/senzing/data\"\
+            },\
+            \"SQL\":{\
+              \"CONNECTION\":\"postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}:${POSTGRES_DB}/\"}\
+        }"
+    ```
+
 ### One-time initialization
 
 1. :pencil2: Identify directory having "api" node artifacts.
