@@ -8,7 +8,7 @@ on top of the Senzing Engine.
 
 ## Environment variables
 
-1. :pencil2: Location of Senzing binary folders on host system.
+1. :pencil2: Identify location of Senzing binary folders on host system.
    Example:
 
     ```console
@@ -17,7 +17,7 @@ on top of the Senzing Engine.
     export SENZING_G2_DIR=/opt/senzing/g2
     ```
 
-1. :pencil2: Senzing docker image versions.
+1. :pencil2: Identify Senzing docker image versions.
    See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-latest.sh).
    Example:
 
@@ -27,6 +27,7 @@ on top of the Senzing Engine.
     ```
 
    :thinking: **Alternative method:**
+   This method identifies the latest versions of each Docker image.
 
     ```console
     source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
