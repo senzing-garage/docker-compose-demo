@@ -41,6 +41,13 @@ and sending the messages to the Senzing Engine.
 
 ## Run docker formation
 
+1. :pencil2: Identify directory having "webapp" node artifacts.
+   Example:
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_DIR=~/senzing.git/docker-compose-demo/resources/postgresql-kafka-multi-node/webapp
+    ```
+
 1. Bring Senzing formation.
    Example:
 

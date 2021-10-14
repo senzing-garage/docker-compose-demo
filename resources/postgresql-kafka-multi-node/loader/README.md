@@ -68,7 +68,7 @@ and sending the messages to the Senzing Engine.
 
 ### One-time initialization
 
-1. :pencil2: Identify directory having "api" node artifacts.
+1. :pencil2: Identify directory having "loader" node artifacts.
    Example:
 
     ```console

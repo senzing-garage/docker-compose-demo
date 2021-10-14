@@ -65,7 +65,7 @@ The use of a queue is to support scale up of redo loaders.
 
 ### One-time initialization
 
-1. :pencil2: Identify directory having "api" node artifacts.
+1. :pencil2: Identify directory having "redoer" node artifacts.
    Example:
 
     ```console
