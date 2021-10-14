@@ -31,3 +31,10 @@ and sending the messages to the Senzing Engine.
     ```console
     export SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP=0.0.0
     ```
+
+   :thinking: **Alternative method:**
+
+    ```console
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
+
+    ```

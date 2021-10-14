@@ -26,6 +26,13 @@ on top of the Senzing Engine.
     export SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER=0.0.0
     ```
 
+   :thinking: **Alternative method:**
+
+    ```console
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
+
+    ```
+
 1. :pencil2: Database connectivity.
    This is used in a "single-database" configuration.
    For multi-database configuration, construct `SENZING_ENGINE_CONFIGURATION_JSON`

@@ -1,20 +1,16 @@
-# Loader node type
+# Redoer node type
 
 ## Synopsis
 
-The "loader" node type is responsible for
-reading messages from a Kafka Topic
-and sending the messages to the Senzing Engine.
+The "redoer" node type is responsible for
+receiving "redo" records from the Senzing Engine,
+putting the records into a RabbitMQ queue
+reading the "redo" records from the queue,
+and having the records processed by the Senzing Engine.
+
+The use of a queue is to support scale up of redo loaders.
 
 ## Environment variables
-
-1. :pencil2: Kafka connectivity.
-   Example:
-
-    ```console
-    export SENZING_KAFKA_BOOTSTRAP_SERVER=localhost:9092
-    export SENZING_KAFKA_TOPIC=senzing-kafka-topic
-    ```
 
 1. :pencil2: Location of Senzing binary folders on host system.
    Example:
@@ -30,8 +26,9 @@ and sending the messages to the Senzing Engine.
    Example:
 
     ```console
+    export SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ=0.0.0
     export SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER=0.0.0
-    export SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER=0.0.0
+    export SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER=0.0.0
     ```
 
    :thinking: **Alternative method:**
