@@ -36,7 +36,6 @@ The use of a queue is to support scale up of redo loaders.
 
     ```console
     source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
-
     ```
 
 1. :pencil2: Database connectivity.
@@ -62,4 +61,52 @@ The use of a queue is to support scale up of redo loaders.
 
     ```console
     export SENZING_ENGINE_CONFIGURATION_JSON="{\"PIPELINE\":{\"CONFIGPATH\":\"/etc/opt/senzing\",\"RESOURCEPATH\":\"/opt/senzing/g2/resources\",\"SUPPORTPATH\":\"/opt/senzing/data\"},\"SQL\":{\"CONNECTION\":\"postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}:${POSTGRES_DB}/\"}}"
+    ```
+
+### One-time setup
+
+1. :pencil2: Identify directory having "api" node artifacts.
+   Example:
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_DIR=~/senzing.git/docker-compose-demo/resources/postgresql-kafka-multi-node/redoer
+    ```
+
+1. Initialize Senzing.
+   Example:
+
+    ```console
+    cd ${SENZING_DOCKER_COMPOSE_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file docker-compose-redoer-init.yaml up
+    ```
+
+1. After completion, bring down initialization formation.
+   Example:
+
+    ```console
+    cd ${SENZING_DOCKER_COMPOSE_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file docker-compose-redoer-init.yaml down
+    ```
+
+1. :pencil2: Install Senzing license.
+   Example:
+
+    ```console
+    cp /path/to/g2.lic ${SENZING_ETC_DIR}/g2.lic
+    ```
+
+## Run docker formation
+
+1. Bring Senzing formation.
+   Example:
+
+    ```console
+    cd ${SENZING_DOCKER_COMPOSE_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file docker-compose-redoer.yaml up
     ```

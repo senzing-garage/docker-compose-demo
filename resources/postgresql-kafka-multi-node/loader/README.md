@@ -16,7 +16,7 @@ and sending the messages to the Senzing Engine.
     export SENZING_KAFKA_TOPIC=senzing-kafka-topic
     ```
 
-1. :pencil2: Location of Senzing binary folders on host system.
+1. :pencil2: Identify location of Senzing binary folders on host system.
    Example:
 
     ```console
@@ -25,7 +25,7 @@ and sending the messages to the Senzing Engine.
     export SENZING_G2_DIR=/opt/senzing/g2
     ```
 
-1. :pencil2: Senzing docker image versions.
+1. :pencil2: Identify Senzing docker image versions.
    See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-latest.sh).
    Example:
 
@@ -39,7 +39,6 @@ and sending the messages to the Senzing Engine.
 
     ```console
     source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
-
     ```
 
 1. :pencil2: Database connectivity.
@@ -65,4 +64,52 @@ and sending the messages to the Senzing Engine.
 
     ```console
     export SENZING_ENGINE_CONFIGURATION_JSON="{\"PIPELINE\":{\"CONFIGPATH\":\"/etc/opt/senzing\",\"RESOURCEPATH\":\"/opt/senzing/g2/resources\",\"SUPPORTPATH\":\"/opt/senzing/data\"},\"SQL\":{\"CONNECTION\":\"postgresql://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}:${POSTGRES_DB}/\"}}"
+    ```
+
+### One-time setup
+
+1. :pencil2: Identify directory having "api" node artifacts.
+   Example:
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_DIR=~/senzing.git/docker-compose-demo/resources/postgresql-kafka-multi-node/loader
+    ```
+
+1. Initialize Senzing.
+   Example:
+
+    ```console
+    cd ${SENZING_DOCKER_COMPOSE_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file docker-compose-loader-init.yaml up
+    ```
+
+1. After completion, bring down initialization formation.
+   Example:
+
+    ```console
+    cd ${SENZING_DOCKER_COMPOSE_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file docker-compose-loader-init.yaml down
+    ```
+
+1. :pencil2: Install Senzing license.
+   Example:
+
+    ```console
+    cp /path/to/g2.lic ${SENZING_ETC_DIR}/g2.lic
+    ```
+
+## Run docker formation
+
+1. Bring Senzing formation.
+   Example:
+
+    ```console
+    cd ${SENZING_DOCKER_COMPOSE_DIR}
+    sudo \
+      --preserve-env \
+      docker-compose --file docker-compose-loader.yaml up
     ```
