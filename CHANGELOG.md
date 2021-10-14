@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.8.0] - 2021-10-01
+
+### Changed in 1.8.0
+
+- Improved docker image version management
+- Updated documentation
+- Moved demonstrations into "advanced" instructions
+
 ## [1.7.0] - 2021-08-04
 
 ### Changed in 1.7.0
@@ -73,9 +81,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - senzing/redoer:1.3.4 to senzing/redoer:1.3.5
   - senzing/senzing-api-server:2.3.1 to senzing/senzing-api-server:2.3.2
   - senzing/xterm:1.0.5 to senzing/xterm:1.1.0
-
-### Changed in 1.5.3
-
 - Migrated from `senzing/debug` to `senzing/console`
 
 ## [1.5.2] - 2021-02-10
@@ -146,8 +151,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `kafdrop`; removed kafka-manager
 - Simplified localhost storage ("volumes:")
 - Simplified `README.md`
-    - Moved "advanced" topics into knowledge-base and linked to them.
-    - Using `sudo --preserve-env`
+  - Moved "advanced" topics into knowledge-base and linked to them.
+  - Using `sudo --preserve-env`
 
 ## [1.3.2] - 2020-02-27
 

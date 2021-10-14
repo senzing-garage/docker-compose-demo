@@ -3,7 +3,7 @@ services:
 
   initcontainer:
     container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-1.6.12}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
       - backend
     restart: on-failure
@@ -43,7 +43,7 @@ services:
             "CONNECTION": "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"
           }
         }
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-1.0.3}
+    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
       - backend
     restart: always
@@ -58,7 +58,7 @@ services:
     environment:
 #     See https://github.com/Senzing/resolver#configuration
       SENZING_SUBCOMMAND: service
-    image: senzing/resolver:${SENZING_DOCKER_IMAGE_VERSION_RESOLVER:-1.3.2}
+    image: senzing/resolver:${SENZING_DOCKER_IMAGE_VERSION_RESOLVER:-latest}
     networks:
       - backend
     restart: always
