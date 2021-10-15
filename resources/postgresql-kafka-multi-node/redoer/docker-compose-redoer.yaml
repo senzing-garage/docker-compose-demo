@@ -17,7 +17,7 @@ services:
     volumes:
       - ${RABBITMQ_DIR}:/bitnami
 
-  redoerwriter:
+  redoerqueuewriter:
     container_name: senzing-redoer-write-to-rabbitmq
     depends_on:
       - loader
@@ -40,7 +40,7 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  redoerreader:
+  redoerqueuereader:
     depends_on:
       - loader
     environment:

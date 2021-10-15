@@ -12,15 +12,6 @@ The use of a queue is to support scale up of redo loaders.
 
 ## Environment variables
 
-1. :pencil2: Identify location of Senzing binary folders on host system.
-   Example:
-
-    ```console
-    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/2.0.0
-    export SENZING_ETC_DIR=/etc/opt/senzing
-    export SENZING_G2_DIR=/opt/senzing/g2
-    ```
-
 1. :pencil2: Identify Senzing docker image versions.
    See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-latest.sh).
    Example:
@@ -38,6 +29,15 @@ The use of a queue is to support scale up of redo loaders.
     source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
     ```
 
+1. :pencil2: Identify location of Senzing binary folders on host system.
+   Example:
+
+    ```console
+    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/2.0.0
+    export SENZING_ETC_DIR=/etc/opt/senzing
+    export SENZING_G2_DIR=/opt/senzing/g2
+    ```
+
 1. :pencil2: Database connectivity.
    This is used in a "single-database" configuration.
    For multi-database configuration, construct `SENZING_ENGINE_CONFIGURATION_JSON`
@@ -46,7 +46,7 @@ The use of a queue is to support scale up of redo loaders.
 
     ```console
     export POSTGRES_DB=G2
-    export POSTGRES_HOST=localhost
+    export POSTGRES_HOST=10.0.0.1
     export POSTGRES_PASSWORD=my-password
     export POSTGRES_PORT=5432
     export POSTGRES_USERNAME=my-username
@@ -124,5 +124,8 @@ The use of a queue is to support scale up of redo loaders.
     cd ${SENZING_DOCKER_COMPOSE_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file docker-compose-redoer.yaml up
+      docker-compose \
+        --file docker-compose-redoer.yaml \
+        up \
+          --scale redoerqueuereader=5
     ```
