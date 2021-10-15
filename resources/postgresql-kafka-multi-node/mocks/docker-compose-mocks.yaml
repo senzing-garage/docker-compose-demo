@@ -82,8 +82,6 @@ services:
     ports:
       - 5432:5432
     restart: always
-    volumes:
-      - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/var/lib/postgresql/data
 
   postgresinit:
     container_name: senzing-postgresql-init
