@@ -16,6 +16,35 @@ The mock services provisioned are:
 
 ## Environment variables
 
+
+1. :pencil2: Identify the IP address of the host system.
+   Example:
+
+    ```console
+    export SENZING_DOCKER_HOST_IP_ADDR=10.1.1.100
+    ```
+
+    1. To find the value for `SENZING_DOCKER_HOST_IP_ADDR` use Python interactively:
+       Example:
+
+        ```console
+        python3
+        ```
+
+       Copy and paste the following lines into the Python REPL (Read-Evaluate-Print Loop):
+
+        ```python
+        import socket
+
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.connect(("8.8.8.8", 80))
+        print("export SENZING_DOCKER_HOST_IP_ADDR={0}".format(sock.getsockname()[0]))
+        sock.close()
+        quit()
+        ```
+
+       Copy and paste the printed `export` statement into the host terminal.
+
 1. :pencil2: Identify location of Senzing binary folders on host system.
    Example:
 

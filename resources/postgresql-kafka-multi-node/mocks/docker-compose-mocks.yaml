@@ -20,7 +20,7 @@ services:
     environment:
 #     See https://github.com/bitnami/bitnami-docker-kafka#configuration
       ALLOW_PLAINTEXT_LISTENER: "yes"
-      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://${SENZING_DOCKER_HOST_IP_ADDR}:9092"
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-2.8.0-debian-10-r55}
@@ -37,7 +37,7 @@ services:
     environment:
 #     See https://github.com/obsidiandynamics/kafdrop#environment-variables
       JVM_OPTS: "-Xms32M -Xmx64M"
-      KAFKA_BROKERCONNECT: "senzing-kafka:9092"
+      KAFKA_BROKERCONNECT: "${SENZING_DOCKER_HOST_IP_ADDR}:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
     image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-3.27.0}
     networks:
@@ -54,7 +54,7 @@ services:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
-      SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_BOOTSTRAP_SERVER: ${SENZING_DOCKER_HOST_IP_ADDR}:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 100000
