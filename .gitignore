@@ -4,3 +4,4 @@ __pycache__/
 resources/plugins/__pycache__/
 
 *.pyc
+.history

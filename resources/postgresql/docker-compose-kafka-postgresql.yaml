@@ -225,8 +225,8 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  api:
-    container_name: senzing-api-server
+  pocserver:
+    container_name: senzing-poc-server
     depends_on:
       - postgres
     environment:
@@ -236,6 +236,9 @@ services:
       SENZING_API_SERVER_PORT: '8250'
       SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
       SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
+      SENZING_KAFKA_LOAD_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_LOAD_GROUP: senzing-kafka-group
+      SENZING_KAFKA_LOAD_TOPIC: senzing-kafka-topic
       SENZING_API_SERVER_INIT_JSON: >-
         {
           "PIPELINE": {
@@ -258,7 +261,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
+    image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
       - backend
     ports:
@@ -272,15 +275,16 @@ services:
   webapp:
     container_name: senzing-webapp
     depends_on:
-      - api
+      - pocserver
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
-      SENZING_API_SERVER_URL: http://senzing-api-server:8250
-      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
+      SENZING_API_SERVER_URL: http://senzing-poc-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
-      SENZING_WEB_SERVER_API_PATH: /api
+      SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
       SENZING_WEB_SERVER_PORT: 8251
-      SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
+      SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
       - backend

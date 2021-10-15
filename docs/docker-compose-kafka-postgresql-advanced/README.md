@@ -220,6 +220,16 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql.yaml
     ```
 
+#### With Senzing API Server
+
+Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
+
+1. Standard demonstration.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-api-server.yaml
+    ```
+
 #### Withinfo formation
 
 1. Return information with each record added to Senzing.
