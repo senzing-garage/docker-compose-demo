@@ -1,4 +1,4 @@
-# Loader node type
+# Webapp node type
 
 ## Synopsis
 

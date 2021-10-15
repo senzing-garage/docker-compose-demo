@@ -1,10 +1,18 @@
-# Loader node type
+# Mocks
 
 ## Synopsis
 
-The "loader" node type is responsible for
-reading messages from a Kafka Topic
-and sending the messages to the Senzing Engine.
+"mocks" are used for localized testing.
+They are not part of a production environment.
+
+The mock services provisioned are:
+
+- Zookeeper
+- Kafka
+- KafDrop
+- PostgreSQL
+- Senzing Stream-producer
+- PhpPgAdmin
 
 ## Environment variables
 
