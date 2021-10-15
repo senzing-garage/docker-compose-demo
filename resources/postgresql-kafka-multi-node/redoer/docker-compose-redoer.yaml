@@ -41,7 +41,6 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   redoerreader:
-    container_name: senzing-redoer-read-from-rabbitmq
     depends_on:
       - loader
     environment:

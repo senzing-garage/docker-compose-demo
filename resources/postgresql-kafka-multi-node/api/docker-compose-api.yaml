@@ -2,7 +2,6 @@ version: '3'
 services:
 
   api:
-    container_name: senzing-api-server
     environment:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
