@@ -12,7 +12,7 @@ and sending the messages to the Senzing Engine.
    Example:
 
     ```console
-    export SENZING_KAFKA_BOOTSTRAP_SERVER=localhost:9092
+    export SENZING_KAFKA_BOOTSTRAP_SERVER=10.0.0.1:9092
     export SENZING_KAFKA_TOPIC=senzing-kafka-topic
     ```
 
@@ -49,7 +49,7 @@ and sending the messages to the Senzing Engine.
 
     ```console
     export POSTGRES_DB=G2
-    export POSTGRES_HOST=localhost
+    export POSTGRES_HOST=10.0.0.2
     export POSTGRES_PASSWORD=my-password
     export POSTGRES_PORT=5432
     export POSTGRES_USERNAME=my-username
@@ -127,5 +127,7 @@ and sending the messages to the Senzing Engine.
     cd ${SENZING_DOCKER_COMPOSE_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file docker-compose-loader.yaml up
+      docker-compose \
+        --scale senzing-stream-loader=5 \
+        --file docker-compose-loader.yaml up
     ```
