@@ -3,8 +3,6 @@ services:
 
   webapp:
     container_name: senzing-webapp
-    depends_on:
-      - api
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: ${SENZING_API_SERVER_URL}

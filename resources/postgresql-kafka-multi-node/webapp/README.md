@@ -35,7 +35,7 @@ and sending the messages to the Senzing Engine.
 
     ```console
     export SENZING_WEB_SERVER_ADMIN_AUTH_PATH=http://10.0.0.4:8251
-    export SENZING_WEB_SERVER_URL: http://10.0.0.4:8251
+    export SENZING_WEB_SERVER_URL=http://10.0.0.4:8251
     ```
 
 ## Run docker formation
