@@ -14,13 +14,9 @@ services:
       - 15672:15672
       - 5672:5672
     restart: always
-    volumes:
-      - ${RABBITMQ_DIR}:/bitnami
 
   redoerqueuewriter:
     container_name: senzing-redoer-write-to-rabbitmq
-    depends_on:
-      - loader
     environment:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
@@ -41,8 +37,6 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   redoerqueuereader:
-    depends_on:
-      - loader
     environment:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
