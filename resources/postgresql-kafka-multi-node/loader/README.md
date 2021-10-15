@@ -128,6 +128,7 @@ and sending the messages to the Senzing Engine.
     sudo \
       --preserve-env \
       docker-compose \
-        --file docker-compose-loader.yaml up \
+        --file docker-compose-loader.yaml \
+        up \
           --scale senzing-stream-loader=5
     ```
