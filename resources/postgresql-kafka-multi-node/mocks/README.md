@@ -63,24 +63,24 @@ The mock services provisioned are:
       docker-compose --file docker-compose-mocks.yaml up
     ```
 
-### View data
+## View data
 
 Once the docker-compose formation is running,
 different aspects of the formation can be viewed.
 
-#### View docker containers
+### View docker containers
 
 1. A good tool to monitor individual docker logs is
    [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
-#### View Kafka
+### View Kafka
 
 1. Kafdrop is viewable at
    [localhost:9179](http://localhost:9179).
 
-#### View PostgreSQL
+### View PostgreSQL
 
 1. PostgreSQL is viewable at
    [localhost:9171](http://localhost:9171).
