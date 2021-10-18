@@ -129,7 +129,7 @@ on top of the Senzing Engine.
       docker-compose \
         --file docker-compose-api.yaml \
         up \
-          --scale loader=${SENZING_API_SERVER_SCALE}
+          --scale api=${SENZING_API_SERVER_SCALE}
     ```
 
 1. **Note:** Each "senzing-api-container" will be given a different "ephemeral host port".
