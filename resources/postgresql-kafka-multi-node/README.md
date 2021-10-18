@@ -26,7 +26,7 @@ Finally, a set of mock data, 100K records, is sent to Kafka for demonstration pu
 ### Loading Senzing Model via Senzing Engine
 
 Once source records are available in Kafka,
-a set of "stream-loaders` is deployed in parallel to
+"stream-loaders" are deployed to
 read from the Kafka Topic and send to the Senzing engine.
 
 1. To create the set of stream-loaders,follow steps in [loader](loader/)
