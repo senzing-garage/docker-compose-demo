@@ -38,3 +38,9 @@ The Senzing Model can be queried via a RESTful HTTP API
 delivered by the Senzing API Server.
 
 1. To create the set of senzing-api-servers, follow steps in [api](api/).
+
+### Viewing Senzing Model
+
+The Senzing Model can be visualized using the Senzing Entity Search Web App.
+
+1. To create an entity-search-web-app, follow steps in [webapp](webapp/).
