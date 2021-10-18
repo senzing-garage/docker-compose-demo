@@ -51,3 +51,12 @@ delivered by the Senzing API Server.
 The Senzing Model can be visualized using the Senzing Entity Search Web App.
 
 1. To create an entity-search-web-app, follow steps in [webapp](webapp/).
+
+### Utilities
+
+Utilities programs include a
+[console](https://github.com/Senzing/docker-senzing-console) container
+and
+[SwaggerUI](https://www.github.com/swagger-api/swagger-ui).
+
+1. To create utilities, follow steps in [utilities](utilities/).
