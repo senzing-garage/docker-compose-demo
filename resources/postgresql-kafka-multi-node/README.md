@@ -23,17 +23,18 @@ Finally, a set of mock data, 100K records, is sent to Kafka for demonstration pu
 
 1. To set up these "mock" services and data, follow steps in [mocks](mocks/).
 
-### Loading Senzing Model via Senzing Engine
+### Loading Senzing Model
 
 Once source records are available in Kafka,
 "stream-loaders" are deployed to
-read from the Kafka Topic and send to the Senzing engine.
+read from the Kafka Topic and send to the Senzing Engine
+which manages the Senzing Model.
 
-1. To create the set of stream-loaders,follow steps in [loader](loader/)
+1. To create the set of stream-loaders, follow steps in [loader](loader/).
 
-### Deploying Senzing API Server
+### Querying Senzing Model
 
 The Senzing Model can be queried via a RESTful HTTP API
 delivered by the Senzing API Server.
 
-1. To create the set of senzing-api-server,follow steps in [api](api/)
+1. To create the set of senzing-api-servers, follow steps in [api](api/).
