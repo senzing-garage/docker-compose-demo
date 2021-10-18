@@ -49,7 +49,7 @@ which can be used to visually inspect the Senzing Mode.
     export SENZING_DOCKER_COMPOSE_DIR=~/senzing.git/docker-compose-demo/resources/postgresql-kafka-multi-node/webapp
     ```
 
-1. Bring Senzing formation.
+1. Bring up Senzing formation.
    Example:
 
     ```console

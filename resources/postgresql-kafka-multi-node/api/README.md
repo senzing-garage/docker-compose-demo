@@ -122,7 +122,7 @@ It uses the
     export SENZING_API_SERVER_SCALE=3
     ```
 
-1. Bring Senzing formation.
+1. Bring up Senzing formation.
    Example:
 
     ```console

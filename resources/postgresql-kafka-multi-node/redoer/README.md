@@ -119,7 +119,14 @@ It uses the
 
 ## Run docker formation
 
-1. Bring Senzing formation.
+1. :pencil2: Specify number of "redoer" containers to run.
+   Example:
+
+    ```console
+    export SENZING_STREAM_REDOER_SCALE=5
+    ```
+
+1. Bring up Senzing formation.
    Example:
 
     ```console
@@ -129,5 +136,5 @@ It uses the
       docker-compose \
         --file docker-compose-redoer.yaml \
         up \
-          --scale redoerqueuereader=5
+          --scale redoerqueuereader=${SENZING_STREAM_REDOER_SCALE}
     ```

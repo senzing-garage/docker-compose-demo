@@ -131,7 +131,7 @@ It uses the
     export SENZING_STREAM_LOADER_SCALE=5
     ```
 
-1. Bring Senzing formation.
+1. Bring up Senzing formation.
    Example:
 
     ```console

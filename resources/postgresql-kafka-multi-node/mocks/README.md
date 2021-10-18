@@ -87,7 +87,7 @@ The mock services provisioned are:
     export SENZING_DOCKER_COMPOSE_DIR=~/senzing.git/docker-compose-demo/resources/postgresql-kafka-multi-node/mocks
     ```
 
-1. Bring Senzing formation.
+1. Bring up Senzing formation.
    Example:
 
     ```console
