@@ -120,6 +120,13 @@ and sending the messages to the Senzing Engine.
 
 ## Run docker formation
 
+1. :pencil2: Specify number of "stream-loader" containers to run.
+   Example:
+
+    ```console
+    export SENZING_STREAM_LOADER_SCALE=5
+    ```
+
 1. Bring Senzing formation.
    Example:
 
@@ -130,5 +137,5 @@ and sending the messages to the Senzing Engine.
       docker-compose \
         --file docker-compose-loader.yaml \
         up \
-          --scale loader=5
+          --scale loader=${SENZING_STREAM_LOADER_SCALE}
     ```

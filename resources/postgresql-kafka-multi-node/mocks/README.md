@@ -16,8 +16,10 @@ The mock services provisioned are:
 
 ## Environment variables
 
-
 1. :pencil2: Identify the IP address of the host system.
+   This IP address will be needed for connectivity
+   to the PostgreSQL and Kafka backing services from
+   *within* docker containers (i.e. `localhost` will not work).
    Example:
 
     ```console

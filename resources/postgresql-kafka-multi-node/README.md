@@ -19,6 +19,14 @@ to facilitate testing on a local workstation.
 The docker-compose.yaml files require PostgreSQL and Kafka backing services.
 In addition, the PostgreSQL database needs to have a schema defined
 and initialized with Senzing configuration.
-Finally, a set of mock data is sent to Kafka for demonstration purposes.
+Finally, a set of mock data, 100K records, is sent to Kafka for demonstration purposes.
 
 1. To set up these "mock" services and data, follow steps in [mocks](mocks/).
+
+### Loading Senzing Model via Senzing Engine
+
+Once source records are available in Kafka,
+a set of "stream-loaders` is deployed in parallel to
+read from the Kafka Topic and send to the Senzing engine.
+
+1. To create the set of stream-loaders,follow steps in [loader](loader/)
