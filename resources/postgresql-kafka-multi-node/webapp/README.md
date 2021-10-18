@@ -2,9 +2,9 @@
 
 ## Synopsis
 
-The "loader" node type is responsible for
-reading messages from a Kafka Topic
-and sending the messages to the Senzing Engine.
+The "webapp" node type deploys the
+[Senzing Entity Search Web app](https://github.com/Senzing/entity-search-web-app).
+which can be used to visually inspect the Senzing Mode.
 
 ## Environment variables
 
@@ -24,6 +24,8 @@ and sending the messages to the Senzing Engine.
     ```
 
 1. :pencil2: Senzing API Server connectivity.
+   **Note:** This may point to an ephemeral port for one of the senzing-api-server containers
+   or may point to the service created by using a load-balancer or proxy server.
    Example:
 
     ```console
