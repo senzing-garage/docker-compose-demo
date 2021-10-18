@@ -30,3 +30,10 @@ a set of "stream-loaders` is deployed in parallel to
 read from the Kafka Topic and send to the Senzing engine.
 
 1. To create the set of stream-loaders,follow steps in [loader](loader/)
+
+### Deploying Senzing API Server
+
+The Senzing Model can be queried via a RESTful HTTP API
+delivered by the Senzing API Server.
+
+1. To create the set of senzing-api-server,follow steps in [api](api/)

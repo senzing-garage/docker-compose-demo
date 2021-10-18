@@ -112,6 +112,13 @@ on top of the Senzing Engine.
 
 ## Run docker formation
 
+1. :pencil2: Specify number of "stream-loader" containers to run.
+   Example:
+
+    ```console
+    export SENZING_API_SERVER_SCALE=3
+    ```
+
 1. Bring Senzing formation.
    Example:
 
@@ -121,5 +128,10 @@ on top of the Senzing Engine.
       --preserve-env \
       docker-compose \
         --file docker-compose-api.yaml \
-        up
-    ```
+        up \
+          --scale loader=${SENZING_API_SERVER_SCALE}
+            ```
+
+1. **Note:** Each "senzing-api-container" will be given a different "ephemeral host port".
+   A load-balancer or proxy is needed to aggregate the individual containers into a service
+   having a single host:port.
