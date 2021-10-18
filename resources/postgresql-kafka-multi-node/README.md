@@ -26,29 +26,32 @@ Finally, a set of mock data, 100K records, is sent to Kafka for demonstration pu
 ### Loading Senzing Model
 
 Once source records are available in Kafka,
-"stream-loaders" are deployed to
-read from the Kafka Topic and send to the Senzing Engine
-which manages the Senzing Model.
+[stream-loaders])(https://github.com/Senzing/stream-loader)
+are deployed to read from the Kafka Topic and send
+to the Senzing Engine which manages the Senzing Model.
 
 1. To create the set of stream-loaders, follow steps in [loader](loader/).
 
 ### Redo
 
 The Senzing Model is monitored for any re-evaluations that are needed.
-The "redoer" processes those re-evaluations.
+The [redoers](https://github.com/Senzing/redoer)
+processes those re-evaluations.
 
 1. To create the set of redoers, follow steps in [redo](redo/).
 
 ### Querying Senzing Model
 
 The Senzing Model can be queried via a RESTful HTTP API
-delivered by the Senzing API Server.
+delivered by the
+[Senzing API Server](https://github.com/Senzing/senzing-api-server).
 
 1. To create the set of senzing-api-servers, follow steps in [api](api/).
 
 ### Viewing Senzing Model
 
-The Senzing Model can be visualized using the Senzing Entity Search Web App.
+The Senzing Model can be visualized using the
+[Senzing Entity Search Web App](https://github.com/Senzing/entity-search-web-app).
 
 1. To create an entity-search-web-app, follow steps in [webapp](webapp/).
 
