@@ -4,7 +4,11 @@
 
 The "loader" node type is responsible for
 reading messages from a Kafka Topic
-and sending the messages to the Senzing Engine.
+and sending the messages to the Senzing Engine
+which manages the Senzing Model.
+
+It uses the
+[stream-loader](https://github.com/Senzing/stream-loader).
 
 ## Environment variables
 

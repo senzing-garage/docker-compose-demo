@@ -7,8 +7,10 @@ receiving "redo" records from the Senzing Engine,
 putting the records into a RabbitMQ queue
 reading the "redo" records from the queue,
 and having the records processed by the Senzing Engine.
-
 The use of a queue is to support scale up of redo loaders.
+
+It uses the
+[redoer](https://github.com/Senzing/redoer).
 
 ## Environment variables
 
