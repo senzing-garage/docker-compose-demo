@@ -3,16 +3,20 @@
 **FIXME:**
 On this page will be instruction to guide a user to set up:
 
-1. "loader"
-1. "redoer"
-1. "api"
-1. "webapp"
-1. "utilities"
-
-This page will also show how to set up a system using "mocks" for PostgreSQL and Kafka
-to facilitate testing on a local workstation.
+1. [loader](loaders/)
+1. [redoer](redoer/)
+1. [api](api/)
+1. [webapp](webapp/)
+1. [utilities](utilities/)
 
 ## Single-node demonstration
+
+Although this demonstration is for multi-node (i.e. multiple real or virtual machines) deployment,
+the deployment can be done on a single machine for educational or testing purposes.
+
+The single-node demonstration will use "mock" PostgreSQL and Kafka services
+deployed as additional docker containers.
+This alleviates the need to set up the services separately.
 
 ### Mock services
 
@@ -26,7 +30,7 @@ Finally, a set of mock data, 100K records, is sent to Kafka for demonstration pu
 ### Loading Senzing Model
 
 Once source records are available in Kafka,
-[stream-loaders])(https://github.com/Senzing/stream-loader)
+[stream-loaders](https://github.com/Senzing/stream-loader)
 are deployed to read from the Kafka Topic and send
 to the Senzing Engine which manages the Senzing Model.
 
