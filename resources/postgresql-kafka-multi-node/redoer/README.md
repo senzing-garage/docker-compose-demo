@@ -21,7 +21,7 @@ It uses the
     ```console
     export SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ=0.0.0
     export SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER=0.0.0
-    export SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER=0.0.0
+    export SENZING_DOCKER_IMAGE_VERSION_REDOER=0.0.0
     ```
 
    :thinking: **Alternative method:**

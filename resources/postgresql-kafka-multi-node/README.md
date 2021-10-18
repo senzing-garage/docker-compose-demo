@@ -32,6 +32,13 @@ which manages the Senzing Model.
 
 1. To create the set of stream-loaders, follow steps in [loader](loader/).
 
+### Redo
+
+The Senzing Model is monitored for any re-evaluations that are needed.
+The "redoer" processes those re-evaluations.
+
+1. To create the set of redoers, follow steps in [redo](redo/).
+
 ### Querying Senzing Model
 
 The Senzing Model can be queried via a RESTful HTTP API
