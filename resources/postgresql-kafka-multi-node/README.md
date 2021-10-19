@@ -21,6 +21,7 @@ different roles / node-types:
 1. [utilities](utilities/) - A console and SwaggerUI
 
 Click on any of the five links to see how to provision that node-type.
+
 ## Single-node demonstration
 
 Although this demonstration is for multi-node (i.e. multiple real or virtual machines) deployment,
