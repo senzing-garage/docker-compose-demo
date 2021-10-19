@@ -1,0 +1,26 @@
+version: '3'
+services:
+
+  api:
+    environment:
+      SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
+      SENZING_API_SERVER_BIND_ADDR: 'all'
+      SENZING_API_SERVER_ENABLE_ADMIN: 'true'
+      SENZING_API_SERVER_INIT_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
+      SENZING_API_SERVER_PORT: '8250'
+      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
+      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
+      SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
+    networks:
+      - backend
+    ports:
+      - 8250
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+networks:
+  backend:

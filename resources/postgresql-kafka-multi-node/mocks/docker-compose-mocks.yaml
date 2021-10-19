@@ -1,0 +1,134 @@
+version: '3'
+services:
+
+  zookeeper:
+    container_name: senzing-zookeeper
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
+      ALLOW_ANONYMOUS_LOGIN: "yes"
+    image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-3.7.0-debian-10-r87}
+    networks:
+      - backend
+    ports:
+      - 2181:2181
+    restart: always
+
+  kafka:
+    container_name: senzing-kafka
+    depends_on:
+      - zookeeper
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-kafka#configuration
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://${SENZING_DOCKER_HOST_IP_ADDR}:9092"
+      KAFKA_NUM_PARTITIONS: 5
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-2.8.0-debian-10-r55}
+    networks:
+      - backend
+    ports:
+      - 9092:9092
+    restart: always
+
+  kafdrop:
+    container_name: senzing-kafdrop
+    depends_on:
+      - kafka
+    environment:
+#     See https://github.com/obsidiandynamics/kafdrop#environment-variables
+      JVM_OPTS: "-Xms32M -Xmx64M"
+      KAFKA_BROKERCONNECT: "${SENZING_DOCKER_HOST_IP_ADDR}:9092"
+      SERVER_SERVLET_CONTEXTPATH: "/"
+    image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-3.27.0}
+    networks:
+      - backend
+    ports:
+      - 9179:9000
+    restart: always
+
+  producer:
+    container_name: senzing-stream-producer
+    depends_on:
+      - kafka
+    environment:
+#     See https://github.com/Senzing/stream-producer#configuration
+      SENZING_DELAY_IN_SECONDS: 30
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_KAFKA_BOOTSTRAP_SERVER: ${SENZING_DOCKER_HOST_IP_ADDR}:9092
+      SENZING_KAFKA_TOPIC: senzing-kafka-topic
+      SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-100000}
+      SENZING_RECORD_MONITOR: 1000
+      SENZING_SUBCOMMAND: json-to-kafka
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
+    networks:
+      - backend
+    restart: on-failure
+
+  postgres:
+    container_name: senzing-postgres
+    environment:
+#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
+      POSTGRES_DB: ${POSTGRES_DB:-G2}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    networks:
+      - backend
+    ports:
+      - 5432:5432
+    restart: always
+
+  postgresinit:
+    container_name: senzing-postgresql-init
+    depends_on:
+      - postgres
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  phppgadmin:
+    container_name: senzing-phppgadmin
+    environment:
+#     See https://hub.docker.com/r/bitnami/phppgadmin
+      - DATABASE_HOST=senzing-postgres
+    image: bitnami/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPPGADMIN:-latest}
+    networks:
+      - backend
+    ports:
+      - 9171:8080
+      - 9172:443
+    restart: always
+
+  initcontainer:
+    container_name: senzing-init-container
+    depends_on:
+      - postgres
+      - postgresinit
+    environment:
+#     See https://github.com/Senzing/docker-init-container#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 30
+      SENZING_SUBCOMMAND: initialize-database
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+networks:
+  backend:

@@ -1,0 +1,21 @@
+version: '3'
+services:
+
+  initcontainer:
+    container_name: senzing-init-container-utilities
+    environment:
+#     See https://github.com/Senzing/docker-init-container#configuration
+      SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
+      SENZING_SUBCOMMAND: initialize-files
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+networks:
+  backend:

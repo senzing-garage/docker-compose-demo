@@ -1,0 +1,25 @@
+version: '3'
+services:
+
+  loader:
+    environment:
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/stream-loader#configuration
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
+      SENZING_KAFKA_BOOTSTRAP_SERVER: ${SENZING_KAFKA_BOOTSTRAP_SERVER}
+      SENZING_KAFKA_TOPIC: ${SENZING_KAFKA_TOPIC}
+      SENZING_SKIP_DATABASE_PERFORMANCE_TEST: "true"
+      SENZING_SUBCOMMAND: kafka
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+networks:
+  backend:
