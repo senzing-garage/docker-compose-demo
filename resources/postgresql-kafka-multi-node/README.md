@@ -42,7 +42,7 @@ The Senzing Model is monitored for any re-evaluations that are needed.
 The [redoers](https://github.com/Senzing/redoer)
 processes those re-evaluations.
 
-1. To create the set of redoers, follow steps in [redo](redo/).
+1. To create the set of redoers, follow steps in [redoer](redoer/).
 
 ### Querying Senzing Model
 
