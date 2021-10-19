@@ -14,7 +14,7 @@ have been provisioned and configured for use by Senzing.
 This demonstration divides the Senzing stack into five
 different roles / node-types:
 
-1. [loader](loaders/) - Receives messages from Kafka and sends to Senzing Engine
+1. [loader](loader/) - Receives messages from Kafka and sends to Senzing Engine
 1. [redoer](redoer/) - Discovers and processes "redo" information
 1. [api](api/) - Deploys a RESTful HTTP Senzing API
 1. [webapp](webapp/) - A web app to visualize the Senzing Model
