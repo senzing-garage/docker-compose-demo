@@ -1,14 +1,26 @@
 # postgresql-kafka-multi-node
 
-**FIXME:**
-On this page will be instruction to guide a user to set up:
+This demonstration shows how to set up a multi-node
+installation of Senzing using tailored `docker-compose.yaml` files
+for each node-type
+and the use of the docker-compose `--scale` parameter
+to horizontally scale containers.
 
-1. [loader](loaders/)
-1. [redoer](redoer/)
-1. [api](api/)
-1. [webapp](webapp/)
-1. [utilities](utilities/)
+## Multi-node demonstration
 
+:warning: The multi-node demonstration presumes that Kafka and PostgreSQL
+have been provisioned and configured for use by Senzing.
+
+This demonstration divides the Senzing stack into five
+different roles / node-types:
+
+1. [loader](loaders/) - Receives messages from Kafka and sends to Senzing Engine
+1. [redoer](redoer/) - Discovers and processes "redo" information
+1. [api](api/) - Deploys a RESTful HTTP Senzing API
+1. [webapp](webapp/) - A web app to visualize the Senzing Model
+1. [utilities](utilities/) - A console and SwaggerUI
+
+Click on any of the five links to see how to provision that node-type.
 ## Single-node demonstration
 
 Although this demonstration is for multi-node (i.e. multiple real or virtual machines) deployment,
