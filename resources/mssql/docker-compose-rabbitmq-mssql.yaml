@@ -239,8 +239,8 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
-  api:
-    container_name: senzing-api-server
+  pocserver:
+    container_name: senzing-poc-server
     depends_on:
       - mssql-create-senzing
     environment:
@@ -252,6 +252,13 @@ services:
       SENZING_API_SERVER_PORT: '8250'
       SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
       SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
+      SENZING_RABBITMQ_LOAD_EXCHANGE: senzing-rabbitmq-exchange
+      SENZING_RABBITMQ_LOAD_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_LOAD_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_LOAD_PORT: 5672
+      SENZING_RABBITMQ_LOAD_ROUTING_KEY: senzing.records
+      SENZING_RABBITMQ_LOAD_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
       SENZING_API_SERVER_INIT_JSON: >-
         {
           "PIPELINE": {
@@ -274,7 +281,7 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
+    image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
       - backend
     ports:
@@ -290,14 +297,17 @@ services:
   webapp:
     container_name: senzing-webapp
     depends_on:
-      - api
+      - pocserver
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
-      SENZING_API_SERVER_URL: http://senzing-api-server:8250
-      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
+      SENZING_API_SERVER_URL: http://senzing-poc-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
-      SENZING_WEB_SERVER_API_PATH: /api
+      SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_API_PATH: /poc
       SENZING_WEB_SERVER_PORT: 8251
+      SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
+      SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
