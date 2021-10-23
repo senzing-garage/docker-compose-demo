@@ -216,10 +216,20 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 
 #### Standard formation
 
+#### With Senzing API Server
+
+Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
+
 1. Standard demonstration.
 
     ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-sqs-postgresql.yaml
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-api-server.yaml
+    ```
+    
+1. Standard demonstration.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-sqs-postgresql-api-server.yaml
     ```
 
 #### Withinfo formation
