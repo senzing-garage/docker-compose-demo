@@ -115,11 +115,20 @@ It uses the
 
 ## Run docker formation
 
-1. :pencil2: Specify number of "stream-loader" containers to run.
+1. :pencil2: Specify number of "senzing-api-server" containers to run.
    Example:
 
     ```console
-    export SENZING_API_SERVER_SCALE=3
+    export SENZING_DOCKER_COMPOSE_SCALE_SENZING_API_SERVER=3
+    ```
+
+1. :pencil2: Specify the port range for the set of "senzing-api-servers".
+   The number of ports must be equal to or larger than the value of
+   `SENZING_DOCKER_COMPOSE_SCALE_SENZING_API_SERVER`.
+   Example:
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_PORT_RANGE_SENZING_API_SERVER="10000-10002"
     ```
 
 1. Bring up Senzing formation.
@@ -132,7 +141,7 @@ It uses the
       docker-compose \
         --file docker-compose-api.yaml \
         up \
-          --scale api=${SENZING_API_SERVER_SCALE}
+          --scale api=${SENZING_DOCKER_COMPOSE_SCALE_SENZING_API_SERVER}
     ```
 
 1. **Note:** Each "senzing-api-container" will be given a different "ephemeral host port".
