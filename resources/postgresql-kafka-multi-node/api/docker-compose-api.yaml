@@ -15,7 +15,7 @@ services:
     networks:
       - backend
     ports:
-      - 8250
+      - ${SENZING_DOCKER_COMPOSE_PORT_RANGE_SENZING_API_SERVER:-8250}:8250
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data

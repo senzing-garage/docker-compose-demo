@@ -77,6 +77,16 @@ working with the Senzing stack.
         }"
     ```
 
+1. :thinking: **Optional:**
+   Set the URL used by the SwaggerUI to retrieve the Senzing RESTful HTTP API OpenAPI specification.
+   In the example below, the host (`localhost`) and port (`8250`) need to be changed to the location
+   of a Senzing API Server.
+   Example:
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_SWAGGERUI_URL=http://localhost:8250/specifications/open-api?asRaw=true
+    ```
+
 ### One-time initialization
 
 1. :pencil2: Identify directory having "utilities" node artifacts.
