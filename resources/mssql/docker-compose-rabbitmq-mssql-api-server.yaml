@@ -1,6 +1,33 @@
 version: '3'
 services:
 
+  mssql:
+    container_name: senzing-mssql
+    environment:
+#     See https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables
+      ACCEPT_EULA: ${ACCEPT_EULA:-Y}
+      MSSQL_PID: ${MSSQL_PID:-Developer}
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
+    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2019-GA-ubuntu-16.04}
+    networks:
+      - backend
+    ports:
+      - 1433:1433
+    restart: always
+    volumes:
+      - ${MSSQL_DIR:-/var/opt/mssql}:/var/opt/mssql
+
+  adminer:
+    container_name: senzing-adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: senzing-mssql
+    image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_ADMINER:-latest}
+    networks:
+      - backend
+    ports:
+      - 9177:8080
+    restart: always
+
   rabbitmq:
     container_name: senzing-rabbitmq
     environment:
@@ -37,41 +64,82 @@ services:
       - backend
     restart: on-failure
 
-  mysql:
-    container_name: senzing-mysql
-    environment:
-#     See https://hub.docker.com/_/mysql/ "Environment Variables"
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-G2}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
-      MYSQL_USER: ${MYSQL_USERNAME:-g2}
-    image: bitnami/mysql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_MYSQL:-5.7.34-debian-10-r70}
-    networks:
-      - backend
-    ports:
-      - 3306:3306
-    restart: always
-    volumes:
-      - ${MYSQL_DIR:-/var/lib/mysql}:/var/lib/mysql
-
-  phpmyadmin:
-    container_name: senzing-phpmyadmin
+  mssql-create-db:
+    command:
+      - /opt/mssql-tools/bin/sqlcmd
+      - -P
+      - ${MSSQL_SA_PASSWORD:-Passw0rd}
+      - -Q
+      - "CREATE DATABASE G2"
+      - -S
+      - ${MSSQL_HOST:-senzing-mssql},${MSSQL_PORT:-1433}
+      - -U
+      - sa
+    container_name: senzing-mssql-create-database
     depends_on:
-      - mysql
-    environment:
-      DATABASE_HOST: mysql
-    image: bitnami/phpmyadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPMYADMIN:-5.1.1-debian-10-r29}
+      - mssql
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
       - backend
-    ports:
-      - 9173:8080
-    restart: always
+    restart: on-failure
+
+  mssql-create-senzing:
+#   For command-line options, see https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility
+    command:
+      - /opt/mssql-tools/bin/sqlcmd
+      - -d
+      - G2
+      - -i
+      - /opt/senzing/g2/resources/schema/g2core-schema-mssql-create.sql
+      - -o
+      - /dev/stdout
+      - -P
+      - ${MSSQL_SA_PASSWORD:-Passw0rd}
+      - -S
+      - senzing-mssql
+      - -U
+      - sa
+      - -e
+    container_name: senzing-mssql-create-senzing
+    depends_on:
+      - mssql-create-db
+    image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  initcontainer:
+    container_name: senzing-init-container
+    depends_on:
+      - mssql
+      - mssql-create-db
+      - mssql-create-senzing
+    environment:
+      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
+      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
+      SENZING_DELAY_IN_SECONDS: 30
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
   console:
     cap_add:
       - ALL
     container_name: senzing-console
     environment:
+      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -80,7 +148,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
     image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
@@ -91,17 +159,20 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   loader:
     container_name: senzing-stream-loader
     depends_on:
       - rabbitmq
-      - mysql
+      - mssql-create-senzing
     environment:
       LC_CTYPE: en_US.utf8
+      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
 #     See https://github.com/Senzing/stream-loader#configuration
-      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/${MYSQL_DATABASE:-G2}"
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -110,7 +181,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
@@ -126,18 +197,22 @@ services:
     networks:
       - backend
     restart: always
+    user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
   redoer:
     container_name: senzing-redoer
     depends_on:
       - loader
     environment:
+      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
 #     See https://github.com/Senzing/redoer#configuration
-      SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/${MYSQL_DATABASE:-G2}"
+      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -146,7 +221,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
       SENZING_DELAY_IN_SECONDS: 60
@@ -162,25 +237,21 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
-  pocserver:
-    container_name: senzing-poc-server
+  api:
+    container_name: senzing-api-server
     depends_on:
-      - mysql
+      - mssql-create-senzing
     environment:
+      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
       SENZING_API_SERVER_PORT: '8250'
       SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
       SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
-      SENZING_RABBITMQ_LOAD_EXCHANGE: senzing-rabbitmq-exchange
-      SENZING_RABBITMQ_LOAD_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_LOAD_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_LOAD_PORT: 5672
-      SENZING_RABBITMQ_LOAD_ROUTING_KEY: senzing.records
-      SENZING_RABBITMQ_LOAD_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
       SENZING_API_SERVER_INIT_JSON: >-
         {
           "PIPELINE": {
@@ -189,7 +260,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
       SENZING_ENGINE_CONFIGURATION_JSON: >-
@@ -200,34 +271,33 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
       - backend
     ports:
       - 8250:8250
     restart: always
+    user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
   webapp:
     container_name: senzing-webapp
     depends_on:
-      - pocserver
+      - api
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
-      SENZING_API_SERVER_URL: http://senzing-poc-server:8250
-      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
+      SENZING_API_SERVER_URL: http://senzing-api-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
-      SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
       SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
-      SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
-      SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
@@ -235,41 +305,6 @@ services:
     ports:
       - 8251:8251
     restart: always
-
-  jupyter:
-    container_name: senzing-jupyter
-    command:
-      - start.sh
-      - jupyter
-      - notebook
-      - "--NotebookApp.token=''"
-    depends_on:
-      - loader
-    environment:
-#     See https://github.com/Senzing/docker-jupyter#configuration
-      SENZING_SQL_CONNECTION: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/?schema=${MYSQL_DATABASE:-G2}"
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
-        {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
-          "SQL": {
-            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
-          }
-        }
-    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-latest}
-    networks:
-      - backend
-    ports:
-      - 9178:8888
-    restart: always
-    volumes:
-      - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   sshd:
     cap_add:
@@ -285,7 +320,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
     image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
@@ -303,6 +338,8 @@ services:
   xterm:
     container_name: senzing-xterm
     environment:
+      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -311,7 +348,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
     image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
@@ -325,6 +362,7 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
 
   swaggerui:
     container_name: senzing-swaggerui

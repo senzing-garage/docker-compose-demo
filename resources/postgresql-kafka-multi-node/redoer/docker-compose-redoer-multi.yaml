@@ -1,0 +1,68 @@
+version: '3'
+services:
+
+  rabbitmq:
+    container_name: senzing-rabbitmq
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.9.5-debian-10-r12}
+    networks:
+      - backend
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+
+  redoerqueuewriter:
+    container_name: senzing-redoer-write-to-rabbitmq
+    environment:
+#     See https://github.com/Senzing/redoer#configuration
+      SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
+      SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_ROUTING_KEY: senzing.redo
+      SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RABBITMQ_VIRTUAL_HOST: "/"
+      SENZING_SUBCOMMAND: write-to-rabbitmq
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
+    networks:
+      - backend
+    privileged: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  redoerqueuereader:
+    environment:
+#     See https://github.com/Senzing/redoer#configuration
+      SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
+      SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_ROUTING_KEY: senzing.redo
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RABBITMQ_VIRTUAL_HOST: "/"
+      SENZING_SUBCOMMAND: read-from-rabbitmq
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
+    networks:
+      - backend
+    privileged: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+
+networks:
+  backend:

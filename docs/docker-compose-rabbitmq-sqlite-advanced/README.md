@@ -221,6 +221,16 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 :thinking: Choose a *docker-compose.yaml* file.
 Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below.
 
+#### With Senzing API Server
+
+Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
+
+1. Standard demonstration.
+
+    ```console
+    export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-api-server.yaml
+    ```
+    
 #### Standard formation
 
 1. Standard demonstration.
