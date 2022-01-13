@@ -56,19 +56,12 @@ services:
 #    volumes:
 #    - ./logstash:/etc/logstash
  #   - ${LOGSTASH_DIR:-.}:/usr/share/logstash/pipeline/
-    command: 'logstash -e "input { udp { port => 12201 } } output { elasticsearch { hosts => senzing-elasticsearch } }"'
-    restart: "no"
+    command: logstash -e "input { udp { port => 12201 } } output { elasticsearch { hosts => ["senzing-elasticsearch:9200"] } stdout { codec => rubydebug } }"
+    restart: always
 
   logspout:
-    image: gliderlabs/logspout:v3
+    image: gliderlabs/logspout:v3.2.14
     command: 'udp://senzing-logstash:12201'
-    links:
-      - logstash
-    logging:
-      driver: gelf
-      options:
-        gelf-address: udp://localhost:12201
-        tag: "senzing-logspout"
     volumes:
       - '/var/run/docker.sock:/tmp/docker.sock'
     networks:
