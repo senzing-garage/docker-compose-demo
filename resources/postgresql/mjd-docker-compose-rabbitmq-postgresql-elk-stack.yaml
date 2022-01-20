@@ -1,113 +1,74 @@
+   
 version: '3'
+
+# https://ridwanfajar.medium.com/send-your-container-logs-to-elk-elasticsearch-logstash-and-kibana-with-gelf-driver-7995714fbbad
+
 services:
 
-  # https://www.elastic.co/guide/en/elasticsearch/reference/7.14/docker.html
   elasticsearch:
     container_name: senzing-elasticsearch
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+    image: elasticsearch:7.16.3
     logging:
       driver: gelf
       options:
-        gelf-address: udp://localhost:12201
-        tag: "senzing-elasticsearch"
-    environment:
-      - discovery.type=single-node
-    image: elasticsearch:7.14.2
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-rabbitmq"
     networks:
-      - ELK
+      - backend
     ports:
       - 9200:9200
       - 9300:9300
     volumes:
-      - ./elasticsearch_data/:/etc/elasticsearch
-    restart: always
+      - elasticsearch:/usr/share/elasticsearch/data:z
 
-#  redis-cache:
-#    container_name: senzing-redis-cache
-#    image: redis:6.2
-#    logging:
-#      driver: gelf
-#      options:
-#        gelf-address: udp://localhost:12201
-#        tag: "senzing-redis-cache"
-#    networks:
-#      - ELK
-#    restart: always
-  
-  # https://www.elastic.co/guide/en/logstash/7.14/docker.html
   logstash:
+    command:
+      - --config.string
+      - >-
+        input {
+          gelf {
+            port => 12201
+          }
+        }
+        output {
+          elasticsearch {
+            hosts => ["elasticsearch:9200"]
+            index => "logstash-%{+YYYY-MM-dd}"
+          }
+        }
+        
     container_name: senzing-logstash
-    depends_on:
-      - elasticsearch
-      - kibana
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    image: logstash:7.16.3
     logging:
       driver: gelf
       options:
-        gelf-address: udp://localhost:12201
-        tag: "senzing-logstash"
-    environment:
-      - STDOUT=true
-      - "xpack.monitoring.elasticsearch.url=http://senzing-elasticsearch:9200"
-    image: logstash:7.16.2
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-rabbitmq"
     networks:
-      - ELK
+      - backend
     ports:
-      - 5044:5044
+      - 9600:9600
       - 12201:12201/udp
-#    volumes:
-#    - ./logstash:/etc/logstash
- #   - ${LOGSTASH_DIR:-.}:/usr/share/logstash/pipeline/
-    command: logstash -e "input { udp { port => 12201 } } output { elasticsearch { hosts => ["senzing-elasticsearch:9200"] } stdout { codec => rubydebug } }"
     restart: always
 
-  logspout:
-    image: gliderlabs/logspout:v3.2.14
-    command: 'udp://senzing-logstash:12201'
-    volumes:
-      - '/var/run/docker.sock:/tmp/docker.sock'
-    networks:
-      - ELK
-    depends_on:
-       - elasticsearch
-       - logstash
-       - kibana
-        
-#  logstash-central:
-#    container_name: senzing-logstash-central
-#    depends_on:
-#      - elasticsearch
-#    image: logstash:7.11.1
-#    logging:
-#      driver: gelf
-#      options:
-#        gelf-address: udp://localhost:12201
-#        tag: "senzing-logstash-central"
-#    networks:
-#        - ELK
-#    volumes:
-#      - ./logstash-central:/etc/logstash
-#    command: logstash -f /etc/logstash/logstash2.conf
-#    restart: always
-  
-  # https://www.elastic.co/guide/en/kibana/7.14/docker.html
   kibana:
     container_name: senzing-kibana
     depends_on:
       - elasticsearch
-    environment:
-      ELASTICSEARCH_HOSTS: http://senzing-elasticsearch:9200
-    image: kibana:7.14.2
-    logging:
-      driver: gelf
-      options:
-        gelf-address: udp://localhost:12201
-        tag: "senzing-kibana"
+      - logstash
+    image: kibana:7.16.3
     networks:
-      - ELK
+      - backend
     ports:
       - 5601:5601
-    restart: always
- #   volumes:
- #     - ${KIBANA_DIR:-.}:/usr/share/kibana
 
   rabbitmq:
     container_name: senzing-rabbitmq
@@ -593,4 +554,7 @@ services:
 
 networks:
   backend:
-  ELK:
+  elk:
+
+volumes:
+  elasticsearch:
