@@ -1,13 +1,87 @@
 version: '3'
 services:
 
+  
+services:
+
+  elasticsearch:
+    container_name: senzing-elasticsearch
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: changeme
+      # Use single node discovery in order to disable production mode and avoid bootstrap checks.
+      # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
+      discovery.type: single-node
+    image: elasticsearch:7.16.3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-rabbitmq"
+    networks:
+      - backend
+    ports:
+      - 9200:9200
+      - 9300:9300
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data:z
+
+  logstash:
+    command:
+      - --config.string
+      - >-
+        input {
+          gelf {
+            port => 12201
+          }
+        }
+        output {
+          elasticsearch {
+            hosts => ["elasticsearch:9200"]
+            index => "logstash-%{+YYYY-MM-dd}"
+          }
+        }
+    container_name: senzing-logstash
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    image: logstash:7.16.3
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-rabbitmq"
+    networks:
+      - backend
+    ports:
+      - 9600:9600
+      - 12201:12201/udp
+    restart: always
+
+  kibana:
+    container_name: senzing-kibana
+    depends_on:
+      - elasticsearch
+      - logstash
+    image: kibana:7.16.3
+    networks:
+      - backend
+    ports:
+      - 5601:5601
+
   rabbitmq:
     container_name: senzing-rabbitmq
+    depends_on:
+      - logstash
     environment:
 #     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.8.19-debian-10-r6}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-rabbitmq"
     networks:
       - backend
     ports:
@@ -21,6 +95,7 @@ services:
     container_name: senzing-stream-producer
     depends_on:
       - rabbitmq
+      - logstash
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
@@ -33,12 +108,19 @@ services:
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-producer"
     networks:
       - backend
     restart: on-failure
 
   postgres:
     container_name: senzing-postgres
+    depends_on:
+      - logstash
     environment:
 #     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
@@ -50,6 +132,11 @@ services:
       timeout: 5s
       retries: 5
     image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-postgres"
     networks:
       - backend
     ports:
@@ -62,10 +149,16 @@ services:
     container_name: senzing-postgresql-init
     depends_on:
       - postgres
+      - logstash
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
     image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-postgresinit"
     networks:
       - backend
     restart: on-failure
@@ -74,10 +167,17 @@ services:
 
   phppgadmin:
     container_name: senzing-phppgadmin
+    depends_on:
+      - logstash
     environment:
 #     See https://hub.docker.com/r/bitnami/phppgadmin
       - DATABASE_HOST=senzing-postgres
     image: bitnami/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPPGADMIN:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-phppgadmin"
     networks:
       - backend
     ports:
@@ -90,11 +190,17 @@ services:
     depends_on:
       - postgres
       - postgresinit
+      - logstash
     environment:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 30
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-initcontainer"
     networks:
       - backend
     restart: on-failure
@@ -108,6 +214,8 @@ services:
     cap_add:
       - ALL
     container_name: senzing-console
+    depends_on:
+      - logstash
     environment:
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -121,6 +229,11 @@ services:
           }
         }
     image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-console"
     networks:
       - backend
     restart: always
@@ -135,6 +248,7 @@ services:
     depends_on:
       - rabbitmq
       - postgres
+      - logstash
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
@@ -160,6 +274,11 @@ services:
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-loader"
     networks:
       - backend
     restart: always
@@ -172,6 +291,7 @@ services:
     container_name: senzing-redoer
     depends_on:
       - loader
+      - logstash
     environment:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
@@ -190,6 +310,11 @@ services:
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-redoer"
     networks:
       - backend
     privileged: true
@@ -204,6 +329,7 @@ services:
     container_name: senzing-poc-server
     depends_on:
       - postgres
+      - logstash
     environment:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
@@ -241,6 +367,11 @@ services:
           }
         }
     image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-pocserver"
     networks:
       - backend
     ports:
@@ -255,6 +386,7 @@ services:
     container_name: senzing-webapp
     depends_on:
       - pocserver
+      - logstash
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250
@@ -265,6 +397,11 @@ services:
       SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
       SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-webapp"
     networks:
       - backend
     ports:
@@ -280,6 +417,7 @@ services:
       - "--NotebookApp.token=''"
     depends_on:
       - loader
+      - logstash
     environment:
 #     See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
@@ -295,6 +433,11 @@ services:
           }
         }
     image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-jupyter"
     networks:
       - backend
     ports:
@@ -310,6 +453,8 @@ services:
     cap_add:
       - ALL
     container_name: senzing-sshd
+    depends_on:
+      - logstash
     environment:
       ROOT_PASSWORD: ${SENZING_SSHD_PASSWORD:-senzingsshdpassword}
       SENZING_ENGINE_CONFIGURATION_JSON: >-
@@ -324,6 +469,11 @@ services:
           }
         }
     image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-sshd"
     networks:
       - backend
     ports:
@@ -337,6 +487,8 @@ services:
 
   xterm:
     container_name: senzing-xterm
+    depends_on:
+      - logstash
     environment:
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -350,6 +502,11 @@ services:
           }
         }
     image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-xterm"
     networks:
       - backend
     ports:
@@ -363,9 +520,16 @@ services:
 
   swaggerui:
     container_name: senzing-swaggerui
+    depends_on:
+      - logstash
     environment:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-swaggerui"
     networks:
       - backend
     ports:
@@ -374,3 +538,6 @@ services:
 
 networks:
   backend:
+  
+volumes:
+  elasticsearch:
