@@ -406,6 +406,7 @@ services:
       - "--NotebookApp.token=''"
     depends_on:
       - loader
+      - logstash
     environment:
 #     See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
@@ -436,7 +437,7 @@ services:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-
+    
   sshd:
     cap_add:
       - ALL
