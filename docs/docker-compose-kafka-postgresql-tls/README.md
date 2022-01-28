@@ -189,16 +189,9 @@ The Git repository has files that will be used in the `docker-compose` command.
       -keyout ${SENZING_ETC_DIR}/ssh/ca-key.pem \
       -newkey rsa:4096 \
       -out ${SENZING_ETC_DIR}/ssh/ca-cert.pem \
-      ${OPENSSL_CA_SUBJECT_PARAMETER} \
-      -x509
+      -x509 \
+      ${OPENSSL_CA_SUBJECT_PARAMETER}
     ```
-
-openssl req \
-  -days 365 \
-  -keyout ${SENZING_ETC_DIR}/ssh/ca-key.pem \
-  -newkey rsa:4096 \
-  -out ${SENZING_ETC_DIR}/ssh/ca-cert.pem \
-  -x509
 
    When prompted for "Enter PEM pass phrase", enter the value of `OPENSSL_CA_PASS_PHRASE`.
 
