@@ -163,7 +163,7 @@ The Git repository has files that will be used in the `docker-compose` command.
    Example:
 
     ```console
-    export OPENSSL_CA_PASS_PHRASE=password
+    export OPENSSL_CA_PASS_PHRASE=ca-password
     ```
 
 1. :thinking: **Optional:**
