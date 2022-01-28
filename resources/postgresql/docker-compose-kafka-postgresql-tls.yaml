@@ -19,16 +19,22 @@ services:
       - zookeeper
     environment:
 #     See https://github.com/bitnami/bitnami-docker-kafka#configuration
+#     also https://github.com/bitnami/bitnami-docker-kafka#security
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CERTIFICATE_PASSWORD: password
     image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-2.8.0-debian-10-r55}
     networks:
       - backend
     ports:
       - 9092:9092
     restart: always
+    volumes:
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}/ssh/kafka.keystore.pem:/opt/bitnami/kafka/config/certs/kafka.keystore.pem:ro
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}/ssh/kafka.keystore.key:/opt/bitnami/kafka/config/certs/kafka.keystore.key:ro
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}/ssh/kafka.truststore.pem:/opt/bitnami/kafka/config/certs/kafka.truststore.pem:ro
 
   kafdrop:
     container_name: senzing-kafdrop
