@@ -166,13 +166,16 @@ The Git repository has files that will be used in the `docker-compose` command.
     export OPENSSL_CA_PASS_PHRASE=password
     ```
 
-1. :pencil2: Craft a subject for the certificate.
+1. :thinking: **Optional:**
+   Craft a subject for the certificate.
    To understand the format of the `openssl` subject parameter,
    see [Certificate Attributes](https://docs.oracle.com/cd/E24191_01/common/tutorials/authz_cert_attributes.html)
    Example:
 
     ```console
     export OPENSSL_CA_SUBJECT="/C=US/ST=My-State/L=My-Locale/O=My-Organization/OU=My-Organizational-Unit/CN=*.nowhere.com/emailAddress=nobody@nowhere.com"
+
+    export OPENSSL_CA_SUBJECT_PARAMETER= "-subj ${OPENSSL_CA_SUBJECT}"
     ```
 
 1. Create self-signed Certificate Authority Private Key (`ca-key.pem`) and
@@ -186,9 +189,18 @@ The Git repository has files that will be used in the `docker-compose` command.
       -keyout ${SENZING_ETC_DIR}/ssh/ca-key.pem \
       -newkey rsa:4096 \
       -out ${SENZING_ETC_DIR}/ssh/ca-cert.pem \
-      -subj ${OPENSSL_CA_SUBJECT}
+      ${OPENSSL_CA_SUBJECT_PARAMETER} \
       -x509
     ```
+
+openssl req \
+  -days 365 \
+  -keyout ${SENZING_ETC_DIR}/ssh/ca-key.pem \
+  -newkey rsa:4096 \
+  -out ${SENZING_ETC_DIR}/ssh/ca-cert.pem \
+  -x509
+
+   When prompted for "Enter PEM pass phrase", enter the value of `OPENSSL_CA_PASS_PHRASE`.
 
 1. Restrict visibility of the key file.
    Example:
