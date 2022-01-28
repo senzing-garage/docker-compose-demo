@@ -228,7 +228,7 @@ The Git repository has files that will be used in the `docker-compose` command.
    Example:
 
     ```console
-    export OPENSSL_KAFKA_SUBJECT="/C=US/ST=My-State/L=My-Locale/O=My-Organization/OU=My-Organizational-Unit/CN=*.somewhere.com/emailAddress=nobody@somewhere.com"
+    export OPENSSL_KAFKA_SUBJECT="/C=US/ST=My-State/L=My-Locale/O=My-Organization/OU=My-Organizational-Unit/CN=*.somewhere.com/emailAddress=somebody@somewhere.com"
 
     export OPENSSL_KAFKA_SUBJECT_PARAMETER="-subj ${OPENSSL_KAFKA_SUBJECT}"
     ```
@@ -273,12 +273,18 @@ The Git repository has files that will be used in the `docker-compose` command.
       ${SENZING_ETC_DIR}/ssh/kafka-cert.pem
     ```
 
-#### Generate Keystores
-
-1. XXX
+1. When complete, the `~/my-senzing/etc/ssh` directory will have these files.
    Example:
 
     ```console
+    $ tree ~/my-senzing/etc/
+    ~/my-senzing/etc/
+    └── ssh
+        ├── ca-cert.pem
+        ├── ca-key.pem
+        ├── kafka-cert.pem
+        ├── kafka-key.pem
+        └── kafka-req.pem
     ```
 
 ### SSH port
