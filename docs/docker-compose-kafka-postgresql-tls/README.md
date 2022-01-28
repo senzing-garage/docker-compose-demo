@@ -175,7 +175,7 @@ The Git repository has files that will be used in the `docker-compose` command.
     ```console
     export OPENSSL_CA_SUBJECT="/C=US/ST=My-State/L=My-Locale/O=My-Organization/OU=My-Organizational-Unit/CN=*.nowhere.com/emailAddress=nobody@nowhere.com"
 
-    export OPENSSL_CA_SUBJECT_PARAMETER= "-subj ${OPENSSL_CA_SUBJECT}"
+    export OPENSSL_CA_SUBJECT_PARAMETER="-subj ${OPENSSL_CA_SUBJECT}"
     ```
 
 1. Create self-signed Certificate Authority Private Key (`ca-key.pem`) and
