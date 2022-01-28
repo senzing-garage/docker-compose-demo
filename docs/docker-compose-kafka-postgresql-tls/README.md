@@ -202,7 +202,7 @@ The Git repository has files that will be used in the `docker-compose` command.
     ```
 
 1. :thinking: **Optional:**
-   Verify certificate
+   Inspect certificate
    Example:
 
     ```console
@@ -228,7 +228,7 @@ The Git repository has files that will be used in the `docker-compose` command.
    Example:
 
     ```console
-    export OPENSSL_KAFKA_SUBJECT="/C=US/ST=My-State/L=My-Locale/O=My-Organization/OU=My-Organizational-Unit/CN=*.nowhere.com/emailAddress=nobody@nowhere.com"
+    export OPENSSL_KAFKA_SUBJECT="/C=US/ST=My-State/L=My-Locale/O=My-Organization/OU=My-Organizational-Unit/CN=*.somewhere.com/emailAddress=nobody@somewhere.com"
 
     export OPENSSL_KAFKA_SUBJECT_PARAMETER="-subj ${OPENSSL_KAFKA_SUBJECT}"
     ```
@@ -264,7 +264,7 @@ The Git repository has files that will be used in the `docker-compose` command.
     ```
 
 1. :thinking: **Optional:**
-   Verify the certificate.
+   Inspect the certificate.
    Example:
 
     ```console
