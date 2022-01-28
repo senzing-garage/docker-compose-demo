@@ -218,7 +218,7 @@ The Git repository has files that will be used in the `docker-compose` command.
    Example:
 
     ```console
-    export OPENSSL_KAFKA_PASS_PHRASE=password
+    export KAFKA_CERTIFICATE_PASSWORD=password
     ```
 
 1. :thinking: **Optional:**
@@ -235,7 +235,7 @@ The Git repository has files that will be used in the `docker-compose` command.
 
 1. Create Private Key and Certificate Signing Request for Kafka using
    [openssl](https://www.openssl.org/docs/man1.1.1/man1/openssl-req.html).
-   When prompted for "Enter PEM pass phrase", enter the value of `OPENSSL_KAFKA_PASS_PHRASE`.
+   When prompted for "Enter PEM pass phrase", enter the value of `KAFKA_CERTIFICATE_PASSWORD`.
    Example:
 
     ```console
@@ -271,6 +271,14 @@ The Git repository has files that will be used in the `docker-compose` command.
     openssl verify \
       -CAfile ${SENZING_ETC_DIR}/ssh/ca-cert.pem \
       ${SENZING_ETC_DIR}/ssh/kafka-cert.pem
+    ```
+
+#### Generate Keystores
+
+1. XXX
+   Example:
+
+    ```console
     ```
 
 ### SSH port

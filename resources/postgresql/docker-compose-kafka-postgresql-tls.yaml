@@ -24,7 +24,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CERTIFICATE_PASSWORD: password
+      KAFKA_CERTIFICATE_PASSWORD: ${KAFKA_CERTIFICATE_PASSWORD}
     image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-2.8.0-debian-10-r55}
     networks:
       - backend
@@ -32,9 +32,8 @@ services:
       - 9092:9092
     restart: always
     volumes:
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}/ssh/kafka.keystore.pem:/opt/bitnami/kafka/config/certs/kafka.keystore.pem:ro
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}/ssh/kafka.keystore.key:/opt/bitnami/kafka/config/certs/kafka.keystore.key:ro
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}/ssh/kafka.truststore.pem:/opt/bitnami/kafka/config/certs/kafka.truststore.pem:ro
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}/ssh/kafka-cert.pem:/opt/bitnami/kafka/config/certs/kafka-cert.pem:ro
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}/ssh/kafka-key.pem:/opt/bitnami/kafka/config/certs/kafka-key.pem:ro
 
   kafdrop:
     container_name: senzing-kafdrop
