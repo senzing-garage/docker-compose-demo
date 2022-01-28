@@ -181,6 +181,7 @@ The Git repository has files that will be used in the `docker-compose` command.
 1. Create self-signed Certificate Authority Private Key (`ca-key.pem`) and
    Certificate (`ca-cert.pem`) files using
    [openssl](https://www.openssl.org/docs/man1.1.1/man1/openssl-req.html).
+   When prompted for "Enter PEM pass phrase", enter the value of `OPENSSL_CA_PASS_PHRASE`.
    Example:
 
     ```console
@@ -192,8 +193,6 @@ The Git repository has files that will be used in the `docker-compose` command.
       -x509 \
       ${OPENSSL_CA_SUBJECT_PARAMETER}
     ```
-
-   When prompted for "Enter PEM pass phrase", enter the value of `OPENSSL_CA_PASS_PHRASE`.
 
 1. Restrict visibility of the key file.
    Example:
@@ -222,13 +221,16 @@ The Git repository has files that will be used in the `docker-compose` command.
     export OPENSSL_KAFKA_PASS_PHRASE=password
     ```
 
-1. :pencil2: Craft a subject for the certificate.
+1. :thinking: **Optional:**
+   Craft a subject for the certificate.
    To understand the format of the `openssl` subject parameter,
    see [Certificate Attributes](https://docs.oracle.com/cd/E24191_01/common/tutorials/authz_cert_attributes.html)
    Example:
 
     ```console
     export OPENSSL_KAFKA_SUBJECT="/C=US/ST=My-State/L=My-Locale/O=My-Organization/OU=My-Organizational-Unit/CN=*.nowhere.com/emailAddress=nobody@nowhere.com"
+
+    export OPENSSL_KAFKA_SUBJECT_PARAMETER="-subj ${OPENSSL_KAFKA_SUBJECT}"
     ```
 
 1. Create Private Key and Certificate Signing Request for Kafka.
@@ -239,7 +241,7 @@ The Git repository has files that will be used in the `docker-compose` command.
       -keyout  ${SENZING_ETC_DIR}/ssh/kafka-key.pem \
       -newkey rsa:4096 \
       -out ${SENZING_ETC_DIR}/ssh/kafka-req.pem \
-      -subj ${OPENSSL_KAFKA_SUBJECT}
+      ${OPENSSL_KAFKA_SUBJECT_PARAMETER}
     ```
 
 1. Create `kafka-cert.pem`.
