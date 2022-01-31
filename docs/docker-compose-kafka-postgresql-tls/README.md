@@ -362,7 +362,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
     sudo \
       --preserve-env \
-      docker-compose --file resources/postgresql/docker-compose-kafka-postgresql.yaml pull
+      docker-compose --file resources/postgresql/docker-compose-kafka-postgresql-tls.yaml pull
     ```
 
 ### Install Senzing
@@ -396,7 +396,7 @@ Senzing comes with a trial license that supports 100,000 records.
     cd ${GIT_REPOSITORY_DIR}
     sudo \
       --preserve-env \
-      docker-compose --file resources/postgresql/docker-compose-kafka-postgresql.yaml up
+      docker-compose --file resources/postgresql/docker-compose-kafka-postgresql-tls.yaml up
     ```
 
 1. Allow time for the components to come up and initialize.
