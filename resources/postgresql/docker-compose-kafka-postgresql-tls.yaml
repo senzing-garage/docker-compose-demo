@@ -5,7 +5,9 @@ services:
     container_name: senzing-zookeeper
     environment:
 #     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
-      ALLOW_ANONYMOUS_LOGIN: "yes"
+      ZOO_ENABLE_AUTH: "yes"
+      ZOO_SERVER_PASSWORDS: kafka_password
+      ZOO_SERVER_USERS: kafka
     image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-3.7.0-debian-10-r87}
     networks:
       - backend
@@ -20,12 +22,16 @@ services:
     environment:
 #     See https://github.com/bitnami/bitnami-docker-kafka#configuration
 #     also https://github.com/bitnami/bitnami-docker-kafka#security
-#     ALLOW_PLAINTEXT_LISTENER: "yes"
-      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
+      KAFKA_CERTIFICATE_PASSWORD: ${KAFKA_CERTIFICATE_PASSWORD}
+      KAFKA_CFG_ADVERTISED_LISTENERS: SASL_SSL://:9092
+      KAFKA_CFG_LISTENERS: SASL_SSL://:9092
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_CLIENT_PASSWORD: password
+      KAFKA_CLIENT_USER: user
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_TLS_TYPE: PEM
-      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_CERTIFICATE_PASSWORD: ${KAFKA_CERTIFICATE_PASSWORD}
+      KAFKA_ZOOKEEPER_PASSWORD: kafka_password
+      KAFKA_ZOOKEEPER_USER: kafka
     image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-2.8.0-debian-10-r55}
     networks:
       - backend
@@ -61,6 +67,14 @@ services:
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_CONFIGURATION: >-
+        {
+          "security.protocol": "SSL",
+          "ssl.ca.location": "/etc/opt/senzing/ssh/ca-cert.pem",
+          "ssl.key.location": "/etc/opt/senzing/ssh/kafka-key.pem",
+          "ssl.certificate.location": "/etc/opt/senzing/ssh/kafka-cert.pem",
+          "ssl.key.password": "${KAFKA_CERTIFICATE_PASSWORD}"
+        }
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
@@ -69,6 +83,8 @@ services:
     networks:
       - backend
     restart: on-failure
+    volumes:
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
 
   postgres:
     container_name: senzing-postgres
