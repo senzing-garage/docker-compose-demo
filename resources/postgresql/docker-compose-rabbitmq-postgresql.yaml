@@ -17,7 +17,7 @@ services:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
-        tag: "senzing-rabbitmq"
+        tag: "senzing-elasticsearch"
     networks:
       - backend
     ports:
@@ -49,7 +49,7 @@ services:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
-        tag: "senzing-rabbitmq"
+        tag: "senzing-logstash"
     networks:
       - backend
     ports:
