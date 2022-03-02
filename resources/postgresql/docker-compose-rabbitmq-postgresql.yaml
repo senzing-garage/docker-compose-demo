@@ -1,9 +1,6 @@
 version: '3'
 services:
 
-  
-services:
-
   elasticsearch:
     container_name: senzing-elasticsearch
     environment:
