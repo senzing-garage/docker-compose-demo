@@ -41,7 +41,7 @@ services:
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
-    image: elasticsearch:7.16.3
+    image: elasticsearch:${SENZING_DOCKER_IMAGE_VERSION_ELASTICSEARCH:-latest}
     logging:
       driver: gelf
       options:
@@ -73,7 +73,7 @@ services:
     container_name: senzing-logstash
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    image: logstash:7.16.3
+    image: logstash:${SENZING_DOCKER_IMAGE_VERSION_LOGSTASH:-latest}
     logging:
       driver: gelf
       options:
@@ -91,7 +91,7 @@ services:
     depends_on:
       - elasticsearch
       - logstash
-    image: kibana:7.16.3
+    image: kibana:${SENZING_DOCKER_IMAGE_VERSION_KIBANA:-latest}
     networks:
       - backend
     ports:
@@ -105,7 +105,7 @@ services:
 #     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.8.19-debian-10-r6}
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
     logging:
       driver: gelf
       options:
@@ -160,7 +160,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-latest}
     logging:
       driver: gelf
       options:
@@ -564,7 +564,7 @@ services:
       - logstash
     environment:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     logging:
       driver: gelf
       options:
