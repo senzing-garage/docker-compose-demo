@@ -199,16 +199,16 @@ services:
     depends_on:
       - logstash
     environment:
-#     See https://hub.docker.com/r/bitnami/phppgadmin
-     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
-     PGADMIN_DEFAULT_PASSWORD: password
+#    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+     PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
      PGADMIN_CONFIG_LOGIN_BANNER: |-
        "<h4>Senzing stack</h4>
        <ul>
          <li><b>Username:</b> postgres@postgres.com</li>
          <li><b>Password:</b> password</li>
        </ul>"
-     PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
+     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+     PGADMIN_DEFAULT_PASSWORD: password
     image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
     logging:
       driver: gelf
