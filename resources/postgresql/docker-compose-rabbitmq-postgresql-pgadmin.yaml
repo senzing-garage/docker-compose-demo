@@ -10,15 +10,28 @@ services:
     environment:
       FILE_CONTENTS: >-
         {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
+            "Servers": {
+                "1": {
+                    "Name": "senzing",
+                    "Group": "Servers",
+                    "Host": "senzing-postgres",
+                    "Port": 5432,
+                    "MaintenanceDB": "postgres",
+                    "Username": "postgres",
+                    "SSLMode": "prefer",
+                    "SSLCert": "<STORAGE_DIR>/.postgresql/postgresql.crt",
+                    "SSLKey": "<STORAGE_DIR>/.postgresql/postgresql.key",
+                    "SSLCompression": 0,
+                    "Timeout": 10,
+                    "UseSSHTunnel": 0,
+                    "TunnelPort": "22",
+                    "TunnelAuthentication": 0
+                }
+            }
         }
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
     volumes:
-      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
 
   elasticsearch:
     container_name: senzing-elasticsearch
@@ -187,18 +200,14 @@ services:
       - logstash
     environment:
 #     See https://hub.docker.com/r/bitnami/phppgadmin
-     DATABASE_HOST: senzing-postgres
-#    PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
-     PGADMIN_DEFAULT_EMAIL: postgres
-     PGADMIN_DEFAULT_PASSWORD: postgres
-#    PGADMIN_CONFIG_LOGIN_BANNER: '"Senzing stack"'
+     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+     PGADMIN_DEFAULT_PASSWORD: password
      PGADMIN_CONFIG_LOGIN_BANNER: |-
        "<h4>Senzing stack</h4>
        <ul>
          <li><b>Username:</b> postgres@postgres.com</li>
-         <li><b>Password:</b> postgres</li>
-       </ul>
-       "
+         <li><b>Password:</b> password</li>
+       </ul>"
      PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
     image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
     logging:
@@ -213,6 +222,7 @@ services:
       - 9172:443
     restart: always
     volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}/servers.json:/pgadmin4/servers.json
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
   initcontainer:
