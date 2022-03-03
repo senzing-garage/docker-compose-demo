@@ -204,7 +204,8 @@ services:
 #    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
      PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
      PGADMIN_CONFIG_LOGIN_BANNER: |-
-       "<h4>Senzing stack</h4>
+       "<h4>Senzing demonstration</h4>
+       pgAdmin:
        <ul>
          <li><b>Username:</b> postgres@postgres.com</li>
          <li><b>Password:</b> password</li>
