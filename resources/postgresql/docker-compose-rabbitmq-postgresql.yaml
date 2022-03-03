@@ -1,6 +1,38 @@
 version: '3'
 services:
 
+  makefile:
+    container_name: senzing-makefile
+    command:
+      - sh
+      - -c
+      - echo $${FILE_CONTENTS} >> /output/servers.json
+    environment:
+      FILE_CONTENTS: >-
+        {
+            "Servers": {
+                "1": {
+                    "Name": "senzing",
+                    "Group": "Servers",
+                    "Host": "senzing-postgres",
+                    "Port": 5432,
+                    "MaintenanceDB": "postgres",
+                    "Username": "postgres",
+                    "SSLMode": "prefer",
+                    "SSLCert": "<STORAGE_DIR>/.postgresql/postgresql.crt",
+                    "SSLKey": "<STORAGE_DIR>/.postgresql/postgresql.key",
+                    "SSLCompression": 0,
+                    "Timeout": 10,
+                    "UseSSHTunnel": 0,
+                    "TunnelPort": "22",
+                    "TunnelAuthentication": 0
+                }
+            }
+        }
+    image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
+    volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
+
   elasticsearch:
     container_name: senzing-elasticsearch
     environment:
@@ -9,7 +41,7 @@ services:
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
-    image: elasticsearch:7.16.3
+    image: elasticsearch:${SENZING_DOCKER_IMAGE_VERSION_ELASTICSEARCH:-latest}
     logging:
       driver: gelf
       options:
@@ -41,7 +73,7 @@ services:
     container_name: senzing-logstash
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    image: logstash:7.16.3
+    image: logstash:${SENZING_DOCKER_IMAGE_VERSION_LOGSTASH:-latest}
     logging:
       driver: gelf
       options:
@@ -59,7 +91,7 @@ services:
     depends_on:
       - elasticsearch
       - logstash
-    image: kibana:7.16.3
+    image: kibana:${SENZING_DOCKER_IMAGE_VERSION_KIBANA:-latest}
     networks:
       - backend
     ports:
@@ -73,7 +105,7 @@ services:
 #     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.8.19-debian-10-r6}
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
     logging:
       driver: gelf
       options:
@@ -128,7 +160,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-latest}
     logging:
       driver: gelf
       options:
@@ -162,25 +194,36 @@ services:
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  phppgadmin:
-    container_name: senzing-phppgadmin
+  pgadmin:
+    container_name: senzing-pgadmin
     depends_on:
       - logstash
     environment:
-#     See https://hub.docker.com/r/bitnami/phppgadmin
-      - DATABASE_HOST=senzing-postgres
-    image: bitnami/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPPGADMIN:-latest}
+#    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+     PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
+     PGADMIN_CONFIG_LOGIN_BANNER: |-
+       "<h4>Senzing stack</h4>
+       <ul>
+         <li><b>Username:</b> postgres@postgres.com</li>
+         <li><b>Password:</b> password</li>
+       </ul>"
+     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+     PGADMIN_DEFAULT_PASSWORD: password
+    image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
-        tag: "senzing-phppgadmin"
+        tag: "senzing-pgadmin"
     networks:
       - backend
     ports:
-      - 9171:8080
+      - 9171:80
       - 9172:443
     restart: always
+    volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}/servers.json:/pgadmin4/servers.json
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
   initcontainer:
     container_name: senzing-init-container
@@ -521,7 +564,7 @@ services:
       - logstash
     environment:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     logging:
       driver: gelf
       options:
@@ -535,6 +578,6 @@ services:
 
 networks:
   backend:
-  
+
 volumes:
   elasticsearch:
