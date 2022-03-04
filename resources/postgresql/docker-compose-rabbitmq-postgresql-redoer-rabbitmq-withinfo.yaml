@@ -234,6 +234,7 @@ services:
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_REDO_QUEUE: senzing-rabbitmq-redo-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
       SENZING_SUBCOMMAND: write-to-rabbitmq
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
@@ -261,6 +262,7 @@ services:
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_REDO_QUEUE: senzing-rabbitmq-redo-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
       SENZING_SUBCOMMAND: read-from-rabbitmq-withinfo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
