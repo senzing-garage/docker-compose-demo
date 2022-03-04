@@ -228,11 +228,6 @@ services:
      PGADMIN_DEFAULT_PASSWORD: password
      PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
     image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "senzing-pgadmin"
     networks:
       - backend
     ports:
