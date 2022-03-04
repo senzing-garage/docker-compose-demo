@@ -215,6 +215,7 @@ services:
        </ul>"
      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
      PGADMIN_DEFAULT_PASSWORD: password
+     PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
     image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
     logging:
       driver: gelf
@@ -228,7 +229,6 @@ services:
       - 9172:443
     restart: always
     volumes:
-      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}/servers.json:/pgadmin4/servers.json
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
   initcontainer:
