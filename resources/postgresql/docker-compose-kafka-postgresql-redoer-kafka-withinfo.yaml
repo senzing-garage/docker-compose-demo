@@ -85,7 +85,7 @@ services:
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
@@ -260,6 +260,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_REDO_TOPIC: senzing-kafka-redo-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
@@ -283,6 +284,7 @@ services:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
+      SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_FAILURE_TOPIC: senzing-kafka-redo-failure-topic
       SENZING_KAFKA_INFO_TOPIC: senzing-kafka-redo-info-topic

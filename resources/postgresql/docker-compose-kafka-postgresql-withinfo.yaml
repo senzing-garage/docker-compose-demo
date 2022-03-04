@@ -85,7 +85,7 @@ services:
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
@@ -241,6 +241,39 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
+  redoer:
+    container_name: senzing-redoer
+    depends_on:
+      - loader
+    environment:
+#     See https://github.com/Senzing/redoer#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+          }
+        }
+      SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: redo
+    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
+    networks:
+      - backend
+    privileged: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
   failurelogger:
     container_name: senzing-stream-logger-failure
     depends_on:
@@ -273,37 +306,6 @@ services:
       - backend
     restart: always
 
-  redoer:
-    container_name: senzing-redoer
-    depends_on:
-      - loader
-    environment:
-#     See https://github.com/Senzing/redoer#configuration
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_DELAY_IN_SECONDS: 60
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
-        {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
-          "SQL": {
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
-          }
-        }
-      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
-      SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
-    networks:
-      - backend
-    privileged: true
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   pocserver:
     container_name: senzing-poc-server

@@ -96,7 +96,7 @@ services:
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
@@ -240,6 +240,7 @@ services:
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
       SENZING_SUBCOMMAND: rabbitmq
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     logging:
@@ -275,6 +276,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
