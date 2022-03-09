@@ -153,18 +153,24 @@ The Git repository has files that will be used in the `docker-compose` command.
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
 
+    export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
     export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     ```
 
-1. Create directory for RabbitMQ persistence.
+1. Create directory for RabbitMQ and pgAdmin persistence.
    **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
    the directories created within `RABBITMQ_DIR` will be restricted.
    Example:
 
     ```console
+    sudo mkdir -p ${PGADMIN_DIR}
+    sudo mkdir -p ${POSTGRES_DIR}
     sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 770 ${RABBITMQ_DIR}
+
+    sudo chmod 777 ${PGADMIN_DIR}
+    sudo chmod 777 ${POSTGRES_DIR}
+    sudo chmod 777 ${RABBITMQ_DIR}
     ```
 
 ### SSH port
@@ -397,7 +403,7 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
 
 1. PostgreSQL is viewable at
    [localhost:9171](http://localhost:9171).
-    1. **Defaults:** username: `postgres` password: `postgres`
+    1. **Database defaults:** username: `postgres` password: `postgres`
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#postgresql)
    for working with PostgreSQL.
