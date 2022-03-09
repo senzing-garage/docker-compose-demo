@@ -1,12 +1,44 @@
 version: '3'
 services:
 
+  makefile:
+    container_name: senzing-makefile
+    command:
+      - sh
+      - -c
+      - echo $${FILE_CONTENTS} >> /output/servers.json
+    environment:
+      FILE_CONTENTS: >-
+        {
+          "Servers": {
+            "1": {
+              "Name": "senzing",
+              "Group": "Servers",
+              "Host": "senzing-postgres",
+              "Port": 5432,
+              "MaintenanceDB": "postgres",
+              "Username": "postgres",
+              "SSLMode": "prefer",
+              "SSLCert": "<STORAGE_DIR>/.postgresql/postgresql.crt",
+              "SSLKey": "<STORAGE_DIR>/.postgresql/postgresql.key",
+              "SSLCompression": 0,
+              "Timeout": 10,
+              "UseSSHTunnel": 0,
+              "TunnelPort": "22",
+              "TunnelAuthentication": 0
+            }
+          }
+        }
+    image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
+    volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
+
   zookeeper:
     container_name: senzing-zookeeper
     environment:
 #     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
       ALLOW_ANONYMOUS_LOGIN: "yes"
-    image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-3.7.0-debian-10-r87}
+    image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-latest}
     networks:
       - backend
     ports:
@@ -23,7 +55,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-2.8.0-debian-10-r55}
+    image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-latest}
     networks:
       - backend
     ports:
@@ -39,7 +71,7 @@ services:
       JVM_OPTS: "-Xms32M -Xmx64M"
       KAFKA_BROKERCONNECT: "senzing-kafka:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
-    image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-3.27.0}
+    image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-latest}
     networks:
       - backend
     ports:
@@ -53,7 +85,7 @@ services:
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
@@ -67,23 +99,24 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
-#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
-      POSTGRES_DB: ${POSTGRES_DB:-G2}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+#     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-senzing}
+      POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
+      POSTGRESQL_USERNAME: ${POSTGRES_USERNAME:-senzing}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
-    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-latest}
     networks:
       - backend
     ports:
       - 5432:5432
     restart: always
     volumes:
-      - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/var/lib/postgresql/data
+      - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
 
   postgresinit:
     container_name: senzing-postgresql-init
@@ -99,18 +132,33 @@ services:
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  phppgadmin:
-    container_name: senzing-phppgadmin
+  pgadmin:
+    container_name: senzing-pgadmin
+    depends_on:
+      - makefile
     environment:
-#     See https://hub.docker.com/r/bitnami/phppgadmin
-      - DATABASE_HOST=senzing-postgres
-    image: bitnami/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPPGADMIN:-latest}
+#    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+     PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
+     PGADMIN_CONFIG_LOGIN_BANNER: |-
+       "<h4>Senzing demonstration</h4>
+       Although pgAdmin can be configured for security,
+       <br/>the following credentials are used for demonstration.
+       <ul>
+         <li><b>Username:</b> postgres@postgres.com</li>
+         <li><b>Password:</b> password</li>
+       </ul>"
+     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+     PGADMIN_DEFAULT_PASSWORD: password
+     PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
+    image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
     networks:
       - backend
     ports:
-      - 9171:8080
+      - 9171:80
       - 9172:443
     restart: always
+    volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
   initcontainer:
     container_name: senzing-init-container
@@ -166,6 +214,8 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -177,8 +227,6 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
-      SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
@@ -200,6 +248,7 @@ services:
     environment:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -211,7 +260,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
@@ -233,12 +282,6 @@ services:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
-      SENZING_API_SERVER_PORT: '8250'
-      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
-      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
-      SENZING_KAFKA_LOAD_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_LOAD_GROUP: senzing-kafka-group
-      SENZING_KAFKA_LOAD_TOPIC: senzing-kafka-topic
       SENZING_API_SERVER_INIT_JSON: >-
         {
           "PIPELINE": {
@@ -250,6 +293,9 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_API_SERVER_PORT: '8250'
+      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
+      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -261,6 +307,9 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_KAFKA_LOAD_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_LOAD_GROUP: senzing-kafka-group
+      SENZING_KAFKA_LOAD_TOPIC: senzing-kafka-topic
     image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
       - backend
@@ -303,7 +352,6 @@ services:
       - loader
     environment:
 #     See https://github.com/Senzing/docker-jupyter#configuration
-      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -315,6 +363,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
     image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-latest}
     networks:
       - backend
@@ -386,7 +435,7 @@ services:
     container_name: senzing-swaggerui
     environment:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
       - backend
     ports:
