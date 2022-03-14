@@ -62,6 +62,7 @@ services:
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
 
   postgres:
@@ -93,6 +94,7 @@ services:
     image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
@@ -123,6 +125,7 @@ services:
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
