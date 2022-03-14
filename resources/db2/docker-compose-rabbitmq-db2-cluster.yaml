@@ -45,7 +45,7 @@ services:
     environment:
       DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
       LICENSE: accept
-    image: ibmcom/db2:${SENZING_DOCKER_IMAGE_VERSION_IBMCOM_DB2:-11.5.5.1}
+    image: ibmcom/db2:${SENZING_DOCKER_IMAGE_VERSION_IBMCOM_DB2:-latest}
     networks:
       - backend
     ports:
@@ -61,7 +61,7 @@ services:
     environment:
       DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
       LICENSE: accept
-    image: ibmcom/db2:${SENZING_DOCKER_IMAGE_VERSION_IBMCOM_DB2:-11.5.5.1}
+    image: ibmcom/db2:${SENZING_DOCKER_IMAGE_VERSION_IBMCOM_DB2:-latest}
     networks:
       - backend
     ports:
@@ -77,7 +77,7 @@ services:
     environment:
       DB2INST1_PASSWORD: ${DB2INST1_PASSWORD:-db2inst1}
       LICENSE: accept
-    image: ibmcom/db2:${SENZING_DOCKER_IMAGE_VERSION_IBMCOM_DB2:-11.5.5.1}
+    image: ibmcom/db2:${SENZING_DOCKER_IMAGE_VERSION_IBMCOM_DB2:-latest}
     networks:
       - backend
     ports:

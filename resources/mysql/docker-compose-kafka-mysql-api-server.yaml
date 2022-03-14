@@ -73,7 +73,7 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
       MYSQL_USER: ${MYSQL_USERNAME:-g2}
-    image: bitnami/mysql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_MYSQL:-5.7.34-debian-10-r70}
+    image: bitnami/mysql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_MYSQL:-latest}
     networks:
       - backend
     ports:
@@ -105,7 +105,7 @@ services:
       - mysql
     environment:
       DATABASE_HOST: mysql
-    image: bitnami/phpmyadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPMYADMIN:-5.1.1-debian-10-r29}
+    image: bitnami/phpmyadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPMYADMIN:-latest}
     networks:
       - backend
     ports:
