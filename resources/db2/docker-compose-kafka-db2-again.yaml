@@ -6,7 +6,7 @@ services:
     environment:
 #     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
       ALLOW_ANONYMOUS_LOGIN: "yes"
-    image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-3.7.0-debian-10-r87}
+    image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-latest}
     networks:
       - backend
     ports:
@@ -23,7 +23,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-2.8.0-debian-10-r55}
+    image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-latest}
     networks:
       - backend
     ports:
@@ -35,10 +35,11 @@ services:
     depends_on:
       - kafka
     environment:
+#     See https://github.com/obsidiandynamics/kafdrop#environment-variables
       JVM_OPTS: "-Xms32M -Xmx64M"
       KAFKA_BROKERCONNECT: "senzing-kafka:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
-    image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-3.27.0}
+    image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-latest}
     networks:
       - backend
     ports:
@@ -52,15 +53,16 @@ services:
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_TOPIC: "senzing-kafka-topic"
+      SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
       SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-kafka
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
 
   db2:
@@ -134,6 +136,7 @@ services:
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - backend
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -166,6 +169,7 @@ services:
     networks:
       - backend
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -215,6 +219,7 @@ services:
       - backend
     ports:
       - 8250:8250
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -240,6 +245,7 @@ services:
       - backend
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
   sshd:
@@ -302,7 +308,7 @@ services:
     container_name: senzing-swaggerui
     environment:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
       - backend
     ports:
