@@ -15,7 +15,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR}:/bitnami
+      - ${RABBITMQ_DIR:-/var/rabbitmq}:/bitnami
 
   producer:
     container_name: senzing-stream-producer
@@ -52,8 +52,8 @@ services:
       - 50000:50000
     privileged: true
     volumes:
-      - ${DB2_CUSTOM_DIR}:/var/custom
-      - ${DB2_DIR}:/database
+      - ${DB2_CUSTOM_DIR:-/var/db2-custom}:/var/custom
+      - ${DB2_DIR:-/var/db2}:/database
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   db2_libfeat:
@@ -68,8 +68,8 @@ services:
       - 50001:50000
     privileged: true
     volumes:
-      - ${DB2_CUSTOM_DIR}:/var/custom
-      - ${DB2_DIR_LIBFEAT}:/database
+      - ${DB2_CUSTOM_DIR:-/var/db2-custom}:/var/custom
+      - ${DB2_DIR_LIBFEAT:-.}:/database
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   db2_res:
@@ -84,8 +84,8 @@ services:
       - 50002:50000
     privileged: true
     volumes:
-      - ${DB2_CUSTOM_DIR}:/var/custom
-      - ${DB2_DIR_RES}:/database
+      - ${DB2_CUSTOM_DIR:-/var/db2-custom}:/var/custom
+      - ${DB2_DIR_RES:-.}:/database
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   db2driverinstaller:

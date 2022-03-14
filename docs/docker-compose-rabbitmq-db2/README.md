@@ -156,8 +156,8 @@ The Git repository has files that will be used in the `docker-compose` command.
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 770 ${RABBITMQ_DIR}
+    sudo mkdir -p ${RABBITMQ_DIR:-/var/rabbitmq}
+    sudo chmod 770 ${RABBITMQ_DIR:-/var/rabbitmq}
     ```
 
 ### SSH port

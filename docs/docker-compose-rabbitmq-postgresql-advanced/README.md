@@ -166,11 +166,11 @@ The Git repository has files that will be used in the `docker-compose` command.
     ```console
     sudo mkdir -p ${PGADMIN_DIR}
     sudo mkdir -p ${POSTGRES_DIR}
-    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo mkdir -p ${RABBITMQ_DIR:-/var/rabbitmq}
 
     sudo chmod 777 ${PGADMIN_DIR}
     sudo chmod 777 ${POSTGRES_DIR}
-    sudo chmod 777 ${RABBITMQ_DIR}
+    sudo chmod 777 ${RABBITMQ_DIR:-/var/rabbitmq}
     ```
 
 ### SSH port
