@@ -28,6 +28,7 @@ services:
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
