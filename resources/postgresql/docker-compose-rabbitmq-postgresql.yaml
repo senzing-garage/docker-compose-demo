@@ -460,9 +460,9 @@ services:
         tag: "senzing-webapp"
     networks:
       - backend
-    read_only: true
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
   jupyter:
