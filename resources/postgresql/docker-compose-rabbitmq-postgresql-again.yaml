@@ -114,6 +114,7 @@ services:
         tag: "senzing-producer"
     networks:
       - backend
+    read_only: true
     restart: on-failure
 
   postgres:
@@ -250,6 +251,7 @@ services:
         tag: "senzing-loader"
     networks:
       - backend
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -288,6 +290,7 @@ services:
     networks:
       - backend
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -346,6 +349,7 @@ services:
       - backend
     ports:
       - 8250:8250
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -376,6 +380,7 @@ services:
       - backend
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
   jupyter:
