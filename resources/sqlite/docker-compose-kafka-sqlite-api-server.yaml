@@ -53,7 +53,7 @@ services:
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
@@ -62,20 +62,8 @@ services:
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
-
-  initcontainer:
-    container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
-    networks:
-      - backend
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   sqliteweb:
     container_name: senzing-sqlite-web
@@ -91,6 +79,20 @@ services:
     restart: always
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+
+  initcontainer:
+    container_name: senzing-init-container
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+    networks:
+      - backend
+    read_only: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   console:
     cap_add:
@@ -146,6 +148,7 @@ services:
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - backend
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -177,6 +180,7 @@ services:
     networks:
       - backend
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -221,6 +225,7 @@ services:
       - backend
     ports:
       - 8250:8250
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -245,6 +250,7 @@ services:
       - backend
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
   jupyter:
