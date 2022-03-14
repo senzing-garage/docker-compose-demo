@@ -110,6 +110,7 @@ services:
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_OPT_IBM_DIR:-/opt/IBM}:/opt/IBM
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   console:
     cap_add:
@@ -263,7 +264,7 @@ services:
       - pocserver
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
-      SENZING_poc_SERVER_URL: http://senzing-api-server:8250
+      SENZING_POC_SERVER_URL: http://senzing-api-server:8250
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
       SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
