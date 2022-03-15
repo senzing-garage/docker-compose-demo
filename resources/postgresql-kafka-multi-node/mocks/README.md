@@ -57,7 +57,7 @@ The mock services provisioned are:
     ```
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-latest.sh).
+   See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-stable.sh).
    Example:
 
     ```console
@@ -75,7 +75,7 @@ The mock services provisioned are:
    This method identifies the latest versions of each Docker image.
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-stable.sh)
     ```
 
 ## Run docker formation

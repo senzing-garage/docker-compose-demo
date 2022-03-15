@@ -288,7 +288,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-stable.sh)
     ```
 
 1. Pull docker images.
