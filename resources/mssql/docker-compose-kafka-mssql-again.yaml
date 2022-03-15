@@ -59,6 +59,7 @@ services:
     ports:
       - 1433:1433
     restart: always
+    user: "0"
     volumes:
       - ${MSSQL_DIR:-/var/opt/mssql}:/var/opt/mssql
 
