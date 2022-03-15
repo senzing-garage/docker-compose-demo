@@ -153,7 +153,22 @@ The Git repository has files that will be used in the `docker-compose` command.
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
 
+    export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
     export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
+    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
+    ```
+
+1. Create directory for RabbitMQ and pgAdmin persistence.
+   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
+   the directories created within `RABBITMQ_DIR` will be restricted.
+   Example:
+
+    ```console
+    sudo mkdir -p ${PGADMIN_DIR}
+    sudo mkdir -p ${POSTGRES_DIR}
+
+    sudo chmod 777 ${PGADMIN_DIR}
+    sudo chmod 777 ${POSTGRES_DIR}
     ```
 
 ### SSH port
