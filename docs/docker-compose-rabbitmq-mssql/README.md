@@ -159,6 +159,9 @@ The Git repository has files that will be used in the `docker-compose` command.
     ```console
     sudo mkdir -p ${RABBITMQ_DIR:-/var/rabbitmq}
     sudo chmod 770 ${RABBITMQ_DIR:-/var/rabbitmq}
+
+    sudo mkdir -p ${MSSQL_DIR:-/var/mssql}
+    sudo chmod 770 ${MSSQL_DIR:-/var/mssql}
     ```
 
 ### SSH port
