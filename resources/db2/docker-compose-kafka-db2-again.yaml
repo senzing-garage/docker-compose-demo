@@ -117,6 +117,8 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_HOST:-senzing-db2}:${DB2_PORT:-50000}/${DB2_DB:-G2}"
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -128,10 +130,10 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
-      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: kafka
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
@@ -151,6 +153,7 @@ services:
     environment:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_HOST:-senzing-db2}:${DB2_PORT:-50000}/${DB2_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -162,7 +165,7 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
-      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
@@ -186,12 +189,6 @@ services:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
-      SENZING_API_SERVER_PORT: '8250'
-      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
-      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
-      SENZING_KAFKA_LOAD_BOOTSTRAP_SERVER: senzing-kafka:9092
-      SENZING_KAFKA_LOAD_GROUP: senzing-kafka-group
-      SENZING_KAFKA_LOAD_TOPIC: senzing-kafka-topic
       SENZING_API_SERVER_INIT_JSON: >-
         {
           "PIPELINE": {
@@ -203,6 +200,9 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
+      SENZING_API_SERVER_PORT: '8250'
+      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
+      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -214,6 +214,9 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
+      SENZING_KAFKA_LOAD_BOOTSTRAP_SERVER: senzing-kafka:9092
+      SENZING_KAFKA_LOAD_GROUP: senzing-kafka-group
+      SENZING_KAFKA_LOAD_TOPIC: senzing-kafka-topic
     image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
       - backend
@@ -237,9 +240,9 @@ services:
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
       SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
-      SENZING_WEB_SERVER_API_PATH: /api
       SENZING_WEB_SERVER_PORT: 8251
-      SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
+      SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
       - backend
