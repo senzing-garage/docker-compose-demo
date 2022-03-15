@@ -437,4 +437,3 @@ Configuration values specified by environment variable or command line parameter
 1. See [docs/errors.md](docs/errors.md).
 
 ## References
-

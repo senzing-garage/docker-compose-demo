@@ -230,7 +230,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite-api-server.yaml
     ```
-    
+
 #### Standard formation
 
 1. Standard demonstration.

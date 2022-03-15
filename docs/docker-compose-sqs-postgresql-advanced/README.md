@@ -408,7 +408,7 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
 
 1. PostgreSQL is viewable at
    [localhost:9171](http://localhost:9171).
-    1. **Defaults:** username: `postgres` password: `postgres`
+    1. **Database defaults:** username: `postgres` password: `postgres`
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#postgresql)
    for working with PostgreSQL.
