@@ -16,6 +16,7 @@ services:
       - backend
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
 networks:

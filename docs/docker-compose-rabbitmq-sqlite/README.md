@@ -153,8 +153,8 @@ The Git repository has files that will be used in the `docker-compose` command.
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo chmod 770 ${RABBITMQ_DIR}
+    sudo mkdir -p ${RABBITMQ_DIR:-/var/rabbitmq}
+    sudo chmod 770 ${RABBITMQ_DIR:-/var/rabbitmq}
     ```
 
 ### SSH port
@@ -217,7 +217,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-stable.sh)
     ```
 
 1. Pull docker images.
