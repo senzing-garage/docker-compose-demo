@@ -11,7 +11,7 @@ services:
       ACCEPT_EULA: Y
     image: senzing/apt:${SENZING_DOCKER_IMAGE_VERSION_APT:-latest}
     networks:
-      - backend
+      - senzing
     restart: on-failure
     volumes:
       - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
@@ -27,7 +27,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 30
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
     user: "0"
@@ -40,4 +40,5 @@ services:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

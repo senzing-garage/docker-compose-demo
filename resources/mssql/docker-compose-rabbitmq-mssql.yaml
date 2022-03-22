@@ -10,7 +10,7 @@ services:
       MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
     image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 1433:1433
     restart: always
@@ -24,7 +24,7 @@ services:
       ADMINER_DEFAULT_SERVER: senzing-mssql
     image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_ADMINER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9177:8080
     restart: always
@@ -37,7 +37,7 @@ services:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 15672:15672
       - 5672:5672
@@ -62,7 +62,7 @@ services:
       SENZING_SUBCOMMAND: json-to-rabbitmq
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
 
@@ -82,7 +82,7 @@ services:
       - mssql
     image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
-      - backend
+      - senzing
     restart: on-failure
 
   mssql-create-senzing:
@@ -107,7 +107,7 @@ services:
       - mssql-create-db
     image: mcr.microsoft.com/mssql-tools:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_TOOLS:-latest}
     networks:
-      - backend
+      - senzing
     restart: on-failure
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
@@ -126,7 +126,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 30
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
     user: "0"
@@ -157,7 +157,7 @@ services:
         }
     image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
-      - backend
+      - senzing
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -199,7 +199,7 @@ services:
       SENZING_SUBCOMMAND: rabbitmq
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: always
     volumes:
@@ -234,7 +234,7 @@ services:
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
-      - backend
+      - senzing
     privileged: true
     read_only: true
     restart: on-failure
@@ -289,7 +289,7 @@ services:
       SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
     image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8250:8250
     read_only: true
@@ -315,7 +315,7 @@ services:
       SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8251:8251
     read_only: true
@@ -340,7 +340,7 @@ services:
         }
     image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
@@ -369,7 +369,7 @@ services:
         }
     image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8254:5000
     restart: always
@@ -386,10 +386,11 @@ services:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9180:8080
     restart: always
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

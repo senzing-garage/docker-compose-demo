@@ -14,7 +14,7 @@ services:
       SENZING_SUBCOMMAND: kafka
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: always
     volumes:
@@ -23,4 +23,5 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

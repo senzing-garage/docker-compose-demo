@@ -13,7 +13,7 @@ services:
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
     image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - ${SENZING_DOCKER_COMPOSE_PORT_RANGE_SENZING_API_SERVER:-8250}:8250
     read_only: true
@@ -24,4 +24,5 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

@@ -7,7 +7,7 @@ services:
       SENZING_ACCEPT_EULA: "${SENZING_ACCEPT_EULA:-no}"
     image: senzing/yum:${SENZING_DOCKER_IMAGE_VERSION_YUM:-latest}
     networks:
-      - backend
+      - senzing
     restart: on-failure
     user: "0"
     volumes:
@@ -17,4 +17,5 @@ services:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

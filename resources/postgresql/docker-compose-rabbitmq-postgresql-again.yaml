@@ -16,7 +16,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-elasticsearch"
     networks:
-      - backend
+      - senzing
     ports:
       - 9200:9200
       - 9300:9300
@@ -48,7 +48,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-logstash"
     networks:
-      - backend
+      - senzing
     ports:
       - 9600:9600
       - 12201:12201/udp
@@ -61,7 +61,7 @@ services:
       - logstash
     image: kibana:${SENZING_DOCKER_IMAGE_VERSION_KIBANA:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 5601:5601
 
@@ -80,7 +80,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-rabbitmq"
     networks:
-      - backend
+      - senzing
     ports:
       - 15672:15672
       - 5672:5672
@@ -113,7 +113,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-producer"
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
 
@@ -139,7 +139,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-postgres"
     networks:
-      - backend
+      - senzing
     ports:
       - 5432:5432
     restart: always
@@ -171,7 +171,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-pgadmin"
     networks:
-      - backend
+      - senzing
     ports:
       - 9171:80
       - 9172:443
@@ -204,7 +204,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-console"
     networks:
-      - backend
+      - senzing
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -250,7 +250,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-loader"
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: always
     volumes:
@@ -288,7 +288,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-redoer"
     networks:
-      - backend
+      - senzing
     privileged: true
     read_only: true
     restart: on-failure
@@ -346,7 +346,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-pocserver"
     networks:
-      - backend
+      - senzing
     ports:
       - 8250:8250
     read_only: true
@@ -377,7 +377,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-webapp"
     networks:
-      - backend
+      - senzing
     ports:
       - 8251:8251
     read_only: true
@@ -414,7 +414,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-jupyter"
     networks:
-      - backend
+      - senzing
     ports:
       - 9178:8888
     restart: always
@@ -450,7 +450,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-sshd"
     networks:
-      - backend
+      - senzing
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
@@ -483,7 +483,7 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-xterm"
     networks:
-      - backend
+      - senzing
     ports:
       - 8254:5000
     restart: always
@@ -506,13 +506,14 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-swaggerui"
     networks:
-      - backend
+      - senzing
     ports:
       - 9180:8080
     restart: always
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
 
 volumes:
   elasticsearch:

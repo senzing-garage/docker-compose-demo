@@ -41,7 +41,7 @@ services:
       ALLOW_ANONYMOUS_LOGIN: "yes"
     image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 2181:2181
     restart: always
@@ -58,7 +58,7 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9092:9092
     restart: always
@@ -74,7 +74,7 @@ services:
       SERVER_SERVLET_CONTEXTPATH: "/"
     image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9179:9000
     restart: always
@@ -94,7 +94,7 @@ services:
       SENZING_SUBCOMMAND: json-to-kafka
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
 
@@ -113,7 +113,7 @@ services:
       retries: 5
     image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 5432:5432
     restart: always
@@ -129,7 +129,7 @@ services:
       SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
     image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
     volumes:
@@ -155,7 +155,7 @@ services:
      PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
     image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9171:80
       - 9172:443
@@ -174,7 +174,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 30
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
     user: "0"
@@ -202,7 +202,7 @@ services:
         }
     image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
-      - backend
+      - senzing
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -239,7 +239,7 @@ services:
       SENZING_SUBCOMMAND: kafka
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: always
     volumes:
@@ -271,7 +271,7 @@ services:
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
-      - backend
+      - senzing
     privileged: true
     read_only: true
     restart: on-failure
@@ -319,7 +319,7 @@ services:
       SENZING_KAFKA_LOAD_TOPIC: senzing-kafka-topic
     image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8250:8250
     read_only: true
@@ -344,7 +344,7 @@ services:
       SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8251:8251
     read_only: true
@@ -375,7 +375,7 @@ services:
       SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
     image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9178:8888
     restart: always
@@ -404,7 +404,7 @@ services:
         }
     image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
@@ -430,7 +430,7 @@ services:
         }
     image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8254:5000
     restart: always
@@ -446,10 +446,11 @@ services:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9180:8080
     restart: always
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
