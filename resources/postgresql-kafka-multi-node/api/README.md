@@ -12,7 +12,7 @@ It uses the
 ## Environment variables
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-latest.sh).
+   See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-stable.sh).
    Example:
 
     ```console
@@ -24,7 +24,7 @@ It uses the
    This method identifies the latest versions of each Docker image.
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-stable.sh)
     ```
 
 1. :pencil2: Identify location of Senzing binary folders on host system.

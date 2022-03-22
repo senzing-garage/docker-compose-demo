@@ -30,6 +30,7 @@ services:
           }
         }
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
+    read_only: true
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
 
@@ -47,7 +48,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR}:/bitnami
+      - ${RABBITMQ_DIR:-/var/rabbitmq}:/bitnami
 
   producer:
     container_name: senzing-stream-producer
@@ -69,6 +70,7 @@ services:
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
 
   postgres:
@@ -103,6 +105,7 @@ services:
     image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
@@ -147,12 +150,14 @@ services:
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   console:
     cap_add:
@@ -215,6 +220,7 @@ services:
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - backend
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -241,6 +247,7 @@ services:
     networks:
       - backend
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -270,6 +277,7 @@ services:
     networks:
       - backend
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -293,6 +301,7 @@ services:
     image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-latest}
     networks:
       - backend
+    read_only: true
     restart: always
 
   infologger:
@@ -311,6 +320,7 @@ services:
     image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-latest}
     networks:
       - backend
+    read_only: true
     restart: always
 
   redoinfologger:
@@ -329,6 +339,7 @@ services:
     image: senzing/stream-logger:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOGGER:-latest}
     networks:
       - backend
+    read_only: true
     restart: always
 
   pocserver:
@@ -376,6 +387,7 @@ services:
       - backend
     ports:
       - 8250:8250
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -400,6 +412,7 @@ services:
       - backend
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
   jupyter:

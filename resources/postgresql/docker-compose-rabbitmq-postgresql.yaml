@@ -30,6 +30,7 @@ services:
           }
         }
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
+    read_only: true
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
 
@@ -118,7 +119,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR}:/bitnami
+      - ${RABBITMQ_DIR:-/var/rabbitmq}:/bitnami
 
   producer:
     container_name: senzing-stream-producer
@@ -146,6 +147,7 @@ services:
         tag: "senzing-producer"
     networks:
       - backend
+    read_only: true
     restart: on-failure
 
   postgres:
@@ -193,6 +195,7 @@ services:
         tag: "senzing-postgresinit"
     networks:
       - backend
+    read_only: true
     restart: on-failure
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
@@ -249,12 +252,14 @@ services:
         tag: "senzing-initcontainer"
     networks:
       - backend
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   console:
     cap_add:
@@ -328,6 +333,7 @@ services:
         tag: "senzing-loader"
     networks:
       - backend
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -366,6 +372,7 @@ services:
     networks:
       - backend
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -424,6 +431,7 @@ services:
       - backend
     ports:
       - 8250:8250
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -454,6 +462,7 @@ services:
       - backend
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
   jupyter:
