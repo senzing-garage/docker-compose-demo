@@ -9,7 +9,7 @@ services:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 15672:15672
       - 5672:5672
@@ -36,7 +36,7 @@ services:
       SENZING_SUBCOMMAND: json-to-rabbitmq
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
 
@@ -47,7 +47,7 @@ services:
       LICENSE: accept
     image: ibmcom/db2:${SENZING_DOCKER_IMAGE_VERSION_IBMCOM_DB2:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 50000:50000
     privileged: true
@@ -60,7 +60,7 @@ services:
     container_name: senzing-db2-driver-installer
     image: senzing/db2-driver-installer:${SENZING_DOCKER_IMAGE_VERSION_DB2_DRIVER_INSTALLER:-latest}
     networks:
-      - backend
+      - senzing
     restart: on-failure
     user: "0"
     volumes:
@@ -76,7 +76,7 @@ services:
       SENZING_DELAY_IN_SECONDS: 60
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: on-failure
     user: "0"
@@ -105,7 +105,7 @@ services:
         }
     image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
-      - backend
+      - senzing
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -145,7 +145,7 @@ services:
       SENZING_SUBCOMMAND: rabbitmq
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
-      - backend
+      - senzing
     read_only: true
     restart: always
     volumes:
@@ -178,7 +178,7 @@ services:
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
-      - backend
+      - senzing
     privileged: true
     read_only: true
     restart: on-failure
@@ -231,7 +231,7 @@ services:
       SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
     image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8250:8250
     read_only: true
@@ -257,7 +257,7 @@ services:
       SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8251:8251
     read_only: true
@@ -282,7 +282,7 @@ services:
         }
     image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
@@ -308,7 +308,7 @@ services:
         }
     image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8254:5000
     restart: always
@@ -325,10 +325,11 @@ services:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9180:8080
     restart: always
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
