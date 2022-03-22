@@ -7,7 +7,7 @@ services:
 #     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.8.19-debian-10-r6}
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
     networks:
       - backend
     ports:
@@ -15,7 +15,7 @@ services:
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR}:/bitnami
+      - ${RABBITMQ_DIR:-/var/rabbitmq}:/bitnami
 
   producer:
     container_name: senzing-stream-producer
@@ -36,23 +36,8 @@ services:
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
       - backend
+    read_only: true
     restart: on-failure
-
-  initcontainer:
-    container_name: senzing-init-container
-    environment:
-#     See https://github.com/Senzing/docker-init-container#configuration
-      SENZING_LOG_LEVEL: debug
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
-    networks:
-      - backend
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   sqliteweb:
     container_name: senzing-sqlite-web
@@ -68,6 +53,20 @@ services:
     restart: always
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+
+  initcontainer:
+    container_name: senzing-init-container
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+    networks:
+      - backend
+    read_only: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   console:
     cap_add:
@@ -104,14 +103,6 @@ services:
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
-      SENZING_LOG_LEVEL: debug
-      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
-      SENZING_RABBITMQ_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
-      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_SUBCOMMAND: rabbitmq
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -123,9 +114,18 @@ services:
             "CONNECTION": "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"
           }
         }
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
+      SENZING_LOG_LEVEL: debug
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_SUBCOMMAND: rabbitmq
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - backend
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -140,8 +140,6 @@ services:
     environment:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
-      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
-      SENZING_SUBCOMMAND: redo
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -153,10 +151,14 @@ services:
             "CONNECTION": "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"
           }
         }
+      SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
       - backend
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -165,15 +167,12 @@ services:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
-  api:
-    container_name: senzing-api-server
+  pocserver:
+    container_name: senzing-poc-server
     environment:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
-      SENZING_API_SERVER_PORT: '8250'
-      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
-      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
       SENZING_API_SERVER_INIT_JSON: >-
         {
           "PIPELINE": {
@@ -185,6 +184,9 @@ services:
             "CONNECTION": "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"
           }
         }
+      SENZING_API_SERVER_PORT: '8250'
+      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
+      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -196,11 +198,19 @@ services:
             "CONNECTION": "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
+      SENZING_RABBITMQ_LOAD_EXCHANGE: senzing-rabbitmq-exchange
+      SENZING_RABBITMQ_LOAD_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_LOAD_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_LOAD_PORT: 5672
+      SENZING_RABBITMQ_LOAD_ROUTING_KEY: senzing.records
+      SENZING_RABBITMQ_LOAD_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
+    image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
       - backend
     ports:
       - 8250:8250
+    read_only: true
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -211,20 +221,22 @@ services:
   webapp:
     container_name: senzing-webapp
     depends_on:
-      - api
+      - pocserver
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
-      SENZING_API_SERVER_URL: http://senzing-api-server:8250
-      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
+      SENZING_API_SERVER_URL: http://senzing-poc-server:8250
+      SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
-      SENZING_WEB_SERVER_API_PATH: /api
+      SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
       SENZING_WEB_SERVER_PORT: 8251
-      SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
+      SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
+      SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
       - backend
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
   jupyter:
@@ -237,6 +249,7 @@ services:
     depends_on:
       - loader
     environment:
+#     See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -320,7 +333,7 @@ services:
     container_name: senzing-swaggerui
     environment:
       URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
       - backend
     ports:
