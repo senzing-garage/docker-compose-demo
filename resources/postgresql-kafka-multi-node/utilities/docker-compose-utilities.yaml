@@ -9,7 +9,7 @@ services:
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
     image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
-      - backend
+      - senzing
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
@@ -23,10 +23,11 @@ services:
       URL: ${SENZING_DOCKER_COMPOSE_SWAGGERUI_URL:-"https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"}
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9180:8080
     restart: always
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

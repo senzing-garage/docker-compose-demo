@@ -51,7 +51,7 @@ services:
         }
     image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8250:8250
     read_only: true
@@ -75,7 +75,7 @@ services:
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8251:8251
     read_only: true
@@ -87,7 +87,7 @@ services:
       SWAGGER_JSON: "/data/senzing-rest-api.yaml"
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9180:8080
     restart: always
@@ -95,4 +95,5 @@ services:
       - ${SENZING_SWAGGERUI_DIR:-.}:/data
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

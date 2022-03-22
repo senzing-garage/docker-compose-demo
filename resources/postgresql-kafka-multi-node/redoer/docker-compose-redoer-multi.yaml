@@ -9,7 +9,7 @@ services:
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 15672:15672
       - 5672:5672
@@ -31,7 +31,7 @@ services:
       SENZING_SUBCOMMAND: write-to-rabbitmq
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
-      - backend
+      - senzing
     privileged: true
     read_only: true
     restart: on-failure
@@ -55,7 +55,7 @@ services:
       SENZING_SUBCOMMAND: read-from-rabbitmq
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
-      - backend
+      - senzing
     privileged: true
     read_only: true
     restart: on-failure
@@ -67,4 +67,5 @@ services:
 
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
