@@ -37,6 +37,8 @@ services:
       - senzing
     read_only: true
     restart: on-failure
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   mysql:
     container_name: senzing-mysql
