@@ -235,6 +235,8 @@ services:
       - senzing
     read_only: true
     restart: on-failure
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   mssql-create-db:
     command:

@@ -39,6 +39,8 @@ services:
       - senzing
     read_only: true
     restart: on-failure
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   db2:
     container_name: senzing-db2
