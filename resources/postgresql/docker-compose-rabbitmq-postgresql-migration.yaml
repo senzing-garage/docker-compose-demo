@@ -47,7 +47,7 @@ services:
   console:
     cap_add:
       - ALL
-    command: bash -c "sleep 15 && /opt/senzing/g2/bin/g2dbupgrade -a -c /etc/opt/senzing/G2Module.ini"
+    command: bash -c "/app/migrate-senzing-2-to-3.sh"
     container_name: senzing-console
     environment:
       SENZING_ENGINE_CONFIGURATION_JSON: >-
