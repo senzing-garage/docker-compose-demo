@@ -144,7 +144,6 @@ The Git repository has files that will be used in the `docker-compose` command.
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/2.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
 
     export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
