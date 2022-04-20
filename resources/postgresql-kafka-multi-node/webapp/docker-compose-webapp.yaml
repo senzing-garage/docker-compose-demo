@@ -13,10 +13,12 @@ services:
       SENZING_WEB_SERVER_URL: ${SENZING_WEB_SERVER_URL}
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

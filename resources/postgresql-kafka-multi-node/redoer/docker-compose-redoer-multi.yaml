@@ -7,9 +7,9 @@ services:
 #     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.9.5-debian-10-r12}
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 15672:15672
       - 5672:5672
@@ -31,8 +31,9 @@ services:
       SENZING_SUBCOMMAND: write-to-rabbitmq
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
-      - backend
+      - senzing
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -54,8 +55,9 @@ services:
       SENZING_SUBCOMMAND: read-from-rabbitmq
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
-      - backend
+      - senzing
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
@@ -65,4 +67,5 @@ services:
 
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

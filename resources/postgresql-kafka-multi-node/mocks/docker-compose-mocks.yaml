@@ -6,9 +6,9 @@ services:
     environment:
 #     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
       ALLOW_ANONYMOUS_LOGIN: "yes"
-    image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-3.7.0-debian-10-r87}
+    image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 2181:2181
     restart: always
@@ -23,9 +23,9 @@ services:
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://${SENZING_DOCKER_HOST_IP_ADDR}:9092"
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-    image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-2.8.0-debian-10-r55}
+    image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9092:9092
     restart: always
@@ -39,9 +39,9 @@ services:
       JVM_OPTS: "-Xms32M -Xmx64M"
       KAFKA_BROKERCONNECT: "${SENZING_DOCKER_HOST_IP_ADDR}:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
-    image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-3.27.0}
+    image: obsidiandynamics/kafdrop:${SENZING_DOCKER_IMAGE_VERSION_OBSIDIANDYNAMICS_KAFDROP:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9179:9000
     restart: always
@@ -61,7 +61,8 @@ services:
       SENZING_SUBCOMMAND: json-to-kafka
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
-      - backend
+      - senzing
+    read_only: true
     restart: on-failure
 
   postgres:
@@ -76,9 +77,9 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 5432:5432
     restart: always
@@ -92,7 +93,8 @@ services:
       SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
     image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
     networks:
-      - backend
+      - senzing
+    read_only: true
     restart: on-failure
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
@@ -104,7 +106,7 @@ services:
       - DATABASE_HOST=senzing-postgres
     image: bitnami/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPPGADMIN:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9171:8080
       - 9172:443
@@ -122,13 +124,16 @@ services:
       SENZING_SUBCOMMAND: initialize-database
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
-      - backend
+      - senzing
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}

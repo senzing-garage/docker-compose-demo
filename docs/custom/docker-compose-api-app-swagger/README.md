@@ -99,15 +99,15 @@ The following instructions need to be performed on an internet-connected system.
 
     ```console
     curl -X GET \
-      --output ${SENZING_OUTPUT_DIR}/docker-versions-latest.sh \
-      https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh
+      --output ${SENZING_OUTPUT_DIR}/docker-versions-stable.sh \
+      https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-stable.sh
     ```
 
 1. Set environment variables for docker image versions used.
    Example:
 
     ```console
-    source ${SENZING_OUTPUT_DIR}/docker-versions-latest.sh
+    source ${SENZING_OUTPUT_DIR}/docker-versions-stable.sh
     ```
 
 1. Pull docker images.

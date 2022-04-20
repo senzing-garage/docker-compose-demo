@@ -19,15 +19,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "${SENZING_DATABASE_CONNECTION_CORE}"
+            "CONNECTION": "${SENZING_DATABASE_CONNECTION_CORE:-NOT_SET}"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "${SENZING_DATABASE_CONNECTION_RES}"
+            "DB_1": "${SENZING_DATABASE_CONNECTION_RES:-NOT_SET}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "${SENZING_DATABASE_CONNECTION_LIBFEAT}"
+            "DB_1": "${SENZING_DATABASE_CONNECTION_LIBFEAT:-NOT_SET}"
           },
           "HYBRID": {
             "LIB_FEAT": "C2",
@@ -46,15 +46,18 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "CONNECTION": "${SENZING_DATABASE_CONNECTION_CORE}"
+            "CONNECTION": "${SENZING_DATABASE_CONNECTION_CORE:-NOT_SET}"
           }
         }
     image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8250:8250
+    read_only: true
     restart: always
+    tmpfs:
+      - /tmp
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -74,23 +77,25 @@ services:
       SENZING_WEB_SERVER_URL: http://senzing-webapp:8251
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 8251:8251
+    read_only: true
     restart: always
 
   swaggerui:
     container_name: senzing-swaggerui
     environment:
       SWAGGER_JSON: "/data/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
-      - backend
+      - senzing
     ports:
       - 9180:8080
     restart: always
     volumes:
-      - ${SENZING_SWAGGERUI_DIR}:/data
+      - ${SENZING_SWAGGERUI_DIR:-.}:/data
 
 networks:
-  backend:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
