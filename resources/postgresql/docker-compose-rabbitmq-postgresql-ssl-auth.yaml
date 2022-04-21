@@ -152,13 +152,14 @@ services:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
-      SENZING_API_SERVER_SECURE_PORT: '2443'
+      SENZING_API_SERVER_PORT: '2080'
+      # SENZING_API_SERVER_SECURE_PORT: '2443'
       SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
       SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
-      SENZING_API_SERVER_KEY_STORE: '/etc/opt/senzing/sz-api-server-store.p12'
-      SENZING_API_SERVER_KEY_STORE_PASSWORD: 'change-it'
-      SENZING_API_SERVER_CLIENT_KEY_STORE: '/etc/opt/senzing/my-client-trust-store.p12'
-      SENZING_API_SERVER_CLIENT_KEY_STORE_PASSWORD: 'change-it'
+      # SENZING_API_SERVER_KEY_STORE: '/etc/opt/senzing/sz-api-server-store.p12'
+      # SENZING_API_SERVER_KEY_STORE_PASSWORD: 'change-it'
+      # SENZING_API_SERVER_CLIENT_KEY_STORE: '/etc/opt/senzing/my-client-trust-store.p12'
+      # SENZING_API_SERVER_CLIENT_KEY_STORE_PASSWORD: 'change-it'
       SENZING_API_SERVER_VERBOSE: 'true'
       SENZING_API_SERVER_INIT_JSON: >-
         {
@@ -186,8 +187,8 @@ services:
     networks:
       - backend
     ports:
-      - 2443:2443
-      # - 2080:2080
+      #- 2443:2443
+      - 2080:2080
     restart: always
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
