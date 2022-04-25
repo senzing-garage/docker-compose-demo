@@ -152,16 +152,14 @@ The Git repository has files that will be used in the `docker-compose` command.
     ```
 
 1. Create directory for RabbitMQ persistence.
-   **Note:** Although the `RABBITMQ_DIR` directory will have open permissions,
-   the directories created within `RABBITMQ_DIR` will be restricted.
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_DIR:-/var/rabbitmq}
-    sudo chmod 770 ${RABBITMQ_DIR:-/var/rabbitmq}
+    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo mkdir -p ${MSSQL_DIR}
 
-    sudo mkdir -p ${MSSQL_DIR:-/var/mssql}
-    sudo chmod 770 ${MSSQL_DIR:-/var/mssql}
+    sudo chown $(id -u):$(id -g) -R ${SENZING_VOLUME}
+    sudo chmod -R 770 ${SENZING_VOLUME}
     ```
 
 ### SSH port
