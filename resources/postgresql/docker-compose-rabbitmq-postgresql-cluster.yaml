@@ -132,7 +132,7 @@ services:
   postgres_libfeat:
     container_name: senzing-postgres-libfeat
     environment:
-#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
+#     See https://github.com/docker-library/docs/blob/main/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
@@ -153,7 +153,7 @@ services:
   postgres_res:
     container_name: senzing-postgres-res
     environment:
-#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
+#     See https://github.com/docker-library/docs/blob/main/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
@@ -694,7 +694,7 @@ services:
   swaggerui:
     container_name: senzing-swaggerui
     environment:
-      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
+      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml"
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     networks:
       - senzing

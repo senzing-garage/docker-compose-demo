@@ -51,8 +51,8 @@ This docker formation brings up the following docker containers:
 - **Space:** This repository and demonstration require 3 GB free disk space.
 - **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
 - **Background knowledge:** This repository assumes a working knowledge of:
-  - [Docker](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker.md)
-  - [Docker-compose](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/docker-compose.md)
+  - [Docker](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker.md)
+  - [Docker-compose](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker-compose.md)
 
 ## Preparation
 
@@ -61,12 +61,12 @@ This docker formation brings up the following docker containers:
 The following software programs need to be installed
 on both the internet-connected and air-gapped systems:
 
-1. [docker](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker.md)
-1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-docker-compose.md)
+1. [docker](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker.md)
+1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker-compose.md)
 
 On the air-gapped system:
 
-1. [Senzing API](https://github.com/Senzing/knowledge-base/blob/master/HOWTO/install-senzing-api.md)
+1. [Senzing API](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-senzing-api.md)
 
    The installation of the Senzing SDK API must be initialized and configured.
    This may be done by creating a
@@ -100,7 +100,7 @@ The following instructions need to be performed on an internet-connected system.
     ```console
     curl -X GET \
       --output ${SENZING_OUTPUT_DIR}/docker-versions-stable.sh \
-      https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-stable.sh
+      https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
     ```
 
 1. Set environment variables for docker image versions used.
@@ -144,7 +144,7 @@ The following instructions need to be performed on an internet-connected system.
     ```console
     curl -X GET \
       --output ${SENZING_OUTPUT_DIR}/senzing-rest-api.yaml \
-      https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml
+      https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml
     ```
 
 1. Add docker-compose.yaml.
@@ -153,7 +153,7 @@ The following instructions need to be performed on an internet-connected system.
     ```console
     curl -X GET \
       --output ${SENZING_OUTPUT_DIR}/docker-compose.yaml \
-      https://raw.githubusercontent.com/Senzing/docker-compose-demo/master/resources/custom/docker-compose-api-app-swagger.yaml
+      https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/custom/docker-compose-api-app-swagger.yaml
     ```
 
 ### Create compressed file
@@ -306,7 +306,7 @@ The following instructions are performed on the air-gapped system.
 ### View docker containers
 
 1. A good tool to monitor individual docker logs is
-   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
    This tool is not installed by the package created above.
@@ -322,7 +322,7 @@ The server supports the
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-api-server)
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-api-server)
    for working with Senzing API server.
 
 ### View Senzing Entity Search WebApp
@@ -330,7 +330,7 @@ The server supports the
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
 
 ### View SwaggerUI
@@ -376,6 +376,6 @@ it can be brought down and directories can be deleted.
 
 Configuration values specified by environment variable or command line parameter.
 
-- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_etc_dir)**
-- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/master/lists/environment-variables.md#senzing_g2_dir)**
+- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_data_version_dir)**
+- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_etc_dir)**
+- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_g2_dir)**
