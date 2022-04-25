@@ -57,7 +57,7 @@ The mock services provisioned are:
     ```
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-stable.sh).
+   See [latest versions](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh).
    Example:
 
     ```console
@@ -75,7 +75,7 @@ The mock services provisioned are:
    This method identifies the latest versions of each Docker image.
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-stable.sh)
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh)
     ```
 
 ## Run docker formation
@@ -105,7 +105,7 @@ different aspects of the formation can be viewed.
 ### View docker containers
 
 1. A good tool to monitor individual docker logs is
-   [Portainer](https://github.com/Senzing/knowledge-base/blob/master/WHATIS/portainer.md).
+   [Portainer](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 

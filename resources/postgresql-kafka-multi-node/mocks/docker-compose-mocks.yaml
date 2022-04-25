@@ -68,7 +68,7 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
-#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
+#     See https://github.com/docker-library/docs/blob/main/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}

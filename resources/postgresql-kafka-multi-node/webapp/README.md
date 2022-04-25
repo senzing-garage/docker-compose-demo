@@ -9,7 +9,7 @@ which can be used to visually inspect the Senzing Mode.
 ## Environment variables
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-stable.sh).
+   See [latest versions](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh).
    Example:
 
     ```console
@@ -20,7 +20,7 @@ which can be used to visually inspect the Senzing Mode.
    This method identifies the latest versions of each Docker image.
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-stable.sh)
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh)
     ```
 
 1. :pencil2: Senzing API Server connectivity.

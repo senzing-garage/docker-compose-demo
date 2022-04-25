@@ -9,7 +9,7 @@ services:
       discovery.type: single-node
       ELASTIC_PASSWORD: changeme
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-    image: elasticsearch:${SENZING_DOCKER_IMAGE_VERSION_ELASTICSEARCH:-latest}
+    image: elasticsearch:${SENZING_DOCKER_IMAGE_VERSION_ELASTICSEARCH:-8.1.3}
     logging:
       driver: gelf
       options:
@@ -41,7 +41,7 @@ services:
     container_name: senzing-logstash
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    image: logstash:${SENZING_DOCKER_IMAGE_VERSION_LOGSTASH:-latest}
+    image: logstash:${SENZING_DOCKER_IMAGE_VERSION_LOGSTASH:-8.1.3}
     logging:
       driver: gelf
       options:
@@ -59,7 +59,7 @@ services:
     depends_on:
       - elasticsearch
       - logstash
-    image: kibana:${SENZING_DOCKER_IMAGE_VERSION_KIBANA:-latest}
+    image: kibana:${SENZING_DOCKER_IMAGE_VERSION_KIBANA:-8.1.3}
     networks:
       - senzing
     ports:
@@ -502,7 +502,7 @@ services:
     depends_on:
       - logstash
     environment:
-      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
+      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml"
     image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     logging:
       driver: gelf
