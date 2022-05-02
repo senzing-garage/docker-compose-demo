@@ -148,7 +148,7 @@ services:
       - 5433:5432
     restart: always
     volumes:
-      - ${POSTGRES_DIR_LIBFEAT:-/var/lib/postgresql_libfeat/data}:/var/lib/postgresql/data
+      - ${POSTGRES_DIR_LIBFEAT:-/var/lib/postgresql_libfeat/data}:/bitnami/postgresql
 
   postgres_res:
     container_name: senzing-postgres-res
@@ -169,7 +169,7 @@ services:
       - 5434:5432
     restart: always
     volumes:
-      - ${POSTGRES_DIR_RES:-/var/lib/postgresql_res/data}:/var/lib/postgresql/data
+      - ${POSTGRES_DIR_RES:-/var/lib/postgresql_res/data}:/bitnami/postgresql
 
   postgresinit:
     container_name: senzing-postgresql-init
