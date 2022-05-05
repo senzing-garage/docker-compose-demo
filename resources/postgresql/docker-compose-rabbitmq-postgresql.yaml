@@ -40,8 +40,8 @@ services:
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
-      ELASTIC_PASSWORD: changeme
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      xpack.security.enabled: 'false'
     image: elasticsearch:${SENZING_DOCKER_IMAGE_VERSION_ELASTICSEARCH:-8.1.3}
     logging:
       driver: gelf
@@ -67,7 +67,7 @@ services:
         }
         output {
           elasticsearch {
-            hosts => ["elasticsearch:9200"]
+            hosts => ["http://elasticsearch:9200"]
             index => "logstash-%{+YYYY-MM-dd}"
           }
         }
