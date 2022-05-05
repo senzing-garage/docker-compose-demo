@@ -21,6 +21,7 @@ services:
 #     See https://github.com/bitnami/bitnami-docker-kafka#configuration
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_NUM_PARTITIONS: 5
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     image: bitnami/kafka:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_KAFKA:-latest}
