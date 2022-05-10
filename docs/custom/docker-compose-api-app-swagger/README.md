@@ -243,7 +243,7 @@ The following instructions are performed on the air-gapped system.
    System install example:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=/opt/my-senzing/data/2.0.0
+    export SENZING_DATA_VERSION_DIR=/opt/my-senzing/data/3.0.0
     export SENZING_ETC_DIR=/opt/my-senzing/etc
     export SENZING_G2_DIR=/opt/my-senzing/g2
     ```
