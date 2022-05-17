@@ -249,12 +249,13 @@ services:
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
       SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
-      SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8273
+      SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     networks:
       - senzing
     ports:
       - 8251:8251
+      - 8257:8257
     read_only: true
     restart: always
 
@@ -262,16 +263,14 @@ services:
       image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
       container_name: senzing-webapp-console
       environment:
-        SENZING_CONSOLE_SERVER_PORT: 8273
+        SENZING_CONSOLE_SERVER_PORT: 8257
       networks:
-        - backend
+        - senzing
       volumes:
         - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
         - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
         - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
         - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      ports:
-        - 8273:8273
       restart: 'no'
 
   sshd:
