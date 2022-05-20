@@ -11,7 +11,7 @@ working with the Senzing stack.
 ## Environment variables
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/master/lists/docker-versions-latest.sh).
+   See [latest versions](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh).
    Example:
 
     ```console
@@ -24,14 +24,14 @@ working with the Senzing stack.
    This method identifies the latest versions of each Docker image.
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/master/lists/docker-versions-latest.sh)
+    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh)
     ```
 
 1. :pencil2: Identify location of Senzing binary folders on host system.
    Example:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/2.0.0
+    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/3.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
     ```

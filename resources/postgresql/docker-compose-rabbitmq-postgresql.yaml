@@ -1,22 +1,55 @@
 version: '3'
 services:
 
+  makefile:
+    container_name: senzing-makefile
+    command:
+      - sh
+      - -c
+      - echo $${FILE_CONTENTS} >> /output/servers.json
+    environment:
+      FILE_CONTENTS: >-
+        {
+          "Servers": {
+            "1": {
+              "Name": "senzing",
+              "Group": "Servers",
+              "Host": "senzing-postgres",
+              "Port": 5432,
+              "MaintenanceDB": "postgres",
+              "Username": "postgres",
+              "SSLMode": "prefer",
+              "SSLCert": "<STORAGE_DIR>/.postgresql/postgresql.crt",
+              "SSLKey": "<STORAGE_DIR>/.postgresql/postgresql.key",
+              "SSLCompression": 0,
+              "Timeout": 10,
+              "UseSSHTunnel": 0,
+              "TunnelPort": "22",
+              "TunnelAuthentication": 0
+            }
+          }
+        }
+    image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
+    read_only: true
+    volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
+
   elasticsearch:
     container_name: senzing-elasticsearch
     environment:
-      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
-      ELASTIC_PASSWORD: changeme
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
-    image: elasticsearch:7.16.3
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      xpack.security.enabled: 'false'
+    image: elasticsearch:${SENZING_DOCKER_IMAGE_VERSION_ELASTICSEARCH:-8.1.3}
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-elasticsearch"
     networks:
-      - backend
+      - senzing
     ports:
       - 9200:9200
       - 9300:9300
@@ -34,21 +67,21 @@ services:
         }
         output {
           elasticsearch {
-            hosts => ["elasticsearch:9200"]
+            hosts => ["http://elasticsearch:9200"]
             index => "logstash-%{+YYYY-MM-dd}"
           }
         }
     container_name: senzing-logstash
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    image: logstash:7.16.3
+    image: logstash:${SENZING_DOCKER_IMAGE_VERSION_LOGSTASH:-8.1.3}
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-logstash"
     networks:
-      - backend
+      - senzing
     ports:
       - 9600:9600
       - 12201:12201/udp
@@ -59,9 +92,9 @@ services:
     depends_on:
       - elasticsearch
       - logstash
-    image: kibana:7.16.3
+    image: kibana:${SENZING_DOCKER_IMAGE_VERSION_KIBANA:-8.1.3}
     networks:
-      - backend
+      - senzing
     ports:
       - 5601:5601
 
@@ -73,20 +106,20 @@ services:
 #     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.8.19-debian-10-r6}
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-rabbitmq"
     networks:
-      - backend
+      - senzing
     ports:
       - 15672:15672
       - 5672:5672
     restart: always
     volumes:
-      - ${RABBITMQ_DIR}:/bitnami
+      - ${RABBITMQ_DIR:-/var/rabbitmq}:/bitnami
 
   producer:
     container_name: senzing-stream-producer
@@ -96,7 +129,7 @@ services:
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
@@ -114,36 +147,40 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-producer"
     networks:
-      - backend
+      - senzing
+    read_only: true
     restart: on-failure
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   postgres:
     container_name: senzing-postgres
     depends_on:
       - logstash
     environment:
-#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
-      POSTGRES_DB: ${POSTGRES_DB:-G2}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+#     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-senzing}
+      POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
+      POSTGRESQL_USERNAME: ${POSTGRES_USERNAME:-senzing}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
       interval: 10s
       timeout: 5s
       retries: 5
-    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-latest}
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-postgres"
     networks:
-      - backend
+      - senzing
     ports:
       - 5432:5432
     restart: always
     volumes:
-      - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/var/lib/postgresql/data
+      - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
 
   postgresinit:
     container_name: senzing-postgresql-init
@@ -160,30 +197,45 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-postgresinit"
     networks:
-      - backend
+      - senzing
+    read_only: true
     restart: on-failure
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  phppgadmin:
-    container_name: senzing-phppgadmin
+  pgadmin:
+    container_name: senzing-pgadmin
     depends_on:
       - logstash
+      - makefile
     environment:
-#     See https://hub.docker.com/r/bitnami/phppgadmin
-      - DATABASE_HOST=senzing-postgres
-    image: bitnami/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPPGADMIN:-latest}
+#    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+     PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
+     PGADMIN_CONFIG_LOGIN_BANNER: |-
+       "<h4>Senzing demonstration</h4>
+       Although pgAdmin can be configured for security,
+       <br/>the following credentials are used for demonstration.
+       <ul>
+         <li><b>Username:</b> postgres@postgres.com</li>
+         <li><b>Password:</b> password</li>
+       </ul>"
+     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+     PGADMIN_DEFAULT_PASSWORD: password
+     PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
+    image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
-        tag: "senzing-phppgadmin"
+        tag: "senzing-pgadmin"
     networks:
-      - backend
+      - senzing
     ports:
-      - 9171:8080
+      - 9171:80
       - 9172:443
     restart: always
+    volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
   initcontainer:
     container_name: senzing-init-container
@@ -202,13 +254,15 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-initcontainer"
     networks:
-      - backend
+      - senzing
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   console:
     cap_add:
@@ -235,10 +289,10 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-console"
     networks:
-      - backend
+      - senzing
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -274,6 +328,7 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_RABBITMQ_VIRTUAL_HOST: "/"
+      SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
       SENZING_SUBCOMMAND: rabbitmq
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     logging:
@@ -282,10 +337,11 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-loader"
     networks:
-      - backend
+      - senzing
+    read_only: true
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -309,6 +365,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
@@ -318,12 +375,13 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-redoer"
     networks:
-      - backend
+      - senzing
     privileged: true
+    read_only: true
     restart: on-failure
     user: "0"
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -336,16 +394,6 @@ services:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
-      SENZING_API_SERVER_PORT: '8250'
-      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
-      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
-      SENZING_RABBITMQ_LOAD_EXCHANGE: senzing-rabbitmq-exchange
-      SENZING_RABBITMQ_LOAD_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_LOAD_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_LOAD_PORT: 5672
-      SENZING_RABBITMQ_LOAD_ROUTING_KEY: senzing.records
-      SENZING_RABBITMQ_LOAD_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
       SENZING_API_SERVER_INIT_JSON: >-
         {
           "PIPELINE": {
@@ -357,6 +405,9 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_API_SERVER_PORT: '8250'
+      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
+      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -368,6 +419,13 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_RABBITMQ_LOAD_EXCHANGE: senzing-rabbitmq-exchange
+      SENZING_RABBITMQ_LOAD_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_LOAD_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_LOAD_PORT: 5672
+      SENZING_RABBITMQ_LOAD_ROUTING_KEY: senzing.records
+      SENZING_RABBITMQ_LOAD_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
     image: senzing/senzing-poc-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     logging:
       driver: gelf
@@ -375,12 +433,15 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-pocserver"
     networks:
-      - backend
+      - senzing
     ports:
       - 8250:8250
+    read_only: true
     restart: always
+    tmpfs:
+      - /tmp
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -389,6 +450,7 @@ services:
     depends_on:
       - pocserver
       - logstash
+      - webapp-console
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250
@@ -397,7 +459,7 @@ services:
       SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
-      SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
+      SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     logging:
       driver: gelf
@@ -405,10 +467,26 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-webapp"
     networks:
-      - backend
+      - senzing
     ports:
       - 8251:8251
+      - 8257:8257
+    read_only: true
     restart: always
+
+  webapp-console:
+      image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
+      container_name: senzing-webapp-console
+      environment:
+        SENZING_CONSOLE_SERVER_PORT: 8257
+      networks:
+        - senzing
+      volumes:
+        - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
+        - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+        - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+        - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      restart: 'no'
 
   jupyter:
     container_name: senzing-jupyter
@@ -422,7 +500,6 @@ services:
       - logstash
     environment:
 #     See https://github.com/Senzing/docker-jupyter#configuration
-      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -434,6 +511,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
+      SENZING_SQL_CONNECTION: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@senzing-postgres:5432:${POSTGRES_DB:-G2}/"
     image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-latest}
     logging:
       driver: gelf
@@ -441,13 +519,13 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-jupyter"
     networks:
-      - backend
+      - senzing
     ports:
       - 9178:8888
     restart: always
     volumes:
       - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -477,12 +555,12 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-sshd"
     networks:
-      - backend
+      - senzing
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -510,12 +588,12 @@ services:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-xterm"
     networks:
-      - backend
+      - senzing
     ports:
       - 8254:5000
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -525,21 +603,22 @@ services:
     depends_on:
       - logstash
     environment:
-      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/master/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-v3.51.0}
+      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml"
+    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
         tag: "senzing-swaggerui"
     networks:
-      - backend
+      - senzing
     ports:
       - 9180:8080
     restart: always
 
 networks:
-  backend:
-  
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
+
 volumes:
   elasticsearch:
