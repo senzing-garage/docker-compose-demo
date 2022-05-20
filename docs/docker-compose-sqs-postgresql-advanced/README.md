@@ -150,7 +150,7 @@ The Git repository has files that will be used in the `docker-compose` command.
 
     ```console
     export SENZING_DATA_DIR=${SENZING_VOLUME}/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/2.0.0
+    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/3.0.0
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var

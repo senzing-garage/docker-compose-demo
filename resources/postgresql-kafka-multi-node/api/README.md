@@ -31,7 +31,7 @@ It uses the
    Example:
 
     ```console
-    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/2.0.0
+    export SENZING_DATA_VERSION_DIR=/opt/senzing/data/3.0.0
     export SENZING_ETC_DIR=/etc/opt/senzing
     export SENZING_G2_DIR=/opt/senzing/g2
     ```
