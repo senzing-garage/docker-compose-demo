@@ -31,7 +31,7 @@ services:
         }
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
     read_only: true
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
 
@@ -54,7 +54,6 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
-    user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data:z
 
@@ -88,7 +87,7 @@ services:
       - 9600:9600
       - 12201:12201/udp
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   kibana:
     container_name: senzing-kibana
@@ -100,7 +99,7 @@ services:
       - senzing
     ports:
       - 5601:5601
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   rabbitmq:
     container_name: senzing-rabbitmq
@@ -122,7 +121,6 @@ services:
       - 15672:15672
       - 5672:5672
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
       - ${RABBITMQ_DIR:-/var/rabbitmq}:/bitnami
 
@@ -154,7 +152,7 @@ services:
       - senzing
     read_only: true
     restart: on-failure
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
@@ -184,7 +182,6 @@ services:
     ports:
       - 5432:5432
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
       - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
 
@@ -206,7 +203,7 @@ services:
       - senzing
     read_only: true
     restart: on-failure
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -241,7 +238,7 @@ services:
       - 9171:80
       - 9172:443
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
@@ -255,6 +252,8 @@ services:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 30
+      SENZING_GID: ${SENZING_GID:-1001}
+      SENZING_UID: ${SENZING_UID:-1001}
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     logging:
       driver: gelf
@@ -265,7 +264,7 @@ services:
       - senzing
     read_only: true
     restart: on-failure
-    user: ${DOCKER_COMPOSE_USER:-0}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -299,7 +298,7 @@ services:
     networks:
       - senzing
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -347,7 +346,7 @@ services:
       - senzing
     read_only: true
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -387,7 +386,7 @@ services:
     privileged: true
     read_only: true
     restart: on-failure
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -448,7 +447,7 @@ services:
     restart: always
     tmpfs:
       - /tmp
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -482,21 +481,27 @@ services:
       - 8257:8257
     read_only: true
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   webapp-console:
-      image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
-      container_name: senzing-webapp-console
-      environment:
-        SENZING_CONSOLE_SERVER_PORT: 8257
-      networks:
-        - senzing
-      volumes:
-        - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-        - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-        - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-        - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      restart: 'no'
+    container_name: senzing-webapp-console
+    environment:
+      SENZING_CONSOLE_SERVER_PORT: 8257
+    image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-webapp-console"
+    networks:
+      - senzing
+    restart: 'no'
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   jupyter:
     container_name: senzing-jupyter
@@ -533,7 +538,7 @@ services:
     ports:
       - 9178:8888
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
@@ -570,7 +575,7 @@ services:
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -604,7 +609,7 @@ services:
     ports:
       - 8254:5000
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -628,7 +633,7 @@ services:
     ports:
       - 9180:8080
     restart: always
-    user: ${DOCKER_COMPOSE_USER:-""}
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
 networks:
   senzing:
