@@ -41,8 +41,8 @@ services:
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
-      ELASTIC_PASSWORD: changeme
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      xpack.security.enabled: 'false'
     image: elasticsearch:${SENZING_DOCKER_IMAGE_VERSION_ELASTICSEARCH:-8.1.3}
     logging:
       driver: gelf
@@ -69,7 +69,7 @@ services:
         }
         output {
           elasticsearch {
-            hosts => ["elasticsearch:9200"]
+            hosts => ["http://elasticsearch:9200"]
             index => "logstash-%{+YYYY-MM-dd}"
           }
         }
@@ -267,7 +267,7 @@ services:
     restart: on-failure
     user: ${DOCKER_COMPOSE_USER:-0}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -301,7 +301,7 @@ services:
     restart: always
     user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -349,7 +349,7 @@ services:
     restart: always
     user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -389,7 +389,7 @@ services:
     restart: on-failure
     user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -450,7 +450,7 @@ services:
       - /tmp
     user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -459,6 +459,7 @@ services:
     depends_on:
       - pocserver
       - logstash
+      - webapp-console
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250
@@ -467,7 +468,7 @@ services:
       SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
-      SENZING_WEB_SERVER_VIRTUAL_PATH: "/"
+      SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     logging:
       driver: gelf
@@ -478,9 +479,24 @@ services:
       - senzing
     ports:
       - 8251:8251
+      - 8257:8257
     read_only: true
     restart: always
     user: ${DOCKER_COMPOSE_USER:-""}
+
+  webapp-console:
+      image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
+      container_name: senzing-webapp-console
+      environment:
+        SENZING_CONSOLE_SERVER_PORT: 8257
+      networks:
+        - senzing
+      volumes:
+        - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
+        - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+        - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+        - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      restart: 'no'
 
   jupyter:
     container_name: senzing-jupyter
@@ -520,7 +536,7 @@ services:
     user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
       - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -556,7 +572,7 @@ services:
     restart: always
     user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
@@ -590,7 +606,7 @@ services:
     restart: always
     user: ${DOCKER_COMPOSE_USER:-""}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
