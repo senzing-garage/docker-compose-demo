@@ -146,25 +146,21 @@ The Git repository has files that will be used in the `docker-compose` command.
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-
     export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
     export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     ```
 
-1. Create directory for RabbitMQ and pgAdmin persistence.
-   **Note:** `PGADMIN_DIR` is treated specially because of
-   [pgadmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories).
+1. Create directories.
+
    Example:
 
     ```console
-    sudo mkdir -p ${PGADMIN_DIR}
-    sudo mkdir -p ${POSTGRES_DIR}
-    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_ETC_DIR}
 
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VOLUME}
-    sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${PGADMIN_DIR}
+    export SENZING_UID=$(id -u)
+    export SENZING_GID=$(id -g)
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     ```
 
 ### SSH port
@@ -227,7 +223,10 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh)
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-versions-latest.sh \
+        https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-latest.sh
+    source ${SENZING_VOLUME}/docker-versions-latest.sh
     ```
 
 1. Pull docker images.
@@ -266,6 +265,21 @@ Senzing comes with a trial license that supports 100,000 records.
 1. :thinking: **Optional:**
    If more than 100,000 records are desired, see
    [Senzing license](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-license).
+
+### File ownership and permissions
+
+1. Set file and directory ownership and permissions.
+   **Note:** Open permissions are needed to satisfy the requirements of
+   [PgAdmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories),
+   [Bitnami Postgres persistance](https://github.com/bitnami/bitnami-docker-postgresql#persisting-your-database), and
+   [Bitnami RabbitMQ persistance](https://github.com/bitnami/bitnami-docker-rabbitmq#persisting-your-application).
+   Example:
+
+    ```console
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+    sudo chmod -R 770 ${SENZING_VOLUME}
+    sudo chmod -R 777 ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    ```
 
 ### Run docker formation
 
