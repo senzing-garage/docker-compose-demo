@@ -46,8 +46,8 @@ Arrows represent data flow.
         1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
         1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
     1. [Download files](#download-files)
-    1. [EULA](#eula)
     1. [Pull docker images](#pull-docker-images)
+    1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
     1. [File ownership and permissions](#file-ownership-and-permissions)
@@ -262,16 +262,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/${SENZING_DOCKER_COMPOSE_FILE}
     ```
 
-### EULA
-
-To use the Senzing code, you must agree to the End User License Agreement (EULA).
-
-1. :warning: This step is intentionally tricky and not simply copy/paste.
-   This ensures that you make a conscious effort to accept the EULA.
-   Example:
-
-    <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
-
 ### Pull docker images
 
 "latest" or "pinned" versions of containers can be used in the docker-compose formation.
@@ -292,6 +282,16 @@ The following will be used to pull the pinned or most recent `latest` versions.
     sudo --preserve-env docker-compose --file docker-compose-install.yaml pull
     sudo --preserve-env docker-compose pull
     ```
+
+### EULA
+
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
+
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   Example:
+
+    <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
 
 ### Install Senzing
 
