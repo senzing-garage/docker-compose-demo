@@ -400,7 +400,6 @@ services:
       - 8257:8257
     read_only: true
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   webapp-console:
     container_name: senzing-webapp-console

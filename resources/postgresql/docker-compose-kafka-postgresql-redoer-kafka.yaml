@@ -289,7 +289,7 @@ services:
     privileged: true
     read_only: true
     restart: on-failure
-    user: "0"
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -394,7 +394,6 @@ services:
       - 8257:8257
     read_only: true
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   webapp-console:
     container_name: senzing-webapp-console
