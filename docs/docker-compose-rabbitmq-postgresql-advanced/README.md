@@ -37,7 +37,6 @@ Arrows represent data flow.
 1. [Prerequisites](#prerequisites)
     1. [Prerequisite software](#prerequisite-software)
 1. [Demonstrate](#demonstrate)
-    1. [Volumes](#volumes)
     1. [Choose docker formation](#choose-docker-formation)
         1. [Standard formation](#standard-formation)
         1. [Withinfo formation](#withinfo-formation)
@@ -45,6 +44,7 @@ Arrows represent data flow.
         1. [Redoer queuing formation](#redoer-queuing-formation)
         1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
         1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
+    1. [Volumes](#volumes)
     1. [Download files](#download-files)
     1. [Pull docker images](#pull-docker-images)
     1. [EULA](#eula)
@@ -116,51 +116,10 @@ describing where we can improve.   Now on with the show...
 
 ## Demonstrate
 
-### Volumes
-
-1. :pencil2: Specify the directory where Senzing should be installed on the local host.
-   Example:
-
-    ```console
-    export SENZING_VOLUME=~/my-senzing
-    ```
-
-    1. :warning:
-       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
-       must be enabled for `SENZING_VOLUME`.
-    1. :warning:
-       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
-       must be enabled for `SENZING_VOLUME`.
-
-1. Identify directories on the local host.
-   Example:
-
-    ```console
-    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/3.0.0
-    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
-    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-    export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
-    export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
-    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
-    ```
-
-1. Create directories.
-
-   Example:
-
-    ```console
-    sudo mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_ETC_DIR}
-
-    export SENZING_UID=$(id -u)
-    export SENZING_GID=$(id -g)
-    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
-    ```
-
 ### Choose docker formation
 
-:thinking: Choose a *docker-compose.yaml* file.
+:thinking: Choose a *docker-compose.yaml* file from
+[list](../../resources/postgresql).
 Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below.
 
 #### Standard formation
@@ -240,12 +199,54 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-rabbitmq-postgresql-debug.yaml
     ```
 
+### Volumes
+
+1. :pencil2: Specify the directory where Senzing should be installed on the local host.
+   Example:
+
+    ```console
+    export SENZING_VOLUME=~/my-senzing
+    ```
+
+    1. :warning:
+       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
+       must be enabled for `SENZING_VOLUME`.
+    1. :warning:
+       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
+       must be enabled for `SENZING_VOLUME`.
+
+1. Identify directories on the local host.
+   Example:
+
+    ```console
+    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
+    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/3.0.0
+    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
+    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
+    export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
+    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
+    ```
+
+1. Create directories.
+
+   Example:
+
+    ```console
+    sudo mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_ETC_DIR}
+
+    export SENZING_UID=$(id -u)
+    export SENZING_GID=$(id -g)
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+    ```
+
 ### Download files
 
 1. Download
    [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
    [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
-   specified [docker-compose.yaml](../../resources/postgresql) file.
+   [docker-compose.yaml](../../resources/postgresql) file.
    Example:
 
     ```console
