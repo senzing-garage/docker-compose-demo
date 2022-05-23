@@ -121,6 +121,7 @@ services:
       - 15672:15672
       - 5672:5672
     restart: always
+    user: "${SENZING_UID:-1001}:0"
     volumes:
       - ${RABBITMQ_DIR:-/var/rabbitmq}:/bitnami
 
