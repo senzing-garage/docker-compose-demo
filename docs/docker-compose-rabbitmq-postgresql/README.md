@@ -152,8 +152,8 @@ describing where we can improve.   Now on with the show...
 
 1. Download
    [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
-   [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) and
-   [docker-compose-senzing-installation.yaml](resources/senzing/docker-compose-senzing-installation.yaml).
+   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) and
+   [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml).
    Example:
 
     ```console
