@@ -633,7 +633,6 @@ services:
     ports:
       - 9180:8080
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
 networks:
   senzing:

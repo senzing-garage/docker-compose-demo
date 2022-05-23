@@ -31,6 +31,7 @@ services:
         }
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
     read_only: true
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
 
@@ -98,6 +99,7 @@ services:
       - senzing
     read_only: true
     restart: on-failure
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
@@ -120,6 +122,7 @@ services:
     ports:
       - 5432:5432
     restart: always
+    user: "${SENZING_UID:-1001}:0"
     volumes:
       - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
 
@@ -135,6 +138,7 @@ services:
       - senzing
     read_only: true
     restart: on-failure
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
@@ -156,13 +160,14 @@ services:
      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
      PGADMIN_DEFAULT_PASSWORD: password
      PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
-    image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
+    image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN4:-latest}
     networks:
       - senzing
     ports:
       - 9171:80
       - 9172:443
     restart: always
+    user: "${SENZING_UID:-1001}:0"
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
@@ -175,6 +180,8 @@ services:
 #     See https://github.com/Senzing/docker-init-container#configuration
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 30
+      SENZING_GID: ${SENZING_GID:-1001}
+      SENZING_UID: ${SENZING_UID:-1001}
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
       - senzing
@@ -207,6 +214,7 @@ services:
     networks:
       - senzing
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -245,6 +253,7 @@ services:
       - senzing
     read_only: true
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -278,7 +287,7 @@ services:
     privileged: true
     read_only: true
     restart: on-failure
-    user: "0"
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -363,6 +372,7 @@ services:
     restart: always
     tmpfs:
       - /tmp
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -390,20 +400,22 @@ services:
       - 8257:8257
     read_only: true
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   webapp-console:
-      image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
-      container_name: senzing-webapp-console
-      environment:
-        SENZING_CONSOLE_SERVER_PORT: 8257
-      networks:
-        - senzing
-      volumes:
-        - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-        - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-        - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-        - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      restart: 'no'
+    container_name: senzing-webapp-console
+    environment:
+      SENZING_CONSOLE_SERVER_PORT: 8257
+    image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
+    networks:
+      - senzing
+    restart: 'no'
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   jupyter:
     container_name: senzing-jupyter
@@ -489,6 +501,7 @@ services:
     ports:
       - 8254:5000
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing

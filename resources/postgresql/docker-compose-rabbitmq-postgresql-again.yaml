@@ -7,8 +7,8 @@ services:
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
-      ELASTIC_PASSWORD: changeme
       ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      xpack.security.enabled: 'false'
     image: elasticsearch:${SENZING_DOCKER_IMAGE_VERSION_ELASTICSEARCH:-8.1.3}
     logging:
       driver: gelf
@@ -20,6 +20,7 @@ services:
     ports:
       - 9200:9200
       - 9300:9300
+    user: "${SENZING_UID:-1001}:0"
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data:z
 
@@ -34,7 +35,7 @@ services:
         }
         output {
           elasticsearch {
-            hosts => ["elasticsearch:9200"]
+            hosts => ["http://elasticsearch:9200"]
             index => "logstash-%{+YYYY-MM-dd}"
           }
         }
@@ -53,6 +54,7 @@ services:
       - 9600:9600
       - 12201:12201/udp
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   kibana:
     container_name: senzing-kibana
@@ -64,6 +66,7 @@ services:
       - senzing
     ports:
       - 5601:5601
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   rabbitmq:
     container_name: senzing-rabbitmq
@@ -116,6 +119,7 @@ services:
       - senzing
     read_only: true
     restart: on-failure
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
@@ -145,6 +149,7 @@ services:
     ports:
       - 5432:5432
     restart: always
+    user: "${SENZING_UID:-1001}:0"
     volumes:
       - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
 
@@ -166,7 +171,7 @@ services:
      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
      PGADMIN_DEFAULT_PASSWORD: password
      PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
-    image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN:-latest}
+    image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN4:-latest}
     logging:
       driver: gelf
       options:
@@ -178,6 +183,7 @@ services:
       - 9171:80
       - 9172:443
     restart: always
+    user: "${SENZING_UID:-1001}:0"
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
@@ -208,6 +214,7 @@ services:
     networks:
       - senzing
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -255,6 +262,7 @@ services:
       - senzing
     read_only: true
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -294,7 +302,7 @@ services:
     privileged: true
     read_only: true
     restart: on-failure
-    user: "0"
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -355,6 +363,7 @@ services:
     restart: always
     tmpfs:
       - /tmp
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -388,20 +397,27 @@ services:
       - 8257:8257
     read_only: true
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
 
   webapp-console:
-      image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
-      container_name: senzing-webapp-console
-      environment:
-        SENZING_CONSOLE_SERVER_PORT: 8257
-      networks:
-        - senzing
-      volumes:
-        - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-        - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-        - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-        - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      restart: 'no'
+    container_name: senzing-webapp-console
+    environment:
+      SENZING_CONSOLE_SERVER_PORT: 8257
+    image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
+    logging:
+      driver: gelf
+      options:
+        gelf-address: "udp://localhost:12201"
+        tag: "senzing-webapp-console"
+    networks:
+      - senzing
+    restart: 'no'
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   jupyter:
     container_name: senzing-jupyter
@@ -507,6 +523,7 @@ services:
     ports:
       - 8254:5000
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
