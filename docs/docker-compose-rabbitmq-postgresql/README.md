@@ -34,7 +34,6 @@ Arrows represent data flow.
 1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
     1. [Prerequisite software](#prerequisite-software)
-    1. [Clone repository](#clone-repository)
 1. [Demonstrate](#demonstrate)
     1. [Volumes](#volumes)
     1. [SSH port](#ssh-port)
@@ -55,7 +54,6 @@ Arrows represent data flow.
         1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
-    1. [Re-run docker formation](#re-run-docker-formation)
     1. [Docker images](#docker-images)
     1. [Configuration](#configuration)
 1. [Errors](#errors)
@@ -104,21 +102,6 @@ describing where we can improve.   Now on with the show...
 1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
    Minimum version: [2.25.0](https://github.com/git/git/tags)
 
-### Clone repository
-
-The Git repository has files that will be used in the `docker-compose` command.
-
-1. Using these environment variable values:
-
-    ```console
-    export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-compose-demo
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    ```
-
-1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/clone-repository.md) to install the Git repository.
-
 ## Demonstrate
 
 ### Volumes
@@ -161,6 +144,28 @@ The Git repository has files that will be used in the `docker-compose` command.
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+    ```
+
+### Download files
+
+1. Download
+   [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
+   [docker-compose-rabbitmq-postgresql.yaml](resources/postgresql/docker-compose-rabbitmq-postgresql.yaml) and
+   [docker-compose-senzing-installation.yaml](resources/senzing/docker-compose-senzing-installation.yaml).
+   Example:
+
+    ```console
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-versions-stable.sh \
+        https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
+
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-compose-install.yaml \
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/senzing/docker-compose-senzing-installation.yaml"
+
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-compose.yaml \
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql.yaml"
     ```
 
 ### SSH port
@@ -223,25 +228,16 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    curl -X GET \
-        --output ${SENZING_VOLUME}/docker-versions-latest.sh \
-        https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-latest.sh
-    source ${SENZING_VOLUME}/docker-versions-latest.sh
+    source ${SENZING_VOLUME}/docker-versions-stable.sh
     ```
 
 1. Pull docker images.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml pull
-
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml pull
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose --file docker-compose-install.yaml pull
+    sudo --preserve-env docker-compose pull
     ```
 
 ### Install Senzing
@@ -250,10 +246,8 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose --file docker-compose-install.yaml up
     ```
 
     1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
@@ -287,10 +281,8 @@ Senzing comes with a trial license that supports 100,000 records.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml up
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -391,38 +383,20 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql.yaml down
-    sudo docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql-again.yaml down
+    cd ${SENZING_VOLUME}
+    sudo docker-compose down
+    sudo docker-compose --file docker-compose-install.yaml down
     ```
 
 1. Remove directories from host system.
    The following directories were created during the demonstration:
     1. `${SENZING_VOLUME}`
-    1. `${GIT_REPOSITORY_DIR}`
 
    They may be safely deleted.
 
 ## Advanced
 
 The following topics discuss variations to the basic docker-compose demonstration.
-
-### Re-run docker formation
-
-:thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again without requiring initialization steps.
-The following shows how to bring up the prior docker formation again without initialization.
-
-1. Launch docker-compose formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/postgresql/docker-compose-rabbitmq-postgresql-again.yaml up
-    ```
 
 ### Docker images
 
