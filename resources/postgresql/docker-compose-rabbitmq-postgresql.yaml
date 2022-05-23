@@ -239,7 +239,6 @@ services:
       - 9171:80
       - 9172:443
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
