@@ -214,7 +214,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     ```console
     cd ${SENZING_VOLUME}
-    sudo --preserve-env docker-compose --file docker-compose-install.yaml up
+    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml up
     ```
 
     1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.

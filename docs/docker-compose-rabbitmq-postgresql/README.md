@@ -161,7 +161,7 @@ describing where we can improve.   Now on with the show...
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
 
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-compose-install.yaml \
+        --output ${SENZING_VOLUME}/docker-compose-senzing-installation.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/senzing/docker-compose-senzing-installation.yaml"
 
     curl -X GET \
@@ -186,7 +186,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
     ```console
     cd ${SENZING_VOLUME}
-    sudo --preserve-env docker-compose --file docker-compose-install.yaml pull
+    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml pull
     sudo --preserve-env docker-compose pull
     ```
 
@@ -207,7 +207,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     ```console
     cd ${SENZING_VOLUME}
-    sudo --preserve-env docker-compose --file docker-compose-install.yaml up
+    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml up
     ```
 
     1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
@@ -345,7 +345,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
-    sudo docker-compose --file docker-compose-install.yaml down
+    sudo docker-compose --file docker-compose-senzing-installation.yaml down
     ```
 
 1. Remove directories from host system.
