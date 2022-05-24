@@ -312,7 +312,7 @@ The server supports the
    Example:
 
     ```console
-    sudo chmod 777 -R ${SENZING_VAR_DIR}/postgres
+    sudo chmod 777 -R ${POSTGRES_DIR}
     ```
 
 1. Jupyter Notebooks are viewable at
