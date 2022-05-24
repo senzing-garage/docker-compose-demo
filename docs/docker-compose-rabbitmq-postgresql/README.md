@@ -137,7 +137,6 @@ describing where we can improve.   Now on with the show...
     ```
 
 1. Create directories.
-
    Example:
 
     ```console
