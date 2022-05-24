@@ -241,7 +241,7 @@ Senzing comes with a trial license that supports 100,000 records.
 
 ### File ownership and permissions
 
-1. Change directory permissions.
+1. Set file and directory ownership and permissions.
    **Note:** Although the `MSSQL_DIR` directory will have open permissions,
    the directories created within `MSSQL_DIR` will be restricted.
    Example:

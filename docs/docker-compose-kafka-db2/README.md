@@ -166,7 +166,7 @@ describing where we can improve.   Now on with the show...
 
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/db2/docker-compose-kafka-db2.yamll"
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/db2/docker-compose-kafka-db2.yaml"
     ```
 
 ### Pull docker images
