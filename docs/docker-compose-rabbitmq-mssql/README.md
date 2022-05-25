@@ -34,16 +34,14 @@ Arrows represent data flow.
 1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
     1. [Prerequisite software](#prerequisite-software)
-    1. [Clone repository](#clone-repository)
 1. [Demonstrate](#demonstrate)
     1. [Volumes](#volumes)
-    1. [SSH port](#ssh-port)
-    1. [Set sshd password](#set-sshd-password)
-    1. [EULA](#eula)
+    1. [Download files](#download-files)
     1. [Pull docker images](#pull-docker-images)
+    1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
-    1. [Install MS SQL driver](#install-ms-sql-driver)
+    1. [File ownership and permissions](#file-ownership-and-permissions)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
         1. [View docker containers](#view-docker-containers)
@@ -56,7 +54,8 @@ Arrows represent data flow.
         1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
-    1. [Re-run docker formation](#re-run-docker-formation)
+    1. [SSH port](#ssh-port)
+    1. [Set sshd password](#set-sshd-password)
     1. [Docker images](#docker-images)
     1. [Configuration](#configuration)
     1. [Running non-root](#running-non-root)
@@ -106,21 +105,6 @@ describing where we can improve.   Now on with the show...
 1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
    Minimum version: [2.25.0](https://github.com/git/git/tags)
 
-### Clone repository
-
-The Git repository has files that will be used in the `docker-compose` command.
-
-1. Using these environment variable values:
-
-    ```console
-    export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-compose-demo
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    ```
-
-1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/clone-repository.md) to install the Git repository.
-
 ## Demonstrate
 
 ### Volumes
@@ -149,61 +133,63 @@ The Git repository has files that will be used in the `docker-compose` command.
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_OPT_MICROSOFT_DIR=${SENZING_VOLUME}/opt-microsoft
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-
     export MSSQL_DIR=${SENZING_VAR_DIR}/mssql
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     ```
 
-1. Create directory for RabbitMQ persistence.
+1. Create directories.
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
-    sudo mkdir -p ${MSSQL_DIR}
+    sudo mkdir -p ${MSSQL_DIR} ${RABBITMQ_DIR} ${SENZING_ETC_DIR}
 
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VOLUME}
-    sudo chmod -R 770 ${SENZING_VOLUME}
+    export SENZING_UID=$(id -u)
+    export SENZING_GID=$(id -g)
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     ```
 
-### SSH port
+### Download files
 
-:thinking: **Optional:**
-If you do not plan on using the senzing/sshd container then these ssh sections can be ignored.
-Normally port 22 is already in use for `ssh`.
-So a different port may be needed by the running docker container.
-
-1. :thinking: See if port 22 is already in use.
-   If it is not in use, the next 2 steps are optional.
+1. Download
+   [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
+   [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
+   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
    Example:
 
     ```console
-    sudo lsof -i -P -n | grep LISTEN | grep :22
-    ````
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-versions-stable.sh \
+        https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
 
-1. :pencil2: Choose port for docker container.
-   Example:
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-compose-senzing-installation.yaml \
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/senzing/docker-compose-senzing-installation.yaml"
 
-    ```console
-    export SENZING_SSHD_PORT=9181
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-compose.yaml \
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql.yaml"
     ```
 
-1. Construct parameter for `docker run`.
+### Pull docker images
+
+"latest" or "pinned" versions of containers can be used in the docker-compose formation.
+The following will be used to pull the pinned or most recent `latest` versions.
+
+1. :thinking: **Optional:** Pin versions of docker images by setting environment variables.
    Example:
 
     ```console
-    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+    source ${SENZING_VOLUME}/docker-versions-stable.sh
     ```
 
-### Set sshd password
-
-:thinking: **Optional:** The default password set for the sshd containers is `senzingsshdpassword`.
-However, this can be changed.
-
-1. :pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container.
+1. Pull docker images.
    Example:
 
     ```console
-    export SENZING_SSHD_PASSWORD=<Pass_You_Want>
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml pull
+    sudo --preserve-env docker-compose --file docker-compose-mssql-driver.yaml pull    
+    sudo --preserve-env docker-compose pull
     ```
 
 ### EULA
@@ -216,47 +202,14 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
 
     <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
 
-### Pull docker images
-
-"latest" or "pinned" versions of containers can be used in the docker-compose formation.
-The following will be used to pull the pinned or most recent `latest` versions.
-
-1. :thinking: **Optional:** Pin versions of docker images by setting environment variables.
-   Example:
-
-    ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh)
-    ```
-
-1. Pull docker images.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml pull
-
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml pull
-
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml pull
-    ```
-
 ### Install Senzing
 
 1. If Senzing has not been installed, install Senzing.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml up
     ```
 
     1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
@@ -292,16 +245,29 @@ Senzing comes with a trial license that supports 100,000 records.
     sudo chmod 777 ${MSSQL_DIR}
     ```
 
+### File ownership and permissions
+
+1. Set file and directory ownership and permissions.
+   **Note:** Open permissions are needed to satisfy the requirements of
+   [PgAdmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories),
+   [Bitnami Postgres persistance](https://github.com/bitnami/bitnami-docker-postgresql#persisting-your-database), and
+   [Bitnami RabbitMQ persistance](https://github.com/bitnami/bitnami-docker-rabbitmq#persisting-your-application).
+   Example:
+
+    ```console
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+    sudo chmod -R 770 ${SENZING_VOLUME}
+    sudo chmod -R 777 ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    ```
+
 ### Run docker formation
 
 1. Launch docker-compose formation.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml up
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -374,6 +340,13 @@ The server supports the
 
 #### View Jupyter notebooks
 
+1. Change file permissions on PostgreSQL database.
+   Example:
+
+    ```console
+    sudo chmod 777 -R ${MSSQL_DIR}
+    ```
+
 1. Jupyter Notebooks are viewable at
    [localhost:9178](http://localhost:9178).
 1. See
@@ -399,17 +372,15 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml down
-    sudo docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql.yaml down
-    sudo docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml down
+    cd ${SENZING_VOLUME}
+    sudo docker-compose down
+    sudo docker-compose --file docker-compose-mssql-driver.yaml down
+    sudo docker-compose --file docker-compose-senzing-installation.yaml down
     ```
 
 1. Remove directories from host system.
    The following directories were created during the demonstration:
     1. `${SENZING_VOLUME}`
-    1. `${GIT_REPOSITORY_DIR}`
 
    They may be safely deleted.
 
@@ -417,20 +388,45 @@ it can be brought down and directories can be deleted.
 
 The following topics discuss variations to the basic docker-compose demonstration.
 
-### Re-run docker formation
+### SSH port
 
-:thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again without requiring initialization steps.
-The following shows how to bring up the prior docker formation again without initialization.
+:thinking: **Optional:**
+If you do not plan on using the senzing/sshd container then these ssh sections can be ignored.
+Normally port 22 is already in use for `ssh`.
+So a different port may be needed by the running docker container.
 
-1. Launch docker-compose formation.
+1. :thinking: See if port 22 is already in use.
+   If it is not in use, the next 2 steps are optional.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/mssql/docker-compose-rabbitmq-mssql-again.yaml up
+    sudo lsof -i -P -n | grep LISTEN | grep :22
+    ````
+
+1. :pencil2: Choose port for docker container.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PORT=9181
+    ```
+
+1. Construct parameter for `docker run`.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+    ```
+
+### Set sshd password
+
+:thinking: **Optional:** The default password set for the sshd containers is `senzingsshdpassword`.
+However, this can be changed.
+
+1. :pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PASSWORD=<Pass_You_Want>
     ```
 
 ### Docker images
