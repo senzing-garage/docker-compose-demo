@@ -135,7 +135,6 @@ describing where we can improve.   Now on with the show...
     ```
 
 1. Create directories.
-
    Example:
 
     ```console
@@ -309,7 +308,7 @@ The server supports the
 
 #### View Jupyter notebooks
 
-1. Change file permissions on MySQL database.
+1. Change file permissions on database files.
    Example:
 
     ```console

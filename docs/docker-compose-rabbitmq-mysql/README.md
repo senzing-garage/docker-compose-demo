@@ -312,7 +312,7 @@ The server supports the
 
 #### View Jupyter notebooks
 
-1. Change file permissions on MySQL database.
+1. Change file permissions on database files.
    Example:
 
     ```console
@@ -344,16 +344,14 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file resources/mysql/docker-compose-rabbitmq-mysql.yaml down
-    sudo docker-compose --file resources/mysql/docker-compose-rabbitmq-mysql-again.yaml down
+    cd ${SENZING_VOLUME}
+    sudo docker-compose down
+    sudo docker-compose --file docker-compose-senzing-installation.yaml down
     ```
 
 1. Remove directories from host system.
    The following directories were created during the demonstration:
     1. `${SENZING_VOLUME}`
-    1. `${GIT_REPOSITORY_DIR}`
 
    They may be safely deleted.
 
@@ -400,22 +398,6 @@ However, this can be changed.
 
     ```console
     export SENZING_SSHD_PASSWORD=<Pass_You_Want>
-    ```
-
-### Re-run docker formation
-
-:thinking: **Optional:** After the launch and shutdown of the original docker formation,
-the docker formation can be brought up again without requiring initialization steps.
-The following shows how to bring up the prior docker formation again without initialization.
-
-1. Launch docker-compose formation.
-   Example:
-
-    ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/mysql/docker-compose-rabbitmq-mysql-again.yaml up
     ```
 
 ### Docker images

@@ -131,13 +131,14 @@ describing where we can improve.   Now on with the show...
     export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
     export SENZING_G2_DIR=${SENZING_VOLUME}/g2
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    export SQLITE_DIR=${SENZING_VAR_DIR}/sqlite
     ```
 
 1. Create directories.
    Example:
 
     ```console
-    sudo mkdir -p ${SENZING_ETC_DIR}
+    sudo mkdir -p ${SQLITE_DIR} ${SENZING_ETC_DIR}
 
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
@@ -304,11 +305,11 @@ The server supports the
 
 #### View Jupyter notebooks
 
-1. Change file permissions on SQLite database.
+1. Change file permissions on database files.
    Example:
 
     ```console
-    sudo chmod 777 -R ${SENZING_VAR_DIR}/sqlite
+    sudo chmod 777 -R ${SQLITE_DIR}
     ```
 
 1. Jupyter Notebooks are viewable at

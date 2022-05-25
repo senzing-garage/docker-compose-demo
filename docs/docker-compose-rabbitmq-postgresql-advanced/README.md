@@ -230,7 +230,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     ```
 
 1. Create directories.
-
    Example:
 
     ```console
@@ -404,11 +403,11 @@ The server supports the
 
 #### View Jupyter notebooks
 
-1. Change file permissions on PostgreSQL database.
+1. Change file permissions on database files.
    Example:
 
     ```console
-    sudo chmod 777 -R ${SENZING_VAR_DIR}/postgres
+    sudo chmod 777 -R ${POSTGRES_DIR}
     ```
 
 1. Jupyter Notebooks are viewable at

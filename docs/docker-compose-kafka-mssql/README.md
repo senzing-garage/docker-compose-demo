@@ -138,7 +138,6 @@ describing where we can improve.   Now on with the show...
     ```
 
 1. Create directories.
-
    Example:
 
     ```console
@@ -168,7 +167,7 @@ describing where we can improve.   Now on with the show...
 
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose-mssql-driver.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/issue-252.dockter.1/resources/mssql/docker-compose-mssql-driver.yaml"
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mssql/docker-compose-mssql-driver.yaml"
 
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
@@ -331,7 +330,7 @@ The server supports the
 
 #### View Jupyter notebooks
 
-1. Change file permissions on MySQL database.
+1. Change file permissions on database files.
    Example:
 
     ```console

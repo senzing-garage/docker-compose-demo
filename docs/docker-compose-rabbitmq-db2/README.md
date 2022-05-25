@@ -133,7 +133,6 @@ describing where we can improve.   Now on with the show...
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
     export DB2_DIR=${SENZING_VAR_DIR}/db2
-
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     ```
 
