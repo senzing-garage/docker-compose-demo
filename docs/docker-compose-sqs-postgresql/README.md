@@ -40,6 +40,8 @@ Arrows represent data flow.
     1. [Pull docker images](#pull-docker-images)
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
+    1. [AWS credentials](#aws-credentials)
+    1. [AWS SQS queues](#aws-sqs-queues)
     1. [Install Senzing license](#install-senzing-license)
     1. [File ownership and permissions](#file-ownership-and-permissions)
     1. [Run docker formation](#run-docker-formation)

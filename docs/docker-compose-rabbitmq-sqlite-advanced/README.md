@@ -39,6 +39,7 @@ Arrows represent data flow.
 1. [Demonstrate](#demonstrate)
     1. [Choose docker formation](#choose-docker-formation)
         1. [Standard formation](#standard-formation)
+        1. [With Senzing API Server formation](#with-senzing-api-server-formation)
         1. [Redoer formation](#redoer-formation)
         1. [Cluster formation](#cluster-formation)
         1. [Governor formation](#governor-formation)
@@ -128,7 +129,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     export SENZING_DOCKER_COMPOSE_FILE=resources/sqlite/docker-compose-rabbitmq-sqlite.yaml
     ```
 
-#### With Senzing API Server
+#### With Senzing API Server formation
 
 Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 

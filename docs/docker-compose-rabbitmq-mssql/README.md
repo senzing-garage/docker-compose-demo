@@ -41,6 +41,7 @@ Arrows represent data flow.
     1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
+    1. [Install MS SQL driver](#install-ms-sql-driver)
     1. [File ownership and permissions](#file-ownership-and-permissions)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
@@ -188,7 +189,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
     ```console
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml pull
-    sudo --preserve-env docker-compose --file docker-compose-mssql-driver.yaml pull    
+    sudo --preserve-env docker-compose --file docker-compose-mssql-driver.yaml pull
     sudo --preserve-env docker-compose pull
     ```
 
