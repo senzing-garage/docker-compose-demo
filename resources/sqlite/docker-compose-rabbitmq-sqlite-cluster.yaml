@@ -37,6 +37,54 @@ services:
       - senzing
     read_only: true
     restart: on-failure
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+  sqliteweb1:
+    container_name: senzing-sqlite-web-1
+    depends_on:
+      - initcontainer
+    environment:
+      SQLITE_DATABASE: G2C.db
+    image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_SQLITE_WEB:-latest}
+    networks:
+      - senzing
+    ports:
+      - 9174:8080
+    restart: always
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+
+  sqliteweb2:
+    container_name: senzing-sqlite-web-2
+    depends_on:
+      - initcontainer
+    environment:
+      SQLITE_DATABASE: G2C_LIBFEAT.db
+    image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_SQLITE_WEB:-latest}
+    networks:
+      - senzing
+    ports:
+      - 9175:8080
+    restart: always
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+
+  sqliteweb3:
+    container_name: senzing-sqlite-web-3
+    depends_on:
+      - initcontainer
+    environment:
+      SQLITE_DATABASE: G2C_RES.db
+    image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_SQLITE_WEB:-latest}
+    networks:
+      - senzing
+    ports:
+      - 9176:8080
+    restart: always
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
   initcontainer:
     container_name: senzing-init-container
@@ -69,6 +117,8 @@ services:
             "LIB_FEAT_HKEY": "C2"
           }
         }
+      SENZING_GID: ${SENZING_GID:-1001}
+      SENZING_UID: ${SENZING_UID:-1001}
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
     networks:
       - senzing
@@ -118,6 +168,7 @@ services:
     networks:
       - senzing
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -173,6 +224,7 @@ services:
       - senzing
     read_only: true
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -186,7 +238,6 @@ services:
     environment:
 #     See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
-
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -224,7 +275,7 @@ services:
     privileged: true
     read_only: true
     restart: on-failure
-    user: "0"
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -305,6 +356,7 @@ services:
     restart: always
     tmpfs:
       - /tmp
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -335,63 +387,19 @@ services:
     restart: always
 
   webapp-console:
-      image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
-      container_name: senzing-webapp-console
-      environment:
-        SENZING_CONSOLE_SERVER_PORT: 8257
-      networks:
-        - senzing
-      volumes:
-        - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-        - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-        - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-        - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      restart: 'no'
-
-  sqliteweb1:
-    container_name: senzing-sqlite-web-1
-    depends_on:
-      - initcontainer
+    container_name: senzing-webapp-console
     environment:
-      SQLITE_DATABASE: G2C.db
-    image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_SQLITE_WEB:-latest}
+      SENZING_CONSOLE_SERVER_PORT: 8257
+    image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
     networks:
       - senzing
-    ports:
-      - 9174:8080
-    restart: always
+    restart: 'no'
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
-
-  sqliteweb2:
-    container_name: senzing-sqlite-web-2
-    depends_on:
-      - initcontainer
-    environment:
-      SQLITE_DATABASE: G2C_LIBFEAT.db
-    image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_SQLITE_WEB:-latest}
-    networks:
-      - senzing
-    ports:
-      - 9175:8080
-    restart: always
-    volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
-
-  sqliteweb3:
-    container_name: senzing-sqlite-web-3
-    depends_on:
-      - initcontainer
-    environment:
-      SQLITE_DATABASE: G2C_RES.db
-    image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_SQLITE_WEB:-latest}
-    networks:
-      - senzing
-    ports:
-      - 9176:8080
-    restart: always
-    volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   jupyter:
     container_name: senzing-jupyter
@@ -528,6 +536,7 @@ services:
     ports:
       - 8254:5000
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing

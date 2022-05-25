@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using Kafka and PostgreSQL database.
+using Kafka and a PostgreSQL database.
 
 These instructions support multiple docker-compose.yaml files.
 
@@ -36,22 +36,22 @@ Arrows represent data flow.
 1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
     1. [Prerequisite software](#prerequisite-software)
-    1. [Clone repository](#clone-repository)
 1. [Demonstrate](#demonstrate)
-    1. [Volumes](#volumes)
-    1. [SSH port](#ssh-port)
-    1. [Set sshd password](#set-sshd-password)
-    1. [EULA](#eula)
     1. [Choose docker formation](#choose-docker-formation)
         1. [Standard formation](#standard-formation)
+        1. [With Senzing API Server formation](#with-senzing-api-server-formation)
         1. [Withinfo formation](#withinfo-formation)
         1. [Redoer formation](#redoer-formation)
         1. [Redoer queuing formation](#redoer-queuing-formation)
         1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
         1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
+    1. [Volumes](#volumes)
+    1. [Download files](#download-files)
     1. [Pull docker images](#pull-docker-images)
+    1. [EULA](#eula)
     1. [Install Senzing](#install-senzing)
     1. [Install Senzing license](#install-senzing-license)
+    1. [File ownership and permissions](#file-ownership-and-permissions)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
         1. [View docker containers](#view-docker-containers)
@@ -64,6 +64,8 @@ Arrows represent data flow.
         1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
+    1. [SSH port](#ssh-port)
+    1. [Set sshd password](#set-sshd-password)
     1. [Docker images](#docker-images)
     1. [Configuration](#configuration)
     1. [Program parameter matrix](#program-parameter-matrix)
@@ -113,121 +115,12 @@ describing where we can improve.   Now on with the show...
 1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
    Minimum version: [2.25.0](https://github.com/git/git/tags)
 
-### Clone repository
-
-The Git repository has files that will be used in the `docker-compose` command.
-
-1. Using these environment variable values:
-
-    ```console
-    export GIT_ACCOUNT=senzing
-    export GIT_REPOSITORY=docker-compose-demo
-    export GIT_ACCOUNT_DIR=~/${GIT_ACCOUNT}.git
-    export GIT_REPOSITORY_DIR="${GIT_ACCOUNT_DIR}/${GIT_REPOSITORY}"
-    ```
-
-1. Follow steps in [clone-repository](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/clone-repository.md) to install the Git repository.
-
 ## Demonstrate
-
-### Volumes
-
-1. :pencil2: Specify the directory where Senzing should be installed on the local host.
-   Example:
-
-    ```console
-    export SENZING_VOLUME=~/my-senzing
-    ```
-
-    1. :warning:
-       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
-       must be enabled for `SENZING_VOLUME`.
-    1. :warning:
-       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
-       must be enabled for `SENZING_VOLUME`.
-
-1. Identify directories on the local host.
-   Example:
-
-    ```console
-    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/3.0.0
-    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
-    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-
-    export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
-    export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
-    ```
-
-1. Create directory for RabbitMQ and pgAdmin persistence.
-   **Note:** `PGADMIN_DIR` is treated specially because of
-   [pgadmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories).
-   Example:
-
-    ```console
-    sudo mkdir -p ${PGADMIN_DIR}
-    sudo mkdir -p ${POSTGRES_DIR}
-
-    sudo chown $(id -u):$(id -g) -R ${SENZING_VOLUME}
-    sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${PGADMIN_DIR}
-    ```
-
-### SSH port
-
-:thinking: **Optional:**
-If you do not plan on using the senzing/sshd container then these ssh sections can be ignored.
-Normally port 22 is already in use for `ssh`.
-So a different port may be needed by the running docker container.
-
-1. :thinking: See if port 22 is already in use.
-   If it is not in use, the next 2 steps are optional.
-   Example:
-
-    ```console
-    sudo lsof -i -P -n | grep LISTEN | grep :22
-    ````
-
-1. :pencil2: Choose port for docker container.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PORT=9181
-    ```
-
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
-    ```
-
-### Set sshd password
-
-:thinking: **Optional:** The default password set for the sshd containers is `senzingsshdpassword`.
-However, this can be changed.
-
-1. :pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PASSWORD=<Pass_You_Want>
-    ```
-
-### EULA
-
-To use the Senzing code, you must agree to the End User License Agreement (EULA).
-
-1. :warning: This step is intentionally tricky and not simply copy/paste.
-   This ensures that you make a conscious effort to accept the EULA.
-   Example:
-
-    <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
 
 ### Choose docker formation
 
-:thinking: Choose a *docker-compose.yaml* file.
+:thinking: Choose a *docker-compose.yaml* file from
+[list](../../resources/postgresql).
 Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below.
 
 #### Standard formation
@@ -238,7 +131,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql.yaml
     ```
 
-#### With Senzing API Server
+#### With Senzing API Server formation
 
 Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
@@ -297,6 +190,68 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka-withinfo.yaml
     ```
 
+### Volumes
+
+1. :pencil2: Specify the directory where Senzing should be installed on the local host.
+   Example:
+
+    ```console
+    export SENZING_VOLUME=~/my-senzing
+    ```
+
+    1. :warning:
+       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
+       must be enabled for `SENZING_VOLUME`.
+    1. :warning:
+       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
+       must be enabled for `SENZING_VOLUME`.
+
+1. Identify directories on the local host.
+   Example:
+
+    ```console
+    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
+    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/3.0.0
+    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
+    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
+    export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
+    ```
+
+1. Create directories.
+   Example:
+
+    ```console
+    sudo mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${SENZING_ETC_DIR}
+
+    export SENZING_UID=$(id -u)
+    export SENZING_GID=$(id -g)
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+    ```
+
+### Download files
+
+1. Download
+   [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
+   [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
+   [docker-compose.yaml](../../resources/postgresql) file.
+   Example:
+
+    ```console
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-versions-stable.sh \
+        https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
+
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-compose-senzing-installation.yaml \
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/senzing/docker-compose-senzing-installation.yaml"
+
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-compose.yaml \
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/${SENZING_DOCKER_COMPOSE_FILE}
+    ```
+
 ### Pull docker images
 
 "latest" or "pinned" versions of containers can be used in the docker-compose formation.
@@ -306,23 +261,27 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    source <(curl -X GET https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh)
+    source ${SENZING_VOLUME}/docker-versions-stable.sh
     ```
 
 1. Pull docker images.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml pull
-
-    sudo \
-      --preserve-env \
-      docker-compose --file ${SENZING_DOCKER_COMPOSE_FILE} pull
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml pull
+    sudo --preserve-env docker-compose pull
     ```
+
+### EULA
+
+To use the Senzing code, you must agree to the End User License Agreement (EULA).
+
+1. :warning: This step is intentionally tricky and not simply copy/paste.
+   This ensures that you make a conscious effort to accept the EULA.
+   Example:
+
+    <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
 
 ### Install Senzing
 
@@ -330,10 +289,8 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml up
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml up
     ```
 
     1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
@@ -346,16 +303,29 @@ Senzing comes with a trial license that supports 100,000 records.
    If more than 100,000 records are desired, see
    [Senzing license](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-license).
 
+### File ownership and permissions
+
+1. Set file and directory ownership and permissions.
+   **Note:** Open permissions are needed to satisfy the requirements of
+   [PgAdmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories),
+   [Bitnami Postgres persistance](https://github.com/bitnami/bitnami-docker-postgresql#persisting-your-database), and
+   [Bitnami RabbitMQ persistance](https://github.com/bitnami/bitnami-docker-rabbitmq#persisting-your-application).
+   Example:
+
+    ```console
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+    sudo chmod -R 770 ${SENZING_VOLUME}
+    sudo chmod -R 777 ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    ```
+
 ### Run docker formation
 
 1. Launch docker-compose formation.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file ${SENZING_DOCKER_COMPOSE_FILE} up
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose up
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -422,11 +392,11 @@ The server supports the
 
 #### View Jupyter notebooks
 
-1. Change file permissions on PostgreSQL database.
+1. Change file permissions on database files.
    Example:
 
     ```console
-    sudo chmod 777 -R ${SENZING_VAR_DIR}/postgres
+    sudo chmod 777 -R ${POSTGRES_DIR}
     ```
 
 1. Jupyter Notebooks are viewable at
@@ -454,21 +424,61 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo docker-compose --file resources/senzing/docker-compose-senzing-installation.yaml down
-    sudo docker-compose --file ${SENZING_DOCKER_COMPOSE_FILE} down
+    cd ${SENZING_VOLUME}
+    sudo docker-compose down
+    sudo docker-compose --file docker-compose-senzing-installation.yaml down
     ```
 
 1. Remove directories from host system.
    The following directories were created during the demonstration:
     1. `${SENZING_VOLUME}`
-    1. `${GIT_REPOSITORY_DIR}`
 
    They may be safely deleted.
 
 ## Advanced
 
 The following topics discuss variations to the basic docker-compose demonstration.
+
+### SSH port
+
+:thinking: **Optional:**
+If you do not plan on using the senzing/sshd container then these ssh sections can be ignored.
+Normally port 22 is already in use for `ssh`.
+So a different port may be needed by the running docker container.
+
+1. :thinking: See if port 22 is already in use.
+   If it is not in use, the next 2 steps are optional.
+   Example:
+
+    ```console
+    sudo lsof -i -P -n | grep LISTEN | grep :22
+    ````
+
+1. :pencil2: Choose port for docker container.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PORT=9181
+    ```
+
+1. Construct parameter for `docker run`.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+    ```
+
+### Set sshd password
+
+:thinking: **Optional:** The default password set for the sshd containers is `senzingsshdpassword`.
+However, this can be changed.
+
+1. :pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container.
+   Example:
+
+    ```console
+    export SENZING_SSHD_PASSWORD=<Pass_You_Want>
+    ```
 
 ### Docker images
 

@@ -1,20 +1,6 @@
 version: '3'
 services:
 
-  initcontainer:
-    container_name: senzing-init-container
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
-    networks:
-      - senzing
-    read_only: true
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
   sqliteweb:
     container_name: senzing-sqlite-web
     depends_on:
@@ -29,6 +15,23 @@ services:
     restart: always
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
+
+  initcontainer:
+    container_name: senzing-init-container
+    environment:
+      SENZING_GID: ${SENZING_GID:-1001}
+      SENZING_UID: ${SENZING_UID:-1001}
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+    networks:
+      - senzing
+    read_only: true
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   console:
     container_name: senzing-console
@@ -48,6 +51,7 @@ services:
     networks:
       - senzing
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
@@ -63,6 +67,7 @@ services:
     networks:
       - senzing
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
       - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
