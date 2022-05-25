@@ -295,7 +295,7 @@ Senzing comes with a trial license that supports 100,000 records.
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    sudo chmod -R 777 ${RABBITMQ_DIR}
     ```
 
 ### Run docker formation
