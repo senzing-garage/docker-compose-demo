@@ -1,0 +1,197 @@
+version: '3'
+services:
+
+  rabbitmq:
+    container_name: senzing-rabbitmq
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+    image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-3.8.19-debian-10-r6}
+    networks:
+      - backend
+    ports:
+      - 15672:15672
+      - 5672:5672
+    restart: always
+    volumes:
+      - ${RABBITMQ_DIR}:/bitnami
+
+  producer:
+    container_name: senzing-stream-producer
+    depends_on:
+      - rabbitmq
+    environment:
+#     See https://github.com/Senzing/stream-producer#configuration
+      SENZING_DELAY_IN_SECONDS: 30
+      SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
+      SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_ROUTING_KEY: senzing.records
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
+      SENZING_RECORD_MONITOR: 1000
+      SENZING_SUBCOMMAND: json-to-rabbitmq
+    image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
+    networks:
+      - backend
+    restart: on-failure
+
+  postgres:
+    container_name: senzing-postgres
+    environment:
+#     See https://github.com/docker-library/docs/blob/master/postgres/README.md#environment-variables
+      POSTGRES_DB: ${POSTGRES_DB:-G2}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-11.12.0-debian-10-r50}
+    networks:
+      - backend
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/var/lib/postgresql/data
+
+  postgresinit:
+    container_name: senzing-postgresql-init
+    depends_on:
+      - postgres
+    environment:
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    volumes:
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  phppgadmin:
+    container_name: senzing-phppgadmin
+    environment:
+#     See https://hub.docker.com/r/bitnami/phppgadmin
+      - DATABASE_HOST=senzing-postgres
+    image: bitnami/phppgadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPPGADMIN:-latest}
+    networks:
+      - backend
+    ports:
+      - 9171:8080
+      - 9172:443
+    restart: always
+
+  initcontainer:
+    container_name: senzing-init-container
+    depends_on:
+      - postgres
+      - postgresinit
+    environment:
+#     See https://github.com/Senzing/docker-init-container#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_DELAY_IN_SECONDS: 30
+    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+    networks:
+      - backend
+    restart: on-failure
+    user: "0"
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  loader:
+    container_name: senzing-stream-loader
+    depends_on:
+      - rabbitmq
+      - postgres
+    environment:
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/stream-loader#configuration
+      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+          }
+        }
+      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
+      SENZING_DELAY_IN_SECONDS: 60
+      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
+      SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
+      SENZING_RABBITMQ_HOST: senzing-rabbitmq
+      SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
+      SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
+      SENZING_SUBCOMMAND: rabbitmq
+    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
+    networks:
+      - backend
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+  api:
+    container_name: senzing-api-server
+    depends_on:
+      - postgres
+    environment:
+      SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
+      SENZING_API_SERVER_BIND_ADDR: 'all'
+      SENZING_API_SERVER_ENABLE_ADMIN: 'true'
+      SENZING_API_SERVER_SECURE_PORT: '2443'
+      SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
+      SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
+      SENZING_API_SERVER_KEY_STORE: '/etc/opt/senzing/sz-api-server-store.p12'
+      SENZING_API_SERVER_KEY_STORE_PASSWORD: 'change-it'
+      SENZING_API_SERVER_CLIENT_KEY_STORE: '/etc/opt/senzing/my-client-trust-store.p12'
+      SENZING_API_SERVER_CLIENT_KEY_STORE_PASSWORD: 'change-it'
+      SENZING_API_SERVER_VERBOSE: 'true'
+      SENZING_API_SERVER_INIT_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+          }
+        }
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+          }
+        }
+    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
+    networks:
+      - backend
+    ports:
+      - 2443:2443
+    restart: always
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/2.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+
+networks:
+  backend:
