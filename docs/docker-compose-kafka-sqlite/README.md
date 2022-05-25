@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using Kafka and SQLite database.
+using Kafka and a SQLite database.
 
 ## Overview
 
@@ -221,9 +221,6 @@ Senzing comes with a trial license that supports 100,000 records.
 ### File ownership and permissions
 
 1. Set file and directory ownership and permissions.
-   **Note:** Open permissions are needed to satisfy the requirements of
-   [PgAdmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories) and
-   [Bitnami Postgres persistance](https://github.com/bitnami/bitnami-docker-postgresql#persisting-your-database).
    Example:
 
     ```console

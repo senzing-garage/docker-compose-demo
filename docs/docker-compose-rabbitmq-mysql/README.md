@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using RabbitMQ and MySQL database.
+using RabbitMQ and a MySQL database.
 
 ## Overview
 
@@ -34,6 +34,7 @@ Arrows represent data flow.
 1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
     1. [Prerequisite software](#prerequisite-software)
+    1. [Build docker images](#build-docker-images)
 1. [Demonstrate](#demonstrate)
     1. [Volumes](#volumes)
     1. [Download files](#download-files)
@@ -104,6 +105,16 @@ describing where we can improve.   Now on with the show...
 1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
    Minimum version: [2.25.0](https://github.com/git/git/tags)
 
+### Build docker images
+
+1. Build docker images.
+
+    ```console
+    sudo docker build \
+      --tag senzing/mysql-init \
+      https://github.com/senzing/docker-mysql-init.git#main
+    ```
+
 ## Demonstrate
 
 ### Volumes
@@ -139,7 +150,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_DIR} ${SENZING_ETC_DIR}
+    sudo mkdir -p ${MYSQL_DIR} ${RABBITMQ_DIR} ${SENZING_ETC_DIR}
 
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
@@ -151,7 +162,7 @@ describing where we can improve.   Now on with the show...
 1. Download
    [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
    [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
-   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
+   [docker-compose-rabbitmq-mysql.yaml](../../resources/mysql/docker-compose-rabbitmq-mysql.yaml).
    Example:
 
     ```console
@@ -224,16 +235,12 @@ Senzing comes with a trial license that supports 100,000 records.
 ### File ownership and permissions
 
 1. Set file and directory ownership and permissions.
-   **Note:** Open permissions are needed to satisfy the requirements of
-   [PgAdmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories),
-   [Bitnami Postgres persistance](https://github.com/bitnami/bitnami-docker-postgresql#persisting-your-database), and
-   [Bitnami RabbitMQ persistance](https://github.com/bitnami/bitnami-docker-rabbitmq#persisting-your-application).
    Example:
 
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    sudo chmod -R 777 ${MYSQL_DIR}
     ```
 
 ### Run docker formation

@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using RabbitMQ and Microsoft's SQL database.
+using RabbitMQ and a Microsoft SQL database.
 
 ## Overview
 
@@ -154,7 +154,7 @@ describing where we can improve.   Now on with the show...
 1. Download
    [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
    [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
-   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
+   [docker-compose-rabbitmq-mssql.yaml](../../resources/mssql/docker-compose-rabbitmq-mssql.yaml).
    Example:
 
     ```console
@@ -165,6 +165,10 @@ describing where we can improve.   Now on with the show...
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose-senzing-installation.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/senzing/docker-compose-senzing-installation.yaml"
+
+    curl -X GET \
+        --output ${SENZING_VOLUME}/docker-compose-mssql-driver.yaml \
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mssql/docker-compose-mssql-driver.yaml"
 
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
@@ -229,36 +233,21 @@ Senzing comes with a trial license that supports 100,000 records.
    Example:
 
     ```console
-    cd ${GIT_REPOSITORY_DIR}
-    sudo \
-      --preserve-env \
-      docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml up
+    cd ${SENZING_VOLUME}
+    sudo --preserve-env docker-compose --file docker-compose-mssql-driver.yaml up
     ```
 
 1. Wait until completion.
 
-1. Change directory permissions.
-   **Note:** Although the `MSSQL_DIR` directory will have open permissions,
-   the directories created within `MSSQL_DIR` will be restricted.
-   Example:
-
-    ```console
-    sudo chmod 777 ${MSSQL_DIR}
-    ```
-
 ### File ownership and permissions
 
 1. Set file and directory ownership and permissions.
-   **Note:** Open permissions are needed to satisfy the requirements of
-   [PgAdmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories),
-   [Bitnami Postgres persistance](https://github.com/bitnami/bitnami-docker-postgresql#persisting-your-database), and
-   [Bitnami RabbitMQ persistance](https://github.com/bitnami/bitnami-docker-rabbitmq#persisting-your-application).
    Example:
 
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    sudo chmod -R 777 ${MSSQL_DIR} ${RABBITMQ_DIR}
     ```
 
 ### Run docker formation

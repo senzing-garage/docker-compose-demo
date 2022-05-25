@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using Kafka and MySQL database.
+using Kafka and a MySQL database.
 
 ## Overview
 
@@ -34,6 +34,7 @@ Arrows represent data flow.
 1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
     1. [Prerequisite software](#prerequisite-software)
+    1. [Build docker images](#build-docker-images)
 1. [Demonstrate](#demonstrate)
     1. [Volumes](#volumes)
     1. [Download files](#download-files)
@@ -104,6 +105,16 @@ describing where we can improve.   Now on with the show...
 1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
    Minimum version: [2.25.0](https://github.com/git/git/tags)
 
+### Build docker images
+
+1. Build docker images.
+
+    ```console
+    sudo docker build \
+      --tag senzing/mysql-init \
+      https://github.com/senzing/docker-mysql-init.git#main
+    ```
+
 ## Demonstrate
 
 ### Volumes
@@ -150,7 +161,7 @@ describing where we can improve.   Now on with the show...
 1. Download
    [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
    [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
-   [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml).
+   [docker-compose-kafka-mysql.yaml](../../resources/mysql/docker-compose-kafka-mysql.yaml).
    Example:
 
     ```console
@@ -223,14 +234,12 @@ Senzing comes with a trial license that supports 100,000 records.
 ### File ownership and permissions
 
 1. Set file and directory ownership and permissions.
-   **Note:** Although the `MSSQL_DIR` directory will have open permissions,
-   the directories created within `MSSQL_DIR` will be restricted.
    Example:
 
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${MSSQL_DIR}
+    sudo chmod -R 777 ${MYSQL_DIR}
     ```
 
 ### Run docker formation

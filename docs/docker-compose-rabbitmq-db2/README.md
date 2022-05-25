@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using RabbitMQ and IBM's Db2 database.
+using RabbitMQ and an IBM Db2 database.
 
 ## Overview
 
@@ -140,7 +140,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    sudo mkdir -p ${SENZING_OPT_IBM_DIR} ${DB2_DIR} ${RABBITMQ_DIR}
+    sudo mkdir -p ${SENZING_OPT_IBM_DIR} ${DB2_DIR} ${RABBITMQ_DIR} ${SENZING_ETC_DIR}
 
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
@@ -152,7 +152,7 @@ describing where we can improve.   Now on with the show...
 1. Download
    [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
    [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
-   [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
+   [docker-compose-rabbitmq-db2.yaml](../../resources/db2/docker-compose-rabbitmq-db2.yaml).
    Example:
 
     ```console
@@ -223,16 +223,12 @@ Senzing comes with a trial license that supports 100,000 records.
 ### File ownership and permissions
 
 1. Set file and directory ownership and permissions.
-   **Note:** Open permissions are needed to satisfy the requirements of
-   [PgAdmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories),
-   [Bitnami Postgres persistance](https://github.com/bitnami/bitnami-docker-postgresql#persisting-your-database), and
-   [Bitnami RabbitMQ persistance](https://github.com/bitnami/bitnami-docker-rabbitmq#persisting-your-application).
    Example:
 
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    sudo chmod -R 777 ${DB2_DIR} ${RABBITMQ_DIR} ${SENZING_OPT_IBM_DIR}
     ```
 
 ### Run docker formation

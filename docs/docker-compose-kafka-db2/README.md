@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using Kafka and IBM's Db2 database.
+using Kafka and an IBM Db2 database.
 
 ## Overview
 
@@ -227,7 +227,7 @@ Senzing comes with a trial license that supports 100,000 records.
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${SENZING_OPT_IBM_DIR} ${DB2_DIR}
+    sudo chmod -R 777 ${DB2_DIR} ${SENZING_OPT_IBM_DIR}
     ```
 
 ### Run docker formation

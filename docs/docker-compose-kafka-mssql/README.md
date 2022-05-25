@@ -3,7 +3,7 @@
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack
-using Kafka and Microsoft's SQL database.
+using Kafka and a Microsoft SQL database.
 
 ## Overview
 
@@ -141,7 +141,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    sudo mkdir -p ${SENZING_OPT_IBM_DIR} ${DB2_DIR} ${SENZING_ETC_DIR}
+    sudo mkdir -p ${MSSQL_DIR} ${SENZING_ETC_DIR}
 
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
@@ -153,7 +153,7 @@ describing where we can improve.   Now on with the show...
 1. Download
    [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
    [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
-   [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml).
+   [docker-compose-kafka-mssql.yaml](../../resources/mssql/docker-compose-kafka-mssql.yaml).
    Example:
 
     ```console
@@ -241,8 +241,6 @@ Senzing comes with a trial license that supports 100,000 records.
 ### File ownership and permissions
 
 1. Set file and directory ownership and permissions.
-   **Note:** Although the `MSSQL_DIR` directory will have open permissions,
-   the directories created within `MSSQL_DIR` will be restricted.
    Example:
 
     ```console
@@ -364,7 +362,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
-    sudo docker-compose --file resources/mssql/docker-compose-mssql-driver.yaml down
+    sudo docker-compose --file docker-compose-mssql-driver.yaml down
     sudo docker-compose --file docker-compose-senzing-installation.yaml down
     ```
 

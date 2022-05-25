@@ -139,7 +139,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    sudo mkdir -p ${RABBITMQ_DIR}
+    sudo mkdir -p ${SQLITE_DIR} ${SENZING_ETC_DIR} ${RABBITMQ_DIR}
 
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
@@ -222,16 +222,12 @@ Senzing comes with a trial license that supports 100,000 records.
 ### File ownership and permissions
 
 1. Set file and directory ownership and permissions.
-   **Note:** Open permissions are needed to satisfy the requirements of
-   [PgAdmin's userid](https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html#mapped-files-and-directories),
-   [Bitnami Postgres persistance](https://github.com/bitnami/bitnami-docker-postgresql#persisting-your-database), and
-   [Bitnami RabbitMQ persistance](https://github.com/bitnami/bitnami-docker-rabbitmq#persisting-your-application).
    Example:
 
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    sudo chmod -R 777 ${RABBITMQ_DIR}
     ```
 
 ### Run docker formation
