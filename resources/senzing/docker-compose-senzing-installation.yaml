@@ -1,11 +1,11 @@
 version: '3'
 services:
 
-  yum:
-    container_name: senzing-yum
+  apt:
+    container_name: senzing-apt
     environment:
       SENZING_ACCEPT_EULA: "${SENZING_ACCEPT_EULA:-no}"
-    image: senzing/yum:${SENZING_DOCKER_IMAGE_VERSION_YUM:-latest}
+    image: senzing/apt:${SENZING_DOCKER_IMAGE_VERSION_APT:-latest}
     networks:
       - senzing
     restart: on-failure
