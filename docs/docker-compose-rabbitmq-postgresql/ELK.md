@@ -4,13 +4,23 @@
 
 first wait for kibana to be available to you and log in
 
-go to stack management
+![kibana available](assets/kibana_up.png)
 
-go to saved objects
+go to stack management > saved objects and click import
 
-click on import and choose export.ndjson
+![saved objects page](assets/saved_objects.png)
 
-now go to 
+select the export.ndjson as a file to import and click import
+
+![saved objects page](assets/import_ndjson.png)
+
+now you can see the import was successful as the objects are up
+
+![saved objects page](assets/import_success.png)
+
+going to the dashboard page, you should see the following dashboard.
+
+![dashboard page](assets/dashboard.png)
 
 ## how to look for a specific log before or after
 
