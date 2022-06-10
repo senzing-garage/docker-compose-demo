@@ -1,26 +1,35 @@
-# How to setup ELK on docker-compose
+# Setup ELK on docker-compose
 
-## Setting up Senzing dashboard
+## Import Senzing dashboard on ELK stack
 
-first wait for kibana to be available to you and log in
+1. Log in to Senzing Dashboard.
+    1. Go to http://localhost:5601.
+    1. Create kibana account.
+    1. Log in with newly created kibana account.
 
-![kibana available](assets/kibana_up.png)
+    ![kibana available](assets/kibana_up.png)
 
-go to stack management > saved objects and click import
+1. Go to saved objects page.
+    1. In the left-hand navigation bar, select "Stack Management".
+    1. In the left-hand navigation bar, select "Saved Objects".
+    1. In upper-right, click the "Import" button.
 
-![saved objects page](assets/saved_objects.png)
+    ![saved objects page](assets/saved_objects.png)
 
-select the export.ndjson as a file to import and click import
+1. Import saved objects file
+    1. Click import dialog box, select the "Select a file to import"
+    1. select [export.ndjson](export.ndjson)
+    1. In bottom-right, click the "Import" button.
 
-![saved objects page](assets/import_ndjson.png)
+    ![saved objects page](assets/import_ndjson.png)
 
-now you can see the import was successful as the objects are up
+1. Successful import.
+    ![saved objects page](assets/import_success.png)
 
-![saved objects page](assets/import_success.png)
-
-going to the dashboard page, you should see the following dashboard.
-
-![dashboard page](assets/dashboard.png)
+1. View Senzing dashboard.
+    1. In upper-left, click the "elastic" home button.
+    1. In the dashboard menu, click on "Senzing Dashboard"
+    ![dashboard page](assets/dashboard.png)
 
 ## how to look for a specific log before or after
 
