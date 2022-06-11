@@ -2,6 +2,11 @@
 
 A quick guide on how to use the setup and use the ELK stack to sift through Senzing's logs.
 
+## Contents
+
+1. [Import Senzing dashboard on ELK stack](#Import-Senzing-dashboard-on-ELK-stack)
+1. [View surrounding logs](#View-surrounding-logs)
+
 ## Import Senzing dashboard on ELK stack
 
 1. Log in to Senzing Dashboard.
