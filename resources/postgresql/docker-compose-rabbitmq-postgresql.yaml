@@ -40,13 +40,13 @@ services:
     command:
       - sh
       - -c
-      - echo $${UPLOAD_FILE} >> /tmp/upload.sh; echo $${EXPORT_FILE} >> /tmp/export.ndjson; chmod a+x /tmp/upload.sh; . /tmp/upload.sh
+      - echo $${UPLOAD_FILE} >> /tmp/upload.sh; echo $${EXPORT_FILE} >> /tmp/export.ndjson; chmod a+x /tmp/upload.sh; . /tmp/upload.sh; sleep 
     environment:
       UPLOAD_FILE: >-
         #!/bin/bash
         while :
         do
-          status_code=$$(curl -X POST localhost:5601/api/saved_objects/_import -H "kbn-xsrf: true" --form file=@/tmp/export.ndjson --write-out "%{http_code}" --silent --output /dev/null)
+          status_code=$$(curl -X POST senzing-kibana:5601/api/saved_objects/_import -H "kbn-xsrf: true" --form file=@/tmp/export.ndjson --write-out "%{http_code}" --silent --output /dev/null)
           if [[ "$$status_code" -ne 200 ]] ; then
             echo "unsuccessful import, trying again in 1 second!"
             sleep 1
