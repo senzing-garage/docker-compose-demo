@@ -40,7 +40,7 @@ services:
     command:
       - sh
       - -c
-      - echo $${UPLOAD_FILE} >> /tmp/upload.sh; echo $${EXPORT_FILE} >> /tmp/export.ndjson; chmod a+x upload.sh; . /tmp/upload.sh
+      - echo $${UPLOAD_FILE} >> /tmp/upload.sh; echo $${EXPORT_FILE} >> /tmp/export.ndjson; chmod a+x /tmp/upload.sh; . /tmp/upload.sh
     environment:
       UPLOAD_FILE: >-
         #!/bin/bash
