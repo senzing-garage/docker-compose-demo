@@ -46,8 +46,8 @@ services:
         #!/bin/bash
         while :
         do
-          status_code=$(curl -X POST localhost:5601/api/saved_objects/_import -H "kbn-xsrf: true" --form file=@/output/export.ndjson --write-out "%{http_code}" --silent --output /dev/null)
-          if [[ "$status_code" -ne 200 ]] ; then
+          status_code=$$(curl -X POST localhost:5601/api/saved_objects/_import -H "kbn-xsrf: true" --form file=@/output/export.ndjson --write-out "%{http_code}" --silent --output /dev/null)
+          if [[ "$$status_code" -ne 200 ]] ; then
             echo "unsuccessful import, trying again in 1 second!"
             sleep 1
           else
