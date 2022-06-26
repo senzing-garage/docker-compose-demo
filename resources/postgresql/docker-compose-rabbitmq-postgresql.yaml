@@ -47,8 +47,7 @@ services:
         echo $${UPLOAD_FILE} | base64 -d >  /tmp/upload.sh; 
         echo $${EXPORT_FILE} | base64 -d > /tmp/export.ndjson; 
         chmod a+x /tmp/upload.sh; 
-        bash /tmp/upload.sh; 
-        tail -f /dev/null 
+        bash /tmp/upload.sh
     environment:
       UPLOAD_FILE: >-
         IyEvYmluL2Jhc2gKd2hpbGUgOgpkbwogIHN0YXR1c19jb2RlPSQoY3VybCAtWCBQT1NUIHNlbnppbmcta2liYW5hOjU2MDEvYXBpL3NhdmVkX29iamVjdHMvX2ltcG9ydCAtSCAia2JuLXhzcmY6IHRydWUiIC0tZm9ybSBmaWxlPUAvdG1wL2V4cG9ydC5uZGpzb24gLS13cml0ZS1vdXQgIiV7aHR0cF9jb2RlfSIgLS1zaWxlbnQgLS1vdXRwdXQgL2Rldi9udWxsKQogIGlmIFtbICIkc3RhdHVzX2NvZGUiIC1uZSAyMDAgXV0gOyB0aGVuCiAgICBlY2hvICJ1bnN1Y2Nlc3NmdWwgaW1wb3J0LCB0cnlpbmcgYWdhaW4gaW4gMSBzZWNvbmQhIgogICAgc2xlZXAgMQogIGVsc2UKICAgIGVjaG8gImltcG9ydCBzdWNjZXNzIgogICAgZXhpdCAwCiAgZmkKZG9uZQo=
