@@ -404,7 +404,7 @@ However, this can be changed.
 This docker formation brings up the following docker containers:
 
 1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
-1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
+1. *[dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)*
 1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
