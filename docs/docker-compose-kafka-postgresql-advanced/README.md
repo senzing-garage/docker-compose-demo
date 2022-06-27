@@ -486,7 +486,7 @@ This docker formation brings up the following docker containers:
 
 1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
 1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
-1. *[dockage/phppgadmin](https://hub.docker.com/r/dockage/phppgadmin)*
+1. *[dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
