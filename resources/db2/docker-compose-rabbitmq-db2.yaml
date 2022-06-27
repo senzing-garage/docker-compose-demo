@@ -130,7 +130,6 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATABASE_URL: "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_HOST:-senzing-db2}:${DB2_PORT:-50000}/${DB2_DB:-G2}"
-      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -143,7 +142,6 @@ services:
             "CONNECTION": "db2://${DB2_USERNAME:-db2inst1}:${DB2_PASSWORD:-db2inst1}@${DB2_DB:-G2}"
           }
         }
-      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}

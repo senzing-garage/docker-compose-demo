@@ -134,7 +134,6 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DATABASE_URL: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/${MYSQL_DATABASE:-G2}"
-      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -147,7 +146,6 @@ services:
             "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
           }
         }
-      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
