@@ -23,6 +23,7 @@ services:
       - rabbitmq
     environment:
 #     See https://github.com/Senzing/stream-producer#configuration
+      SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_INPUT_URL: "https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json"
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
@@ -108,7 +109,6 @@ services:
       LC_CTYPE: en_US.utf8
       PYTHONPATH: /opt/senzing/g2/python:/app/plugins
 #     See https://github.com/Senzing/stream-loader#configuration
-      SENZING_DATA_SOURCE: ${SENZING_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -121,7 +121,6 @@ services:
             "CONNECTION": "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"
           }
         }
-      SENZING_ENTITY_TYPE: ${SENZING_ENTITY_TYPE:-GENERIC}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}

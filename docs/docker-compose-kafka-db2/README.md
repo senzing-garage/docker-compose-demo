@@ -407,9 +407,7 @@ Configuration values specified by environment variable or command line parameter
 - **[DB2INST1_PASSWORD](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#db2inst_password)**
 - **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_accept_eula)**
 - **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_data_dir)**
-- **[SENZING_DATA_SOURCE](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_data_source)**
 - **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ENTITY_TYPE](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_entity_type)**
 - **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_etc_dir)**
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_OPT_IBM_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_opt_ibm_dir)**
