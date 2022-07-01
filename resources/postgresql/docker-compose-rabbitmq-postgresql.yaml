@@ -334,8 +334,6 @@ services:
 
   loader:
     container_name: senzing-stream-loader
-#    entrypoint: sleep
-#    command: infinity
     depends_on:
       - rabbitmq
       - postgres
@@ -374,6 +372,11 @@ services:
       - senzing
     read_only: true
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
+      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   redoer:
     container_name: senzing-redoer
