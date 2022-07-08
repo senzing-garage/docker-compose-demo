@@ -116,8 +116,8 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    sudo mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
-    sudo chmod -R 770 ${SENZING_VOLUME}
+    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    chmod -R 770 ${SENZING_VOLUME}
     ```
 
 1. Get stable versions of Docker images.
