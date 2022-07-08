@@ -136,7 +136,7 @@ describing where we can improve.   Now on with the show...
     ```console
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/docker-compose-rabbitmq-postgresql.yaml"
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/docker-compose-rabbitmq-postgresql-minimal.yaml"
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose pull
     ```
@@ -184,8 +184,9 @@ View results from Senzing REST API server.
 The server supports the
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
 
-1. OpenApi Editor is viewable at
-   [localhost:9180](http://localhost:9180).
+1. The
+   [OpenApi Editor](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml)
+   can be used 
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
