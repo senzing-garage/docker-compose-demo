@@ -186,20 +186,15 @@ The server supports the
 
 1. The
    [OpenApi Editor](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml)
-   can be used 
+   with **Servers** value of *http://localhost:8250*
+   can be used to try the Senzing REST API.
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
-1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-api-server)
-   for working with Senzing API server.
 
 #### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
-1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
-   for working with Senzing Entity Search WebApp.
 
 ## Cleanup
 
