@@ -100,7 +100,7 @@ describing where we can improve.   Now on with the show...
        **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
        must be enabled for `SENZING_VOLUME`.
 
-1. Make directories and capture current UID/GID.
+1. Set environment variables.
    Example:
 
     ```console
@@ -108,11 +108,16 @@ describing where we can improve.   Now on with the show...
     export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
     export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
-    sudo mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
-    sudo chmod -R 770 ${SENZING_VOLUME}
-
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+    ```
+
+1. Make directories.
+   Example:
+
+    ```console
+    sudo mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    sudo chmod -R 770 ${SENZING_VOLUME}
     ```
 
 1. Get stable versions of Docker images.
