@@ -216,10 +216,10 @@ it can be brought down and directories can be deleted.
     ```
 
 1. Remove directories from host system.
-   The following directories were created during the demonstration:
+   The following directory was created during the demonstration:
     1. `${SENZING_VOLUME}`
 
-   They may be safely deleted.
+   It may be safely deleted.
 
 ## Errors
 
