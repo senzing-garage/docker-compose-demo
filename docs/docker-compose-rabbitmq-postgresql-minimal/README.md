@@ -2,7 +2,7 @@
 
 ## Synopsis
 
-Using `docker-compose`, bring up a Senzing stack
+Using `docker-compose`, bring up a minimal Senzing stack
 using RabbitMQ and a PostgreSQL database.
 
 ## Overview
@@ -100,7 +100,7 @@ describing where we can improve.   Now on with the show...
        **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
        must be enabled for `SENZING_VOLUME`.
 
-1. Make directories.
+1. Make directories and capture current UID/GID.
    Example:
 
     ```console
@@ -109,7 +109,10 @@ describing where we can improve.   Now on with the show...
     export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     sudo mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
-    sudo chmod -R 777 ${SENZING_VOLUME}
+    sudo chmod -R 770 ${SENZING_VOLUME}
+
+    export SENZING_UID=$(id -u)
+    export SENZING_GID=$(id -g)
     ```
 
 1. Get stable versions of Docker images.
