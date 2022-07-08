@@ -22,7 +22,7 @@ The instructions show how to set up a system that:
 1. Reads information from Senzing via [Senzing API Server](https://github.com/Senzing/senzing-api-server) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
-The following diagram shows the relationship of the docker containers in this docker composition.
+The following diagram shows the relationship of the Docker containers in this Docker composition.
 Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
@@ -35,7 +35,7 @@ Arrows represent data flow.
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [View RabbitMQ](#view-rabbitmq)
         1. [View Senzing API Server](#view-senzing-api-server)
         1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
@@ -130,7 +130,7 @@ describing where we can improve.   Now on with the show...
     source ${SENZING_VOLUME}/docker-versions-latest.sh
     ```
 
-1. Download docker images.
+1. Download `docker-compose.yaml` and Docker images.
    Example:
 
     ```console
@@ -150,8 +150,8 @@ describing where we can improve.   Now on with the show...
     ```
 
 1. Allow time for the components to come up and initialize.
-    1. There will be errors in some docker logs as they wait for dependent services to become available.
-       `docker-compose` isn't the best at orchestrating docker container dependencies.
+    1. There will be errors in some Docker logs as they wait for dependent services to become available.
+       `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
 ### View data
 
@@ -162,9 +162,9 @@ Username and password for the following sites were either passed in as environme
 or are the default values seen in
 [docker-compose-rabbitmq-postgresql.yaml](../../resources/postgresql/docker-compose-rabbitmq-postgresql.yaml).
 
-#### View docker containers
+#### View Docker containers
 
-1. A good tool to monitor individual docker logs is
+1. A good tool to monitor individual Docker logs is
    [Portainer](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
@@ -207,7 +207,7 @@ The server supports the
 When the docker-compose formation is no longer needed,
 it can be brought down and directories can be deleted.
 
-1. Bring down docker formation.
+1. Bring down Docker formation.
    Example:
 
     ```console
