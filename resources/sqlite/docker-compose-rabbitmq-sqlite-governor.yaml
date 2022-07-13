@@ -108,7 +108,7 @@ services:
       - rabbitmq
     environment:
       LC_CTYPE: en_US.utf8
-      PYTHONPATH: /opt/senzing/g2/python:/app/plugins
+      PYTHONPATH: /opt/senzing/g2/sdk/python:/app/plugins
 #     See https://github.com/Senzing/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
