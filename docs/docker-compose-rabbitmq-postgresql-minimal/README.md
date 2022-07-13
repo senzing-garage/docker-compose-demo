@@ -125,9 +125,9 @@ describing where we can improve.   Now on with the show...
 
     ```console
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-versions-latest.sh \
+        --output ${SENZING_VOLUME}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
-    source ${SENZING_VOLUME}/docker-versions-latest.sh
+    source ${SENZING_VOLUME}/docker-versions-stable.sh
     ```
 
 1. Download `docker-compose.yaml` and Docker images.
@@ -149,7 +149,7 @@ describing where we can improve.   Now on with the show...
     sudo --preserve-env docker-compose up
     ```
 
-1. Allow time for the components to come up and initialize.
+1. Allow time for the components to be downloaded, start, and initialize.
     1. There will be errors in some Docker logs as they wait for dependent services to become available.
        `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
