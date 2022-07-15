@@ -370,7 +370,6 @@ services:
         tag: "senzing-redoer"
     networks:
       - senzing
-    privileged: true
     read_only: true
     restart: always
 

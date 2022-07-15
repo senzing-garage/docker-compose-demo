@@ -286,7 +286,6 @@ services:
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
       - senzing
-    privileged: true
     read_only: true
     restart: on-failure
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
