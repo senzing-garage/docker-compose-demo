@@ -22,7 +22,7 @@ The instructions show how to set up a system that:
 1. Reads information from Senzing via [Senzing API Server](https://github.com/Senzing/senzing-api-server) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
-The following diagram shows the relationship of the docker containers in this docker composition.
+The following diagram shows the relationship of the Docker containers in this Docker composition.
 Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
