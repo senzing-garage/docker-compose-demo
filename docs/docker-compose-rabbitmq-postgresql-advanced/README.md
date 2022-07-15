@@ -190,6 +190,8 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-rabbitmq-postgresql-debug.yaml
     ```
 
+### Volumes
+
 1. :pencil2: Specify a new directory to hold demonstration artifacts on the local host.
    Example:
 
