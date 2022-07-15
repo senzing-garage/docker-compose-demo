@@ -250,6 +250,8 @@ services:
     ports:
       - 2443:2443
     restart: always
+    volumes:
+      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
 
 networks:
   senzing:
