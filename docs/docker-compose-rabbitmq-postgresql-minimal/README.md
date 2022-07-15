@@ -104,19 +104,19 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
+    export PGADMIN_DIR=${SENZING_VOLUME}/pgadmin
+    export POSTGRES_DIR=${SENZING_VOLUME}/postgres
+    export RABBITMQ_DIR=${SENZING_VOLUME}/rabbitmq
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-    export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
-    export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
-    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
     ```
 
-1. Make directories.
+1. Create directories.
    Example:
 
     ```console
-    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
     chmod -R 770 ${SENZING_VOLUME}
     ```
 
@@ -136,7 +136,7 @@ describing where we can improve.   Now on with the show...
     ```console
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/docker-compose-rabbitmq-postgresql-minimal.yaml"
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql-minimal.yaml"
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose pull
     ```
