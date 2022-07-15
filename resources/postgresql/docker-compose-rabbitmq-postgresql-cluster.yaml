@@ -183,7 +183,9 @@ services:
       - postgres
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+      SENZING_SQL_FILES: >-
+        /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+        /app/insert-senzing-configuration.sql
     image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
     networks:
       - senzing
@@ -199,7 +201,9 @@ services:
       - postgres
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+      SENZING_SQL_FILES: >-
+        /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+        /app/insert-senzing-configuration.sql
     image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
     networks:
       - senzing
@@ -215,7 +219,9 @@ services:
       - postgres
     environment:
       SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+      SENZING_SQL_FILES: >-
+        /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
+        /app/insert-senzing-configuration.sql
     image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
     networks:
       - senzing
@@ -254,57 +260,6 @@ services:
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
-  initcontainer:
-    container_name: senzing-init-container
-    depends_on:
-      - postgres
-      - postgresinit
-    environment:
-#     See https://github.com/Senzing/docker-init-container#configuration
-      SENZING_DELAY_IN_SECONDS: 30
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
-        {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
-          "SQL": {
-            "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
-          },
-          "C1": {
-            "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
-          },
-          "C2": {
-            "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
-          },
-          "HYBRID": {
-            "RES_FEAT": "C1",
-            "RES_FEAT_EKEY": "C1",
-            "RES_FEAT_LKEY": "C1",
-            "RES_FEAT_STAT": "C1",
-            "LIB_FEAT": "C2",
-            "LIB_FEAT_HKEY": "C2"
-          }
-        }
-      SENZING_GID: ${SENZING_GID:-1001}
-      SENZING_UID: ${SENZING_UID:-1001}
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
-    networks:
-      - senzing
-    read_only: true
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
   console:
     cap_add:
       - ALL
@@ -324,11 +279,11 @@ services:
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_RES:-G2_RES}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_LIBFEAT:-G2_LIBFEAT}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
           },
           "HYBRID": {
             "RES_FEAT": "C1",
@@ -345,9 +300,6 @@ services:
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   loader:
@@ -400,11 +352,6 @@ services:
       - senzing
     read_only: true
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   redoer:
     container_name: senzing-redoer
@@ -450,12 +397,7 @@ services:
       - senzing
     privileged: true
     read_only: true
-    restart: on-failure
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
+    restart: always
 
   pocserver:
     container_name: senzing-poc-server
@@ -475,15 +417,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_RES:-G2_RES}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_LIBFEAT:-G2_LIBFEAT}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "HYBRID": {
             "RES_FEAT": "C1",
@@ -507,15 +449,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_RES:-G2_RES}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_LIBFEAT:-G2_LIBFEAT}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "HYBRID": {
             "RES_FEAT": "C1",
@@ -542,11 +484,6 @@ services:
     restart: always
     tmpfs:
       - /tmp
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   webapp:
     container_name: senzing-webapp
@@ -581,9 +518,6 @@ services:
     restart: 'no'
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   jupyter:
@@ -607,15 +541,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_RES:-G2_RES}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_LIBFEAT:-G2_LIBFEAT}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "HYBRID": {
             "RES_FEAT": "C1",
@@ -635,9 +569,6 @@ services:
     restart: always
     volumes:
       - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   sshd:
     cap_add:
@@ -655,15 +586,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_RES:-G2_RES}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_LIBFEAT:-G2_LIBFEAT}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "HYBRID": {
             "RES_FEAT": "C1",
@@ -680,10 +611,8 @@ services:
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   xterm:
@@ -699,15 +628,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_RES:-G2_RES}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_LIBFEAT:-G2_LIBFEAT}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "HYBRID": {
             "RES_FEAT": "C1",
@@ -726,9 +655,6 @@ services:
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   swaggerui:
