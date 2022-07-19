@@ -417,7 +417,6 @@ services:
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
