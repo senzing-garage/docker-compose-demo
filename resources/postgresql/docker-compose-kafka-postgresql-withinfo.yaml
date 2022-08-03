@@ -255,7 +255,6 @@ services:
     read_only: true
     restart: always
 
-
   failurelogger:
     container_name: senzing-stream-logger-failure
     depends_on:
