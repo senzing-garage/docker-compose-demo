@@ -607,24 +607,6 @@ services:
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
-  swaggerui:
-    container_name: senzing-swaggerui
-    depends_on:
-      - logstash
-    environment:
-      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "senzing-swaggerui"
-    networks:
-      - senzing
-    ports:
-      - 9180:8080
-    restart: always
-
 networks:
   senzing:
     name: ${SENZING_DOCKER_NETWORK:-senzing-network}
