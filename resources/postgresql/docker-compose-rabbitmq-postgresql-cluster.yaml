@@ -575,16 +575,40 @@ services:
     container_name: senzing-webapp-console
     environment:
       SENZING_CONSOLE_SERVER_PORT: 8257
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "HYBRID",
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_RES:-G2_RES}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB_LIBFEAT:-G2_LIBFEAT}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
+          }
+        }
     image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
     networks:
       - senzing
     restart: 'no'
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   jupyter:
     container_name: senzing-jupyter
