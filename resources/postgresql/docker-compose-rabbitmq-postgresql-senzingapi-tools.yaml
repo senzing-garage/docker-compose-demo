@@ -607,10 +607,10 @@ services:
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
-  g2configtool:
+  senzingapi-tools:
     entrypoint: sleep
     command: infinity
-    container_name: senzing-g2configtool
+    container_name: senzing-senzingapi-tools
     depends_on:
       - logstash
     environment:
@@ -626,7 +626,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-    image: senzing/g2configtool:${SENZING_DOCKER_IMAGE_VERSION_G2CONFIGTOOL:-latest}
+    image: senzing/senzingapi-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZINGAPI_TOOLS:-latest}
     logging:
       driver: gelf
       options:
