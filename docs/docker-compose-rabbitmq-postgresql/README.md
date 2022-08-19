@@ -318,9 +318,9 @@ However, this can be changed.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
+1. *[bitnami/postgres](https://github.com/bitnami/containers/tree/main/bitnami/postgresql)*
+1. *[bitnami/rabbitmq](https://github.com/bitnami/containers/tree/main/bitnami/rabbitmq)*
 1. *[dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)*
-1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
@@ -334,6 +334,8 @@ This docker formation brings up the following docker containers:
 
 Configuration values specified by environment variable or command line parameter.
 
+- **[ELASTICSEARCH_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#elasticsearch_dir)**
+- **[PGADMIN_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#pgadmin_dir)**
 - **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#postgres_dir)**
 - **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
