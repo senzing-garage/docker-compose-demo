@@ -177,59 +177,49 @@ services:
     volumes:
       - ${POSTGRES_DIR_RES:-/var/lib/postgresql_res/data}:/bitnami/postgresql
 
-  postgresinit:
-    container_name: senzing-postgresql-init
+  init-postgresql:
+    container_name: senzing-init-postgresql
     depends_on:
       - postgres
     environment:
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_SQL_FILES: >-
-        /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
-        /app/insert-senzing-configuration.sql
-    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/init-postgresql#configuration
+      SENZING_DEBUG: "True"
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "HYBRID",
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
+          },
+          "C1": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
+          },
+          "C2": {
+            "CLUSTER_SIZE": "1",
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
+          },
+          "HYBRID": {
+            "RES_FEAT": "C1",
+            "RES_FEAT_EKEY": "C1",
+            "RES_FEAT_LKEY": "C1",
+            "RES_FEAT_STAT": "C1",
+            "LIB_FEAT": "C2",
+            "LIB_FEAT_HKEY": "C2"
+          }
+        }
+      SENZING_SUBCOMMAND: mandatory
+    image: senzing/init-postgresql:${SENZING_DOCKER_IMAGE_VERSION_INIT_POSTGRESQL:-latest}
     networks:
       - senzing
     read_only: true
     restart: on-failure
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-
-  postgresinit_libfeat:
-    container_name: senzing-postgresql-init-libfeat
-    depends_on:
-      - postgres
-    environment:
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_SQL_FILES: >-
-        /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
-        /app/insert-senzing-configuration.sql
-    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
-    networks:
-      - senzing
-    read_only: true
-    restart: on-failure
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-
-  postgresinit_res:
-    container_name: senzing-postgresql-init-res
-    depends_on:
-      - postgres
-    environment:
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_SQL_FILES: >-
-        /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
-        /app/insert-senzing-configuration.sql
-    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
-    networks:
-      - senzing
-    read_only: true
-    restart: on-failure
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   pgadmin:
     container_name: senzing-pgadmin
@@ -275,15 +265,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
           },
           "HYBRID": {
             "RES_FEAT": "C1",
