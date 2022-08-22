@@ -231,6 +231,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -298,6 +299,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -333,6 +335,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -371,6 +374,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -406,6 +410,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -421,6 +426,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -488,6 +494,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -525,6 +532,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -560,6 +568,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -591,6 +600,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
