@@ -1,6 +1,8 @@
 version: '3'
 services:
 
+  # makefile makes a metadata file for pgadmin.
+
   makefile:
     container_name: senzing-makefile
     command:
@@ -184,7 +186,6 @@ services:
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/init-postgresql#configuration
-      SENZING_DEBUG: "True"
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -405,24 +406,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
-            "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
-          },
-          "C1": {
-            "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
-          },
-          "C2": {
-            "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
-          },
-          "HYBRID": {
-            "RES_FEAT": "C1",
-            "RES_FEAT_EKEY": "C1",
-            "RES_FEAT_LKEY": "C1",
-            "RES_FEAT_STAT": "C1",
-            "LIB_FEAT": "C2",
-            "LIB_FEAT_HKEY": "C2"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
       SENZING_API_SERVER_PORT: '8250'
@@ -673,17 +657,6 @@ services:
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
-  swaggerui:
-    container_name: senzing-swaggerui
-    environment:
-      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
-    networks:
-      - senzing
-    ports:
-      - 9180:8080
-    restart: always
 
 networks:
   senzing:
