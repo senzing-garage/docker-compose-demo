@@ -141,15 +141,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-sqs-postgresql-withinfo.yaml
     ```
 
-#### Redoer formation
-
-1. Add `redoer` to standard demonstration.
-   This will process the Senzing "redo records".
-
-    ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-sqs-postgresql-redoer.yaml
-    ```
-
 #### Redoer queuing formation
 
 1. Add multiple `redoer`s to standard demonstration.
