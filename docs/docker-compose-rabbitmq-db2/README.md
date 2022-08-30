@@ -298,6 +298,13 @@ The server supports the
 
 #### View Jupyter notebooks
 
+1. Change file permissions on database files.
+   Example:
+
+    ```console
+    sudo chmod 777 -R ${POSTGRES_DIR}
+    ```
+
 1. Jupyter Notebooks are viewable at
    [localhost:9178](http://localhost:9178).
 1. See
