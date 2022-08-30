@@ -200,7 +200,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
    Example:
 
     ```console
-    export ELASTICSEARCH_DIR=${SENZING_VOLUME}/elasticsearch
     export PGADMIN_DIR=${SENZING_VOLUME}/pgadmin
     export POSTGRES_DIR=${SENZING_VOLUME}/postgres
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
@@ -212,7 +211,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
    Example:
 
     ```console
-    mkdir -p ${ELASTICSEARCH_DIR} ${PGADMIN_DIR} ${POSTGRES_DIR} ${SENZING_VAR_DIR}
+    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_VOLUME}
     ```
 

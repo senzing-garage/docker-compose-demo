@@ -210,7 +210,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
    Example:
 
     ```console
-    export ELASTICSEARCH_DIR=${SENZING_VOLUME}/elasticsearch
     export PGADMIN_DIR=${SENZING_VOLUME}/pgadmin
     export POSTGRES_DIR=${SENZING_VOLUME}/postgres
     export RABBITMQ_DIR=${SENZING_VOLUME}/rabbitmq
@@ -223,7 +222,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
    Example:
 
     ```console
-    mkdir -p ${ELASTICSEARCH_DIR} ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
+    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_VOLUME}
     ```
 
@@ -415,9 +414,9 @@ However, this can be changed.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
+1. *[bitnami/postgres](https://github.com/bitnami/containers/tree/main/bitnami/postgresql)*
+1. *[bitnami/rabbitmq](https://github.com/bitnami/containers/tree/main/bitnami/rabbitmq)*
 1. *[dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)*
-1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
@@ -431,6 +430,7 @@ This docker formation brings up the following docker containers:
 
 Configuration values specified by environment variable or command line parameter.
 
+- **[PGADMIN_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#pgadmin_dir)**
 - **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#postgres_dir)**
 - **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
