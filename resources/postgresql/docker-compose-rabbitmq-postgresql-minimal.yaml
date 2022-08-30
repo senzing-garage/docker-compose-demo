@@ -89,11 +89,6 @@ services:
         }
       SENZING_SUBCOMMAND: mandatory
     image: senzing/init-postgresql:${SENZING_DOCKER_IMAGE_VERSION_INIT_POSTGRESQL:-latest}
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "senzing-init-postgresql"
     networks:
       - senzing
     read_only: true
