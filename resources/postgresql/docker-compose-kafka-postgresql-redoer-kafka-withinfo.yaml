@@ -272,7 +272,7 @@ services:
     networks:
       - senzing
     read_only: true
-    restart: on-failure
+    restart: always
 
   redoerreader:
     container_name: senzing-redoer-read-from-kafka

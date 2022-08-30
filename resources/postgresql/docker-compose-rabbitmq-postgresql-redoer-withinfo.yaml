@@ -253,7 +253,7 @@ services:
     networks:
       - senzing
     read_only: true
-    restart: on-failure
+    restart: always
 
   failurelogger:
     container_name: senzing-stream-logger-failure
