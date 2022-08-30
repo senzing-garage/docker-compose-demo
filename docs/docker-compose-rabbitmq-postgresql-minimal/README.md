@@ -104,19 +104,19 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
+    export PGADMIN_DIR=${SENZING_VOLUME}/pgadmin
+    export POSTGRES_DIR=${SENZING_VOLUME}/postgres
+    export RABBITMQ_DIR=${SENZING_VOLUME}/rabbitmq
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-    export PGADMIN_DIR=${SENZING_VAR_DIR}/pgadmin
-    export POSTGRES_DIR=${SENZING_VAR_DIR}/postgres
-    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
     ```
 
-1. Make directories.
+1. Create directories.
    Example:
 
     ```console
-    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR}
+    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
     chmod -R 770 ${SENZING_VOLUME}
     ```
 
@@ -125,9 +125,9 @@ describing where we can improve.   Now on with the show...
 
     ```console
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-versions-latest.sh \
+        --output ${SENZING_VOLUME}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
-    source ${SENZING_VOLUME}/docker-versions-latest.sh
+    source ${SENZING_VOLUME}/docker-versions-stable.sh
     ```
 
 1. Download `docker-compose.yaml` and Docker images.
@@ -136,7 +136,7 @@ describing where we can improve.   Now on with the show...
     ```console
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/docker-compose-rabbitmq-postgresql-minimal.yaml"
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql-minimal.yaml"
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose pull
     ```
@@ -149,7 +149,7 @@ describing where we can improve.   Now on with the show...
     sudo --preserve-env docker-compose up
     ```
 
-1. Allow time for the components to come up and initialize.
+1. Allow time for the components to be downloaded, start, and initialize.
     1. There will be errors in some Docker logs as they wait for dependent services to become available.
        `docker-compose` isn't the best at orchestrating Docker container dependencies.
 

@@ -1,6 +1,8 @@
 version: '3'
 services:
 
+  # makefile makes a metadata file for pgadmin.
+
   makefile:
     container_name: senzing-makefile
     command:
@@ -49,10 +51,10 @@ services:
         chmod a+x /tmp/upload.sh;
         bash /tmp/upload.sh
     environment:
-      UPLOAD_FILE: >-
-        IyEvYmluL2Jhc2gKd2hpbGUgOgpkbwogIHN0YXR1c19jb2RlPSQoY3VybCAtWCBQT1NUIHNlbnppbmcta2liYW5hOjU2MDEvYXBpL3NhdmVkX29iamVjdHMvX2ltcG9ydCAtSCAia2JuLXhzcmY6IHRydWUiIC0tZm9ybSBmaWxlPUAvdG1wL2V4cG9ydC5uZGpzb24gLS13cml0ZS1vdXQgIiV7aHR0cF9jb2RlfSIgLS1zaWxlbnQgLS1vdXRwdXQgL2Rldi9udWxsKQogIGlmIFtbICIkc3RhdHVzX2NvZGUiIC1uZSAyMDAgXV0gOyB0aGVuCiAgICBlY2hvICJ1bnN1Y2Nlc3NmdWwgaW1wb3J0LCB0cnlpbmcgYWdhaW4gaW4gMSBzZWNvbmQhIgogICAgc2xlZXAgMQogIGVsc2UKICAgIGVjaG8gImltcG9ydCBzdWNjZXNzIgogICAgZXhpdCAwCiAgZmkKZG9uZQo=
       EXPORT_FILE: >-
         eyJhdHRyaWJ1dGVzIjp7ImZpZWxkQXR0cnMiOiJ7XCJjb250YWluZXJfbmFtZVwiOntcImNvdW50XCI6Mn0sXCJtZXNzYWdlXCI6e1wiY291bnRcIjo3fSxcInZlcnNpb25cIjp7XCJjb3VudFwiOjJ9fSIsImZpZWxkcyI6IltdIiwicnVudGltZUZpZWxkTWFwIjoie30iLCJ0aW1lRmllbGROYW1lIjoiQHRpbWVzdGFtcCIsInRpdGxlIjoibG9nKiIsInR5cGVNZXRhIjoie30ifSwiY29yZU1pZ3JhdGlvblZlcnNpb24iOiI4LjEuMyIsImlkIjoiODY4MzUxYTAtZTEwMi0xMWVjLWFiZjEtNTk5MTI2OWM5NjFmIiwibWlncmF0aW9uVmVyc2lvbiI6eyJpbmRleC1wYXR0ZXJuIjoiOC4wLjAifSwicmVmZXJlbmNlcyI6W10sInR5cGUiOiJpbmRleC1wYXR0ZXJuIiwidXBkYXRlZF9hdCI6IjIwMjItMDUtMzFUMTc6NTg6MTUuNTMwWiIsInZlcnNpb24iOiJXell3TWl3eFhRPT0ifQp7ImF0dHJpYnV0ZXMiOnsiY29sdW1ucyI6WyJtZXNzYWdlIiwiY29udGFpbmVyX25hbWUiXSwiZGVzY3JpcHRpb24iOiJTaG93IHNlbnppbmcgbG9ncyB0aGF0IGNvbnRhaW4gZXJyb3JzIiwiZ3JpZCI6e30sImhpZGVDaGFydCI6ZmFsc2UsImtpYmFuYVNhdmVkT2JqZWN0TWV0YSI6eyJzZWFyY2hTb3VyY2VKU09OIjoie1wicXVlcnlcIjp7XCJxdWVyeVwiOlwibWVzc2FnZSA6IGVycipcIixcImxhbmd1YWdlXCI6XCJrdWVyeVwifSxcImZpbHRlclwiOltdLFwiaW5kZXhSZWZOYW1lXCI6XCJraWJhbmFTYXZlZE9iamVjdE1ldGEuc2VhcmNoU291cmNlSlNPTi5pbmRleFwifSJ9LCJzb3J0IjpbWyJAdGltZXN0YW1wIiwiZGVzYyJdXSwidGl0bGUiOiJTZW56aW5nIGVycm9yIGxvZ3MifSwiY29yZU1pZ3JhdGlvblZlcnNpb24iOiI4LjEuMyIsImlkIjoiMDBkN2EzMTAtZTEwOS0xMWVjLWFiZjEtNTk5MTI2OWM5NjFmIiwibWlncmF0aW9uVmVyc2lvbiI6eyJzZWFyY2giOiI4LjAuMCJ9LCJyZWZlcmVuY2VzIjpbeyJpZCI6Ijg2ODM1MWEwLWUxMDItMTFlYy1hYmYxLTU5OTEyNjljOTYxZiIsIm5hbWUiOiJraWJhbmFTYXZlZE9iamVjdE1ldGEuc2VhcmNoU291cmNlSlNPTi5pbmRleCIsInR5cGUiOiJpbmRleC1wYXR0ZXJuIn1dLCJ0eXBlIjoic2VhcmNoIiwidXBkYXRlZF9hdCI6IjIwMjItMDUtMzFUMTc6NDg6MjUuMzgyWiIsInZlcnNpb24iOiJXelE0Tml3eFhRPT0ifQp7ImF0dHJpYnV0ZXMiOnsiY29sdW1ucyI6WyJtZXNzYWdlIiwiY29udGFpbmVyX25hbWUiXSwiZGVzY3JpcHRpb24iOiJTZW56aW5nIGVuZ2luZSBzdGF0cyBsb2dzIiwiZ3JpZCI6e30sImhpZGVDaGFydCI6ZmFsc2UsImtpYmFuYVNhdmVkT2JqZWN0TWV0YSI6eyJzZWFyY2hTb3VyY2VKU09OIjoie1wicXVlcnlcIjp7XCJxdWVyeVwiOlwibWVzc2FnZSA6IFxcXCJzZW56aW5nLTUwMDEwMTI1SSBHMiBlbmdpbmUgc3RhdGlzdGljc1xcXCJcIixcImxhbmd1YWdlXCI6XCJrdWVyeVwifSxcImZpbHRlclwiOltdLFwiaW5kZXhSZWZOYW1lXCI6XCJraWJhbmFTYXZlZE9iamVjdE1ldGEuc2VhcmNoU291cmNlSlNPTi5pbmRleFwifSJ9LCJzb3J0IjpbWyJAdGltZXN0YW1wIiwiZGVzYyJdXSwidGl0bGUiOiJTZW56aW5nIGVuZ2luZSBzdGF0cyBsb2dzIn0sImNvcmVNaWdyYXRpb25WZXJzaW9uIjoiOC4xLjMiLCJpZCI6IjZlMmYxZjYwLWUxMDktMTFlYy1hYmYxLTU5OTEyNjljOTYxZiIsIm1pZ3JhdGlvblZlcnNpb24iOnsic2VhcmNoIjoiOC4wLjAifSwicmVmZXJlbmNlcyI6W3siaWQiOiI4NjgzNTFhMC1lMTAyLTExZWMtYWJmMS01OTkxMjY5Yzk2MWYiLCJuYW1lIjoia2liYW5hU2F2ZWRPYmplY3RNZXRhLnNlYXJjaFNvdXJjZUpTT04uaW5kZXgiLCJ0eXBlIjoiaW5kZXgtcGF0dGVybiJ9XSwidHlwZSI6InNlYXJjaCIsInVwZGF0ZWRfYXQiOiIyMDIyLTA1LTMxVDE3OjQ4OjI1LjM4MloiLCJ2ZXJzaW9uIjoiV3pRNE55d3hYUT09In0KeyJhdHRyaWJ1dGVzIjp7ImNvbHVtbnMiOlsibWVzc2FnZSIsImNvbnRhaW5lcl9uYW1lIl0sImRlc2NyaXB0aW9uIjoiIiwiZ3JpZCI6e30sImhpZGVDaGFydCI6ZmFsc2UsImtpYmFuYVNhdmVkT2JqZWN0TWV0YSI6eyJzZWFyY2hTb3VyY2VKU09OIjoie1wicXVlcnlcIjp7XCJxdWVyeVwiOlwibWVzc2FnZSA6IFxcXCJHRVRcXFwiXCIsXCJsYW5ndWFnZVwiOlwia3VlcnlcIn0sXCJmaWx0ZXJcIjpbXSxcImluZGV4UmVmTmFtZVwiOlwia2liYW5hU2F2ZWRPYmplY3RNZXRhLnNlYXJjaFNvdXJjZUpTT04uaW5kZXhcIn0ifSwic29ydCI6W1siQHRpbWVzdGFtcCIsImRlc2MiXV0sInRpdGxlIjoiU2VuemluZyBHRVQgbG9ncyJ9LCJjb3JlTWlncmF0aW9uVmVyc2lvbiI6IjguMS4zIiwiaWQiOiJkMjhhMTRmMC1lMTBhLTExZWMtYWJmMS01OTkxMjY5Yzk2MWYiLCJtaWdyYXRpb25WZXJzaW9uIjp7InNlYXJjaCI6IjguMC4wIn0sInJlZmVyZW5jZXMiOlt7ImlkIjoiODY4MzUxYTAtZTEwMi0xMWVjLWFiZjEtNTk5MTI2OWM5NjFmIiwibmFtZSI6ImtpYmFuYVNhdmVkT2JqZWN0TWV0YS5zZWFyY2hTb3VyY2VKU09OLmluZGV4IiwidHlwZSI6ImluZGV4LXBhdHRlcm4ifV0sInR5cGUiOiJzZWFyY2giLCJ1cGRhdGVkX2F0IjoiMjAyMi0wNS0zMVQxNzo1NToxMy45ODNaIiwidmVyc2lvbiI6Ild6VTBNeXd4WFE9PSJ9CnsiYXR0cmlidXRlcyI6eyJjb2x1bW5zIjpbIm1lc3NhZ2UiLCJjb250YWluZXJfbmFtZSJdLCJkZXNjcmlwdGlvbiI6IiIsImdyaWQiOnt9LCJoaWRlQ2hhcnQiOmZhbHNlLCJraWJhbmFTYXZlZE9iamVjdE1ldGEiOnsic2VhcmNoU291cmNlSlNPTiI6IntcInF1ZXJ5XCI6e1wicXVlcnlcIjpcIm1lc3NhZ2UgOiBcXFwic2VuemluZy01MDE3MDAwNUkgR292ZXJub3Igd2FpdGluZ1xcXCJcIixcImxhbmd1YWdlXCI6XCJrdWVyeVwifSxcImZpbHRlclwiOltdLFwiaW5kZXhSZWZOYW1lXCI6XCJraWJhbmFTYXZlZE9iamVjdE1ldGEuc2VhcmNoU291cmNlSlNPTi5pbmRleFwifSJ9LCJzb3J0IjpbWyJAdGltZXN0YW1wIiwiZGVzYyJdXSwidGl0bGUiOiJTZW56aW5nIGdvdmVybm9yIHdhaXQifSwiY29yZU1pZ3JhdGlvblZlcnNpb24iOiI4LjEuMyIsImlkIjoiZTA5NzdlNzAtZTEwYS0xMWVjLWFiZjEtNTk5MTI2OWM5NjFmIiwibWlncmF0aW9uVmVyc2lvbiI6eyJzZWFyY2giOiI4LjAuMCJ9LCJyZWZlcmVuY2VzIjpbeyJpZCI6Ijg2ODM1MWEwLWUxMDItMTFlYy1hYmYxLTU5OTEyNjljOTYxZiIsIm5hbWUiOiJraWJhbmFTYXZlZE9iamVjdE1ldGEuc2VhcmNoU291cmNlSlNPTi5pbmRleCIsInR5cGUiOiJpbmRleC1wYXR0ZXJuIn1dLCJ0eXBlIjoic2VhcmNoIiwidXBkYXRlZF9hdCI6IjIwMjItMDUtMzFUMTc6NTU6MzcuNTU5WiIsInZlcnNpb24iOiJXelUxTXl3eFhRPT0ifQp7ImF0dHJpYnV0ZXMiOnsiZGVzY3JpcHRpb24iOiIiLCJoaXRzIjowLCJraWJhbmFTYXZlZE9iamVjdE1ldGEiOnsic2VhcmNoU291cmNlSlNPTiI6IntcInF1ZXJ5XCI6e1wicXVlcnlcIjpcIlwiLFwibGFuZ3VhZ2VcIjpcImt1ZXJ5XCJ9LFwiZmlsdGVyXCI6W119In0sIm9wdGlvbnNKU09OIjoie1widXNlTWFyZ2luc1wiOnRydWUsXCJzeW5jQ29sb3JzXCI6ZmFsc2UsXCJoaWRlUGFuZWxUaXRsZXNcIjpmYWxzZX0iLCJwYW5lbHNKU09OIjoiW3tcInZlcnNpb25cIjpcIjguMS4zXCIsXCJ0eXBlXCI6XCJzZWFyY2hcIixcImdyaWREYXRhXCI6e1wieFwiOjAsXCJ5XCI6MCxcIndcIjoyNCxcImhcIjoxNSxcImlcIjpcIjA3MjRlOGQzLTYyZDMtNDk4Yi1hYWU0LTI1ZGJjYjZhMGQzY1wifSxcInBhbmVsSW5kZXhcIjpcIjA3MjRlOGQzLTYyZDMtNDk4Yi1hYWU0LTI1ZGJjYjZhMGQzY1wiLFwiZW1iZWRkYWJsZUNvbmZpZ1wiOntcImVuaGFuY2VtZW50c1wiOnt9fSxcInBhbmVsUmVmTmFtZVwiOlwicGFuZWxfMDcyNGU4ZDMtNjJkMy00OThiLWFhZTQtMjVkYmNiNmEwZDNjXCJ9LHtcInZlcnNpb25cIjpcIjguMS4zXCIsXCJ0eXBlXCI6XCJzZWFyY2hcIixcImdyaWREYXRhXCI6e1wieFwiOjI0LFwieVwiOjAsXCJ3XCI6MjQsXCJoXCI6MTUsXCJpXCI6XCI4ZWYyNWE5NS1mY2ZlLTQ2ZDYtOGYwZC02ODhlMDczM2NjNmFcIn0sXCJwYW5lbEluZGV4XCI6XCI4ZWYyNWE5NS1mY2ZlLTQ2ZDYtOGYwZC02ODhlMDczM2NjNmFcIixcImVtYmVkZGFibGVDb25maWdcIjp7XCJlbmhhbmNlbWVudHNcIjp7fX0sXCJwYW5lbFJlZk5hbWVcIjpcInBhbmVsXzhlZjI1YTk1LWZjZmUtNDZkNi04ZjBkLTY4OGUwNzMzY2M2YVwifSx7XCJ2ZXJzaW9uXCI6XCI4LjEuM1wiLFwidHlwZVwiOlwic2VhcmNoXCIsXCJncmlkRGF0YVwiOntcInhcIjowLFwieVwiOjE1LFwid1wiOjI0LFwiaFwiOjE1LFwiaVwiOlwiNDBlNWZlNDgtNTZkMC00MjkzLThmYzMtODU2N2FjZDY0NGIxXCJ9LFwicGFuZWxJbmRleFwiOlwiNDBlNWZlNDgtNTZkMC00MjkzLThmYzMtODU2N2FjZDY0NGIxXCIsXCJlbWJlZGRhYmxlQ29uZmlnXCI6e1wiZW5oYW5jZW1lbnRzXCI6e319LFwicGFuZWxSZWZOYW1lXCI6XCJwYW5lbF80MGU1ZmU0OC01NmQwLTQyOTMtOGZjMy04NTY3YWNkNjQ0YjFcIn0se1widmVyc2lvblwiOlwiOC4xLjNcIixcInR5cGVcIjpcInNlYXJjaFwiLFwiZ3JpZERhdGFcIjp7XCJ4XCI6MjQsXCJ5XCI6MTUsXCJ3XCI6MjQsXCJoXCI6MTUsXCJpXCI6XCI3NjUyN2QyZC0xMTk2LTQ4MjYtOGMwYy1iOTNkZWQ1ZTZhMDBcIn0sXCJwYW5lbEluZGV4XCI6XCI3NjUyN2QyZC0xMTk2LTQ4MjYtOGMwYy1iOTNkZWQ1ZTZhMDBcIixcImVtYmVkZGFibGVDb25maWdcIjp7XCJlbmhhbmNlbWVudHNcIjp7fX0sXCJwYW5lbFJlZk5hbWVcIjpcInBhbmVsXzc2NTI3ZDJkLTExOTYtNDgyNi04YzBjLWI5M2RlZDVlNmEwMFwifV0iLCJ0aW1lUmVzdG9yZSI6ZmFsc2UsInRpdGxlIjoiU2VuemluZyBEYXNoYm9hcmQiLCJ2ZXJzaW9uIjoxfSwiY29yZU1pZ3JhdGlvblZlcnNpb24iOiI4LjEuMyIsImlkIjoiOThkMjBhMjAtZTEwOS0xMWVjLWFiZjEtNTk5MTI2OWM5NjFmIiwibWlncmF0aW9uVmVyc2lvbiI6eyJkYXNoYm9hcmQiOiI4LjEuMCJ9LCJyZWZlcmVuY2VzIjpbeyJpZCI6IjAwZDdhMzEwLWUxMDktMTFlYy1hYmYxLTU5OTEyNjljOTYxZiIsIm5hbWUiOiIwNzI0ZThkMy02MmQzLTQ5OGItYWFlNC0yNWRiY2I2YTBkM2M6cGFuZWxfMDcyNGU4ZDMtNjJkMy00OThiLWFhZTQtMjVkYmNiNmEwZDNjIiwidHlwZSI6InNlYXJjaCJ9LHsiaWQiOiI2ZTJmMWY2MC1lMTA5LTExZWMtYWJmMS01OTkxMjY5Yzk2MWYiLCJuYW1lIjoiOGVmMjVhOTUtZmNmZS00NmQ2LThmMGQtNjg4ZTA3MzNjYzZhOnBhbmVsXzhlZjI1YTk1LWZjZmUtNDZkNi04ZjBkLTY4OGUwNzMzY2M2YSIsInR5cGUiOiJzZWFyY2gifSx7ImlkIjoiZDI4YTE0ZjAtZTEwYS0xMWVjLWFiZjEtNTk5MTI2OWM5NjFmIiwibmFtZSI6IjQwZTVmZTQ4LTU2ZDAtNDI5My04ZmMzLTg1NjdhY2Q2NDRiMTpwYW5lbF80MGU1ZmU0OC01NmQwLTQyOTMtOGZjMy04NTY3YWNkNjQ0YjEiLCJ0eXBlIjoic2VhcmNoIn0seyJpZCI6ImUwOTc3ZTcwLWUxMGEtMTFlYy1hYmYxLTU5OTEyNjljOTYxZiIsIm5hbWUiOiI3NjUyN2QyZC0xMTk2LTQ4MjYtOGMwYy1iOTNkZWQ1ZTZhMDA6cGFuZWxfNzY1MjdkMmQtMTE5Ni00ODI2LThjMGMtYjkzZGVkNWU2YTAwIiwidHlwZSI6InNlYXJjaCJ9XSwidHlwZSI6ImRhc2hib2FyZCIsInVwZGF0ZWRfYXQiOiIyMDIyLTA2LTAyVDE1OjAxOjQwLjcxN1oiLCJ2ZXJzaW9uIjoiV3pZME5Dd3hYUT09In0KeyJleGNsdWRlZE9iamVjdHMiOltdLCJleGNsdWRlZE9iamVjdHNDb3VudCI6MCwiZXhwb3J0ZWRDb3VudCI6NiwibWlzc2luZ1JlZkNvdW50IjowLCJtaXNzaW5nUmVmZXJlbmNlcyI6W119Cg==
+      UPLOAD_FILE: >-
+        IyEvYmluL2Jhc2gKd2hpbGUgOgpkbwogIHN0YXR1c19jb2RlPSQoY3VybCAtWCBQT1NUIHNlbnppbmcta2liYW5hOjU2MDEvYXBpL3NhdmVkX29iamVjdHMvX2ltcG9ydCAtSCAia2JuLXhzcmY6IHRydWUiIC0tZm9ybSBmaWxlPUAvdG1wL2V4cG9ydC5uZGpzb24gLS13cml0ZS1vdXQgIiV7aHR0cF9jb2RlfSIgLS1zaWxlbnQgLS1vdXRwdXQgL2Rldi9udWxsKQogIGlmIFtbICIkc3RhdHVzX2NvZGUiIC1uZSAyMDAgXV0gOyB0aGVuCiAgICBlY2hvICJ1bnN1Y2Nlc3NmdWwgaW1wb3J0LCB0cnlpbmcgYWdhaW4gaW4gMSBzZWNvbmQhIgogICAgc2xlZXAgMQogIGVsc2UKICAgIGVjaG8gImltcG9ydCBzdWNjZXNzIgogICAgZXhpdCAwCiAgZmkKZG9uZQo=
     image: curlimages/curl:${SENZING_DOCKER_IMAGE_VERSION_CURLIMAGES_CURL:-latest}
     networks:
       - senzing
@@ -80,7 +82,7 @@ services:
     restart: always
     user: "${SENZING_UID:-1001}:0"
     volumes:
-      - elasticsearch:/usr/share/elasticsearch/data:z
+      - ${ELASTICSEARCH_DIR:-/var/elasticsearch}:/usr/share/elasticsearch/data
 
   logstash:
     command:
@@ -211,27 +213,40 @@ services:
     volumes:
       - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
 
-  postgresinit:
-    container_name: senzing-postgresql-init
+  init-postgresql:
+    container_name: senzing-init-postgresql
     depends_on:
       - postgres
       - logstash
     environment:
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_SQL_FILE: /opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql
-    image: senzing/postgresql-client:${SENZING_DOCKER_IMAGE_VERSION_POSTGRESQL_CLIENT:-latest}
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/init-postgresql#configuration
+#     SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "SQL",
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+          }
+        }
+#     SENZING_INPUT_SQL_URL: "file:///opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql"
+      SENZING_SUBCOMMAND: mandatory
+    image: senzing/init-postgresql:${SENZING_DOCKER_IMAGE_VERSION_INIT_POSTGRESQL:-latest}
     logging:
       driver: gelf
       options:
         gelf-address: "udp://localhost:12201"
-        tag: "senzing-postgresinit"
+        tag: "senzing-init-postgresql"
     networks:
       - senzing
     read_only: true
     restart: on-failure
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   pgadmin:
     container_name: senzing-pgadmin
@@ -268,35 +283,6 @@ services:
     volumes:
       - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
 
-  initcontainer:
-    container_name: senzing-init-container
-    depends_on:
-      - postgres
-      - postgresinit
-      - logstash
-    environment:
-#     See https://github.com/Senzing/docker-init-container#configuration
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
-      SENZING_DELAY_IN_SECONDS: 30
-      SENZING_GID: ${SENZING_GID:-1001}
-      SENZING_UID: ${SENZING_UID:-1001}
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "senzing-initcontainer"
-    networks:
-      - senzing
-    read_only: true
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
   console:
     cap_add:
       - ALL
@@ -313,6 +299,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -327,9 +314,6 @@ services:
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   loader:
@@ -341,7 +325,6 @@ services:
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/stream-loader#configuration
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -352,6 +335,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -359,8 +343,8 @@ services:
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
-      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
+      SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
     image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     logging:
@@ -372,11 +356,6 @@ services:
       - senzing
     read_only: true
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   redoer:
     container_name: senzing-redoer
@@ -385,7 +364,6 @@ services:
       - logstash
     environment:
 #     See https://github.com/Senzing/redoer#configuration
-      SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -396,6 +374,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -410,14 +389,8 @@ services:
         tag: "senzing-redoer"
     networks:
       - senzing
-    privileged: true
     read_only: true
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   pocserver:
     container_name: senzing-poc-server
@@ -428,18 +401,6 @@ services:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
-      SENZING_API_SERVER_INIT_JSON: >-
-        {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
-          "SQL": {
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
-          }
-        }
       SENZING_API_SERVER_PORT: '8250'
       SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
       SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
@@ -452,6 +413,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -476,11 +438,6 @@ services:
     restart: always
     tmpfs:
       - /tmp
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   webapp:
     container_name: senzing-webapp
@@ -491,12 +448,12 @@ services:
     environment:
 #     See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250
+      SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
       SENZING_WEB_SERVER_INTERNAL_URL: http://senzing-webapp:8251
       SENZING_WEB_SERVER_PORT: 8251
       SENZING_WEB_SERVER_STREAM_CLIENT_URL: wss://senzing-poc-server:8250/ws
-      SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
     image: senzing/entity-search-web-app:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP:-latest}
     logging:
       driver: gelf
@@ -515,6 +472,19 @@ services:
     container_name: senzing-webapp-console
     environment:
       SENZING_CONSOLE_SERVER_PORT: 8257
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "SQL",
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+          }
+        }
     image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
     logging:
       driver: gelf
@@ -526,9 +496,6 @@ services:
     restart: 'no'
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   jupyter:
@@ -552,6 +519,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -569,9 +537,6 @@ services:
     restart: always
     volumes:
       - ${JUPYTER_NOTEBOOKS_SHARED_DIR:-~}:/notebooks/shared
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
   sshd:
     cap_add:
@@ -590,6 +555,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -605,9 +571,6 @@ services:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   xterm:
@@ -624,6 +587,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            "BACKEND": "SQL",
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
@@ -640,32 +604,8 @@ services:
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
-  swaggerui:
-    container_name: senzing-swaggerui
-    depends_on:
-      - logstash
-    environment:
-      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "senzing-swaggerui"
-    networks:
-      - senzing
-    ports:
-      - 9180:8080
-    restart: always
 
 networks:
   senzing:
     name: ${SENZING_DOCKER_NETWORK:-senzing-network}
-
-volumes:
-  elasticsearch:
