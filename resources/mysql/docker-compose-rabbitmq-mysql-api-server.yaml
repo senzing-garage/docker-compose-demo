@@ -205,7 +205,7 @@ services:
       - senzing
     privileged: true
     read_only: true
-    restart: on-failure
+    restart: always
     user: "0"
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
@@ -296,7 +296,7 @@ services:
         - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
         - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
         - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-      restart: 'no'
+      restart: always
 
   jupyter:
     container_name: senzing-jupyter
