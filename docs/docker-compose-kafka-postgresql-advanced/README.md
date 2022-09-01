@@ -215,7 +215,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     chmod -R 777 ${SENZING_VOLUME}
     ```
 
-1. Get stable versions of Docker images.
+1. Get versions of Docker images.
    Example:
 
     ```console

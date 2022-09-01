@@ -130,7 +130,7 @@ describing where we can improve.   Now on with the show...
     chmod -R 777 ${SENZING_VOLUME}
     ```
 
-1. Get stable versions of Docker images.
+1. Get versions of Docker images.
    Example:
 
     ```console
