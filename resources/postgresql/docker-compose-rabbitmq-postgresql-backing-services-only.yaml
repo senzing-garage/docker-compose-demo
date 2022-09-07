@@ -1,0 +1,123 @@
+version: '3'
+services:
+
+  # makefile makes a metadata file for pgadmin.
+
+  makefile:
+    container_name: senzing-makefile
+    command:
+      - sh
+      - -c
+      - echo $${FILE_CONTENTS} >> /output/servers.json
+    environment:
+      FILE_CONTENTS: >-
+        {
+          "Servers": {
+            "1": {
+              "Name": "senzing",
+              "Group": "Servers",
+              "Host": "senzing-postgres",
+              "Port": 5432,
+              "MaintenanceDB": "postgres",
+              "Username": "postgres",
+              "SSLMode": "prefer",
+              "SSLCert": "<STORAGE_DIR>/.postgresql/postgresql.crt",
+              "SSLKey": "<STORAGE_DIR>/.postgresql/postgresql.key",
+              "SSLCompression": 0,
+              "Timeout": 10,
+              "UseSSHTunnel": 0,
+              "TunnelPort": "22",
+              "TunnelAuthentication": 0
+            }
+          }
+        }
+    image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
+    networks:
+      - senzing
+    read_only: true
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/output
+
+  postgres:
+    container_name: senzing-postgres
+    environment:
+#     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-senzing}
+      POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
+      POSTGRESQL_USERNAME: ${POSTGRES_USERNAME:-senzing}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    image: bitnami/postgresql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_POSTGRESQL:-latest}
+    networks:
+      - senzing
+    ports:
+      - 5432:5432
+    restart: always
+    user: "${SENZING_UID:-1001}:0"
+    volumes:
+      - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
+
+  init-postgresql:
+    container_name: senzing-init-postgresql
+    depends_on:
+      - postgres
+    environment:
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/init-postgresql#configuration
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "SQL",
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+          }
+        }
+      SENZING_SUBCOMMAND: mandatory
+    image: senzing/init-postgresql:${SENZING_DOCKER_IMAGE_VERSION_INIT_POSTGRESQL:-latest}
+    networks:
+      - senzing
+    read_only: true
+    restart: on-failure
+
+  pgadmin:
+    container_name: senzing-pgadmin
+    depends_on:
+      - makefile
+    environment:
+#    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+     PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
+     PGADMIN_CONFIG_LOGIN_BANNER: |-
+       "<h4>Senzing demonstration</h4>
+       Although pgAdmin can be configured for security,
+       <br/>the following credentials are used for demonstration.
+       <ul>
+         <li><b>Username:</b> postgres@postgres.com</li>
+         <li><b>Password:</b> password</li>
+       </ul>"
+     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+     PGADMIN_DEFAULT_PASSWORD: password
+     PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
+    image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN4:-latest}
+    networks:
+      - senzing
+    ports:
+      - 9171:80
+      - 9172:443
+    restart: always
+    user: "${SENZING_UID:-1001}:0"
+    volumes:
+      - ${PGADMIN_DIR:-/var/lib/pgadmin/storage}:/var/lib/pgadmin/storage
+
+networks:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
