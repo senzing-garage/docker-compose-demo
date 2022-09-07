@@ -32,6 +32,8 @@ services:
           }
         }
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
+    networks:
+      - senzing
     read_only: true
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
@@ -39,8 +41,6 @@ services:
 
   postgres:
     container_name: senzing-postgres
-    depends_on:
-      - logstash
     environment:
 #     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
       POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
@@ -66,7 +66,6 @@ services:
     container_name: senzing-init-postgresql
     depends_on:
       - postgres
-      - logstash
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/init-postgresql#configuration
@@ -93,7 +92,6 @@ services:
   pgadmin:
     container_name: senzing-pgadmin
     depends_on:
-      - logstash
       - makefile
     environment:
 #    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
