@@ -263,7 +263,6 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
-    sudo docker-compose --file docker-compose-senzing-installation.yaml down
     ```
 
 1. Remove directories from host system.
