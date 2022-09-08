@@ -92,6 +92,8 @@ describing where we can improve.   Now on with the show...
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
 1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
    Minimum version: [2.25.0](https://github.com/git/git/tags)
+1. Create
+   [MySQL compatible Docker images](https://github.com/Senzing/docker-wrap-image-with-mysql/tree/main).
 
 ## Demonstrate
 
@@ -100,6 +102,7 @@ describing where we can improve.   Now on with the show...
 
     ```console
     export SENZING_VOLUME=~/my-senzing
+
     ```
 
     1. :warning:
@@ -118,6 +121,7 @@ describing where we can improve.   Now on with the show...
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+
     ```
 
 1. Create directories.
@@ -126,6 +130,7 @@ describing where we can improve.   Now on with the show...
     ```console
     mkdir -p ${MYSQL_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_VOLUME}
+
     ```
 
 1. Get versions of Docker images.
@@ -136,6 +141,7 @@ describing where we can improve.   Now on with the show...
         --output ${SENZING_VOLUME}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
     source ${SENZING_VOLUME}/docker-versions-stable.sh
+
     ```
 
 1. Download `docker-compose.yaml` and Docker images.
@@ -146,7 +152,7 @@ describing where we can improve.   Now on with the show...
         --output ${SENZING_VOLUME}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql.yaml"
     cd ${SENZING_VOLUME}
-    sudo --preserve-env docker-compose pull
+
     ```
 
    **Note:** Because it was built locally, the `senzing/mysql-init:latest` image will have an error.
@@ -157,6 +163,7 @@ describing where we can improve.   Now on with the show...
     ```console
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose up
+
     ```
 
 1. Allow time for the components to be downloaded, start, and initialize.
