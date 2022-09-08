@@ -156,10 +156,6 @@ services:
       SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-
-      SENZING_DEBUG: "true"
-      SENZING_LOG_LEVEL: debug
-
     image: senzing/stream-loader-mysql:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - senzing
