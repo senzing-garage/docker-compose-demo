@@ -305,7 +305,7 @@ services:
           }
         }
       SENZING_SQL_CONNECTION: "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@senzing-mysql:3306/?schema=${MYSQL_DATABASE:-G2}"
-    image: senzing/jupyter:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-latest}
+    image: senzing/jupyter-mysql:${SENZING_DOCKER_IMAGE_VERSION_JUPYTER:-latest}
     networks:
       - senzing
     ports:
