@@ -41,7 +41,6 @@ Arrows represent data flow.
         1. [View MySQL](#view-mysql)
         1. [View Senzing API Server](#view-senzing-api-server)
         1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-        1. [View Jupyter notebooks](#view-jupyter-notebooks)
         1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
@@ -227,21 +226,6 @@ The server supports the
    [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
 
-#### View Jupyter notebooks
-
-1. Change file permissions on database files.
-   Example:
-
-    ```console
-    sudo chmod 777 -R ${MYSQL_DIR}
-    ```
-
-1. Jupyter Notebooks are viewable at
-   [localhost:9178](http://localhost:9178).
-1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#jupyter-notebooks)
-   for working with Jupyter Notebooks.
-
 #### View X-Term
 
 The web-based Senzing X-term can be used to run Senzing command-line programs.
@@ -326,7 +310,6 @@ This docker formation brings up the following docker containers:
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
-1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/mysql-init](https://github.com/Senzing/docker-mysql-init)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
