@@ -144,18 +144,15 @@ describing where we can improve.   Now on with the show...
 
     ```
 
-1. Download `docker-compose.yaml` and Docker images.
+1. Download `docker-compose.yaml`.
    Example:
 
     ```console
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mysql/docker-compose-rabbitmq-mysql.yaml"
-    cd ${SENZING_VOLUME}
 
     ```
-
-   **Note:** Because it was built locally, the `senzing/mysql-init:latest` image will have an error.
 
 1. Bring up Senzing docker-compose stack.
    Example:
