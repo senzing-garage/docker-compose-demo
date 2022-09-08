@@ -22,7 +22,7 @@ The instructions show how to set up a system that:
 1. Reads information from Senzing via [Senzing API Server](https://github.com/Senzing/senzing-api-server) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
-The following diagram shows the relationship of the docker containers in this docker composition.
+The following diagram shows the relationship of the Docker containers in this Docker composition.
 Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
@@ -33,17 +33,7 @@ Arrows represent data flow.
 1. [Related artifacts](#related-artifacts)
 1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
-    1. [Prerequisite software](#prerequisite-software)
-    1. [Build docker images](#build-docker-images)
 1. [Demonstrate](#demonstrate)
-    1. [Volumes](#volumes)
-    1. [Download files](#download-files)
-    1. [Pull docker images](#pull-docker-images)
-    1. [EULA](#eula)
-    1. [Install Senzing](#install-senzing)
-    1. [Install Senzing license](#install-senzing-license)
-    1. [File ownership and permissions](#file-ownership-and-permissions)
-    1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
         1. [View docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
@@ -51,7 +41,6 @@ Arrows represent data flow.
         1. [View MySQL](#view-mysql)
         1. [View Senzing API Server](#view-senzing-api-server)
         1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-        1. [View Jupyter notebooks](#view-jupyter-notebooks)
         1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
@@ -96,34 +85,21 @@ describing where we can improve.   Now on with the show...
 
 ## Prerequisites
 
-### Prerequisite software
-
 1. [docker](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker.md) -
    Minimum version: [20.10.16](https://docs.docker.com/engine/release-notes/#201016)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker-compose.md) -
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
-1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
-   Minimum version: [2.25.0](https://github.com/git/git/tags)
-
-### Build docker images
-
-1. Build docker images.
-
-    ```console
-    sudo docker build \
-      --tag senzing/mysql-init \
-      https://github.com/senzing/docker-mysql-init.git#main
-    ```
+1. Create
+   [MySQL compatible Docker images](https://github.com/Senzing/docker-wrap-image-with-mysql/tree/main).
 
 ## Demonstrate
 
-### Volumes
-
-1. :pencil2: Specify the directory where Senzing should be installed on the local host.
+1. :pencil2: Specify a new directory to hold demonstration artifacts on the local host.
    Example:
 
     ```console
     export SENZING_VOLUME=~/my-senzing
+
     ```
 
     1. :warning:
@@ -133,128 +109,59 @@ describing where we can improve.   Now on with the show...
        **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
        must be enabled for `SENZING_VOLUME`.
 
-1. Identify directories on the local host.
+1. Set environment variables.
    Example:
 
     ```console
-    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
-    export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/3.0.0
-    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
-    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
+    export MYSQL_DIR=${SENZING_VOLUME}/mysql
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
-    export MYSQL_DIR=${SENZING_VAR_DIR}/mysql
+    export SENZING_UID=$(id -u)
+    export SENZING_GID=$(id -g)
+
     ```
 
 1. Create directories.
    Example:
 
     ```console
-    sudo mkdir -p ${MYSQL_DIR} ${SENZING_ETC_DIR}
+    mkdir -p ${MYSQL_DIR} ${SENZING_VAR_DIR}
+    chmod -R 777 ${SENZING_VOLUME}
 
-    export SENZING_UID=$(id -u)
-    export SENZING_GID=$(id -g)
-    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     ```
 
-### Download files
-
-1. Download
-   [docker-versions-latest.sh](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh),
-   [docker-compose-senzing-installation.yaml](../../resources/senzing/docker-compose-senzing-installation.yaml), and
-   [docker-compose-kafka-mysql.yaml](../../resources/mysql/docker-compose-kafka-mysql.yaml).
+1. Get versions of Docker images.
    Example:
 
     ```console
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
+    source ${SENZING_VOLUME}/docker-versions-stable.sh
 
-    curl -X GET \
-        --output ${SENZING_VOLUME}/docker-compose-senzing-installation.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/senzing/docker-compose-senzing-installation.yaml"
+    ```
 
+1. Download `docker-compose.yaml`.
+   Example:
+
+    ```console
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mysql/docker-compose-kafka-mysql.yaml"
+
     ```
 
-### Pull docker images
-
-"latest" or "pinned" versions of containers can be used in the docker-compose formation.
-The following will be used to pull the pinned or most recent `latest` versions.
-
-1. :thinking: **Optional:** Pin versions of docker images by setting environment variables.
-   Example:
-
-    ```console
-    source ${SENZING_VOLUME}/docker-versions-stable.sh
-    ```
-
-1. Pull docker images.
-   Example:
-
-    ```console
-    cd ${SENZING_VOLUME}
-    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml pull
-    sudo --preserve-env docker-compose pull
-    ```
-
-   **Note:** Because it was built locally, the `senzing/mysql-init:latest` image will have an error.
-
-### EULA
-
-To use the Senzing code, you must agree to the End User License Agreement (EULA).
-
-1. :warning: This step is intentionally tricky and not simply copy/paste.
-   This ensures that you make a conscious effort to accept the EULA.
-   Example:
-
-    <pre>export SENZING_ACCEPT_EULA="&lt;the value from <a href="https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_accept_eula">this link</a>&gt;"</pre>
-
-### Install Senzing
-
-1. If Senzing has not been installed, install Senzing.
-   Example:
-
-    ```console
-    cd ${SENZING_VOLUME}
-    sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml up
-    ```
-
-    1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
-
-### Install Senzing license
-
-Senzing comes with a trial license that supports 100,000 records.
-
-1. :thinking: **Optional:**
-   If more than 100,000 records are desired, see
-   [Senzing license](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-license).
-
-### File ownership and permissions
-
-1. Set file and directory ownership and permissions.
-   Example:
-
-    ```console
-    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
-    sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${MYSQL_DIR}
-    ```
-
-### Run docker formation
-
-1. Launch docker-compose formation.
+1. Bring up Senzing docker-compose stack.
    Example:
 
     ```console
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose up
+
     ```
 
-1. Allow time for the components to come up and initialize.
-    1. There will be errors in some docker logs as they wait for dependent services to become available.
-       `docker-compose` isn't the best at orchestrating docker container dependencies.
+1. Allow time for the components to be downloaded, start, and initialize.
+    1. There will be errors in some Docker logs as they wait for dependent services to become available.
+       `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
 ### View data
 
@@ -265,9 +172,9 @@ Username and password for the following sites were either passed in as environme
 or are the default values seen in
 [docker-compose-kafka-mysql.yaml](../../resources/mysql/docker-compose-kafka-mysql.yaml).
 
-#### View docker containers
+#### View Docker containers
 
-1. A good tool to monitor individual docker logs is
+1. A good tool to monitor individual Docker logs is
    [Portainer](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
@@ -299,8 +206,10 @@ View results from Senzing REST API server.
 The server supports the
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
 
-1. OpenApi Editor is viewable at
-   [localhost:9180](http://localhost:9180).
+1. The
+   [OpenApi Editor](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml)
+   with **Servers** value of [http://localhost:8250](http://localhost:8250)
+   can be used to try the Senzing REST API.
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
@@ -314,21 +223,6 @@ The server supports the
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
-
-#### View Jupyter notebooks
-
-1. Change file permissions on database files.
-   Example:
-
-    ```console
-    sudo chmod 777 -R ${MYSQL_DIR}
-    ```
-
-1. Jupyter Notebooks are viewable at
-   [localhost:9178](http://localhost:9178).
-1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#jupyter-notebooks)
-   for working with Jupyter Notebooks.
 
 #### View X-Term
 
@@ -345,20 +239,19 @@ The web-based Senzing X-term can be used to run Senzing command-line programs.
 When the docker-compose formation is no longer needed,
 it can be brought down and directories can be deleted.
 
-1. Bring down docker formation.
+1. Bring down Docker formation.
    Example:
 
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
-    sudo docker-compose --file docker-compose-senzing-installation.yaml down
     ```
 
 1. Remove directories from host system.
-   The following directories were created during the demonstration:
+   The following directory was created during the demonstration:
     1. `${SENZING_VOLUME}`
 
-   They may be safely deleted.
+   It may be safely deleted.
 
 ## Advanced
 
@@ -417,7 +310,6 @@ This docker formation brings up the following docker containers:
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
-1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/mysql-init](https://github.com/Senzing/docker-mysql-init)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
 1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
@@ -433,11 +325,6 @@ Configuration values specified by environment variable or command line parameter
 - **[MYSQL_PASSWORD](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#mysql_passwrod)**
 - **[MYSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#mysql_root-password)**
 - **[MYSQL_USERNAME](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#mysql_username)**
-- **[SENZING_ACCEPT_EULA](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_accept_eula)**
-- **[SENZING_DATA_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_data_dir)**
-- **[SENZING_DATA_VERSION_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_data_version_dir)**
-- **[SENZING_ETC_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_etc_dir)**
-- **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
 
 ## Errors
