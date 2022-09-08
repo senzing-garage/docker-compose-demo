@@ -68,7 +68,7 @@ services:
     image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
       - senzing
-    restart: on-failure
+    restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data

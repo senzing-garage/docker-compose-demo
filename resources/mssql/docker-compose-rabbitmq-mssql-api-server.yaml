@@ -246,7 +246,7 @@ services:
       - senzing
     privileged: true
     read_only: true
-    restart: on-failure
+    restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
@@ -337,7 +337,7 @@ services:
     image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
     networks:
       - senzing
-    restart: 'no'
+    restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
