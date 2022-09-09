@@ -117,7 +117,7 @@ describing where we can improve.   Now on with the show...
 
     ```console
     mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
-    chmod -R 770 ${SENZING_VOLUME}
+    chmod -R 777 ${SENZING_VOLUME}
     ```
 
 1. Get versions of Docker images.
