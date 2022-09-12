@@ -159,7 +159,6 @@ services:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
@@ -316,12 +315,11 @@ services:
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
-
   g2configtool:
     command:
-      - '/bin/bash'
-      - '-c'
-      - 'echo "${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc'
+      - /bin/bash
+      - -c
+      - echo "$${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; sleep $${SENZING_DELAY_IN_SECONDS}; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc
     container_name: senzing-g2configtools
     depends_on:
       - init-postgresql
@@ -329,6 +327,7 @@ services:
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/g2configtool
+      SENZING_DELAY_IN_SECONDS: 10
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -356,7 +355,7 @@ services:
     networks:
       - senzing
     read_only: true
-    restart: always
+    restart: on-failure
     tmpfs:
       - /tmp
 
