@@ -55,11 +55,8 @@ services:
 #     See https://github.com/Senzing/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
-      SENZING_INPUT_URL: ${SENZING_INPUT_URL:-https://s3.amazonaws.com/public-read-access/TestDataSets/loadtest-dataset-1M.json}
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-topic
-      SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
-      SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-kafka
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     networks:
@@ -152,6 +149,44 @@ services:
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+  g2configtool:
+    command:
+      - /bin/bash
+      - -c
+      - echo "$${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; sleep $${SENZING_DELAY_IN_SECONDS}; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc
+    container_name: senzing-g2configtools
+    depends_on:
+      - init-postgresql
+    environment:
+      LC_CTYPE: en_US.utf8
+#     See https://github.com/Senzing/g2configtool
+      SENZING_DELAY_IN_SECONDS: 10
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "SQL",
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+          }
+        }
+      SENZING_G2CONFIG_GTC: |
+        addDataSource CUSTOMERS
+        addDataSource REFERENCE
+        addDataSource WATCHLIST
+        save
+    image: senzing/senzingapi-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZINGAPI_TOOLS:-latest}
+    networks:
+      - senzing
+    read_only: true
+    restart: on-failure
+    tmpfs:
+      - /tmp
 
   loader:
     container_name: senzing-stream-loader
