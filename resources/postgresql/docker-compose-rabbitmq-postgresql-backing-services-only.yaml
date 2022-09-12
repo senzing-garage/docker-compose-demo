@@ -32,8 +32,6 @@ services:
           }
         }
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
-    networks:
-      - senzing
     read_only: true
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:

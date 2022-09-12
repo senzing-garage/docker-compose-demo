@@ -165,8 +165,6 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_ROUTING_KEY: senzing.records
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_RECORD_MAX: ${SENZING_RECORD_MAX:-5000}
-      SENZING_RECORD_MONITOR: 1000
       SENZING_SUBCOMMAND: json-to-rabbitmq
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
     logging:
