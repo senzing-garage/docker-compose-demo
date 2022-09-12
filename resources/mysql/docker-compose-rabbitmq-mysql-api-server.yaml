@@ -131,7 +131,7 @@ services:
       - echo "$${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; sleep $${SENZING_DELAY_IN_SECONDS}; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc
     container_name: senzing-g2configtools
     depends_on:
-      - init-postgresql
+      - init-mysql
     environment:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/g2configtool
