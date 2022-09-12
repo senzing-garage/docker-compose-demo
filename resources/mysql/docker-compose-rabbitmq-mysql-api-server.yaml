@@ -154,7 +154,7 @@ services:
         addDataSource REFERENCE
         addDataSource WATCHLIST
         save
-    image: senzing/senzingapi-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZINGAPI_TOOLS:-latest}
+    image: senzing/senzingapi-tools-mysql:${SENZING_DOCKER_IMAGE_VERSION_SENZINGAPI_TOOLS:-latest}
     networks:
       - senzing
     read_only: true
