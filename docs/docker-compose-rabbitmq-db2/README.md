@@ -227,8 +227,7 @@ Senzing comes with a trial license that supports 100,000 records.
 
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
-    sudo chmod -R 770 ${SENZING_VOLUME}
-    sudo chmod -R 777 ${DB2_DIR} ${RABBITMQ_DIR} ${SENZING_OPT_IBM_DIR}
+    sudo chmod -R 777 ${SENZING_VOLUME}
     ```
 
 ### Run docker formation
@@ -297,6 +296,13 @@ The server supports the
    for working with Senzing Entity Search WebApp.
 
 #### View Jupyter notebooks
+
+1. Change file permissions on database files.
+   Example:
+
+    ```console
+    sudo chmod 777 -R ${POSTGRES_DIR}
+    ```
 
 1. Jupyter Notebooks are viewable at
    [localhost:9178](http://localhost:9178).
