@@ -100,6 +100,7 @@ describing where we can improve.   Now on with the show...
 
     ```console
     export SENZING_VOLUME=~/my-senzing
+
     ```
 
     1. :warning:
@@ -113,21 +114,22 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    export ELASTICSEARCH_DIR=${SENZING_VOLUME}/elasticsearch
     export PGADMIN_DIR=${SENZING_VOLUME}/pgadmin
     export POSTGRES_DIR=${SENZING_VOLUME}/postgres
     export RABBITMQ_DIR=${SENZING_VOLUME}/rabbitmq
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+
     ```
 
 1. Create directories.
    Example:
 
     ```console
-    mkdir -p ${ELASTICSEARCH_DIR} ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
+    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_VOLUME}
+
     ```
 
 1. Get versions of Docker images.
@@ -138,6 +140,7 @@ describing where we can improve.   Now on with the show...
         --output ${SENZING_VOLUME}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
     source ${SENZING_VOLUME}/docker-versions-stable.sh
+
     ```
 
 1. Download `docker-compose.yaml` and Docker images.
@@ -149,6 +152,7 @@ describing where we can improve.   Now on with the show...
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql.yaml"
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose pull
+
     ```
 
 1. Bring up Senzing docker-compose stack.
@@ -157,6 +161,7 @@ describing where we can improve.   Now on with the show...
     ```console
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose up
+
     ```
 
 1. Allow time for the components to be downloaded, start, and initialize.
@@ -232,6 +237,7 @@ The server supports the
 
     ```console
     sudo chmod 777 -R ${POSTGRES_DIR}
+
     ```
 
 1. Jupyter Notebooks are viewable at
@@ -261,6 +267,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
+
     ```
 
 1. Remove directories from host system.
@@ -286,6 +293,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     sudo lsof -i -P -n | grep LISTEN | grep :22
+
     ````
 
 1. :pencil2: Choose port for docker container.
@@ -293,6 +301,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT=9181
+
     ```
 
 1. Construct parameter for `docker run`.
@@ -300,6 +309,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+
     ```
 
 ### Set sshd password
@@ -334,7 +344,6 @@ This docker formation brings up the following docker containers:
 
 Configuration values specified by environment variable or command line parameter.
 
-- **[ELASTICSEARCH_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#elasticsearch_dir)**
 - **[PGADMIN_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#pgadmin_dir)**
 - **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#postgres_dir)**
 - **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**

@@ -91,6 +91,7 @@ describing where we can improve.   Now on with the show...
 
     ```console
     export SENZING_VOLUME=~/my-senzing
+
     ```
 
     1. :warning:
@@ -110,6 +111,7 @@ describing where we can improve.   Now on with the show...
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+
     ```
 
 1. Create directories.
@@ -118,6 +120,7 @@ describing where we can improve.   Now on with the show...
     ```console
     mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_VOLUME}
+
     ```
 
 1. Get versions of Docker images.
@@ -128,6 +131,7 @@ describing where we can improve.   Now on with the show...
         --output ${SENZING_VOLUME}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
     source ${SENZING_VOLUME}/docker-versions-stable.sh
+
     ```
 
 1. Download `docker-compose.yaml` and Docker images.
@@ -139,6 +143,7 @@ describing where we can improve.   Now on with the show...
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql-minimal.yaml"
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose pull
+
     ```
 
 1. Bring up Senzing docker-compose stack.
@@ -147,6 +152,7 @@ describing where we can improve.   Now on with the show...
     ```console
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose up
+
     ```
 
 1. Allow time for the components to be downloaded, start, and initialize.
@@ -213,6 +219,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
+
     ```
 
 1. Remove directories from host system.

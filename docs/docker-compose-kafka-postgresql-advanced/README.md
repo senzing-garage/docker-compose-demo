@@ -119,6 +119,7 @@ Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql.yaml
+
     ```
 
 #### With Senzing API Server formation
@@ -129,6 +130,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-api-server.yaml
+
     ```
 
 #### Withinfo formation
@@ -137,6 +139,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-withinfo.yaml
+
     ```
 
 #### Redoer formation
@@ -146,6 +149,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer.yaml
+
     ```
 
 #### Redoer queuing formation
@@ -157,6 +161,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka.yaml
+
     ```
 
 #### Withinfo and Redoer formation
@@ -166,6 +171,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-withinfo.yaml
+
     ```
 
 #### Withinfo and Redoer queuing formation
@@ -178,6 +184,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka-withinfo.yaml
+
     ```
 
 ### Volumes
@@ -187,6 +194,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     export SENZING_VOLUME=~/my-senzing
+
     ```
 
     1. :warning:
@@ -205,6 +213,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+
     ```
 
 1. Create directories.
@@ -213,6 +222,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     ```console
     mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_VOLUME}
+
     ```
 
 1. Get versions of Docker images.
@@ -223,6 +233,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
         --output ${SENZING_VOLUME}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
     source ${SENZING_VOLUME}/docker-versions-stable.sh
+
     ```
 
 1. Download `docker-compose.yaml` and Docker images.
@@ -234,6 +245,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/${SENZING_DOCKER_COMPOSE_FILE}"
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose pull
+
     ```
 
 1. Bring up Senzing docker-compose stack.
@@ -242,6 +254,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     ```console
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose up
+
     ```
 
 1. Allow time for the components to be downloaded, start, and initialize.
@@ -316,6 +329,7 @@ The server supports the
 
     ```console
     sudo chmod 777 -R ${POSTGRES_DIR}
+
     ```
 
 1. Jupyter Notebooks are viewable at
@@ -345,6 +359,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
+
     ```
 
 1. Remove directories from host system.
@@ -370,6 +385,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     sudo lsof -i -P -n | grep LISTEN | grep :22
+
     ````
 
 1. :pencil2: Choose port for docker container.
@@ -377,6 +393,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT=9181
+
     ```
 
 1. Construct parameter for `docker run`.
@@ -384,6 +401,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+
     ```
 
 ### Set sshd password

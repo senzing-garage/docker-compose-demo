@@ -247,6 +247,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
+
     ```
 
 1. Remove directories from host system.
@@ -272,6 +273,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     sudo lsof -i -P -n | grep LISTEN | grep :22
+
     ````
 
 1. :pencil2: Choose port for docker container.
@@ -279,6 +281,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT=9181
+
     ```
 
 1. Construct parameter for `docker run`.
@@ -286,6 +289,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+
     ```
 
 ### Set sshd password
@@ -304,7 +308,7 @@ However, this can be changed.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/rabbitmq](https://github.com/bitnami/bitnami-docker-rabbitmq)*
+1. *[bitnami/rabbitmq](https://github.com/bitnami/containers/tree/main/bitnami/rabbitmq)*
 1. *[mysql](https://github.com/docker-library/mysql)*
 1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
