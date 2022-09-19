@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2022-09-12
+
+### Changed in 1.12.0
+
+- Moved to "Truth Set" demonstration data
+- Changed directory permissions
+- Improved documentation
+- Information on ELK stack
+- Add `LICENSESTRINGBASE64`
+- Remove `ENTITY_TYPE` support
+
 ## [1.11.1] - 2022-05-31
 
 ### Changed in 1.11.1
