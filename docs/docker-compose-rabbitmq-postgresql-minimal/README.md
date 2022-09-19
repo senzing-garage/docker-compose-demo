@@ -81,8 +81,6 @@ describing where we can improve.   Now on with the show...
    Minimum version: [20.10.16](https://docs.docker.com/engine/release-notes/#201016)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker-compose.md) -
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
-1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
-   Minimum version: [2.25.0](https://github.com/git/git/tags)
 
 ## Demonstrate
 

@@ -31,9 +31,6 @@ Arrows represent data flow.
 
 ### Contents
 
-1. [Preamble](#preamble)
-1. [Related artifacts](#related-artifacts)
-1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
     1. [Choose docker formation](#choose-docker-formation)
@@ -64,7 +61,7 @@ Arrows represent data flow.
 1. [Errors](#errors)
 1. [References](#references)
 
-## Preamble
+### Preamble
 
 At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
@@ -84,11 +81,11 @@ describing where we can improve.   Now on with the show...
 1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
 1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
-## Related artifacts
+### Related artifacts
 
 1. [DockerHub](https://hub.docker.com/r/senzing)
 
-## Expectations
+### Expectations
 
 - **Space:** This repository and demonstration require 7 GB free disk space.
 - **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
@@ -102,8 +99,6 @@ describing where we can improve.   Now on with the show...
    Minimum version: [20.10.16](https://docs.docker.com/engine/release-notes/#201016)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker-compose.md) -
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
-1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
-   Minimum version: [2.25.0](https://github.com/git/git/tags)
 
 ## Demonstrate
 
