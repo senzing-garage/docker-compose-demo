@@ -108,6 +108,10 @@ services:
       LC_CTYPE: en_US.utf8
 #     See https://github.com/Senzing/init-postgresql#configuration
 #     SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      SENZING_CONFIGURATION_MODIFICATIONS: |
+        addDataSource CUSTOMERS
+        addDataSource REFERENCE
+        addDataSource WATCHLIST
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {

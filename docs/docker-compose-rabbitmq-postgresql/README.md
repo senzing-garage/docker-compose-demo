@@ -113,7 +113,6 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    export ELASTICSEARCH_DIR=${SENZING_VOLUME}/elasticsearch
     export PGADMIN_DIR=${SENZING_VOLUME}/pgadmin
     export POSTGRES_DIR=${SENZING_VOLUME}/postgres
     export RABBITMQ_DIR=${SENZING_VOLUME}/rabbitmq
@@ -126,7 +125,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    mkdir -p ${ELASTICSEARCH_DIR} ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
+    mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_VOLUME}
     ```
 
