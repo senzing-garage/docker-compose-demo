@@ -141,15 +141,13 @@ describing where we can improve.   Now on with the show...
 
     ```
 
-1. Download `docker-compose.yaml` and Docker images.
+1. Download `docker-compose.yaml`.
    Example:
 
     ```console
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mysql/docker-compose-rabbitmq-mysql.yaml"
-    cd ${SENZING_VOLUME}
-    sudo --preserve-env docker-compose pull
 
     ```
 
