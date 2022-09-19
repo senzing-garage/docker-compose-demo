@@ -237,6 +237,7 @@ The server supports the
 
     ```console
     sudo chmod 777 -R ${POSTGRES_DIR}
+
     ```
 
 1. Jupyter Notebooks are viewable at
@@ -266,6 +267,7 @@ it can be brought down and directories can be deleted.
     ```console
     cd ${SENZING_VOLUME}
     sudo docker-compose down
+
     ```
 
 1. Remove directories from host system.
@@ -291,6 +293,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     sudo lsof -i -P -n | grep LISTEN | grep :22
+
     ````
 
 1. :pencil2: Choose port for docker container.
@@ -298,6 +301,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT=9181
+
     ```
 
 1. Construct parameter for `docker run`.
@@ -305,6 +309,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+
     ```
 
 ### Set sshd password

@@ -113,6 +113,7 @@ describing where we can improve.   Now on with the show...
 
     ```console
     export SENZING_VOLUME=~/my-senzing
+
     ```
 
     1. :warning:
@@ -133,6 +134,7 @@ describing where we can improve.   Now on with the show...
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     export SQLITE_DIR=${SENZING_VAR_DIR}/sqlite
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
+
     ```
 
 1. Create directories.
@@ -144,6 +146,7 @@ describing where we can improve.   Now on with the show...
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+
     ```
 
 ### Download files
@@ -166,6 +169,7 @@ describing where we can improve.   Now on with the show...
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/sqlite/docker-compose-rabbitmq-sqlite.yaml"
+
     ```
 
 ### Pull docker images
@@ -178,6 +182,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
 
     ```console
     source ${SENZING_VOLUME}/docker-versions-stable.sh
+
     ```
 
 1. Pull docker images.
@@ -187,6 +192,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml pull
     sudo --preserve-env docker-compose pull
+
     ```
 
 ### EULA
@@ -207,6 +213,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
     ```console
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml up
+
     ```
 
     1. This will download and extract a 3GB file. It may take 5-15 minutes, depending on network speeds.
@@ -227,6 +234,7 @@ Senzing comes with a trial license that supports 100,000 records.
     ```console
     sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
     sudo chmod -R 777 ${SENZING_VOLUME}
+
     ```
 
 ### Run docker formation
@@ -237,6 +245,7 @@ Senzing comes with a trial license that supports 100,000 records.
     ```console
     cd ${SENZING_VOLUME}
     sudo --preserve-env docker-compose up
+
     ```
 
 1. Allow time for the components to come up and initialize.
@@ -309,6 +318,7 @@ The server supports the
 
     ```console
     sudo chmod 777 -R ${SQLITE_DIR}
+
     ```
 
 1. Jupyter Notebooks are viewable at
@@ -339,6 +349,7 @@ it can be brought down and directories can be deleted.
     cd ${SENZING_VOLUME}
     sudo docker-compose down
     sudo docker-compose --file docker-compose-senzing-installation.yaml down
+
     ```
 
 1. Remove directories from host system.
@@ -364,6 +375,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     sudo lsof -i -P -n | grep LISTEN | grep :22
+
     ````
 
 1. :pencil2: Choose port for docker container.
@@ -371,6 +383,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT=9181
+
     ```
 
 1. Construct parameter for `docker run`.
@@ -378,6 +391,7 @@ So a different port may be needed by the running docker container.
 
     ```console
     export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
+
     ```
 
 ### Set sshd password
