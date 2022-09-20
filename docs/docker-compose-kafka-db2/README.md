@@ -22,18 +22,14 @@ The instructions show how to set up a system that:
 1. Reads information from Senzing via [Senzing API Server](https://github.com/Senzing/senzing-api-server) server.
 1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
 
-The following diagram shows the relationship of the docker containers in this docker composition.
+The following diagram shows the relationship of the Docker containers in this Docker composition.
 Arrows represent data flow.
 
 ![Image of architecture](architecture.png)
 
 ### Contents
 
-1. [Preamble](#preamble)
-1. [Related artifacts](#related-artifacts)
-1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
-    1. [Prerequisite software](#prerequisite-software)
 1. [Demonstrate](#demonstrate)
     1. [Volumes](#volumes)
     1. [Download files](#download-files)
@@ -44,7 +40,7 @@ Arrows represent data flow.
     1. [File ownership and permissions](#file-ownership-and-permissions)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
         1. [View Kafka](#view-kafka)
         1. [View Senzing API Server](#view-senzing-api-server)
@@ -60,7 +56,7 @@ Arrows represent data flow.
 1. [Errors](#errors)
 1. [References](#references)
 
-## Preamble
+### Preamble
 
 At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
@@ -80,11 +76,11 @@ describing where we can improve.   Now on with the show...
 1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
 1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
-## Related artifacts
+### Related artifacts
 
 1. [DockerHub](https://hub.docker.com/r/senzing)
 
-## Expectations
+### Expectations
 
 - **Space:** This repository and demonstration require 7 GB free disk space.
 - **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
@@ -94,20 +90,14 @@ describing where we can improve.   Now on with the show...
 
 ## Prerequisites
 
-### Prerequisite software
-
 1. [docker](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker.md) -
    Minimum version: [20.10.16](https://docs.docker.com/engine/release-notes/#201016)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker-compose.md) -
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
-1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
-   Minimum version: [2.25.0](https://github.com/git/git/tags)
 
 ## Demonstrate
 
-### Volumes
-
-1. :pencil2: Specify the directory where Senzing should be installed on the local host.
+1. :pencil2: Specify a new directory to hold demonstration artifacts on the local host.
    Example:
 
     ```console
@@ -122,7 +112,7 @@ describing where we can improve.   Now on with the show...
        **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
        must be enabled for `SENZING_VOLUME`.
 
-1. Identify directories on the local host.
+1. Set environment variables.
    Example:
 
     ```console
@@ -134,6 +124,8 @@ describing where we can improve.   Now on with the show...
     export SENZING_VAR_DIR=${SENZING_VOLUME}/var
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
     export DB2_DIR=${SENZING_VAR_DIR}/db2
+    export SENZING_UID=$(id -u)
+    export SENZING_GID=$(id -g)
 
     ```
 
@@ -141,11 +133,8 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    sudo mkdir -p ${SENZING_OPT_IBM_DIR} ${DB2_DIR} ${SENZING_ETC_DIR}
-
-    export SENZING_UID=$(id -u)
-    export SENZING_GID=$(id -g)
-    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+    mkdir -p ${SENZING_OPT_IBM_DIR} ${DB2_DIR} ${SENZING_ETC_DIR}
+    chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
 
     ```
 
@@ -248,9 +237,9 @@ Senzing comes with a trial license that supports 100,000 records.
 
     ```
 
-1. Allow time for the components to come up and initialize.
-    1. There will be errors in some docker logs as they wait for dependent services to become available.
-       `docker-compose` isn't the best at orchestrating docker container dependencies.
+1. Allow time for the components to be downloaded, start, and initialize.
+    1. There will be errors in some Docker logs as they wait for dependent services to become available.
+       `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
 ### View data
 
@@ -261,9 +250,9 @@ Username and password for the following sites were either passed in as environme
 or are the default values seen in
 [docker-compose-kafka-db2.yaml](../../resources/db2/docker-compose-kafka-db2.yaml).
 
-#### View docker containers
+#### View Docker containers
 
-1. A good tool to monitor individual docker logs is
+1. A good tool to monitor individual Docker logs is
    [Portainer](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
@@ -286,8 +275,10 @@ View results from Senzing REST API server.
 The server supports the
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
 
-1. OpenApi Editor is viewable at
-   [localhost:9180](http://localhost:9180).
+1. The
+   [OpenApi Editor](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml)
+   with **Servers** value of [http://localhost:8250](http://localhost:8250)
+   can be used to try the Senzing REST API.
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
@@ -325,7 +316,7 @@ The web-based Senzing X-term can be used to run Senzing command-line programs.
 When the docker-compose formation is no longer needed,
 it can be brought down and directories can be deleted.
 
-1. Bring down docker formation.
+1. Bring down Docker formation.
    Example:
 
     ```console
@@ -336,10 +327,10 @@ it can be brought down and directories can be deleted.
     ```
 
 1. Remove directories from host system.
-   The following directories were created during the demonstration:
+   The following directory was created during the demonstration:
     1. `${SENZING_VOLUME}`
 
-   They may be safely deleted.
+   It may be safely deleted.
 
 ## Advanced
 
@@ -393,8 +384,8 @@ However, this can be changed.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
+1. *[bitnami/kafka](https://github.com/bitnami/containers/tree/main/bitnami/kafka)*
+1. *[bitnami/zookeeper](https://github.com/bitnami/containers/tree/main/bitnami/zookeeper)*
 1. *[ibmcom/db2](https://hub.docker.com/r/ibmcom/db2)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*

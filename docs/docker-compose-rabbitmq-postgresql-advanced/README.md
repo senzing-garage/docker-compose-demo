@@ -31,22 +31,18 @@ Arrows represent data flow.
 
 ### Contents
 
-1. [Preamble](#preamble)
-1. [Related artifacts](#related-artifacts)
-1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
     1. [Choose docker formation](#choose-docker-formation)
         1. [Standard formation](#standard-formation)
         1. [With Senzing API Server formation](#with-senzing-api-server-formation)
         1. [Withinfo formation](#withinfo-formation)
-        1. [Redoer formation](#redoer-formation)
-        1. [Redoer queuing formation](#redoer-queuing-formation)
         1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
         1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
         1. [Debugging](#debugging)
+    1. [Volumes](#volumes)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
         1. [View RabbitMQ](#view-rabbitmq)
         1. [View PostgreSQL](#view-postgresql)
@@ -64,7 +60,7 @@ Arrows represent data flow.
 1. [Errors](#errors)
 1. [References](#references)
 
-## Preamble
+### Preamble
 
 At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
@@ -84,11 +80,11 @@ describing where we can improve.   Now on with the show...
 1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
 1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
-## Related artifacts
+### Related artifacts
 
 1. [DockerHub](https://hub.docker.com/r/senzing)
 
-## Expectations
+### Expectations
 
 - **Space:** This repository and demonstration require 7 GB free disk space.
 - **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
@@ -102,8 +98,6 @@ describing where we can improve.   Now on with the show...
    Minimum version: [20.10.16](https://docs.docker.com/engine/release-notes/#201016)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker-compose.md) -
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
-1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
-   Minimum version: [2.25.0](https://github.com/git/git/tags)
 
 ## Demonstrate
 
@@ -142,28 +136,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```
 
-#### Redoer formation
-
-1. Add `redoer` to standard demonstration.
-   This will process the Senzing "redo records".
-
-    ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-rabbitmq-postgresql-redoer.yaml
-
-    ```
-
-#### Redoer queuing formation
-
-1. Add multiple `redoer`s to standard demonstration.
-   This will process the Senzing "redo records".
-   One `redoer` will populate rabbitmq with redo records.
-   One or more `redoer`s will read redo records from rabbitmq topic and send to the Senzing Engine.
-
-    ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-rabbitmq-postgresql-redoer-rabbitmq.yaml
-
-    ```
-
 #### Withinfo and Redoer formation
 
 1. Add `redoer` to standard demonstration.
@@ -178,8 +150,8 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
 1. Add multiple `redoer`s to standard demonstration.
    This will process the Senzing "redo records".
-   One `redoer` will populate rabbitmq with redo records.
-   One or more `redoer`s will read redo records from rabbitmq topic and send to the Senzing Engine.
+   One `redoer` will populate RabbitMQ with redo records.
+   One or more `redoer`s will read redo records from RabbitMQ topic and send to the Senzing Engine.
    Also, return information with each record added to Senzing.
 
     ```console
@@ -468,8 +440,8 @@ Configuration values specified by environment variable or command line parameter
     |  |  |  |  |  |  +-------- redoer.py read-from-rabbitmq-withinfo
     |  |  |  |  |  |  |
     v  v  v  v  v  v  v
-    X  .  .  .  .  .  .  docker-compose-rabbitmq-postgresql.yaml
-    X  .  X  .  .  .  .  docker-compose-rabbitmq-postgresql-redoer.yaml
+    X  .  .  .  .  .  .
+    X  .  X  .  .  .  .  docker-compose-rabbitmq-postgresql.yaml
     X  .  .  X  .  .  .
     X  .  .  .  X  X  .  docker-compose-rabbitmq-postgresql-redoer-rabbitmq.yaml
     X  .  .  .  X  .  X

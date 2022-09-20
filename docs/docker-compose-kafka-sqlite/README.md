@@ -44,7 +44,7 @@ Arrows represent data flow.
     1. [File ownership and permissions](#file-ownership-and-permissions)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
         1. [View Kafka](#view-kafka)
         1. [View SQLite](#view-sqlite)
@@ -408,8 +408,8 @@ However, this can be changed.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
+1. *[bitnami/kafka](https://github.com/bitnami/containers/tree/main/bitnami/kafka)*
+1. *[bitnami/postgres](https://github.com/bitnami/containers/tree/main/bitnami/postgresql)*
 1. *[coleifer/sqlite-web](https://github.com/coleifer/sqlite-web)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*

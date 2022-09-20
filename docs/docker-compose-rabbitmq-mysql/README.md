@@ -29,13 +29,10 @@ Arrows represent data flow.
 
 ### Contents
 
-1. [Preamble](#preamble)
-1. [Related artifacts](#related-artifacts)
-1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
         1. [View RabbitMQ](#view-rabbitmq)
         1. [View MySQL](#view-mysql)
@@ -51,7 +48,7 @@ Arrows represent data flow.
 1. [Errors](#errors)
 1. [References](#references)
 
-## Preamble
+### Preamble
 
 At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
@@ -71,11 +68,11 @@ describing where we can improve.   Now on with the show...
 1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
 1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
-## Related artifacts
+### Related artifacts
 
 1. [DockerHub](https://hub.docker.com/r/senzing)
 
-## Expectations
+### Expectations
 
 - **Space:** This repository and demonstration require 7 GB free disk space.
 - **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.

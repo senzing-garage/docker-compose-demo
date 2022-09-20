@@ -29,9 +29,6 @@ Arrows represent data flow.
 
 ### Contents
 
-1. [Preamble](#preamble)
-1. [Related artifacts](#related-artifacts)
-1. [Expectations](#expectations)
 1. [Prerequisites](#prerequisites)
     1. [Prerequisite software](#prerequisite-software)
 1. [Demonstrate](#demonstrate)
@@ -45,7 +42,7 @@ Arrows represent data flow.
     1. [File ownership and permissions](#file-ownership-and-permissions)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
         1. [View Kafka](#view-kafka)
         1. [View MSSQL](#view-mssql)
@@ -59,11 +56,10 @@ Arrows represent data flow.
     1. [Set sshd password](#set-sshd-password)
     1. [Docker images](#docker-images)
     1. [Configuration](#configuration)
-    1. [Running non-root](#running-non-root)
 1. [Errors](#errors)
 1. [References](#references)
 
-## Preamble
+### Preamble
 
 At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
@@ -83,11 +79,11 @@ describing where we can improve.   Now on with the show...
 1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
 1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
 
-## Related artifacts
+### Related artifacts
 
 1. [DockerHub](https://hub.docker.com/r/senzing)
 
-## Expectations
+### Expectations
 
 - **Space:** This repository and demonstration require 7 GB free disk space.
 - **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
@@ -97,14 +93,10 @@ describing where we can improve.   Now on with the show...
 
 ## Prerequisites
 
-### Prerequisite software
-
 1. [docker](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker.md) -
    Minimum version: [20.10.16](https://docs.docker.com/engine/release-notes/#201016)
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker-compose.md) -
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
-1. [git](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-git.md) -
-   Minimum version: [2.25.0](https://github.com/git/git/tags)
 
 ## Demonstrate
 
@@ -268,9 +260,9 @@ Senzing comes with a trial license that supports 100,000 records.
 
     ```
 
-1. Allow time for the components to come up and initialize.
-    1. There will be errors in some docker logs as they wait for dependent services to become available.
-       `docker-compose` isn't the best at orchestrating docker container dependencies.
+1. Allow time for the components to be downloaded, start, and initialize.
+    1. There will be errors in some Docker logs as they wait for dependent services to become available.
+       `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
 ### View data
 
@@ -281,9 +273,9 @@ Username and password for the following sites were either passed in as environme
 or are the default values seen in
 [docker-compose-kafka-mssql.yaml](../../resources/mssql/docker-compose-kafka-mssql.yaml).
 
-#### View docker containers
+#### View Docker containers
 
-1. A good tool to monitor individual docker logs is
+1. A good tool to monitor individual Docker logs is
    [Portainer](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
@@ -319,8 +311,10 @@ View results from Senzing REST API server.
 The server supports the
 [Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
 
-1. OpenApi Editor is viewable at
-   [localhost:9180](http://localhost:9180).
+1. The
+   [OpenApi Editor](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml)
+   with **Servers** value of [http://localhost:8250](http://localhost:8250)
+   can be used to try the Senzing REST API.
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
@@ -366,7 +360,7 @@ The web-based Senzing X-term can be used to run Senzing command-line programs.
 When the docker-compose formation is no longer needed,
 it can be brought down and directories can be deleted.
 
-1. Bring down docker formation.
+1. Bring down Docker formation.
    Example:
 
     ```console
@@ -378,10 +372,10 @@ it can be brought down and directories can be deleted.
     ```
 
 1. Remove directories from host system.
-   The following directories were created during the demonstration:
+   The following directory was created during the demonstration:
     1. `${SENZING_VOLUME}`
 
-   They may be safely deleted.
+   It may be safely deleted.
 
 ## Advanced
 
@@ -435,8 +429,8 @@ However, this can be changed.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
+1. *[bitnami/kafka](https://github.com/bitnami/containers/tree/main/bitnami/kafka)*
+1. *[bitnami/zookeeper](https://github.com/bitnami/containers/tree/main/bitnami/zookeeper)*
 1. *[mcr.microsoft.com/mssql-tools](https://github.com/Microsoft/mssql-docker)*
 1. *[mcr.microsoft.com/mssql/server:2019-GA-ubuntu-16.04](https://github.com/Microsoft/mssql-docker)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
@@ -466,17 +460,6 @@ Configuration values specified by environment variable or command line parameter
 - **[SENZING_G2_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_g2_dir)**
 - **[SENZING_OPT_MICROSOFT_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_opt_microsoft_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
-
-### Running non-root
-
-1. The `senzing/stream-loader` and `senzing/senzing-api-server` containers are run under user `nobody` (65534).
-   The reason for this is that a UID need to be selected that has a "home" directory when using ODBC.
-   Rather than "hard-coding" docker images with a specific userid, an existing non-root userid is used.
-   This is a known issue:
-    1. [github.com/microsoft/mssql-docker/issues/431](https://github.com/microsoft/mssql-docker/issues/431).
-1. The practice of "hard-coding" docker images with a specific userid, specifically the use of `useradd`,
-   are problematic with system like OpenShift which determine the UID of a docker container based on the project.
-   See [OpenShift: Why do my applications run as a random user ID?](https://cookbook.openshift.org/users-and-role-based-access-control/why-do-my-applications-run-as-a-random-user-id.html)
 
 ## Errors
 
