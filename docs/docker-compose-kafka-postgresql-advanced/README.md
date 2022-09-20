@@ -43,7 +43,7 @@ Arrows represent data flow.
         1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
     1. [Volumes](#volumes)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
         1. [View Kafka](#view-kafka)
         1. [View PostgreSQL](#view-postgresql)

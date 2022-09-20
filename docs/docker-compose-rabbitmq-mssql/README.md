@@ -41,7 +41,7 @@ Arrows represent data flow.
     1. [File ownership and permissions](#file-ownership-and-permissions)
     1. [Run docker formation](#run-docker-formation)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
         1. [View RabbitMQ](#view-rabbitmq)
         1. [View MSSQL](#view-mssql)

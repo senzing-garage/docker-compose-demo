@@ -32,7 +32,7 @@ Arrows represent data flow.
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
     1. [View data](#view-data)
-        1. [View docker containers](#view-docker-containers)
+        1. [View Docker containers](#view-docker-containers)
         1. [Use SSH](#use-ssh)
         1. [View RabbitMQ](#view-rabbitmq)
         1. [View MySQL](#view-mysql)
