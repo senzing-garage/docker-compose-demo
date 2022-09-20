@@ -321,11 +321,11 @@ However, this can be changed.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
+1. *[bitnami/kafka](https://github.com/bitnami/containers/tree/main/bitnami/kafka)*
+1. *[bitnami/postgres](https://github.com/bitnami/containers/tree/main/bitnami/postgresql)*
+1. *[bitnami/zookeeper](https://github.com/bitnami/containers/tree/main/bitnami/zookeeper)*
 1. *[dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
-1. *[postgres](https://hub.docker.com/_/postgres)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
@@ -339,6 +339,7 @@ This docker formation brings up the following docker containers:
 
 Configuration values specified by environment variable or command line parameter.
 
+- **[PGADMIN_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#pgadmin_dir)**
 - **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#postgres_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
 

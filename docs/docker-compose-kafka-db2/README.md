@@ -384,8 +384,8 @@ However, this can be changed.
 
 This docker formation brings up the following docker containers:
 
-1. *[bitnami/kafka](https://github.com/bitnami/bitnami-docker-kafka)*
-1. *[bitnami/zookeeper](https://github.com/bitnami/bitnami-docker-zookeeper)*
+1. *[bitnami/kafka](https://github.com/bitnami/containers/tree/main/bitnami/kafka)*
+1. *[bitnami/zookeeper](https://github.com/bitnami/containers/tree/main/bitnami/zookeeper)*
 1. *[ibmcom/db2](https://hub.docker.com/r/ibmcom/db2)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
