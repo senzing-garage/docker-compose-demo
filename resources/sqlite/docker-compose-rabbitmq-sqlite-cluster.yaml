@@ -411,7 +411,7 @@ services:
     command:
       - start.sh
       - jupyter
-      - notebook
+      - lab
       - "--NotebookApp.token=''"
     depends_on:
       - loader
