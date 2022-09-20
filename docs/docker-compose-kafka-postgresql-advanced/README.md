@@ -37,8 +37,6 @@ Arrows represent data flow.
         1. [Standard formation](#standard-formation)
         1. [With Senzing API Server formation](#with-senzing-api-server-formation)
         1. [Withinfo formation](#withinfo-formation)
-        1. [Redoer formation](#redoer-formation)
-        1. [Redoer queuing formation](#redoer-queuing-formation)
         1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
         1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
     1. [Volumes](#volumes)
@@ -134,28 +132,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-withinfo.yaml
-
-    ```
-
-#### Redoer formation
-
-1. Add `redoer` to standard demonstration.
-   This will process the Senzing "redo records".
-
-    ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer.yaml
-
-    ```
-
-#### Redoer queuing formation
-
-1. Add multiple `redoer`s to standard demonstration.
-   This will process the Senzing "redo records".
-   One `redoer` will populate Kafka with redo records.
-   One or more `redoer`s will read redo records from Kafka topic and send to the Senzing Engine.
-
-    ```console
-    export SENZING_DOCKER_COMPOSE_FILE=resources/postgresql/docker-compose-kafka-postgresql-redoer-kafka.yaml
 
     ```
 
@@ -451,8 +427,8 @@ Configuration values specified by environment variable or command line parameter
     |  |  |  |  |  |  +-------- redoer.py read-from-kafka-withinfo
     |  |  |  |  |  |  |
     v  v  v  v  v  v  v
-    X  .  .  .  .  .  .  docker-compose-kafka-postgresql.yaml
-    X  .  X  .  .  .  .  docker-compose-kafka-postgresql-redoer.yaml
+    X  .  .  .  .  .  .
+    X  .  X  .  .  .  .  docker-compose-kafka-postgresql.yaml
     X  .  .  X  .  .  .
     X  .  .  .  X  X  .  docker-compose-kafka-postgresql-redoer-kafka.yaml
     X  .  .  .  X  .  X
