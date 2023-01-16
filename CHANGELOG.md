@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.1] - 2023-01-16
+
+### Changed in 1.12.1
+
+- Updated README.md documentation
+- Migrate from Juypter notebook to Jupyter lab
+- Updated location of pgAdmin `servers.json` file
+- Refactore how data sources are added for "Truth Set"
+
 ## [1.12.0] - 2022-09-12
 
 ### Changed in 1.12.0
