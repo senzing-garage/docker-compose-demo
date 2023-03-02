@@ -8,7 +8,7 @@ services:
     command:
       - sh
       - -c
-      - echo $${FILE_CONTENTS} >> /output/servers.json
+      - mkdir /output/postgres_postgres.com; echo $${FILE_CONTENTS} >> /output/postgres_postgres.com/servers.json
     environment:
       FILE_CONTENTS: >-
         {
@@ -152,7 +152,7 @@ services:
        </ul>"
      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
      PGADMIN_DEFAULT_PASSWORD: password
-     PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/servers.json
+     PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/postgres_postgres.com/servers.json
     image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN4:-latest}
     networks:
       - senzing
