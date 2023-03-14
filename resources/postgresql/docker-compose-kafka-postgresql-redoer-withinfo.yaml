@@ -42,7 +42,7 @@ services:
   zookeeper:
     container_name: senzing-zookeeper
     environment:
-#     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
+      # See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
       ALLOW_ANONYMOUS_LOGIN: "yes"
     image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-latest}
     networks:
@@ -56,7 +56,7 @@ services:
     depends_on:
       - zookeeper
     environment:
-#     See https://github.com/bitnami/bitnami-docker-kafka#configuration
+      # See https://github.com/bitnami/bitnami-docker-kafka#configuration
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
       KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
@@ -74,7 +74,7 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/obsidiandynamics/kafdrop#environment-variables
+      # See https://github.com/obsidiandynamics/kafdrop#environment-variables
       JVM_OPTS: "-Xms32M -Xmx64M"
       KAFKA_BROKERCONNECT: "senzing-kafka:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
@@ -90,7 +90,7 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/stream-producer#configuration
+      # See https://github.com/Senzing/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
@@ -108,13 +108,17 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
-#     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      # See https://github.com/bitnami/bitnami-docker-postgresql#configuration
       POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
       POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-senzing}
       POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
       POSTGRESQL_USERNAME: ${POSTGRES_USERNAME:-senzing}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USERNAME:-postgres}"
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -159,19 +163,19 @@ services:
     depends_on:
       - makefile
     environment:
-#    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
-     PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
-     PGADMIN_CONFIG_LOGIN_BANNER: |-
-       "<h4>Senzing demonstration</h4>
-       Although pgAdmin can be configured for security,
-       <br/>the following credentials are used for demonstration.
-       <ul>
-         <li><b>Username:</b> postgres@postgres.com</li>
-         <li><b>Password:</b> password</li>
-       </ul>"
-     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
-     PGADMIN_DEFAULT_PASSWORD: password
-     PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/postgres_postgres.com/servers.json
+      # See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+      PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
+      PGADMIN_CONFIG_LOGIN_BANNER: |-
+        "<h4>Senzing demonstration</h4>
+        Although pgAdmin can be configured for security,
+        <br/>the following credentials are used for demonstration.
+        <ul>
+          <li><b>Username:</b> postgres@postgres.com</li>
+          <li><b>Password:</b> password</li>
+        </ul>"
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/postgres_postgres.com/servers.json
     image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN4:-latest}
     networks:
       - senzing
@@ -216,7 +220,7 @@ services:
       - postgres
     environment:
       LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/stream-loader#configuration
+      # See https://github.com/Senzing/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -246,7 +250,7 @@ services:
     depends_on:
       - loader
     environment:
-#     See https://github.com/Senzing/redoer#configuration
+      # See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -278,7 +282,7 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/stream-logger#configuration
+      # See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-failure-topic
@@ -295,7 +299,7 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/stream-logger#configuration
+      # See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-info-topic
@@ -312,7 +316,7 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/stream-logger#configuration
+      # See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
       SENZING_KAFKA_TOPIC: senzing-kafka-redo-info-topic
@@ -367,7 +371,7 @@ services:
       - pocserver
       - webapp-console
     environment:
-#     See https://github.com/Senzing/entity-search-web-app#configuration
+      # See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250
       SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
@@ -419,7 +423,7 @@ services:
     depends_on:
       - loader
     environment:
-#     See https://github.com/Senzing/docker-jupyter#configuration
+      # See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {

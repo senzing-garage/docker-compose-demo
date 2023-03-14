@@ -4,13 +4,17 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
-#     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      # See https://github.com/bitnami/bitnami-docker-postgresql#configuration
       POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
       POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-senzing}
       POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
       POSTGRESQL_USERNAME: ${POSTGRES_USERNAME:-senzing}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USERNAME:-postgres}"
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -30,8 +34,8 @@ services:
       - postgres
     environment:
       LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/init-postgresql#configuration
-#     SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
+      # See https://github.com/Senzing/init-postgresql#configuration
+      #     SENZING_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}"
       SENZING_CONFIGURATION_MODIFICATIONS: |
         addDataSource CUSTOMERS
         addDataSource REFERENCE
@@ -49,7 +53,7 @@ services:
             "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
           }
         }
-#     SENZING_INPUT_SQL_URL: "file:///opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql"
+      #     SENZING_INPUT_SQL_URL: "file:///opt/senzing/g2/resources/schema/g2core-schema-postgresql-create.sql"
       SENZING_SUBCOMMAND: mandatory
     image: senzing/init-postgresql:${SENZING_DOCKER_IMAGE_VERSION_INIT_POSTGRESQL:-latest}
     networks:
