@@ -144,6 +144,7 @@ services:
       # See https://github.com/docker-library/docs/blob/main/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
     healthcheck:
       test:
@@ -170,6 +171,7 @@ services:
       # See https://github.com/docker-library/docs/blob/main/postgres/README.md#environment-variables
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
       POSTGRES_USERNAME: ${POSTGRES_USERNAME:-postgres}
     healthcheck:
       test:
@@ -207,15 +209,15 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/?sslmode=disable"
           },
           "C1": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-res}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/?sslmode=disable"
           },
           "C2": {
             "CLUSTER_SIZE": "1",
-            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}"
+            "DB_1": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres-libfeat}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/?sslmode=disable"
           },
           "HYBRID": {
             "RES_FEAT": "C1",
