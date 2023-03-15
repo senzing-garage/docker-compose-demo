@@ -10,9 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed in 1.13.0
 
-## [1.12.1] - 2023-01-16
-
 - Move from database specific initializers to `senzing/senzing-tools initdatabase`
+
+## [1.12.1] - 2023-01-16
 
 ### Changed in 1.12.1
 
