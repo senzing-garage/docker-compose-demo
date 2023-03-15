@@ -4,7 +4,7 @@ services:
   zookeeper:
     container_name: senzing-zookeeper
     environment:
-#     See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
+      # See https://github.com/bitnami/bitnami-docker-zookeeper#configuration
       ALLOW_ANONYMOUS_LOGIN: "yes"
     image: bitnami/zookeeper:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_ZOOKEEPER:-latest}
     networks:
@@ -18,7 +18,7 @@ services:
     depends_on:
       - zookeeper
     environment:
-#     See https://github.com/bitnami/bitnami-docker-kafka#configuration
+      # See https://github.com/bitnami/bitnami-docker-kafka#configuration
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://senzing-kafka:9092"
       KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
@@ -36,7 +36,7 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/obsidiandynamics/kafdrop#environment-variables
+      # See https://github.com/obsidiandynamics/kafdrop#environment-variables
       JVM_OPTS: "-Xms32M -Xmx64M"
       KAFKA_BROKERCONNECT: "senzing-kafka:9092"
       SERVER_SERVLET_CONTEXTPATH: "/"
@@ -52,7 +52,7 @@ services:
     depends_on:
       - kafka
     environment:
-#     See https://github.com/Senzing/stream-producer#configuration
+      # See https://github.com/Senzing/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_KAFKA_BOOTSTRAP_SERVER: senzing-kafka:9092
@@ -81,21 +81,18 @@ services:
     ports:
       - 3306:3306
     restart: always
+    user: "${SENZING_UID:-1001}:0"
     volumes:
       - ${MYSQL_DIR:-/var/lib/mysql}:/var/lib/mysql
 
-  init-mysql:
-    container_name: senzing-init-mysql
+  initdatabase:
+    container_name: senzing-tools-initdatabase
+    command: initdatabase
     depends_on:
       - mysql
     environment:
-      LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/init-mysql#configuration
-      SENZING_CONFIGURATION_MODIFICATIONS: |
-        addDataSource CUSTOMERS
-        addDataSource REFERENCE
-        addDataSource WATCHLIST
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
+      SENZING_TOOLS_DATASOURCES: CUSTOMERS REFERENCE WATCHLIST
+      SENZING_TOOLS_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
             "CONFIGPATH": "/etc/opt/senzing",
@@ -108,8 +105,7 @@ services:
             "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
           }
         }
-      SENZING_SUBCOMMAND: mandatory
-    image: senzing/init-mysql:${SENZING_DOCKER_IMAGE_VERSION_INIT_MYSQL:-latest}
+    image: senzing/senzing-tools-mysql:${SENZING_DOCKER_IMAGE_VERSION_SENZING_TOOLS:-latest}
     networks:
       - senzing
     read_only: true
@@ -161,7 +157,7 @@ services:
       - mysql
     environment:
       LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/stream-loader#configuration
+      # See https://github.com/Senzing/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -191,7 +187,7 @@ services:
     depends_on:
       - loader
     environment:
-#     See https://github.com/Senzing/redoer#configuration
+      # See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -258,7 +254,7 @@ services:
       - pocserver
       - webapp-console
     environment:
-#     See https://github.com/Senzing/entity-search-web-app#configuration
+      # See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250
       SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
