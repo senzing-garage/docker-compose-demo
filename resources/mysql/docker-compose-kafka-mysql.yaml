@@ -70,7 +70,7 @@ services:
   mysql:
     container_name: senzing-mysql
     environment:
-#     See https://hub.docker.com/_/mysql/ "Environment Variables"
+      #     See https://hub.docker.com/_/mysql/ "Environment Variables"
       MYSQL_DATABASE: ${MYSQL_DATABASE:-G2}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}

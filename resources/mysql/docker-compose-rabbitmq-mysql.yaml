@@ -4,7 +4,7 @@ services:
   rabbitmq:
     container_name: senzing-rabbitmq
     environment:
-#     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
+      # See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
@@ -22,7 +22,7 @@ services:
     depends_on:
       - rabbitmq
     environment:
-#     See https://github.com/Senzing/stream-producer#configuration
+      # See https://github.com/Senzing/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
@@ -44,7 +44,7 @@ services:
   mysql:
     container_name: senzing-mysql
     environment:
-#     See https://hub.docker.com/_/mysql/ "Environment Variables"
+      #     See https://hub.docker.com/_/mysql/ "Environment Variables"
       MYSQL_DATABASE: ${MYSQL_DATABASE:-G2}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
@@ -55,21 +55,18 @@ services:
     ports:
       - 3306:3306
     restart: always
+    user: "${SENZING_UID:-1001}:0"
     volumes:
       - ${MYSQL_DIR:-/var/lib/mysql}:/var/lib/mysql
 
-  init-mysql:
-    container_name: senzing-init-mysql
+  initdatabase:
+    container_name: senzing-tools-initdatabase
+    command: initdatabase
     depends_on:
       - mysql
     environment:
-      LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/init-mysql#configuration
-      SENZING_CONFIGURATION_MODIFICATIONS: |
-        addDataSource CUSTOMERS
-        addDataSource REFERENCE
-        addDataSource WATCHLIST
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
+      SENZING_TOOLS_DATASOURCES: CUSTOMERS REFERENCE WATCHLIST
+      SENZING_TOOLS_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
             "CONFIGPATH": "/etc/opt/senzing",
@@ -82,8 +79,7 @@ services:
             "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
           }
         }
-      SENZING_SUBCOMMAND: mandatory
-    image: senzing/init-mysql:${SENZING_DOCKER_IMAGE_VERSION_INIT_MYSQL:-latest}
+    image: senzing/senzing-tools-mysql:${SENZING_DOCKER_IMAGE_VERSION_SENZING_TOOLS:-latest}
     networks:
       - senzing
     read_only: true
@@ -135,7 +131,7 @@ services:
       - mysql
     environment:
       LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/stream-loader#configuration
+      # See https://github.com/Senzing/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -168,7 +164,7 @@ services:
     depends_on:
       - loader
     environment:
-#     See https://github.com/Senzing/redoer#configuration
+      # See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -239,7 +235,7 @@ services:
       - pocserver
       - webapp-console
     environment:
-#     See https://github.com/Senzing/entity-search-web-app#configuration
+      # See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250
       SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
