@@ -42,7 +42,7 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
-      #     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      # See https://github.com/bitnami/bitnami-docker-postgresql#configuration
       POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
       POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-senzing}
       POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
@@ -66,14 +66,14 @@ services:
     volumes:
       - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
 
-  init-postgresql:
-    container_name: senzing-init-postgresql
+  initdatabase:
+    container_name: senzing-tools-initdatabase
+    command: initdatabase
     depends_on:
       - postgres
     environment:
-      LC_CTYPE: en_US.utf8
-      #     See https://github.com/Senzing/init-postgresql#configuration
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
+      SENZING_TOOLS_DATASOURCES: CUSTOMER REFERENCE WATCHLIST
+      SENZING_TOOLS_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
             "CONFIGPATH": "/etc/opt/senzing",
@@ -83,11 +83,10 @@ services:
           },
           "SQL": {
             "BACKEND": "SQL",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/?sslmode=disable"
           }
         }
-      SENZING_SUBCOMMAND: mandatory
-    image: senzing/init-postgresql:${SENZING_DOCKER_IMAGE_VERSION_INIT_POSTGRESQL:-latest}
+    image: senzing/senzing-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_TOOLS:-latest}
     networks:
       - senzing
     read_only: true
@@ -98,7 +97,7 @@ services:
     depends_on:
       - makefile
     environment:
-      #    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+      # See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
       PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
       PGADMIN_CONFIG_LOGIN_BANNER: |-
         "<h4>Senzing demonstration</h4>

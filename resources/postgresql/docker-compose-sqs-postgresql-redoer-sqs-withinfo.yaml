@@ -46,7 +46,7 @@ services:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
-#     See https://github.com/Senzing/stream-producer#configuration
+      # See https://github.com/Senzing/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_QUEUE_URL}
@@ -63,13 +63,17 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
-#     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      # See https://github.com/bitnami/bitnami-docker-postgresql#configuration
       POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
       POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-senzing}
       POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
       POSTGRESQL_USERNAME: ${POSTGRES_USERNAME:-senzing}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USERNAME:-postgres}"
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -83,18 +87,14 @@ services:
     volumes:
       - ${POSTGRES_DIR:-/var/lib/postgresql/data}:/bitnami/postgresql
 
-  init-postgresql:
-    container_name: senzing-init-postgresql
+  initdatabase:
+    container_name: senzing-tools-initdatabase
+    command: initdatabase
     depends_on:
       - postgres
     environment:
-      LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/init-postgresql#configuration
-      SENZING_CONFIGURATION_MODIFICATIONS: |
-        addDataSource CUSTOMERS
-        addDataSource REFERENCE
-        addDataSource WATCHLIST
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
+      SENZING_TOOLS_DATASOURCES: CUSTOMER REFERENCE WATCHLIST
+      SENZING_TOOLS_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
             "CONFIGPATH": "/etc/opt/senzing",
@@ -104,11 +104,10 @@ services:
           },
           "SQL": {
             "BACKEND": "SQL",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/?sslmode=disable"
           }
         }
-      SENZING_SUBCOMMAND: mandatory
-    image: senzing/init-postgresql:${SENZING_DOCKER_IMAGE_VERSION_INIT_POSTGRESQL:-latest}
+    image: senzing/senzing-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_TOOLS:-latest}
     networks:
       - senzing
     read_only: true
@@ -119,19 +118,19 @@ services:
     depends_on:
       - makefile
     environment:
-#    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
-     PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
-     PGADMIN_CONFIG_LOGIN_BANNER: |-
-       "<h4>Senzing demonstration</h4>
-       Although pgAdmin can be configured for security,
-       <br/>the following credentials are used for demonstration.
-       <ul>
-         <li><b>Username:</b> postgres@postgres.com</li>
-         <li><b>Password:</b> password</li>
-       </ul>"
-     PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
-     PGADMIN_DEFAULT_PASSWORD: password
-     PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/postgres_postgres.com/servers.json
+      # See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+      PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
+      PGADMIN_CONFIG_LOGIN_BANNER: |-
+        "<h4>Senzing demonstration</h4>
+        Although pgAdmin can be configured for security,
+        <br/>the following credentials are used for demonstration.
+        <ul>
+          <li><b>Username:</b> postgres@postgres.com</li>
+          <li><b>Password:</b> password</li>
+        </ul>"
+      PGADMIN_DEFAULT_EMAIL: postgres@postgres.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_SERVER_JSON_FILE: /var/lib/pgadmin/storage/postgres_postgres.com/servers.json
     image: dpage/pgadmin4:${SENZING_DOCKER_IMAGE_VERSION_DPAGE_PGADMIN4:-latest}
     networks:
       - senzing
@@ -179,7 +178,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
       LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/stream-loader#configuration
+      # See https://github.com/Senzing/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -215,7 +214,7 @@ services:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
-#     See https://github.com/Senzing/redoer#configuration
+      # See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -250,7 +249,7 @@ services:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
-#     See https://github.com/Senzing/redoer#configuration
+      # See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -285,7 +284,7 @@ services:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
-#     See https://github.com/Senzing/stream-logger#configuration
+      # See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_FAILURE_QUEUE_URL}
@@ -304,7 +303,7 @@ services:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
-#     See https://github.com/Senzing/stream-logger#configuration
+      # See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_INFO_QUEUE_URL}
@@ -323,7 +322,7 @@ services:
       AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN}
-#     See https://github.com/Senzing/stream-logger#configuration
+      # See https://github.com/Senzing/stream-logger#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SQS_QUEUE_URL: ${SENZING_SQS_REDO_QUEUE_URL}
@@ -375,7 +374,7 @@ services:
       - pocserver
       - webapp-console
     environment:
-#     See https://github.com/Senzing/entity-search-web-app#configuration
+      # See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250
       SENZING_CONSOLE_SERVER_URL: ws://senzing-webapp-console:8257
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
@@ -427,7 +426,7 @@ services:
     depends_on:
       - loader
     environment:
-#     See https://github.com/Senzing/docker-jupyter#configuration
+      # See https://github.com/Senzing/docker-jupyter#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {

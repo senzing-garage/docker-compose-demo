@@ -42,7 +42,7 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
-      #     See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      # See https://github.com/bitnami/bitnami-docker-postgresql#configuration
       POSTGRESQL_DATABASE: ${POSTGRES_DB:-G2}
       POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-senzing}
       POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
@@ -71,7 +71,7 @@ services:
     depends_on:
       - makefile
     environment:
-      #    See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
+      # See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
       PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
       PGADMIN_CONFIG_LOGIN_BANNER: |-
         "<h4>Senzing demonstration</h4>
