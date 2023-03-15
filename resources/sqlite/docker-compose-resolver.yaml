@@ -39,6 +39,7 @@ services:
     ports:
       - 9174:8080
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}/sqlite:/data
 
@@ -61,6 +62,7 @@ services:
     networks:
       - senzing
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
@@ -73,6 +75,7 @@ services:
     networks:
       - senzing
     restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
