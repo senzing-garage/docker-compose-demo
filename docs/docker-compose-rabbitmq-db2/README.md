@@ -111,27 +111,27 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    export SENZING_VOLUME=~/my-senzing
+    export SENZING_DEMO_DIR=~/my-senzing
 
     ```
 
     1. :warning:
        **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
-       must be enabled for `SENZING_VOLUME`.
+       must be enabled for `SENZING_DEMO_DIR`.
     1. :warning:
        **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
-       must be enabled for `SENZING_VOLUME`.
+       must be enabled for `SENZING_DEMO_DIR`.
 
 1. Identify directories on the local host.
    Example:
 
     ```console
-    export SENZING_DATA_DIR=${SENZING_VOLUME}/data
+    export SENZING_DATA_DIR=${SENZING_DEMO_DIR}/data
     export SENZING_DATA_VERSION_DIR=${SENZING_DATA_DIR}/3.0.0
-    export SENZING_ETC_DIR=${SENZING_VOLUME}/etc
-    export SENZING_G2_DIR=${SENZING_VOLUME}/g2
-    export SENZING_OPT_IBM_DIR=${SENZING_VOLUME}/opt-ibm
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    export SENZING_ETC_DIR=${SENZING_DEMO_DIR}/etc
+    export SENZING_G2_DIR=${SENZING_DEMO_DIR}/g2
+    export SENZING_OPT_IBM_DIR=${SENZING_DEMO_DIR}/opt-ibm
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
     export DB2_DIR=${SENZING_VAR_DIR}/db2
     export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
@@ -146,7 +146,7 @@ describing where we can improve.   Now on with the show...
 
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
-    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_DEMO_DIR}
 
     ```
 
@@ -160,15 +160,15 @@ describing where we can improve.   Now on with the show...
 
     ```console
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-versions-stable.sh \
+        --output ${SENZING_DEMO_DIR}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
 
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-compose-senzing-installation.yaml \
+        --output ${SENZING_DEMO_DIR}/docker-compose-senzing-installation.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/senzing/docker-compose-senzing-installation.yaml"
 
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-compose.yaml \
+        --output ${SENZING_DEMO_DIR}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/db2/docker-compose-rabbitmq-db2.yaml"
 
     ```
@@ -182,7 +182,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    source ${SENZING_VOLUME}/docker-versions-stable.sh
+    source ${SENZING_DEMO_DIR}/docker-versions-stable.sh
 
     ```
 
@@ -190,7 +190,7 @@ The following will be used to pull the pinned or most recent `latest` versions.
    Example:
 
     ```console
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml pull
     sudo --preserve-env docker-compose pull
 
@@ -212,7 +212,7 @@ To use the Senzing code, you must agree to the End User License Agreement (EULA)
    Example:
 
     ```console
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose --file docker-compose-senzing-installation.yaml up
 
     ```
@@ -233,8 +233,8 @@ Senzing comes with a trial license that supports 100,000 records.
    Example:
 
     ```console
-    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_VOLUME}
-    sudo chmod -R 777 ${SENZING_VOLUME}
+    sudo chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_DEMO_DIR}
+    sudo chmod -R 777 ${SENZING_DEMO_DIR}
 
     ```
 
@@ -244,7 +244,7 @@ Senzing comes with a trial license that supports 100,000 records.
    Example:
 
     ```console
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose up
 
     ```
@@ -339,7 +339,7 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo docker-compose down
     sudo docker-compose --file docker-compose-senzing-installation.yaml down
 
@@ -347,7 +347,7 @@ it can be brought down and directories can be deleted.
 
 1. Remove directories from host system.
    The following directories were created during the demonstration:
-    1. `${SENZING_VOLUME}`
+    1. `${SENZING_DEMO_DIR}`
 
    They may be safely deleted.
 

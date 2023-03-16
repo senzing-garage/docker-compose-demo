@@ -70,24 +70,24 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    export SENZING_VOLUME=~/my-senzing
+    export SENZING_DEMO_DIR=~/my-senzing
 
     ```
 
     1. :warning:
        **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
-       must be enabled for `SENZING_VOLUME`.
+       must be enabled for `SENZING_DEMO_DIR`.
     1. :warning:
        **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
-       must be enabled for `SENZING_VOLUME`.
+       must be enabled for `SENZING_DEMO_DIR`.
 
 1. Set environment variables.
    Example:
 
     ```console
-    export MYSQL_DIR=${SENZING_VOLUME}/mysql
-    export RABBITMQ_DIR=${SENZING_VOLUME}/rabbitmq
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    export MYSQL_DIR=${SENZING_DEMO_DIR}/mysql
+    export RABBITMQ_DIR=${SENZING_DEMO_DIR}/rabbitmq
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
 
@@ -98,7 +98,7 @@ describing where we can improve.   Now on with the show...
 
     ```console
     mkdir -p ${MYSQL_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
-    chmod -R 777 ${SENZING_VOLUME}
+    chmod -R 777 ${SENZING_DEMO_DIR}
 
     ```
 
@@ -107,9 +107,9 @@ describing where we can improve.   Now on with the show...
 
     ```console
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-versions-stable.sh \
+        --output ${SENZING_DEMO_DIR}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
-    source ${SENZING_VOLUME}/docker-versions-stable.sh
+    source ${SENZING_DEMO_DIR}/docker-versions-stable.sh
 
     ```
 
@@ -118,7 +118,7 @@ describing where we can improve.   Now on with the show...
 
     ```console
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-compose.yaml \
+        --output ${SENZING_DEMO_DIR}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mysql/docker-compose-rabbitmq-mysql.yaml"
 
     ```
@@ -127,7 +127,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose up
 
     ```
@@ -217,7 +217,7 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo docker-compose down
 
     ```
@@ -226,7 +226,7 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-   rm -rf ${SENZING_VOLUME:-/tmp/nowhere/for/safety}
+   rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
     ```
 
 ## Advanced
