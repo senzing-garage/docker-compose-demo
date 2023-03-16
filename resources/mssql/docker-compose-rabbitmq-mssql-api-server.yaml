@@ -199,6 +199,8 @@ services:
       - initcontainer
     environment:
       LC_CTYPE: en_US.utf8
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       # See https://github.com/Senzing/g2configtool
       SENZING_DELAY_IN_SECONDS: 10
       SENZING_ENGINE_CONFIGURATION_JSON: >-
@@ -219,13 +221,16 @@ services:
         addDataSource REFERENCE
         addDataSource WATCHLIST
         save
-    image: senzing/senzingapi-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZINGAPI_TOOLS:-latest}
+    image: senzing/senzingapi-tools-mssql:${SENZING_DOCKER_IMAGE_VERSION_SENZINGAPI_TOOLS:-latest}
     networks:
       - senzing
     read_only: true
     restart: on-failure
     tmpfs:
       - /tmp
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   loader:
     container_name: senzing-stream-loader
