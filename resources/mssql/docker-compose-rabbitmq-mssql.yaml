@@ -8,9 +8,9 @@ services:
     command:
       - sh
       - -c
-      - mkdir -p /var/opt/senzing/mssql; echo $${FILE_CONTENTS} >> /var/opt/senzing/mssql/odbc.ini
+      - mkdir -p /var/opt/senzing/mssql; echo "$${FILE_CONTENTS}" >> /var/opt/senzing/mssql/odbc.ini
     environment:
-      FILE_CONTENTS: >-
+      FILE_CONTENTS: |
         [${MSSQL_DATABASE:-G2}]
         Database = ${MSSQL_DATABASE:-G2}
         Description = Senzing MS SQL database for G2
@@ -104,24 +104,13 @@ services:
     container_name: senzing-tools-initdatabase
     command: initdatabase
     depends_on:
-      - mysql
+      - mssql
     environment:
       ODBCINI: /var/opt/senzing/mssql/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
+      SENZING_TOOLS_LOG_LEVEL: "TRACE"
+      SENZING_TOOLS_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_PASSWORD:-Passw0rd}@${MYSQL_HOST:-senzing-mssql}:${MYSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
       SENZING_TOOLS_DATASOURCES: CUSTOMERS REFERENCE WATCHLIST
-      SENZING_TOOLS_ENGINE_CONFIGURATION_JSON: >-
-        {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
-          "SQL": {
-            "BACKEND": "SQL",
-            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
-          }
-        }
     image: senzing/senzing-tools-mssql:${SENZING_DOCKER_IMAGE_VERSION_SENZING_TOOLS:-latest}
     networks:
       - senzing
@@ -174,7 +163,6 @@ services:
     container_name: senzing-stream-loader
     depends_on:
       - rabbitmq
-      - mssql-create-senzing
     environment:
       LC_CTYPE: en_US.utf8
       ODBCINI: /var/opt/senzing/mssql/odbc.ini
@@ -245,8 +233,6 @@ services:
 
   pocserver:
     container_name: senzing-poc-server
-    depends_on:
-      - mssql-create-senzing
     environment:
       ODBCINI: /var/opt/senzing/mssql/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
