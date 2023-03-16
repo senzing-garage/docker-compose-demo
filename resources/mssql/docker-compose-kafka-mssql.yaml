@@ -107,17 +107,6 @@ services:
     volumes:
       - ${MSSQL_DIR:-/var/opt/mssql}:/var/opt/mssql
 
-  adminer:
-    container_name: senzing-adminer
-    environment:
-      ADMINER_DEFAULT_SERVER: senzing-mssql
-    image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_ADMINER:-latest}
-    networks:
-      - senzing
-    ports:
-      - 9177:8080
-    restart: always
-
   mssql-create-db:
     command:
       - /opt/mssql-tools/bin/sqlcmd
@@ -164,28 +153,16 @@ services:
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  initcontainer:
-    container_name: senzing-init-container
-    depends_on:
-      - mssql
-      - mssql-create-db
-      - mssql-create-senzing
+  adminer:
+    container_name: senzing-adminer
     environment:
-      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
-      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
-      SENZING_DELAY_IN_SECONDS: 30
-      SENZING_GID: ${SENZING_GID:-1001}
-      SENZING_UID: ${SENZING_UID:-1001}
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+      ADMINER_DEFAULT_SERVER: senzing-mssql
+    image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_ADMINER:-latest}
     networks:
       - senzing
-    read_only: true
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+    ports:
+      - 9177:8080
+    restart: always
 
   console:
     cap_add:
@@ -221,8 +198,6 @@ services:
       - -c
       - echo "$${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; sleep $${SENZING_DELAY_IN_SECONDS}; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc
     container_name: senzing-g2configtools
-    depends_on:
-      - initcontainer
     environment:
       LC_CTYPE: en_US.utf8
       ODBCINI: /var/opt/senzing/mssql/odbc.ini

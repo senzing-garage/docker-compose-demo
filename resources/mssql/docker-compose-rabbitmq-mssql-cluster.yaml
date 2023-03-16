@@ -307,57 +307,6 @@ services:
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  initcontainer:
-    container_name: senzing-init-container
-    depends_on:
-      - mssql
-      - mssql-create-db
-      - mssql-create-senzing
-    environment:
-      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
-      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-      SENZING_DELAY_IN_SECONDS: 30
-      SENZING_ENGINE_CONFIGURATION_JSON: >-
-        {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
-          "SQL": {
-            "BACKEND": "HYBRID",
-            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
-          },
-          "C1": {
-            "CLUSTER_SIZE": "1",
-            "DB_1": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE_RES:-G2_RES}"
-          },
-          "C2": {
-            "CLUSTER_SIZE": "1",
-            "DB_1": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE_LIBFEAT:-G2_LIBFEAT}"
-          },
-          "HYBRID": {
-            "RES_FEAT": "C1",
-            "RES_FEAT_EKEY": "C1",
-            "RES_FEAT_LKEY": "C1",
-            "RES_FEAT_STAT": "C1",
-            "LIB_FEAT": "C2",
-            "LIB_FEAT_HKEY": "C2"
-          }
-        }
-      SENZING_GID: ${SENZING_GID:-1001}
-      SENZING_UID: ${SENZING_UID:-1001}
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
-    networks:
-      - senzing
-    read_only: true
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
   adminer:
     container_name: senzing-adminer
     environment:
@@ -419,8 +368,6 @@ services:
       - -c
       - echo "$${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; sleep $${SENZING_DELAY_IN_SECONDS}; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc
     container_name: senzing-g2configtools
-    depends_on:
-      - initcontainer
     environment:
       LC_CTYPE: en_US.utf8
       ODBCINI: /var/opt/senzing/mssql/odbc.ini
