@@ -46,7 +46,6 @@ Arrows represent data flow.
     1. [Set sshd password](#set-sshd-password)
     1. [Docker images](#docker-images)
     1. [Configuration](#configuration)
-1. [Errors](#errors)
 1. [References](#references)
 
 ### Preamble
@@ -55,23 +54,11 @@ At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
 "[don't make me think](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/dont-make-me-think.md)" style.
 For the most part, instructions are copy and paste.
-Whenever thinking is needed, it's marked with a "thinking" icon :thinking:.
-Whenever customization is needed, it's marked with a "pencil" icon :pencil2:.
+[Icons](https://github.com/Senzing/knowledge-base/blob/main/lists/legend.md)
+are used to signify additional actions by the user.
 If the instructions are not clear, please let us know by opening a new
-[Documentation issue](https://github.com/Senzing/docker-compose-demo/issues/new?assignees=&labels=&template=documentation_request.md)
+[Documentation issue](https://github.com/Senzing/docker-compose-demo/issues/new?template=documentation_request.md)
 describing where we can improve.   Now on with the show...
-
-### Legend
-
-1. :thinking: - A "thinker" icon means that a little extra thinking may be required.
-   Perhaps you'll need to make some choices.
-   Perhaps it's an optional step.
-1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
-1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
-
-### Related artifacts
-
-1. [DockerHub](https://hub.docker.com/r/senzing)
 
 ### Expectations
 
@@ -344,8 +331,13 @@ Configuration values specified by environment variable or command line parameter
 - **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
 
-## Errors
+### Related artifacts
 
-1. See [docs/errors.md](docs/errors.md).
+1. [DockerHub](https://hub.docker.com/r/senzing)
 
 ## References
+
+- [Development](docs/development.md)
+- [Errors](docs/errors.md)
+- [Examples](docs/examples.md)
+- [Legend](https://github.com/Senzing/knowledge-base/blob/main/lists/legend.md)
