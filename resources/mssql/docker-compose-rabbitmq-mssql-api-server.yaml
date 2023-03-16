@@ -101,7 +101,7 @@ services:
     restart: on-failure
 
   mssql-create-senzing:
-#   For command-line options, see https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility
+    # For command-line options, see https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility
     command:
       - /opt/mssql-tools/bin/sqlcmd
       - -d
@@ -199,7 +199,7 @@ services:
       - initcontainer
     environment:
       LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/g2configtool
+      # See https://github.com/Senzing/g2configtool
       SENZING_DELAY_IN_SECONDS: 10
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
