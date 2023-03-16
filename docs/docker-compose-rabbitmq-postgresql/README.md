@@ -240,10 +240,11 @@ it can be brought down and directories can be deleted.
     ```
 
 1. Remove directories from host system.
-   The following directory was created during the demonstration:
-    1. `${SENZING_VOLUME}`
+   Example:
 
-   It may be safely deleted.
+    ```console
+   rm -rf ${SENZING_VOLUME:-/tmp/nowhere/for/safety}
+    ```
 
 ## Advanced
 
