@@ -120,8 +120,6 @@ describing where we can improve.   Now on with the show...
     curl -X GET \
         --output ${SENZING_VOLUME}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mysql/docker-compose-rabbitmq-mysql.yaml"
-    cd ${SENZING_VOLUME}
-    sudo --preserve-env docker-compose pull
 
     ```
 
