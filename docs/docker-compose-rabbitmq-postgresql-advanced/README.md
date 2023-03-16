@@ -34,29 +34,10 @@ Arrows represent data flow.
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
     1. [Choose docker formation](#choose-docker-formation)
-        1. [Standard formation](#standard-formation)
-        1. [With Senzing API Server formation](#with-senzing-api-server-formation)
-        1. [Withinfo formation](#withinfo-formation)
-        1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
-        1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
-        1. [Debugging](#debugging)
     1. [Volumes](#volumes)
     1. [View data](#view-data)
-        1. [View Docker containers](#view-docker-containers)
-        1. [Use SSH](#use-ssh)
-        1. [View RabbitMQ](#view-rabbitmq)
-        1. [View PostgreSQL](#view-postgresql)
-        1. [View Senzing API Server](#view-senzing-api-server)
-        1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-        1. [View Jupyter notebooks](#view-jupyter-notebooks)
-        1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
-    1. [SSH port](#ssh-port)
-    1. [Set sshd password](#set-sshd-password)
-    1. [Docker images](#docker-images)
-    1. [Configuration](#configuration)
-    1. [Program parameter matrix](#program-parameter-matrix)
 1. [Errors](#errors)
 1. [References](#references)
 
@@ -357,49 +338,7 @@ it can be brought down and directories can be deleted.
 
 The following topics discuss variations to the basic docker-compose demonstration.
 
-### SSH port
-
-:thinking: **Optional:**
-If you do not plan on using the senzing/sshd container then these ssh sections can be ignored.
-Normally port 22 is already in use for `ssh`.
-So a different port may be needed by the running docker container.
-
-1. :thinking: See if port 22 is already in use.
-   If it is not in use, the next 2 steps are optional.
-   Example:
-
-    ```console
-    sudo lsof -i -P -n | grep LISTEN | grep :22
-
-    ````
-
-1. :pencil2: Choose port for docker container.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PORT=9181
-
-    ```
-
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
-
-    ```
-
-### Set sshd password
-
-:thinking: **Optional:** The default password set for the sshd containers is `senzingsshdpassword`.
-However, this can be changed.
-
-1. :pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PASSWORD=<Pass_You_Want>
-    ```
+## Common
 
 ### Docker images
 
@@ -457,3 +396,5 @@ Configuration values specified by environment variable or command line parameter
 1. See [docs/errors.md](docs/errors.md).
 
 ## References
+
+- [Advanced](../common/advanced.md)

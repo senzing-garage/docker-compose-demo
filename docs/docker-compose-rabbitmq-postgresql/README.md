@@ -40,12 +40,13 @@ Arrows represent data flow.
         1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
         1. [View Jupyter notebooks](#view-jupyter-notebooks)
         1. [View X-Term](#view-x-term)
-1. [Cleanup](#cleanup)
+    1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
     1. [SSH port](#ssh-port)
     1. [Set sshd password](#set-sshd-password)
     1. [Docker images](#docker-images)
     1. [Configuration](#configuration)
+1. [Related artifacts](#related-artifacts)
 1. [References](#references)
 
 ### Preamble
@@ -331,7 +332,7 @@ Configuration values specified by environment variable or command line parameter
 - **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
 
-### Related artifacts
+## Related artifacts
 
 1. [DockerHub](https://hub.docker.com/r/senzing)
 
