@@ -243,7 +243,7 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-   rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
+    rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
     ```
 
 ## Advanced
