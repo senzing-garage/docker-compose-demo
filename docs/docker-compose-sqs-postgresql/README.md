@@ -64,6 +64,27 @@ describing where we can improve.   Now on with the show...
 
 ## Demonstrate
 
+1. :pencil2: Specify AWS credentials.
+   Example:
+
+    ```console
+    export AWS_ACCESS_KEY_ID=$(aws configure get default.aws_access_key_id)
+    export AWS_SECRET_ACCESS_KEY=$(aws configure get default.aws_secret_access_key)
+    export AWS_DEFAULT_REGION=$(aws configure get default.region)
+
+    ```
+
+1. Create AWS SQS queues at
+   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
+
+1. :pencil2: Specify AWS SQS queues:
+   Example:
+
+    ```console
+    export SENZING_SQS_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-queue"
+
+    ```    
+
 1. :pencil2: Specify a new directory to hold demonstration artifacts on the local host.
    Example:
 
@@ -120,31 +141,6 @@ describing where we can improve.   Now on with the show...
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-sqs-postgresql.yaml"
     cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose pull
-
-    ```
-
-### AWS credentials
-
-1. :pencil2: Specify AWS credentials.
-   Example:
-
-    ```console
-    export AWS_ACCESS_KEY_ID=$(aws configure get default.aws_access_key_id)
-    export AWS_SECRET_ACCESS_KEY=$(aws configure get default.aws_secret_access_key)
-    export AWS_DEFAULT_REGION=$(aws configure get default.region)
-
-    ```
-
-### AWS SQS queues
-
-1. Create AWS SQS queues at
-   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
-
-1. :pencil2: Specify AWS SQS queues:
-   Example:
-
-    ```console
-    export SENZING_SQS_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-queue"
 
     ```
 
