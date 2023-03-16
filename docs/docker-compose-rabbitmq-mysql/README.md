@@ -62,7 +62,7 @@ describing where we can improve.   Now on with the show...
 1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/install-docker-compose.md) -
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
 1. Create
-   [MySQL compatible Docker images](https://github.com/Senzing/docker-wrap-image-with-mysql/tree/main).
+   [MySQL compatible Docker images](https://github.com/Senzing/docker-wrap-image-with-mysql).
 
 ## Demonstrate
 
