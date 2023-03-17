@@ -294,7 +294,6 @@ Configuration values specified by environment variable or command line parameter
 
 - **[PGADMIN_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#pgadmin_dir)**
 - **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#postgres_dir)**
-- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**
 - **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
 
 ## Related artifacts

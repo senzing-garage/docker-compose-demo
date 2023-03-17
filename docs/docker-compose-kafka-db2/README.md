@@ -96,7 +96,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    mkdir -p  ${DB2_DIR} ${SENZING_OPT_IBM_DIR} ${SENZING_VAR_DIR}
+    mkdir -p ${DB2_DIR} ${SENZING_OPT_IBM_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_DEMO_DIR}
 
     ```

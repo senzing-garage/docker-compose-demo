@@ -34,10 +34,14 @@ Arrows represent data flow.
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
     1. [Choose docker formation](#choose-docker-formation)
-    1. [Volumes](#volumes)
-    1. [View data](#view-data)
-1. [Cleanup](#cleanup)
+        1. [Standard formation](#standard-formation)
+        1. [With Senzing API Server formation](#with-senzing-api-server-formation)
+        1. [Withinfo formation](#withinfo-formation)
+        1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
+        1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
+        1. [Debugging](#debugging)
 1. [Advanced](#advanced)
+1. [Related artifacts](#related-artifacts)
 1. [References](#references)
 
 ### Preamble

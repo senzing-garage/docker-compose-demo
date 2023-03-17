@@ -145,9 +145,9 @@ Username and password for the following sites were either passed in as environme
 or are the default values seen in
 [docker-compose-rabbitmq-sqlite.yaml](../../resources/sqlite/docker-compose-rabbitmq-sqlite.yaml).
 
-#### View docker containers
+#### View Docker containers
 
-1. A good tool to monitor individual docker logs is
+1. A good tool to monitor individual Docker logs is
    [Portainer](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).

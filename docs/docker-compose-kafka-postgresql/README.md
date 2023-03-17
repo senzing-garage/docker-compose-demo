@@ -259,16 +259,20 @@ This docker formation brings up the following docker containers:
 1. *[bitnami/kafka](https://github.com/bitnami/containers/tree/main/bitnami/kafka)*
 1. *[bitnami/postgres](https://github.com/bitnami/containers/tree/main/bitnami/postgresql)*
 1. *[bitnami/zookeeper](https://github.com/bitnami/containers/tree/main/bitnami/zookeeper)*
+1. *[busybox](https://hub.docker.com/_/busybox)*
 1. *[dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
+1. *[senzing/entity-web-search-app-console](https://github.com/Senzing/entity-search-web-app-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
-1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
-1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/senzing-poc-server](https://github.com/Senzing/senzing-poc-server)*
+1. *[senzing/senzing-tools](https://github.com/Senzing/senzing-tools)*
+1. *[senzing/sshd](https://github.com/Senzing/docker-sshd)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
 
 ### Configuration
 

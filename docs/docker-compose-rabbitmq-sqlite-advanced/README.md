@@ -136,7 +136,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
 ### Volumes
 
-1. :pencil2: Specify the directory where Senzing should be installed on the local host.
+1. :pencil2: Specify a new directory to hold demonstration artifacts on the local host.
    Example:
 
     ```console
@@ -159,6 +159,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     export SENZING_GID=$(id -g)
     export SENZING_UID=$(id -u)
     export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
+    export SQLITE_DIR=${SENZING_VAR_DIR}/sqlite
 
     ```
 
@@ -166,7 +167,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
    Example:
 
     ```console
-    mkdir -p ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
+    mkdir -p ${RABBITMQ_DIR} ${SENZING_VAR_DIR} ${SQLITE_DIR}
     chmod -R 777 ${SENZING_DEMO_DIR}
 
     ```
@@ -188,7 +189,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     ```console
     curl -X GET \
         --output ${SENZING_DEMO_DIR}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql.yaml"
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/${SENZING_DOCKER_COMPOSE_FILE}"
     cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose pull
 
@@ -213,7 +214,8 @@ Once the docker-compose formation is running,
 different aspects of the formation can be viewed.
 
 Username and password for the following sites were either passed in as environment variables
-or are the default values seen in `${SENZING_DOCKER_COMPOSE_FILE}`.
+or are the default values seen in
+`${SENZING_DOCKER_COMPOSE_FILE}`.
 
 #### View Docker containers
 
@@ -287,20 +289,8 @@ The server supports the
 
 #### View SQLite
 
-1. SQLite for `G2C.db` is viewable at
+1. SQLite is viewable at
    [localhost:9174](http://localhost:9174).
-    1. The records received from the queue can be viewed in the following Senzing tables:
-        1. DSRC_RECORD
-        1. OBS_ENT
-1. If using clustered database, SQLite for `G2C_LIBFEAT.db` is viewable at
-   [localhost:9175](http://localhost:9175).
-    1. The records received from the queue can be viewed in the following Senzing tables:
-        1. LIB_FEAT
-1. If using clustered database, SQLite for `G2C_RES.db`is viewable at
-   [localhost:9176](http://localhost:9176).
-    1. The records received from the queue can be viewed in the following Senzing tables:
-        1. RES_FEAT_STAT
-        1. RES_FEAT_EKEY
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#sqlite)
    for working with SQLite.
