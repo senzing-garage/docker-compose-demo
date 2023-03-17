@@ -33,34 +33,15 @@ Arrows represent data flow.
 
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
-    1. [Choose docker formation](#choose-docker-formation)
+    1. [Choose formation](#choose-formation)
         1. [Standard formation](#standard-formation)
         1. [With Senzing API Server formation](#with-senzing-api-server-formation)
         1. [Withinfo formation](#withinfo-formation)
-        1. [Redoer formation](#redoer-formation)
         1. [Redoer queuing formation](#redoer-queuing-formation)
         1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
         1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
-    1. [Volumes](#volumes)
-    1. [AWS credentials](#aws-credentials)
-    1. [AWS SQS queues](#aws-sqs-queues)
-    1. [View data](#view-data)
-        1. [View Docker containers](#view-docker-containers)
-        1. [Use SSH](#use-ssh)
-        1. [View AWS SQS](#view-aws-sqs)
-        1. [View PostgreSQL](#view-postgresql)
-        1. [View Senzing API Server](#view-senzing-api-server)
-        1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-        1. [View Jupyter notebooks](#view-jupyter-notebooks)
-        1. [View X-Term](#view-x-term)
-1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
-    1. [SSH port](#ssh-port)
-    1. [Set sshd password](#set-sshd-password)
-    1. [Docker images](#docker-images)
-    1. [Configuration](#configuration)
-    1. [Program parameter matrix](#program-parameter-matrix)
-1. [Errors](#errors)
+1. [Related artifacts](#related-artifacts)
 1. [References](#references)
 
 ### Preamble
@@ -69,23 +50,11 @@ At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
 "[don't make me think](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/dont-make-me-think.md)" style.
 For the most part, instructions are copy and paste.
-Whenever thinking is needed, it's marked with a "thinking" icon :thinking:.
-Whenever customization is needed, it's marked with a "pencil" icon :pencil2:.
+[Icons](https://github.com/Senzing/knowledge-base/blob/main/lists/legend.md)
+are used to signify additional actions by the user.
 If the instructions are not clear, please let us know by opening a new
-[Documentation issue](https://github.com/Senzing/docker-compose-demo/issues/new?assignees=&labels=&template=documentation_request.md)
+[Documentation issue](https://github.com/Senzing/docker-compose-demo/issues/new?template=documentation_request.md)
 describing where we can improve.   Now on with the show...
-
-### Legend
-
-1. :thinking: - A "thinker" icon means that a little extra thinking may be required.
-   Perhaps you'll need to make some choices.
-   Perhaps it's an optional step.
-1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
-1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
-
-### Related artifacts
-
-1. [DockerHub](https://hub.docker.com/r/senzing)
 
 ### Expectations
 
@@ -104,7 +73,31 @@ describing where we can improve.   Now on with the show...
 
 ## Demonstrate
 
-### Choose docker formation
+1. :pencil2: Specify AWS credentials.
+   Example:
+
+    ```console
+    export AWS_ACCESS_KEY_ID=$(aws configure get default.aws_access_key_id)
+    export AWS_SECRET_ACCESS_KEY=$(aws configure get default.aws_secret_access_key)
+    export AWS_DEFAULT_REGION=$(aws configure get default.region)
+
+    ```
+
+1. Create AWS SQS queues at
+   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
+
+1. :pencil2: Specify AWS SQS queues:
+   Example:
+
+    ```console
+    export SENZING_SQS_FAILURE_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-failure-queue"
+    export SENZING_SQS_INFO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-info-queue"
+    export SENZING_SQS_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-queue"
+    export SENZING_SQS_REDO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-redo-queue"
+
+    ```
+
+### Choose formation
 
 :thinking: Choose a *docker-compose.yaml* file from
 [list](../../resources/postgresql).
@@ -174,7 +167,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```
 
-### Volumes
+### Run formation
 
 1. :pencil2: Specify a new directory to hold demonstration artifacts on the local host.
    Example:
@@ -197,9 +190,9 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     ```console
     export PGADMIN_DIR=${SENZING_DEMO_DIR}/pgadmin
     export POSTGRES_DIR=${SENZING_DEMO_DIR}/postgres
-    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
-    export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+    export SENZING_UID=$(id -u)
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
 
     ```
 
@@ -235,34 +228,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```
 
-### AWS credentials
-
-1. :pencil2: Specify AWS credentials.
-   Example:
-
-    ```console
-    export AWS_ACCESS_KEY_ID=$(aws configure get default.aws_access_key_id)
-    export AWS_SECRET_ACCESS_KEY=$(aws configure get default.aws_secret_access_key)
-    export AWS_DEFAULT_REGION=$(aws configure get default.region)
-
-    ```
-
-### AWS SQS queues
-
-1. Create AWS SQS queues at
-   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
-
-1. :pencil2: Specify AWS SQS queues:
-   Example:
-
-    ```console
-    export SENZING_SQS_FAILURE_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-failure-queue"
-    export SENZING_SQS_INFO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-info-queue"
-    export SENZING_SQS_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-queue"
-    export SENZING_SQS_REDO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-redo-queue"
-
-    ```
-
 1. Bring up Senzing docker-compose stack.
    Example:
 
@@ -276,7 +241,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     1. There will be errors in some Docker logs as they wait for dependent services to become available.
        `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
-### View data
+### View formation
 
 Once the docker-compose formation is running,
 different aspects of the formation can be viewed.
@@ -292,40 +257,6 @@ or are the default values seen in
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
-#### Use SSH
-
-Instructions to use the senzing/sshd container are viewable in the [senzing/docker-sshd](https://github.com/Senzing/docker-sshd/blob/main/README.md#ssh-into-container) repository
-
-#### View AWS SQS
-
-1. AWS SQS is viewable at
-   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
-
-#### View PostgreSQL
-
-1. PostgreSQL is viewable at
-   [localhost:9171](http://localhost:9171).
-    1. **Database defaults:** username: `postgres` password: `postgres`
-1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#postgresql)
-   for working with PostgreSQL.
-
-#### View Senzing API Server
-
-View results from Senzing REST API server.
-The server supports the
-[Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
-
-1. The
-   [OpenApi Editor](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml)
-   with **Servers** value of [http://localhost:8250](http://localhost:8250)
-   can be used to try the Senzing REST API.
-1. Example Senzing REST API request:
-   [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
-1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-api-server)
-   for working with Senzing API server.
-
 #### View Senzing Entity Search WebApp
 
 1. Senzing Entity Search WebApp is viewable at
@@ -333,6 +264,20 @@ The server supports the
 1. See
    [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
+
+#### View X-Term
+
+The web-based Senzing X-term can be used to run Senzing command-line programs.
+
+1. Senzing X-term is viewable at
+   [localhost:8254](http://localhost:8254).
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-x-term)
+   for working with Senzing X-Term.
+
+#### Use SSH
+
+Instructions to use the senzing/sshd container are viewable in the [senzing/docker-sshd](https://github.com/Senzing/docker-sshd/blob/main/README.md#ssh-into-container) repository
 
 #### View Jupyter notebooks
 
@@ -350,17 +295,37 @@ The server supports the
    [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#jupyter-notebooks)
    for working with Jupyter Notebooks.
 
-#### View X-Term
+#### View Senzing API Server
 
-The web-based Senzing X-term can be used to run Senzing command-line programs.
+View results from Senzing REST API server.
+The server supports the
+[Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
 
-1. Senzing X-term is viewable at
-   [localhost:8254](http://localhost:8254).
+1. The
+   [OpenApi Editor](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml)
+   with **Servers** value of [http://localhost:8250](http://localhost:8250)
+   can be used to try the Senzing REST API.
+1. Example Senzing REST API request:
+   [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-x-term)
-   for working with Senzing X-Term.
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-api-server)
+   for working with Senzing API server.
 
-## Cleanup
+#### View AWS SQS
+
+1. AWS SQS is viewable at
+   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
+
+#### View PostgreSQL
+
+1. PostgreSQL is viewable at
+   [localhost:9171](http://localhost:9171).
+    1. **Database defaults:** username: `postgres` password: `postgres`
+1. See
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#postgresql)
+   for working with PostgreSQL.
+
+### Cleanup
 
 When the docker-compose formation is no longer needed,
 it can be brought down and directories can be deleted.
@@ -375,58 +340,19 @@ it can be brought down and directories can be deleted.
     ```
 
 1. Remove directories from host system.
-   The following directory was created during the demonstration:
-    1. `${SENZING_DEMO_DIR}`
+   Example:
 
-   It may be safely deleted.
+    ```console
+    rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
+
+    ```
 
 ## Advanced
 
 The following topics discuss variations to the basic docker-compose demonstration.
 
-### SSH port
-
-:thinking: **Optional:**
-If you do not plan on using the senzing/sshd container then these ssh sections can be ignored.
-Normally port 22 is already in use for `ssh`.
-So a different port may be needed by the running docker container.
-
-1. :thinking: See if port 22 is already in use.
-   If it is not in use, the next 2 steps are optional.
-   Example:
-
-    ```console
-    sudo lsof -i -P -n | grep LISTEN | grep :22
-
-    ````
-
-1. :pencil2: Choose port for docker container.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PORT=9181
-
-    ```
-
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
-
-    ```
-
-### Set sshd password
-
-:thinking: **Optional:** The default password set for the sshd containers is `senzingsshdpassword`.
-However, this can be changed.
-
-1. :pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PASSWORD=<Pass_You_Want>
-    ```
+1. [SSH port](../common/advanced.md#ssh-port)
+1. [Set sshd password](../common/advanced.md#set-sshd-password)
 
 ### Docker images
 
@@ -435,13 +361,16 @@ This docker formation brings up the following docker containers:
 1. *[bitnami/postgres](https://github.com/bitnami/containers/tree/main/bitnami/postgresql)*
 1. *[dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
+1. *[senzing/entity-web-search-app-console](https://github.com/Senzing/entity-search-web-app-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
-1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
-1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/senzing-poc-server](https://github.com/Senzing/senzing-poc-server)*
+1. *[senzing/senzing-tools](https://github.com/Senzing/senzing-tools)*
+1. *[senzing/sshd](https://github.com/Senzing/docker-sshd)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
 
 ### Configuration
 
@@ -477,8 +406,13 @@ Configuration values specified by environment variable or command line parameter
     .  X  .  .  X  .  X  docker-compose-sqs-postgresql-redoer-sqs-withinfo.yaml
     ```
 
-## Errors
+## Related artifacts
 
-1. See [docs/errors.md](docs/errors.md).
+1. [DockerHub](https://hub.docker.com/r/senzing)
 
 ## References
+
+- [Development](docs/development.md)
+- [Errors](docs/errors.md)
+- [Examples](docs/examples.md)
+- [Legend](https://github.com/Senzing/knowledge-base/blob/main/lists/legend.md)

@@ -86,9 +86,9 @@ describing where we can improve.   Now on with the show...
 
     ```console
     export MSSQL_DIR=${SENZING_DEMO_DIR}/mssql
-    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
-    export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+    export SENZING_UID=$(id -u)
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
 
     ```
 
@@ -118,7 +118,7 @@ describing where we can improve.   Now on with the show...
     ```console
     curl -X GET \
         --output ${SENZING_DEMO_DIR}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mysql/docker-compose-rabbitmq-mysql.yaml"
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mssql/docker-compose-kafka-mssql.yaml"
 
     ```
 
@@ -135,7 +135,7 @@ describing where we can improve.   Now on with the show...
     1. There will be errors in some Docker logs as they wait for dependent services to become available.
        `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
-### View data
+### View formation
 
 Once the docker-compose formation is running,
 different aspects of the formation can be viewed.
@@ -244,7 +244,8 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-    rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
+    sudo rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
+
     ```
 
 ## Advanced
@@ -265,13 +266,17 @@ This docker formation brings up the following docker containers:
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[senzing/adminer](https://github.com/Senzing/docker-adminer)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
+1. *[senzing/entity-web-search-app-console](https://github.com/Senzing/entity-search-web-app-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
-1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/senzing-poc-server](https://github.com/Senzing/senzing-poc-server)*
+1. *[senzing/senzing-tools](https://github.com/Senzing/senzing-tools)*
+1. *[senzing/sshd](https://github.com/Senzing/docker-sshd)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
 
 ### Configuration
 
