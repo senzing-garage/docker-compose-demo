@@ -73,6 +73,30 @@ describing where we can improve.   Now on with the show...
 
 ## Demonstrate
 
+1. :pencil2: Specify AWS credentials.
+   Example:
+
+    ```console
+    export AWS_ACCESS_KEY_ID=$(aws configure get default.aws_access_key_id)
+    export AWS_SECRET_ACCESS_KEY=$(aws configure get default.aws_secret_access_key)
+    export AWS_DEFAULT_REGION=$(aws configure get default.region)
+
+    ```
+
+1. Create AWS SQS queues at
+   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
+
+1. :pencil2: Specify AWS SQS queues:
+   Example:
+
+    ```console
+    export SENZING_SQS_FAILURE_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-failure-queue"
+    export SENZING_SQS_INFO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-info-queue"
+    export SENZING_SQS_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-queue"
+    export SENZING_SQS_REDO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-redo-queue"
+
+    ```
+
 ### Choose docker formation
 
 :thinking: Choose a *docker-compose.yaml* file from
@@ -201,34 +225,6 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/${SENZING_DOCKER_COMPOSE_FILE}"
     cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose pull
-
-    ```
-
-### AWS credentials
-
-1. :pencil2: Specify AWS credentials.
-   Example:
-
-    ```console
-    export AWS_ACCESS_KEY_ID=$(aws configure get default.aws_access_key_id)
-    export AWS_SECRET_ACCESS_KEY=$(aws configure get default.aws_secret_access_key)
-    export AWS_DEFAULT_REGION=$(aws configure get default.region)
-
-    ```
-
-### AWS SQS queues
-
-1. Create AWS SQS queues at
-   [console.aws.amazon.com/sqs/home](https://console.aws.amazon.com/sqs/home).
-
-1. :pencil2: Specify AWS SQS queues:
-   Example:
-
-    ```console
-    export SENZING_SQS_FAILURE_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-failure-queue"
-    export SENZING_SQS_INFO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-info-queue"
-    export SENZING_SQS_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-queue"
-    export SENZING_SQS_REDO_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-redo-queue"
 
     ```
 
