@@ -83,7 +83,7 @@ describing where we can improve.   Now on with the show...
     ```console
     export SENZING_SQS_QUEUE_URL="https://sqs.us-east-1.amazonaws.com/000000000000/senzing-queue"
 
-    ```    
+    ```
 
 1. :pencil2: Specify a new directory to hold demonstration artifacts on the local host.
    Example:
@@ -260,6 +260,7 @@ it can be brought down and directories can be deleted.
 
     ```console
     rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
+
     ```
 
 ## Advanced

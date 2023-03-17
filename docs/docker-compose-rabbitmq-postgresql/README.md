@@ -244,6 +244,7 @@ it can be brought down and directories can be deleted.
 
     ```console
     rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
+
     ```
 
 ## Advanced
