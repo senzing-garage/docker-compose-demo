@@ -34,29 +34,10 @@ Arrows represent data flow.
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
     1. [Choose docker formation](#choose-docker-formation)
-        1. [Standard formation](#standard-formation)
-        1. [With Senzing API Server formation](#with-senzing-api-server-formation)
-        1. [Withinfo formation](#withinfo-formation)
-        1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
-        1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
-        1. [Debugging](#debugging)
     1. [Volumes](#volumes)
     1. [View data](#view-data)
-        1. [View Docker containers](#view-docker-containers)
-        1. [Use SSH](#use-ssh)
-        1. [View RabbitMQ](#view-rabbitmq)
-        1. [View PostgreSQL](#view-postgresql)
-        1. [View Senzing API Server](#view-senzing-api-server)
-        1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-        1. [View Jupyter notebooks](#view-jupyter-notebooks)
-        1. [View X-Term](#view-x-term)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
-    1. [SSH port](#ssh-port)
-    1. [Set sshd password](#set-sshd-password)
-    1. [Docker images](#docker-images)
-    1. [Configuration](#configuration)
-    1. [Program parameter matrix](#program-parameter-matrix)
 1. [Errors](#errors)
 1. [References](#references)
 
@@ -176,25 +157,25 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
    Example:
 
     ```console
-    export SENZING_VOLUME=~/my-senzing
+    export SENZING_DEMO_DIR=~/my-senzing
 
     ```
 
     1. :warning:
        **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
-       must be enabled for `SENZING_VOLUME`.
+       must be enabled for `SENZING_DEMO_DIR`.
     1. :warning:
        **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
-       must be enabled for `SENZING_VOLUME`.
+       must be enabled for `SENZING_DEMO_DIR`.
 
 1. Set environment variables.
    Example:
 
     ```console
-    export PGADMIN_DIR=${SENZING_VOLUME}/pgadmin
-    export POSTGRES_DIR=${SENZING_VOLUME}/postgres
-    export RABBITMQ_DIR=${SENZING_VOLUME}/rabbitmq
-    export SENZING_VAR_DIR=${SENZING_VOLUME}/var
+    export PGADMIN_DIR=${SENZING_DEMO_DIR}/pgadmin
+    export POSTGRES_DIR=${SENZING_DEMO_DIR}/postgres
+    export RABBITMQ_DIR=${SENZING_DEMO_DIR}/rabbitmq
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
     export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
 
@@ -205,7 +186,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     mkdir -p ${PGADMIN_DIR} ${POSTGRES_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
-    chmod -R 777 ${SENZING_VOLUME}
+    chmod -R 777 ${SENZING_DEMO_DIR}
 
     ```
 
@@ -214,9 +195,9 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-versions-stable.sh \
+        --output ${SENZING_DEMO_DIR}/docker-versions-stable.sh \
         https://raw.githubusercontent.com/Senzing/knowledge-base/main/lists/docker-versions-stable.sh
-    source ${SENZING_VOLUME}/docker-versions-stable.sh
+    source ${SENZING_DEMO_DIR}/docker-versions-stable.sh
 
     ```
 
@@ -225,9 +206,9 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```console
     curl -X GET \
-        --output ${SENZING_VOLUME}/docker-compose.yaml \
+        --output ${SENZING_DEMO_DIR}/docker-compose.yaml \
         "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/${SENZING_DOCKER_COMPOSE_FILE}"
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose pull
 
     ```
@@ -236,7 +217,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
    Example:
 
     ```console
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose up
 
     ```
@@ -342,14 +323,14 @@ it can be brought down and directories can be deleted.
    Example:
 
     ```console
-    cd ${SENZING_VOLUME}
+    cd ${SENZING_DEMO_DIR}
     sudo docker-compose down
 
     ```
 
 1. Remove directories from host system.
    The following directory was created during the demonstration:
-    1. `${SENZING_VOLUME}`
+    1. `${SENZING_DEMO_DIR}`
 
    It may be safely deleted.
 
@@ -357,49 +338,7 @@ it can be brought down and directories can be deleted.
 
 The following topics discuss variations to the basic docker-compose demonstration.
 
-### SSH port
-
-:thinking: **Optional:**
-If you do not plan on using the senzing/sshd container then these ssh sections can be ignored.
-Normally port 22 is already in use for `ssh`.
-So a different port may be needed by the running docker container.
-
-1. :thinking: See if port 22 is already in use.
-   If it is not in use, the next 2 steps are optional.
-   Example:
-
-    ```console
-    sudo lsof -i -P -n | grep LISTEN | grep :22
-
-    ````
-
-1. :pencil2: Choose port for docker container.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PORT=9181
-
-    ```
-
-1. Construct parameter for `docker run`.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PORT_PARAMETER="--publish ${SENZING_SSHD_PORT:-9181}:22"
-
-    ```
-
-### Set sshd password
-
-:thinking: **Optional:** The default password set for the sshd containers is `senzingsshdpassword`.
-However, this can be changed.
-
-1. :pencil2: Set the `SENZING_SSHD_PASSWORD` variable to change the password to access the sshd container.
-   Example:
-
-    ```console
-    export SENZING_SSHD_PASSWORD=<Pass_You_Want>
-    ```
+## Common
 
 ### Docker images
 
@@ -457,3 +396,5 @@ Configuration values specified by environment variable or command line parameter
 1. See [docs/errors.md](docs/errors.md).
 
 ## References
+
+- [Advanced](../common/advanced.md)
