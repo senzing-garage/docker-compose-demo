@@ -31,13 +31,8 @@ Arrows represent data flow.
 
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
-    1. [View data](#view-data)
-        1. [View Docker containers](#view-docker-containers)
-        1. [View RabbitMQ](#view-rabbitmq)
-        1. [View Senzing API Server](#view-senzing-api-server)
-        1. [View Senzing Entity Search WebApp](#view-senzing-entity-search-webapp)
-1. [Cleanup](#cleanup)
-1. [Errors](#errors)
+1. [Advanced](#advanced)
+1. [Related artifacts](#related-artifacts)
 1. [References](#references)
 
 ### Preamble
@@ -46,23 +41,11 @@ At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
 "[don't make me think](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/dont-make-me-think.md)" style.
 For the most part, instructions are copy and paste.
-Whenever thinking is needed, it's marked with a "thinking" icon :thinking:.
-Whenever customization is needed, it's marked with a "pencil" icon :pencil2:.
+[Icons](https://github.com/Senzing/knowledge-base/blob/main/lists/legend.md)
+are used to signify additional actions by the user.
 If the instructions are not clear, please let us know by opening a new
-[Documentation issue](https://github.com/Senzing/docker-compose-demo/issues/new?assignees=&labels=&template=documentation_request.md)
+[Documentation issue](https://github.com/Senzing/docker-compose-demo/issues/new?template=documentation_request.md)
 describing where we can improve.   Now on with the show...
-
-### Legend
-
-1. :thinking: - A "thinker" icon means that a little extra thinking may be required.
-   Perhaps you'll need to make some choices.
-   Perhaps it's an optional step.
-1. :pencil2: - A "pencil" icon means that the instructions may need modification before performing.
-1. :warning: - A "warning" icon means that something tricky is happening, so pay attention.
-
-### Related artifacts
-
-1. [DockerHub](https://hub.docker.com/r/senzing)
 
 ### Expectations
 
@@ -170,14 +153,13 @@ or are the default values seen in
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
-#### View RabbitMQ
+#### View Senzing Entity Search WebApp
 
-1. RabbitMQ is viewable at
-   [localhost:15672](http://localhost:15672).
-    1. **Defaults:** username: `user` password: `bitnami`
+1. Senzing Entity Search WebApp is viewable at
+   [localhost:8251](http://localhost:8251).
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#rabbitmq)
-   for working with RabbitMQ.
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+   for working with Senzing Entity Search WebApp.
 
 #### View Senzing API Server
 
@@ -195,15 +177,16 @@ The server supports the
    [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-api-server)
    for working with Senzing API server.
 
-#### View Senzing Entity Search WebApp
+#### View RabbitMQ
 
-1. Senzing Entity Search WebApp is viewable at
-   [localhost:8251](http://localhost:8251).
+1. RabbitMQ is viewable at
+   [localhost:15672](http://localhost:15672).
+    1. **Defaults:** username: `user` password: `bitnami`
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
-   for working with Senzing Entity Search WebApp.
+   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#rabbitmq)
+   for working with RabbitMQ.
 
-## Cleanup
+### Cleanup
 
 When the docker-compose formation is no longer needed,
 it can be brought down and directories can be deleted.
@@ -218,13 +201,50 @@ it can be brought down and directories can be deleted.
     ```
 
 1. Remove directories from host system.
-   The following directory was created during the demonstration:
-    1. `${SENZING_DEMO_DIR}`
+   Example:
 
-   It may be safely deleted.
+    ```console
+    rm -rf ${SENZING_DEMO_DIR:-/tmp/nowhere/for/safety}
 
-## Errors
+    ```
 
-1. See [docs/errors.md](docs/errors.md).
+## Advanced
+
+The following topics discuss variations to the basic docker-compose demonstration.
+
+1. [SSH port](../common/advanced.md#ssh-port)
+1. [Set sshd password](../common/advanced.md#set-sshd-password)
+
+### Docker images
+
+This docker formation brings up the following docker containers:
+
+1. *[bitnami/postgres](https://github.com/bitnami/containers/tree/main/bitnami/postgresql)*
+1. *[bitnami/rabbitmq](https://github.com/bitnami/containers/tree/main/bitnami/rabbitmq)*
+1. *[senzing/entity-web-search-app-console](https://github.com/Senzing/entity-search-web-app-console)*
+1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
+1. *[senzing/redoer](https://github.com/Senzing/redoer)*
+1. *[senzing/senzing-poc-server](https://github.com/Senzing/senzing-poc-server)*
+1. *[senzing/senzing-tools](https://github.com/Senzing/senzing-tools)*
+1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
+1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+
+### Configuration
+
+Configuration values specified by environment variable or command line parameter.
+
+- **[PGADMIN_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#pgadmin_dir)**
+- **[POSTGRES_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#postgres_dir)**
+- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**
+- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
+
+## Related artifacts
+
+1. [DockerHub](https://hub.docker.com/r/senzing)
 
 ## References
+
+- [Development](docs/development.md)
+- [Errors](docs/errors.md)
+- [Examples](docs/examples.md)
+- [Legend](https://github.com/Senzing/knowledge-base/blob/main/lists/legend.md)
