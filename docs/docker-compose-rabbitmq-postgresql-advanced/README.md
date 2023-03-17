@@ -38,7 +38,6 @@ Arrows represent data flow.
     1. [View data](#view-data)
 1. [Cleanup](#cleanup)
 1. [Advanced](#advanced)
-1. [Errors](#errors)
 1. [References](#references)
 
 ### Preamble

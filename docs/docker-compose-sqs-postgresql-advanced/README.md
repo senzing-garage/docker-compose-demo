@@ -37,7 +37,6 @@ Arrows represent data flow.
         1. [Standard formation](#standard-formation)
         1. [With Senzing API Server formation](#with-senzing-api-server-formation)
         1. [Withinfo formation](#withinfo-formation)
-        1. [Redoer formation](#redoer-formation)
         1. [Redoer queuing formation](#redoer-queuing-formation)
         1. [Withinfo and Redoer formation](#withinfo-and-redoer-formation)
         1. [Withinfo and Redoer queuing formation](#withinfo-and-redoer-queuing-formation)
