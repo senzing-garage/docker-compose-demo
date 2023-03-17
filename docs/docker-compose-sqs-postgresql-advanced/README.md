@@ -33,7 +33,7 @@ Arrows represent data flow.
 
 1. [Prerequisites](#prerequisites)
 1. [Demonstrate](#demonstrate)
-    1. [Choose docker formation](#choose-docker-formation)
+    1. [Choose formation](#choose-formation)
         1. [Standard formation](#standard-formation)
         1. [With Senzing API Server formation](#with-senzing-api-server-formation)
         1. [Withinfo formation](#withinfo-formation)
@@ -97,7 +97,7 @@ describing where we can improve.   Now on with the show...
 
     ```
 
-### Choose docker formation
+### Choose formation
 
 :thinking: Choose a *docker-compose.yaml* file from
 [list](../../resources/postgresql).
@@ -167,7 +167,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
 
     ```
 
-### Volumes
+### Run formation
 
 1. :pencil2: Specify a new directory to hold demonstration artifacts on the local host.
    Example:
@@ -241,7 +241,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     1. There will be errors in some Docker logs as they wait for dependent services to become available.
        `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
-### View data
+### View formation
 
 Once the docker-compose formation is running,
 different aspects of the formation can be viewed.

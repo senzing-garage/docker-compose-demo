@@ -135,7 +135,7 @@ describing where we can improve.   Now on with the show...
     1. There will be errors in some Docker logs as they wait for dependent services to become available.
        `docker-compose` isn't the best at orchestrating Docker container dependencies.
 
-### View data
+### View formation
 
 Once the docker-compose formation is running,
 different aspects of the formation can be viewed.
