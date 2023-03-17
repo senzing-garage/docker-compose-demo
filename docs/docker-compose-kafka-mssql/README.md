@@ -118,7 +118,7 @@ describing where we can improve.   Now on with the show...
     ```console
     curl -X GET \
         --output ${SENZING_DEMO_DIR}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mysql/docker-compose-rabbitmq-mysql.yaml"
+        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/mssql/docker-compose-kafka-mssql.yaml"
 
     ```
 
