@@ -83,12 +83,12 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    export SENZING_OPT_IBM_DIR=${SENZING_DEMO_DIR}/opt-ibm
-    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
-    export DB2_DIR=${SENZING_VAR_DIR}/db2
-    export SENZING_UID=$(id -u)
+    export DB2_DIR=${SENZING_DEMO_DIR}/db2
     export SENZING_GID=$(id -g)
+    export SENZING_OPT_IBM_DIR=${SENZING_DEMO_DIR}/opt-ibm
+    export SENZING_UID=$(id -u)
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
 
     ```
 
@@ -96,8 +96,8 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    mkdir -p ${SENZING_OPT_IBM_DIR} ${DB2_DIR} ${SENZING_VAR_DIR}
-    chown -R ${SENZING_UID}:${SENZING_GID} ${SENZING_DEMO_DIR}
+    mkdir -p  ${DB2_DIR} ${SENZING_OPT_IBM_DIR} ${SENZING_VAR_DIR}
+    chmod -R 777 ${SENZING_DEMO_DIR}
 
     ```
 
@@ -254,13 +254,15 @@ This docker formation brings up the following docker containers:
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
 1. *[senzing/db2-driver-installer](https://github.com/Senzing/docker-db2-driver-installer)*
+1. *[senzing/entity-web-search-app-console](https://github.com/Senzing/entity-search-web-app-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/init-container](https://github.com/Senzing/docker-init-container)*
-1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
-1. *[senzing/senzing-api-server](https://github.com/Senzing/senzing-api-server)*
+1. *[senzing/senzing-poc-server](https://github.com/Senzing/senzing-poc-server)*
+1. *[senzing/sshd](https://github.com/Senzing/docker-sshd)*
 1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
 1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
+1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
 
 ### Configuration
 
