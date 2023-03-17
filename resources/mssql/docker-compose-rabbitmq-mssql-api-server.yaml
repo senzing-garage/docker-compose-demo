@@ -1,38 +1,33 @@
 version: '3'
 services:
 
-  mssql:
-    container_name: senzing-mssql
-    environment:
-#     See https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables
-      ACCEPT_EULA: ${ACCEPT_EULA:-Y}
-      MSSQL_PID: ${MSSQL_PID:-Developer}
-      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
-    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-latest}
-    networks:
-      - senzing
-    ports:
-      - 1433:1433
-    restart: always
-    user: "0"
-    volumes:
-      - ${MSSQL_DIR:-/var/opt/mssql}:/var/opt/mssql
+  # makefile makes the odbc.ini file
 
-  adminer:
-    container_name: senzing-adminer
+  makefile:
+    container_name: senzing-makefile
+    command:
+      - sh
+      - -c
+      - mkdir -p /var/opt/senzing/mssql; echo "$${FILE_CONTENTS}" >> /var/opt/senzing/mssql/odbc.ini
     environment:
-      ADMINER_DEFAULT_SERVER: senzing-mssql
-    image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_ADMINER:-latest}
+      FILE_CONTENTS: |
+        [${MSSQL_DATABASE:-G2}]
+        Database = ${MSSQL_DATABASE:-G2}
+        Description = Senzing MS SQL database for G2
+        Driver = ODBC Driver 17 for SQL Server
+        Server = ${MSSQL_HOST:-senzing-mssql},${MSSQL_PORT:-1433}
+    image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
     networks:
       - senzing
-    ports:
-      - 9177:8080
-    restart: always
+    read_only: true
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   rabbitmq:
     container_name: senzing-rabbitmq
     environment:
-#     See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
+      # See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
@@ -50,12 +45,14 @@ services:
     depends_on:
       - rabbitmq
     environment:
-#     See https://github.com/Senzing/stream-producer#configuration
+      # See https://github.com/Senzing/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
+      SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_ROUTING_KEY: senzing.records
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: json-to-rabbitmq
     image: senzing/stream-producer:${SENZING_DOCKER_IMAGE_VERSION_STREAM_PRODUCER:-latest}
@@ -66,6 +63,23 @@ services:
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+
+  mssql:
+    container_name: senzing-mssql
+    environment:
+      # See https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables
+      ACCEPT_EULA: ${ACCEPT_EULA:-Y}
+      MSSQL_PID: ${MSSQL_PID:-Developer}
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:-Passw0rd}
+    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-latest}
+    networks:
+      - senzing
+    ports:
+      - 1433:1433
+    restart: always
+    user: "0"
+    volumes:
+      - ${MSSQL_DIR:-/var/opt/mssql}:/var/opt/mssql
 
   mssql-create-db:
     command:
@@ -87,7 +101,7 @@ services:
     restart: on-failure
 
   mssql-create-senzing:
-#   For command-line options, see https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility
+    # For command-line options, see https://docs.microsoft.com/en-us/sql/tools/sqlcmd-utility
     command:
       - /opt/mssql-tools/bin/sqlcmd
       - -d
@@ -113,39 +127,23 @@ services:
     volumes:
       - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
 
-  initcontainer:
-    container_name: senzing-init-container
-    depends_on:
-      - mssql
-      - mssql-create-db
-      - mssql-create-senzing
+  adminer:
+    container_name: senzing-adminer
     environment:
-      LD_LIBRARY_PATH: /opt/senzing/g2/lib:/opt/senzing/g2/lib/debian:/opt/IBM/db2/clidriver/lib:/opt/microsoft/msodbcsql17/lib64
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
-      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
-      SENZING_DELAY_IN_SECONDS: 30
-      SENZING_GID: ${SENZING_GID:-1001}
-      SENZING_UID: ${SENZING_UID:-1001}
-    image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}
+      ADMINER_DEFAULT_SERVER: senzing-mssql
+    image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_ADMINER:-latest}
     networks:
       - senzing
-    read_only: true
-    restart: on-failure
-    user: "0"
-    volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+    ports:
+      - 9177:8080
+    restart: always
 
   console:
     cap_add:
       - ALL
     container_name: senzing-console
     environment:
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -160,16 +158,12 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/senzing-console:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
+    image: senzing/senzing-console-mssql:${SENZING_DOCKER_IMAGE_VERSION_SENZING_CONSOLE:-latest}
     networks:
       - senzing
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   g2configtool:
@@ -178,11 +172,11 @@ services:
       - -c
       - echo "$${SENZING_G2CONFIG_GTC}" >> /tmp/G2Config.gtc; sleep $${SENZING_DELAY_IN_SECONDS}; /opt/senzing/g2/python/G2ConfigTool.py -f /tmp/G2Config.gtc
     container_name: senzing-g2configtools
-    depends_on:
-      - initcontainer
     environment:
       LC_CTYPE: en_US.utf8
-#     See https://github.com/Senzing/g2configtool
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
+      # See https://github.com/Senzing/g2configtool
       SENZING_DELAY_IN_SECONDS: 10
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -202,13 +196,16 @@ services:
         addDataSource REFERENCE
         addDataSource WATCHLIST
         save
-    image: senzing/senzingapi-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZINGAPI_TOOLS:-latest}
+    image: senzing/senzingapi-tools-mssql:${SENZING_DOCKER_IMAGE_VERSION_SENZINGAPI_TOOLS:-latest}
     networks:
       - senzing
     read_only: true
     restart: on-failure
     tmpfs:
       - /tmp
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   loader:
     container_name: senzing-stream-loader
@@ -217,10 +214,9 @@ services:
       - mssql-create-senzing
     environment:
       LC_CTYPE: en_US.utf8
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-#     See https://github.com/Senzing/stream-loader#configuration
-      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
+      # See https://github.com/Senzing/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -241,27 +237,23 @@ services:
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
-    image: senzing/stream-loader:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
+    image: senzing/stream-loader-mssql:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
     networks:
       - senzing
     read_only: true
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   redoer:
     container_name: senzing-redoer
     depends_on:
       - loader
     environment:
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
-#     See https://github.com/Senzing/redoer#configuration
-      SENZING_DATABASE_URL: "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_HOST:-senzing-mssql}:${MSSQL_PORT:-1433}/${MSSQL_DATABASE:-G2}"
+      # See https://github.com/Senzing/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -279,42 +271,25 @@ services:
       SENZING_EXIT_ON_THREAD_TERMINATION: ${SENZING_EXIT_ON_THREAD_TERMINATION:-"false"}
       SENZING_MONITORING_PERIOD_IN_SECONDS: ${SENZING_MONITORING_PERIOD_IN_SECONDS:-60}
       SENZING_SUBCOMMAND: redo
-    image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
+    image: senzing/redoer-mssql:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
     networks:
       - senzing
-    privileged: true
     read_only: true
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   api:
     container_name: senzing-api-server
     depends_on:
       - mssql-create-senzing
     environment:
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_BIND_ADDR: 'all'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
-      SENZING_API_SERVER_INIT_JSON: >-
-        {
-          "PIPELINE": {
-            "CONFIGPATH": "/etc/opt/senzing",
-            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
-            "RESOURCEPATH": "/opt/senzing/g2/resources",
-            "SUPPORTPATH": "/opt/senzing/data"
-          },
-          "SQL": {
-            "BACKEND": "SQL",
-            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
-          }
-        }
       SENZING_API_SERVER_PORT: '8250'
       SENZING_API_SERVER_SKIP_ENGINE_PRIMING: 'true'
       SENZING_API_SERVER_SKIP_STARTUP_PERF: 'true'
@@ -331,7 +306,7 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/senzing-api-server:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
+    image: senzing/senzing-api-server-mssql:${SENZING_DOCKER_IMAGE_VERSION_SENZING_API_SERVER:-latest}
     networks:
       - senzing
     ports:
@@ -342,10 +317,7 @@ services:
       - /tmp
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
+      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   webapp:
     container_name: senzing-webapp
@@ -353,7 +325,7 @@ services:
       - api
       - webapp-console
     environment:
-#     See https://github.com/Senzing/entity-search-web-app#configuration
+      # See https://github.com/Senzing/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-api-server:8250
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251
@@ -373,16 +345,28 @@ services:
   webapp-console:
     container_name: senzing-webapp-console
     environment:
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_CONSOLE_SERVER_PORT: 8257
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/g2/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "SQL",
+            "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
+          }
+        }
     image: senzing/entity-search-web-app-console:${SENZING_DOCKER_IMAGE_VERSION_ENTITY_SEARCH_WEB_APP_CONSOLE:-latest}
     networks:
       - senzing
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   sshd:
@@ -390,6 +374,8 @@ services:
       - ALL
     container_name: senzing-sshd
     environment:
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       ROOT_PASSWORD: ${SENZING_SSHD_PASSWORD:-senzingsshdpassword}
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -404,23 +390,19 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/sshd:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
+    image: senzing/sshd-mssql:${SENZING_DOCKER_IMAGE_VERSION_SSHD:-latest}
     networks:
       - senzing
     ports:
       - "${SENZING_SSHD_PORT:-9181}:22"
     restart: always
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
   xterm:
     container_name: senzing-xterm
     environment:
-      ODBCINI: /opt/microsoft/msodbcsql17/etc/odbc.ini
+      ODBCINI: /var/opt/senzing/mssql/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql17/etc
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -435,7 +417,7 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/xterm:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
+    image: senzing/xterm-mssql:${SENZING_DOCKER_IMAGE_VERSION_XTERM:-latest}
     networks:
       - senzing
     ports:
@@ -443,22 +425,7 @@ services:
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_DATA_VERSION_DIR:-/opt/senzing/data/3.0.0}:/opt/senzing/data
-      - ${SENZING_ETC_DIR:-/etc/opt/senzing}:/etc/opt/senzing
-      - ${SENZING_G2_DIR:-/opt/senzing/g2}:/opt/senzing/g2
-      - ${SENZING_OPT_MICROSOFT_DIR:-/opt/microsoft}:/opt/microsoft
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
-
-  swaggerui:
-    container_name: senzing-swaggerui
-    environment:
-      URL: "https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml"
-    image: swaggerapi/swagger-ui:${SENZING_DOCKER_IMAGE_VERSION_SWAGGERAPI_SWAGGER_UI:-latest}
-    networks:
-      - senzing
-    ports:
-      - 9180:8080
-    restart: always
 
 networks:
   senzing:
