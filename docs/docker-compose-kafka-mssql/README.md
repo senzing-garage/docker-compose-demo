@@ -86,9 +86,9 @@ describing where we can improve.   Now on with the show...
 
     ```console
     export MSSQL_DIR=${SENZING_DEMO_DIR}/mssql
-    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
-    export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+    export SENZING_UID=$(id -u)
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
 
     ```
 

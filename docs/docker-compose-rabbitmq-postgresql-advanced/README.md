@@ -162,9 +162,9 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     export PGADMIN_DIR=${SENZING_DEMO_DIR}/pgadmin
     export POSTGRES_DIR=${SENZING_DEMO_DIR}/postgres
     export RABBITMQ_DIR=${SENZING_DEMO_DIR}/rabbitmq
-    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
-    export SENZING_UID=$(id -u)
     export SENZING_GID=$(id -g)
+    export SENZING_UID=$(id -u)
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
 
     ```
 

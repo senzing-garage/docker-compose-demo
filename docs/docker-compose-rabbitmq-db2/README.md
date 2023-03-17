@@ -83,13 +83,13 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    export SENZING_OPT_IBM_DIR=${SENZING_DEMO_DIR}/opt-ibm
-    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
-    export SENZING_UID=$(id -u)
-    export SENZING_GID=$(id -g)
     export DB2_CUSTOM_DIR=${GIT_REPOSITORY_DIR}/resources/db2/initialization
     export DB2_DIR=${SENZING_DEMO_DIR}/db2
     export RABBITMQ_DIR=${SENZING_DEMO_DIR}/rabbitmq
+    export SENZING_GID=$(id -g)
+    export SENZING_OPT_IBM_DIR=${SENZING_DEMO_DIR}/opt-ibm
+    export SENZING_UID=$(id -u)
+    export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
 
     ```
 
@@ -97,7 +97,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    mkdir -p ${SENZING_OPT_IBM_DIR} ${DB2_DIR} ${RABBITMQ_DIR} ${SENZING_VAR_DIR}
+    mkdir -p ${DB2_DIR} ${RABBITMQ_DIR} ${SENZING_OPT_IBM_DIR} ${SENZING_VAR_DIR}
     chmod -R 777 ${SENZING_DEMO_DIR}
 
     ```

@@ -83,11 +83,11 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
+    export RABBITMQ_DIR=${SENZING_DEMO_DIR}/rabbitmq
+    export SENZING_GID=$(id -g)
+    export SENZING_UID=$(id -u)
     export SENZING_VAR_DIR=${SENZING_DEMO_DIR}/var
     export SQLITE_DIR=${SENZING_VAR_DIR}/sqlite
-    export RABBITMQ_DIR=${SENZING_VAR_DIR}/rabbitmq
-    export SENZING_UID=$(id -u)
-    export SENZING_GID=$(id -g)
 
     ```
 
@@ -95,7 +95,7 @@ describing where we can improve.   Now on with the show...
    Example:
 
     ```console
-    mkdir -p ${SQLITE_DIR} ${SENZING_VAR_DIR} ${RABBITMQ_DIR}
+    mkdir -p ${RABBITMQ_DIR} ${SENZING_VAR_DIR} ${SQLITE_DIR}
     chmod -R 777 ${SENZING_DEMO_DIR}
 
     ```
