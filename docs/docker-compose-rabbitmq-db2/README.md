@@ -182,7 +182,7 @@ Instructions to use the senzing/sshd container are viewable in the [senzing/dock
    Example:
 
     ```console
-    sudo chmod 777 -R ${POSTGRES_DIR}
+    sudo chmod 777 -R ${DB2_DIR}
 
     ```
 

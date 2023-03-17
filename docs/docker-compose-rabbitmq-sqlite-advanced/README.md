@@ -75,7 +75,7 @@ describing where we can improve.   Now on with the show...
 ### Choose docker formation
 
 :thinking: Choose a *docker-compose.yaml* file from
-[list](../../resources/postgresql).
+[list](../../resources/sqlite).
 Choose one value for `SENZING_DOCKER_COMPOSE_FILE` from the examples given below.
 
 #### Standard formation
