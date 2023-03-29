@@ -60,8 +60,8 @@ services:
       - ${MYSQL_DIR:-/var/lib/mysql}:/var/lib/mysql
 
   initdatabase:
-    container_name: senzing-tools-initdatabase
-    command: initdatabase
+    container_name: senzing-tools-init-database
+    command: init-database
     depends_on:
       - mysql
     environment:
