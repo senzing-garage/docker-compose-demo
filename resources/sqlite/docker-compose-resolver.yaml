@@ -2,8 +2,8 @@ version: '3'
 services:
 
   initdatabase:
-    container_name: senzing-tools-initdatabase
-    command: initdatabase
+    container_name: senzing-tools-init-database
+    command: init-database
     environment:
       SENZING_TOOLS_DATASOURCES: CUSTOMERS REFERENCE WATCHLIST
       SENZING_TOOLS_ENGINE_CONFIGURATION_JSON: >-
