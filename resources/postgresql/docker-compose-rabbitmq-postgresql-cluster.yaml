@@ -193,8 +193,8 @@ services:
       - ${POSTGRES_DIR_RES:-/var/lib/postgresql_res/data}:/bitnami/postgresql
 
   initdatabase:
-    container_name: senzing-tools-initdatabase
-    command: initdatabase
+    container_name: senzing-tools-init-database
+    command: init-database
     depends_on:
       - postgres
     environment:
