@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.13.1] - 2023-03-29
 
-### Changed in 1.13.`
+### Changed in 1.13.1
 
 - Move from database specific initializers to `senzing/senzing-tools init-database`
 
