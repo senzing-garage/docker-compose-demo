@@ -63,7 +63,7 @@ services:
       SENZING_TOOLS_COMMAND: move
       SENZING_TOOLS_DELAY_IN_SECONDS: 30
       SENZING_TOOLS_INPUT_URL: "https://public-read-access.s3.amazonaws.com/TestDataSets/SenzingTruthSet/truth-set-3.0.0.jsonl"
-      SENZING_TOOLS_OUTPUT_URL: "amqp://${RABBITMQ_USERNAME:-user}:${RABBITMQ_PASSWORD:-bitnami}@senzing-rabbitmq:5672"
+      SENZING_TOOLS_OUTPUT_URL: "amqp://${RABBITMQ_USERNAME:-user}:${RABBITMQ_PASSWORD:-bitnami}@senzing-rabbitmq:5672?exchange=senzing-rabbitmq-exchange&queue-name=senzing-rabbitmq-queue&routing-key=senzing.records"
     image: senzing/senzing-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_TOOLS:-latest}
     networks:
       - senzing
@@ -355,11 +355,10 @@ services:
     volumes:
       - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
 
-  xterm:
-    container_name: senzing-tools-xterm
+  serve-http:
+    container_name: senzing-tools-serve-http
+    command: ["serve-http", "--enable-all"]
     environment:
-      SENZING_TOOLS_COMMAND: serve-http
-      SENZING_TOOLS_ENABLE_XTERM: "true"
       SENZING_TOOLS_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
