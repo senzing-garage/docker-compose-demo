@@ -1,5 +1,12 @@
 # docker-compose-demo
 
+## :warning: Advanced topic :warning:
+
+If you are beginning your journey with
+[Senzing](https://senzing.com/),
+please start with
+[Senzing Quick Start guides](https://docs.senzing.com/quickstart/).
+
 ## Synopsis
 
 Using `docker-compose`, bring up a Senzing stack.
