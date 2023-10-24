@@ -263,7 +263,6 @@ This docker formation brings up the following docker containers:
 1. *[dpage/pgadmin4](https://hub.docker.com/r/dpage/pgadmin4)*
 1. *[obsidiandynamics/kafdrop](https://hub.docker.com/r/obsidiandynamics/kafdrop)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
-1. *[senzing/entity-web-search-app-console](https://github.com/Senzing/entity-search-web-app-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/jupyter](https://github.com/Senzing/docker-jupyter)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*

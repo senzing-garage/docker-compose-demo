@@ -221,7 +221,6 @@ This docker formation brings up the following docker containers:
 
 1. *[bitnami/postgres](https://github.com/bitnami/containers/tree/main/bitnami/postgresql)*
 1. *[bitnami/rabbitmq](https://github.com/bitnami/containers/tree/main/bitnami/rabbitmq)*
-1. *[senzing/entity-web-search-app-console](https://github.com/Senzing/entity-search-web-app-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
 1. *[senzing/senzing-poc-server](https://github.com/Senzing/senzing-poc-server)*

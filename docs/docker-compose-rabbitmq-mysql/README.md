@@ -245,7 +245,6 @@ This docker formation brings up the following docker containers:
 1. *[mysql](https://github.com/docker-library/mysql)*
 1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
 1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
-1. *[senzing/entity-web-search-app-console](https://github.com/Senzing/entity-search-web-app-console)*
 1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
 1. *[senzing/redoer](https://github.com/Senzing/redoer)*
 1. *[senzing/senzing-poc-server](https://github.com/Senzing/senzing-poc-server)*
