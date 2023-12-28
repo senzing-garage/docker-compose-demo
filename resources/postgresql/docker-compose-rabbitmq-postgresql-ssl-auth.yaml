@@ -60,7 +60,7 @@ services:
     depends_on:
       - rabbitmq
     environment:
-      # See https://github.com/Senzing/stream-producer#configuration
+      # See https://github.com/senzing-garage/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
@@ -194,7 +194,7 @@ services:
       - postgres
     environment:
       LC_CTYPE: en_US.utf8
-      # See https://github.com/Senzing/stream-loader#configuration
+      # See https://github.com/senzing-garage/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {

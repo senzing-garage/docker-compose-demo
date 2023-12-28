@@ -8,12 +8,12 @@ and sending the messages to the Senzing Engine
 which manages the Senzing Model.
 
 It uses the
-[stream-loader](https://github.com/Senzing/stream-loader).
+[stream-loader](https://github.com/senzing-garage/stream-loader).
 
 ## Environment variables
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh).
+   See [latest versions](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-versions-stable.sh).
    Example:
 
     ```console

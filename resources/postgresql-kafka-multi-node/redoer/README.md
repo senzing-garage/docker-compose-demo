@@ -10,12 +10,12 @@ and having the records processed by the Senzing Engine.
 The use of a queue is to support scale up of redo loaders.
 
 It uses the
-[redoer](https://github.com/Senzing/redoer).
+[redoer](https://github.com/senzing-garage/redoer).
 
 ## Environment variables
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh).
+   See [latest versions](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-versions-stable.sh).
    Example:
 
     ```console

@@ -60,7 +60,7 @@ services:
     depends_on:
       - rabbitmq
     environment:
-      # See https://github.com/Senzing/stream-producer#configuration
+      # See https://github.com/senzing-garage/stream-producer#configuration
       SENZING_DEFAULT_DATA_SOURCE: ${SENZING_DEFAULT_DATA_SOURCE:-TEST}
       SENZING_DELAY_IN_SECONDS: 30
       SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
@@ -194,7 +194,7 @@ services:
       - postgres
     environment:
       LC_CTYPE: en_US.utf8
-      # See https://github.com/Senzing/stream-loader#configuration
+      # See https://github.com/senzing-garage/stream-loader#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -227,7 +227,7 @@ services:
     depends_on:
       - loader
     environment:
-      # See https://github.com/Senzing/redoer#configuration
+      # See https://github.com/senzing-garage/redoer#configuration
       SENZING_DELAY_IN_SECONDS: 60
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
@@ -298,7 +298,7 @@ services:
     depends_on:
       - pocserver
     environment:
-      # See https://github.com/Senzing/entity-search-web-app#configuration
+      # See https://github.com/senzing-garage/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-poc-server:8250/api
       SENZING_BASE_URL_ENTITY_SEARCH_WEB_APP: /app
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: NONE
@@ -326,7 +326,7 @@ services:
     depends_on:
       - loader
     environment:
-      # See https://github.com/Senzing/docker-jupyter#configuration
+      # See https://github.com/senzing-garage/docker-jupyter#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {

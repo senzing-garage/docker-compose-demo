@@ -3,13 +3,13 @@
 ## Synopsis
 
 The "webapp" node type deploys the
-[Senzing Entity Search Web app](https://github.com/Senzing/entity-search-web-app).
+[Senzing Entity Search Web app](https://github.com/senzing-garage/entity-search-web-app).
 which can be used to visually inspect the Senzing Mode.
 
 ## Environment variables
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh).
+   See [latest versions](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-versions-stable.sh).
    Example:
 
     ```console

@@ -43,7 +43,7 @@ Finally, a set of mock data, 100K records, is sent to Kafka for demonstration pu
 ### Loading Senzing Model
 
 Once source records are available in Kafka,
-[stream-loaders](https://github.com/Senzing/stream-loader)
+[stream-loaders](https://github.com/senzing-garage/stream-loader)
 are deployed to read from the Kafka Topic and send
 to the Senzing Engine which manages the Senzing Model.
 
@@ -52,7 +52,7 @@ to the Senzing Engine which manages the Senzing Model.
 ### Redo
 
 The Senzing Model is monitored for any re-evaluations that are needed.
-The [redoers](https://github.com/Senzing/redoer)
+The [redoers](https://github.com/senzing-garage/redoer)
 processes those re-evaluations.
 
 1. To create the set of redoers, follow steps in [redoer](redoer/).
@@ -61,21 +61,21 @@ processes those re-evaluations.
 
 The Senzing Model can be queried via a RESTful HTTP API
 delivered by the
-[Senzing API Server](https://github.com/Senzing/senzing-api-server).
+[Senzing API Server](https://github.com/senzing-garage/senzing-api-server).
 
 1. To create the set of senzing-api-servers, follow steps in [api](api/).
 
 ### Viewing Senzing Model
 
 The Senzing Model can be visualized using the
-[Senzing Entity Search Web App](https://github.com/Senzing/entity-search-web-app).
+[Senzing Entity Search Web App](https://github.com/senzing-garage/entity-search-web-app).
 
 1. To create an entity-search-web-app, follow steps in [webapp](webapp/).
 
 ### Utilities
 
 Utilities programs include a
-[console](https://github.com/Senzing/docker-senzing-console) container
+[console](https://github.com/senzing-garage/docker-senzing-console) container
 and
 [SwaggerUI](https://www.github.com/swagger-api/swagger-ui).
 
