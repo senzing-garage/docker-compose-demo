@@ -4,7 +4,7 @@ services:
   initcontainer:
     container_name: senzing-init-container-loader
     environment:
-#     See https://github.com/Senzing/docker-init-container#configuration
+#     See https://github.com/senzing-garage/docker-init-container#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
       SENZING_SUBCOMMAND: initialize-files
     image: senzing/init-container:${SENZING_DOCKER_IMAGE_VERSION_INIT_CONTAINER:-latest}

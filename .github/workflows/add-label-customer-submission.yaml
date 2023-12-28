@@ -1,18 +1,17 @@
-name: identify-customer.yaml
+name: add-label-customer-submission.yaml
 on:
   issues:
     types:
       - opened
 env:
-  GITHUB_TOKEN: ${{ secrets.ORG_MEMBERSHIP_TOKEN }}
   MEMBER_LIST: ${{ secrets.SENZING_MEMBERS }}
   CREATOR: ${{ github.actor }}
 jobs:
   automate-issues-labels:
-    name: Add customer-submission label
+    name: Add customer-submission label to issue
     runs-on: ubuntu-latest
     steps:
-      - name: initial labeling
+      - name: Add customer-submission label
         env:
           BOOL: ${{ contains( env.MEMBER_LIST, env.CREATOR ) }}
         if: ${{ env.BOOL == 'false' }}

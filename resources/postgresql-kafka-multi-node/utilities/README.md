@@ -11,7 +11,7 @@ working with the Senzing stack.
 ## Environment variables
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh).
+   See [latest versions](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-versions-stable.sh).
    Example:
 
     ```console

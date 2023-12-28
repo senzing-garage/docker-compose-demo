@@ -1,8 +1,4 @@
-# Based on
-# - https://docs.github.com/en/actions/guides/adding-labels-to-issues
-# - https://github.com/andymckay/labeler
-
-name: add-triage-label.yaml
+name: add-label-triage.yaml
 on:
   issues:
     types:
@@ -13,7 +9,7 @@ jobs:
     name: Add triage label to issue
     runs-on: ubuntu-latest
     steps:
-      - name: initial labeling
+      - name: Add triage label
         uses: andymckay/labeler@1.0.4
         with:
           add-labels: "triage"

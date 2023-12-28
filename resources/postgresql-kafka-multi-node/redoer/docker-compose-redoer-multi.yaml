@@ -18,7 +18,7 @@ services:
   redoerqueuewriter:
     container_name: senzing-redoer-write-to-rabbitmq
     environment:
-#     See https://github.com/Senzing/redoer#configuration
+#     See https://github.com/senzing-garage/redoer#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
       SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
@@ -43,7 +43,7 @@ services:
 
   redoerqueuereader:
     environment:
-#     See https://github.com/Senzing/redoer#configuration
+#     See https://github.com/senzing-garage/redoer#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
       SENZING_RABBITMQ_EXCHANGE: senzing-rabbitmq-exchange
       SENZING_RABBITMQ_HOST: senzing-rabbitmq

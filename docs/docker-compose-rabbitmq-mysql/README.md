@@ -14,13 +14,13 @@ MySQL as the underlying database.
 The instructions show how to set up a system that:
 
 1. Reads JSON lines from a file on the internet and sends each JSON line to a message queue via the Senzing
-   [stream-producer](https://github.com/Senzing/stream-producer).
+   [stream-producer](https://github.com/senzing-garage/stream-producer).
     1. In this implementation, the queue is RabbitMQ.
 1. Reads messages from the queue and inserts into Senzing via the Senzing
-   [stream-loader](https://github.com/Senzing/stream-loader).
+   [stream-loader](https://github.com/senzing-garage/stream-loader).
     1. In this implementation, Senzing keeps its data in a MySQL database.
-1. Reads information from Senzing via [Senzing API Server](https://github.com/Senzing/senzing-api-server) server.
-1. Views resolved entities in a [web app](https://github.com/Senzing/entity-search-web-app).
+1. Reads information from Senzing via [Senzing API Server](https://github.com/senzing-garage/senzing-api-server) server.
+1. Views resolved entities in a [web app](https://github.com/senzing-garage/entity-search-web-app).
 
 The following diagram shows the relationship of the Docker containers in this Docker composition.
 Arrows represent data flow.
@@ -39,12 +39,12 @@ Arrows represent data flow.
 
 At [Senzing](http://senzing.com),
 we strive to create GitHub documentation in a
-"[don't make me think](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/dont-make-me-think.md)" style.
+"[don't make me think](https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/dont-make-me-think.md)" style.
 For the most part, instructions are copy and paste.
-[Icons](https://github.com/Senzing/knowledge-base/blob/main/lists/legend.md)
+[Icons](https://github.com/senzing-garage/knowledge-base/blob/main/lists/legend.md)
 are used to signify additional actions by the user.
 If the instructions are not clear, please let us know by opening a new
-[Documentation issue](https://github.com/Senzing/docker-compose-demo/issues/new?template=documentation_request.md)
+[Documentation issue](https://github.com/senzing-garage/docker-compose-demo/issues/new?template=documentation_request.md)
 describing where we can improve.   Now on with the show...
 
 ### Expectations
@@ -52,17 +52,17 @@ describing where we can improve.   Now on with the show...
 - **Space:** This repository and demonstration require 7 GB free disk space.
 - **Time:** Budget 2 hours to get the demonstration up-and-running, depending on CPU and network speeds.
 - **Background knowledge:** This repository assumes a working knowledge of:
-  - [Docker](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker.md)
-  - [Docker-compose](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker-compose.md)
+  - [Docker](https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker.md)
+  - [Docker-compose](https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md)
 
 ## Prerequisites
 
-1. [docker](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker.md) -
+1. [docker](https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker.md) -
    Minimum version: [20.10.16](https://docs.docker.com/engine/release-notes/#201016)
-1. [docker-compose](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/docker-compose.md) -
+1. [docker-compose](https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md) -
    Minimum version: [1.29.0](https://docs.docker.com/compose/release-notes/#1290)
 1. Create
-   [MySQL compatible Docker images](https://github.com/Senzing/docker-wrap-image-with-mysql).
+   [MySQL compatible Docker images](https://github.com/senzing-garage/docker-wrap-image-with-mysql).
 
 ## Demonstrate
 
@@ -75,10 +75,10 @@ describing where we can improve.   Now on with the show...
     ```
 
     1. :warning:
-       **macOS** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
+       **macOS** - [File sharing](https://github.com/senzing-garage/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#macos)
        must be enabled for `SENZING_DEMO_DIR`.
     1. :warning:
-       **Windows** - [File sharing](https://github.com/Senzing/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
+       **Windows** - [File sharing](https://github.com/senzing-garage/knowledge-base/blob/main/HOWTO/share-directories-with-docker.md#windows)
        must be enabled for `SENZING_DEMO_DIR`.
 
 1. Set environment variables.
@@ -148,7 +148,7 @@ or are the default values seen in
 #### View Docker containers
 
 1. A good tool to monitor individual Docker logs is
-   [Portainer](https://github.com/Senzing/knowledge-base/blob/main/WHATIS/portainer.md).
+   [Portainer](https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/portainer.md).
    When running, Portainer is viewable at
    [localhost:9170](http://localhost:9170).
 
@@ -157,7 +157,7 @@ or are the default values seen in
 1. Senzing Entity Search WebApp is viewable at
    [localhost:8251](http://localhost:8251).
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
+   [additional tips](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-entity-search-webapp)
    for working with Senzing Entity Search WebApp.
 
 #### View X-Term
@@ -167,18 +167,18 @@ The web-based Senzing X-term can be used to run Senzing command-line programs.
 1. Senzing X-term is viewable at
    [localhost:8254](http://localhost:8254).
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-x-term)
+   [additional tips](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-x-term)
    for working with Senzing X-Term.
 
 #### Use SSH
 
-Instructions to use the senzing/sshd container are viewable in the [senzing/docker-sshd](https://github.com/Senzing/docker-sshd/blob/main/README.md#ssh-into-container) repository
+Instructions to use the senzing/sshd container are viewable in the [senzing/docker-sshd](https://github.com/senzing-garage/docker-sshd/blob/main/README.md#ssh-into-container) repository
 
 #### View Senzing API Server
 
 View results from Senzing REST API server.
 The server supports the
-[Senzing REST API](https://github.com/Senzing/senzing-rest-api-specification).
+[Senzing REST API](https://github.com/senzing-garage/senzing-rest-api-specification).
 
 1. The
    [OpenApi Editor](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/Senzing/senzing-rest-api-specification/main/senzing-rest-api.yaml)
@@ -187,7 +187,7 @@ The server supports the
 1. Example Senzing REST API request:
    [localhost:8250/heartbeat](http://localhost:8250/heartbeat)
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-api-server)
+   [additional tips](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#senzing-api-server)
    for working with Senzing API server.
 
 #### View RabbitMQ
@@ -196,7 +196,7 @@ The server supports the
    [localhost:15672](http://localhost:15672).
     1. **Defaults:** username: `user` password: `bitnami`
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#rabbitmq)
+   [additional tips](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#rabbitmq)
    for working with RabbitMQ.
 
 #### View MySQL
@@ -205,7 +205,7 @@ The server supports the
    [localhost:9173](http://localhost:9173).
     1. **Defaults:** username: `g2` password: `g2`
 1. See
-   [additional tips](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#mysql)
+   [additional tips](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-compose-demo-tips.md#mysql)
    for working with MySQL.
 
 ### Cleanup
@@ -244,27 +244,27 @@ This docker formation brings up the following docker containers:
 1. *[bitnami/rabbitmq](https://github.com/bitnami/containers/tree/main/bitnami/rabbitmq)*
 1. *[mysql](https://github.com/docker-library/mysql)*
 1. *[phpmyadmin/phpmyadmin](https://github.com/phpmyadmin/docker)*
-1. *[senzing/console](https://github.com/Senzing/docker-senzing-console)*
-1. *[senzing/entity-web-search-app](https://github.com/Senzing/entity-search-web-app)*
-1. *[senzing/redoer](https://github.com/Senzing/redoer)*
-1. *[senzing/senzing-poc-server](https://github.com/Senzing/senzing-poc-server)*
-1. *[senzing/senzing-tools](https://github.com/Senzing/senzing-tools)*
-1. *[senzing/sshd](https://github.com/Senzing/docker-sshd)*
-1. *[senzing/stream-loader](https://github.com/Senzing/stream-loader)*
-1. *[senzing/stream-producer](https://github.com/Senzing/stream-producer)*
-1. *[senzing/xterm](https://github.com/Senzing/docker-xterm)*
+1. *[senzing/console](https://github.com/senzing-garage/docker-senzing-console)*
+1. *[senzing/entity-web-search-app](https://github.com/senzing-garage/entity-search-web-app)*
+1. *[senzing/redoer](https://github.com/senzing-garage/redoer)*
+1. *[senzing/senzing-poc-server](https://github.com/senzing-garage/senzing-poc-server)*
+1. *[senzing/senzing-tools](https://github.com/senzing-garage/senzing-tools)*
+1. *[senzing/sshd](https://github.com/senzing-garage/docker-sshd)*
+1. *[senzing/stream-loader](https://github.com/senzing-garage/stream-loader)*
+1. *[senzing/stream-producer](https://github.com/senzing-garage/stream-producer)*
+1. *[senzing/xterm](https://github.com/senzing-garage/docker-xterm)*
 
 ### Configuration
 
 Configuration values specified by environment variable or command line parameter.
 
-- **[MYSQL_DATABASE](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#mysql_database)**
-- **[MYSQL_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#mysql_dir)**
-- **[MYSQL_PASSWORD](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#mysql_passwrod)**
-- **[MYSQL_ROOT_PASSWORD](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#mysql_root-password)**
-- **[MYSQL_USERNAME](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#mysql_username)**
-- **[RABBITMQ_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**
-- **[SENZING_VAR_DIR](https://github.com/Senzing/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
+- **[MYSQL_DATABASE](https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#mysql_database)**
+- **[MYSQL_DIR](https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#mysql_dir)**
+- **[MYSQL_PASSWORD](https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#mysql_passwrod)**
+- **[MYSQL_ROOT_PASSWORD](https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#mysql_root-password)**
+- **[MYSQL_USERNAME](https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#mysql_username)**
+- **[RABBITMQ_DIR](https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#rabbitmq_dir)**
+- **[SENZING_VAR_DIR](https://github.com/senzing-garage/knowledge-base/blob/main/lists/environment-variables.md#senzing_var_dir)**
 
 ## Related artifacts
 
@@ -275,4 +275,4 @@ Configuration values specified by environment variable or command line parameter
 - [Development](docs/development.md)
 - [Errors](docs/errors.md)
 - [Examples](docs/examples.md)
-- [Legend](https://github.com/Senzing/knowledge-base/blob/main/lists/legend.md)
+- [Legend](https://github.com/senzing-garage/knowledge-base/blob/main/lists/legend.md)
