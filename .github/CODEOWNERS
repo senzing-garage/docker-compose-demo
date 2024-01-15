@@ -1,3 +1,5 @@
 # Default code owner
 
 * @senzing-garage/senzing-mechanics
+
+/.github/ @senzing-garage/senzing-devsecops
