@@ -185,7 +185,7 @@ Uses `senzing/senzing-api-server` instead of `senzing/senzing-poc-server`.
     ```console
     curl -X GET \
         --output ${SENZING_DEMO_DIR}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/${SENZING_DOCKER_COMPOSE_FILE}"
+        "https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/main/${SENZING_DOCKER_COMPOSE_FILE}"
     cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose pull
 
