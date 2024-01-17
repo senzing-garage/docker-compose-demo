@@ -304,13 +304,6 @@ services:
             "CONNECTION": "mssql://${MSSQL_USERNAME:-sa}:${MSSQL_SA_PASSWORD:-Passw0rd}@${MSSQL_DATABASE:-G2}"
           }
         }
-      SENZING_RABBITMQ_LOAD_EXCHANGE: senzing-rabbitmq-exchange
-      SENZING_RABBITMQ_LOAD_HOST: senzing-rabbitmq
-      SENZING_RABBITMQ_LOAD_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
-      SENZING_RABBITMQ_LOAD_PORT: 5672
-      SENZING_RABBITMQ_LOAD_ROUTING_KEY: senzing.records
-      SENZING_RABBITMQ_LOAD_USERNAME: ${RABBITMQ_USERNAME:-user}
-      SENZING_RABBITMQ_LOAD_VIRTUAL_HOST: "/"
     image: senzing/senzing-poc-server-mssql:${SENZING_DOCKER_IMAGE_VERSION_SENZING_POC_SERVER:-latest}
     networks:
       - senzing
