@@ -236,6 +236,7 @@ services:
       SENZING_RABBITMQ_HOST: senzing-rabbitmq
       SENZING_RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       SENZING_RABBITMQ_QUEUE: senzing-rabbitmq-queue
+      SENZING_RABBITMQ_USE_EXISTING_ENTITIES: "False"
       SENZING_RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
       SENZING_SUBCOMMAND: rabbitmq
     image: senzing/stream-loader-mssql:${SENZING_DOCKER_IMAGE_VERSION_STREAM_LOADER:-latest}
