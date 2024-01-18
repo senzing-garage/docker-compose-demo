@@ -118,7 +118,7 @@ describing where we can improve.   Now on with the show...
     ```console
     curl -X GET \
         --output ${SENZING_DEMO_DIR}/docker-compose.yaml \
-        "https://raw.githubusercontent.com/Senzing/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql.yaml"
+        "https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/main/resources/postgresql/docker-compose-rabbitmq-postgresql.yaml"
     cd ${SENZING_DEMO_DIR}
     sudo --preserve-env docker-compose pull
 

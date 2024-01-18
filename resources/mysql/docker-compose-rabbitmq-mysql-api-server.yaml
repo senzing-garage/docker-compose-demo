@@ -5,6 +5,7 @@ services:
     container_name: senzing-rabbitmq
     environment:
       # See https://github.com/bitnami/bitnami-docker-rabbitmq#configuration
+      RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS: "true"
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-bitnami}
       RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-user}
     image: bitnami/rabbitmq:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_RABBITMQ:-latest}
@@ -79,7 +80,7 @@ services:
             "CONNECTION": "mysql://${MYSQL_USERNAME:-g2}:${MYSQL_PASSWORD:-g2}@${MYSQL_HOST:-senzing-mysql}:${MYSQL_PORT:-3306}/?schema=${MYSQL_DATABASE:-G2}"
           }
         }
-    image: senzing/senzing-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_TOOLS:-latest}
+    image: senzing/senzing-tools-mysql:${SENZING_DOCKER_IMAGE_VERSION_SENZING_TOOLS:-latest}
     networks:
       - senzing
     read_only: true
