@@ -4,7 +4,7 @@ services:
   redoer:
     container_name: senzing-redoer
     environment:
-#     See https://github.com/Senzing/redoer#configuration
+#     See https://github.com/senzing-garage/redoer#configuration
       SENZING_ENGINE_CONFIGURATION_JSON: ${SENZING_ENGINE_CONFIGURATION_JSON}
       SENZING_SUBCOMMAND: redo
     image: senzing/redoer:${SENZING_DOCKER_IMAGE_VERSION_REDOER:-latest}
