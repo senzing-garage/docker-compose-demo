@@ -1,9 +1,11 @@
-name: add-to-project-garage.yaml
+name: 'add to project garage'
+
 on:
   issues:
     types:
-      - reopened
       - opened
+      - reopened
+
 jobs:
   add-to-project:
     name: Add issue to project
@@ -12,5 +14,5 @@ jobs:
       - name: Assign issue to project
         uses: actions/add-to-project@v0.5.0
         with:
-          project-url: https://github.com/orgs/senzing-garage/projects/3
+          project-url: https://github.com/orgs/${{ vars.SENZING_GITHUB_ACCOUNT_NAME }}/projects/${{ vars.SENZING_PROJECT_GARAGE }}
           github-token: ${{ secrets.SENZING_GITHUB_ACCESS_TOKEN }}
