@@ -1,21 +1,14 @@
-name: add-to-project-garage-dependabot.yaml
+name: 'add to project garage dependabot'
+
 on:
   pull_request:
-    types:
-      - opened
-      - reopened
-env:
-  CREATOR: ${{ github.event.pull_request.user.login }}
+    branches: [main]
+
 jobs:
-  add-to-project:
-    name: Add dependabot pull request to project
-    runs-on: ubuntu-latest
-    steps:
-      - name: Assign pull request to project
-        env:
-          BOOL: ${{ contains( env.CREATOR, 'dependabot' ) }}
-        if: ${{ env.BOOL == 'true' }}
-        uses: actions/add-to-project@v0.5.0
-        with:
-          project-url: https://github.com/orgs/senzing-garage/projects/3
-          github-token: ${{ secrets.SENZING_GITHUB_ACCESS_TOKEN }}
+
+  add-to-project-dependabot:
+    secrets:
+      SENZING_GITHUB_PROJECT_RW_TOKEN: ${{ secrets.SENZING_GITHUB_PROJECT_RW_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/add-to-project-dependabot.yaml@main
+    with:
+      project: ${{ vars.SENZING_PROJECT_GARAGE }}
