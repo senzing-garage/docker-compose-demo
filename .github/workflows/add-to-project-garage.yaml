@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: assign issue to project
-        uses: actions/add-to-project@v0.6.0
+        uses: actions/add-to-project@v0.6.1
         with:
           github-token: ${{ secrets.SENZING_GITHUB_ACCESS_TOKEN }}
           project-url: https://github.com/orgs/${{ vars.SENZING_GITHUB_ACCOUNT_NAME }}/projects/${{ vars.SENZING_PROJECT_GARAGE }}
