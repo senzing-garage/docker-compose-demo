@@ -70,7 +70,7 @@ services:
     depends_on:
       - api
     environment:
-#     See https://github.com/Senzing/entity-search-web-app#configuration
+#     See https://github.com/senzing-garage/entity-search-web-app#configuration
       SENZING_API_SERVER_URL: http://senzing-api-server:8250
       SENZING_WEB_SERVER_ADMIN_AUTH_MODE: JWT
       SENZING_WEB_SERVER_ADMIN_AUTH_PATH: http://senzing-webapp:8251

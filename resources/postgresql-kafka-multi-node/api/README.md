@@ -3,16 +3,16 @@
 ## Synopsis
 
 The "api" node type is responsible for
-creating a [RESTful HTTP API](https://github.com/Senzing/senzing-rest-api-specification)
+creating a [RESTful HTTP API](https://github.com/senzing-garage/senzing-rest-api-specification)
 on top of the Senzing Engine.
 
 It uses the
-[Senzing API Server](https://github.com/Senzing/senzing-api-server).
+[Senzing API Server](https://github.com/senzing-garage/senzing-api-server).
 
 ## Environment variables
 
 1. :pencil2: Identify Senzing docker image versions.
-   See [latest versions](https://github.com/Senzing/knowledge-base/blob/main/lists/docker-versions-stable.sh).
+   See [latest versions](https://github.com/senzing-garage/knowledge-base/blob/main/lists/docker-versions-stable.sh).
    Example:
 
     ```console

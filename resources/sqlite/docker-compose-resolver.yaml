@@ -69,7 +69,7 @@ services:
   resolver:
     container_name: senzing-resolver
     environment:
-      # See https://github.com/Senzing/resolver#configuration
+      # See https://github.com/senzing-garage/resolver#configuration
       SENZING_SUBCOMMAND: service
     image: senzing/resolver:${SENZING_DOCKER_IMAGE_VERSION_RESOLVER:-latest}
     networks:
