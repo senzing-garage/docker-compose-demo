@@ -6,14 +6,15 @@ on:
       - opened
       - reopened
 
+permissions:
+  repository-projects: write
+
 jobs:
   add-to-project:
-    name: add issue to project
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: assign issue to project
-        uses: actions/add-to-project@v0.6.1
-        with:
-          github-token: ${{ secrets.SENZING_GITHUB_ACCESS_TOKEN }}
-          project-url: https://github.com/orgs/${{ vars.SENZING_GITHUB_ACCOUNT_NAME }}/projects/${{ vars.SENZING_PROJECT_GARAGE }}
+    secrets:
+      SENZING_GITHUB_PROJECT_RW_TOKEN: ${{ secrets.SENZING_GITHUB_PROJECT_RW_TOKEN }}
+    uses: senzing-factory/build-resources/.github/workflows/add-to-project.yaml@v1
+    with:
+      classic: false
+      project-number: ${{ vars.SENZING_PROJECT_GARAGE }}
+      org: ${{ vars.SENZING_GITHUB_ACCOUNT_NAME }}
