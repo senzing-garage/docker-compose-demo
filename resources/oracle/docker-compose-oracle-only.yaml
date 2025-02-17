@@ -1,0 +1,21 @@
+version: '3'
+services:
+
+  oracle:
+    container_name: senzing-oracle
+    environment:
+      # See https://container-registry.oracle.com/ords/ocr/ba/database/free
+      ORACLE_PWD: Passw0rd
+    image: container-registry.oracle.com/database/free:${SENZING_DOCKER_IMAGE_VERSION_ORACLE_FREE:-latest}
+    networks:
+      - senzing
+    ports:
+      - 1521:1521
+    restart: always
+    # volumes:
+    #   - ./testdata/oracle:/opt/oracle/scripts/startup
+
+
+networks:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
