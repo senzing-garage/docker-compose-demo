@@ -1,0 +1,40 @@
+version: '3'
+services:
+
+  mysql:
+    container_name: senzing-mysql
+    environment:
+      # See https://hub.docker.com/_/mysql/ "Environment Variables"
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-G2}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-g2}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_USER: ${MYSQL_USERNAME:-g2}
+    image: bitnami/mysql:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_MYSQL:-latest}
+    networks:
+      - senzing
+    ports:
+      - 3306:3306
+    restart: always
+    user: "${SENZING_UID:-1001}:0"
+    volumes:
+      - ${MYSQL_DIR:-/var/lib/mysql}:/var/lib/mysql
+
+
+  phpmyadmin:
+    container_name: senzing-phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_HOST: mysql
+    image: bitnami/phpmyadmin:${SENZING_DOCKER_IMAGE_VERSION_BITNAMI_PHPMYADMIN:-latest}
+    networks:
+      - senzing
+    ports:
+      - 9173:8080
+    restart: always
+
+
+
+networks:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
