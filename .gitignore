@@ -4,4 +4,9 @@ __pycache__/
 resources/plugins/__pycache__/
 
 *.pyc
+
+# Visual Studio code
+.vscode/*
+!.vscode/cspell.json
+*.code-workspace
 .history
