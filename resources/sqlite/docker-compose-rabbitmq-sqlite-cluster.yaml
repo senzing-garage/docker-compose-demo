@@ -57,6 +57,7 @@ services:
           },
           "SQL": {
             "BACKEND": "HYBRID",
+            # checkov:skip=CKV_SECRET_4
             "CONNECTION": "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"
           },
           "C1": {

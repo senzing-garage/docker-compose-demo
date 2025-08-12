@@ -230,6 +230,7 @@ services:
     environment:
       SENZING_API_SERVER_ALLOWED_ORIGINS: '*'
       SENZING_API_SERVER_CLIENT_KEY_STORE: '/etc/opt/senzing/my-client-trust-store.p12'
+      # checkov:skip=CKV_SECRET_6
       SENZING_API_SERVER_CLIENT_KEY_STORE_PASSWORD: 'change-it'
       SENZING_API_SERVER_ENABLE_ADMIN: 'true'
       SENZING_API_SERVER_KEY_STORE: '/etc/opt/senzing/sz-api-server-store.p12'
