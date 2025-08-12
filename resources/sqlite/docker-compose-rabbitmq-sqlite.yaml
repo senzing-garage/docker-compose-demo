@@ -56,6 +56,7 @@ services:
             "SUPPORTPATH": "/opt/senzing/data"
           },
           "SQL": {
+            # checkov:skip=CKV_SECRET_4
             "CONNECTION": "sqlite3://na:na@/var/opt/senzing/sqlite/G2C.db"
           }
         }
