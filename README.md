@@ -72,6 +72,8 @@ All Docker Compose formations include:
 
 - [senzingsdk-tools]
 
+Services offered by specific Docker Compose formations:
+
 | Docker compose file                      | DB Admin     |
 |------------------------------------------|--------------|
 | [senzing-docker-compose-postgresql.yaml] | [PgAdmin]    |
