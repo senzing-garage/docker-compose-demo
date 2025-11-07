@@ -25,9 +25,12 @@ Likewise, `docker` is not a CentOS 8 supported project.
 Although with user-modification it has been shown that docker and docker-compose can run in these environments,
 the onus is on the user for proper operation of docker and docker networking.
 
-## Demonstration
+## Usage
 
 1. :pencil2: Identify the file to be downloaded.
+   Choose from the files in the [docker-compose directory].
+
+   Example:
 
     ```console
     export SENZING_TOOLS_DOCKER_COMPOSE_FILE=senzing-docker-compose-postgresql.yaml
@@ -67,7 +70,9 @@ the onus is on the user for proper operation of docker and docker networking.
 
 ### senzing/senzingsdk-tools
 
-1. xx
+The [senzing/senzingsdk-tools] Docker image
+
+1. In a separate terminal, use `docker exec` to enter the `senzing/senzingsdk-tools` Docker container.
 
    ```console
    docker exec -it senzingsdk-tools /bin/bash
@@ -80,11 +85,11 @@ A Postgres database administration tool.
 - View at [localhost:8171](http://localhost:9171)
 - Homepage: [github.com/dpage/pgadmin4](https://github.com/dpage/pgadmin4)
 
-## Implementation
-
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
 [Senzing Garage]: https://github.com/senzing-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
 [Senzing]: https://senzing.com/
+[senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
 [Services]: #services
+[docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
