@@ -10,9 +10,22 @@ Heck, it may not even be appropriate for your application of Senzing!
 
 ## Synopsis
 
-Using `docker-compose`, bring up a Senzing stack.
+Using `docker-compose`, bring up a Docker compose formation for demonstrating Senzing.
 
 ## Overview
+
+## Caveat
+
+This demonstration runs on platforms that support `docker` and `docker-compose`.
+
+:warning: RedHat has explicitly stated that [Docker is not supported in RHEL 8].
+As such, these demonstrations of Senzing using `docker` and `docker-compose`
+do not run in a RedHat Enterprise Linux 8 environment natively.
+Likewise, `docker` is not a CentOS 8 supported project.
+Although with user-modification it has been shown that docker and docker-compose can run in these environments,
+the onus is on the user for proper operation of docker and docker networking.
+
+## Demonstration
 
 1. :pencil2: Identify the file to be downloaded.
 
@@ -23,7 +36,7 @@ Using `docker-compose`, bring up a Senzing stack.
 1. Download the docker-compose file.
 
    ```console
-   curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/352-dockter-2/docker-compose/${SENZING_TOOLS_DOCKER_COMPOSE_FILE}
+   curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/${SENZING_TOOLS_DOCKER_COMPOSE_FILE}
    ```
 
 1. :thinking: **Optional:** Pull Docker image versions.
@@ -38,9 +51,10 @@ Using `docker-compose`, bring up a Senzing stack.
    docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up
    ```
 
-1. Work with Docker compose formation
+1. Work with Docker compose formation.
+   See [Services] section.
 
-1. Bring down Docker formation
+1. Bring down Docker formation.
 
    ```console
    docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} down --volumes
@@ -66,17 +80,11 @@ A Postgres database administration tool.
 - View at [localhost:8171](http://localhost:9171)
 - Homepage: [github.com/dpage/pgadmin4](https://github.com/dpage/pgadmin4)
 
-## Caveat
-
-This demonstration runs on platforms that support `docker` and `docker-compose`.
-
-:warning: RedHat has explicitly stated that [Docker is not supported in RHEL 8].
-As such, these demonstrations of Senzing using `docker` and `docker-compose`
-do not run in a RedHat Enterprise Linux 8 environment natively.
-Likewise, `docker` is not a CentOS 8 supported project.
-Although with user-modification it has been shown that docker and docker-compose can run in these environments,
-the onus is on the user for proper operation of docker and docker networking.
-
 ## Implementation
 
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
+[Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
+[Senzing Garage]: https://github.com/senzing-garage
+[Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
+[Senzing]: https://senzing.com/
+[Services]: #services
