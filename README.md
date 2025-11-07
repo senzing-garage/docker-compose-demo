@@ -14,6 +14,32 @@ Using `docker-compose`, bring up a Senzing stack.
 
 ## Overview
 
+1. :pencil2: Identify the file to be downloaded.
+
+    ```console
+    export SENZING_TOOLS_DOCKER_COMPOSE_FILE=senzing-docker-compose-postgresql.yaml
+    ```
+
+1. Download the docker-compose file.
+
+   ```console
+   curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/352-dockter-2/docker-compose/${SENZING_TOOLS_DOCKER_COMPOSE_FILE}
+   ```
+
+1. :thinking: **Optional:** Pull Docker image versions.
+
+   ```console
+   docker --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} pull
+   ```
+
+1. Bring up Docker compose formation.
+
+   ```console
+   docker --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up
+   ```
+
+1.
+
 ## Services
 
 ### senzing/senzingsdk-tools
