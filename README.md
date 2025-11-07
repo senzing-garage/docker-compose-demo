@@ -38,7 +38,16 @@ Using `docker-compose`, bring up a Senzing stack.
    docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up
    ```
 
-1.
+1. Work with Docker compose formation
+
+1. Bring down Docker formation
+
+   ```console
+   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} down --volumes
+   ```
+
+   *Note:* The optional [--volumes] parameter cleans up the volumes.
+   Omit the parameter if the data is to be reused across docker compose formations.
 
 ## Services
 
@@ -69,3 +78,5 @@ Although with user-modification it has been shown that docker and docker-compose
 the onus is on the user for proper operation of docker and docker networking.
 
 ## Implementation
+
+[--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
