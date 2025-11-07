@@ -93,10 +93,19 @@ The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing
 
 A Postgres database administration tool.
 
-1. View at [localhost:8171](http://localhost:9171)
+1. View at [localhost:9171](http://localhost:9171)
    1. When prompted for PgAdmin credentials, read the information in the "Senzing demonstration" section.
    1. When prompted for the *database* (not PgAdmin) password, enter `postgres`.
 1. Pgadmin4 homepage: [github.com/dpage/pgadmin4]
+
+### PhpMyAdmin
+
+A MySQL database administration tool.
+
+1. View at [localhost:9173](http://localhost:9173)
+   1. Username: mysql
+   1. Password: mysql
+1. PhpMyAdmin homepage: []
 
 ### Sqlite-Web
 
