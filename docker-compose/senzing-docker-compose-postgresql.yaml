@@ -1,4 +1,4 @@
-name: docker-compose-postgresql
+name: senzing-docker-compose-postgresql
 
 services:
   makefile:
