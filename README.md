@@ -68,10 +68,14 @@ the onus is on the user for proper operation of docker and docker networking.
 
 ## Services
 
-| Docker compose file                      | senzingsdk-tools   | PgAdmin            | Sqlite-Web         |
-|------------------------------------------|:------------------:|:------------------:|:------------------:|
-| [senzing-docker-compose-postgresql.yaml] | :heavy_check_mark: | :heavy_check_mark: |                    |
-| [senzing-docker-compose-sqlite.yaml]     | :heavy_check_mark: |                    | :heavy_check_mark: |
+All Docker Compose formations include:
+
+- [senzingsdk-tools]
+
+| Docker compose file                      | DB Admin     |
+|------------------------------------------|--------------|
+| [senzing-docker-compose-postgresql.yaml] | [PgAdmin]    |
+| [senzing-docker-compose-sqlite.yaml]     | [Sqlite-Web] |
 
 ### senzingsdk-tools
 
@@ -104,10 +108,13 @@ An SQLite database administration tool.
 [docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
 [github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
 [github.com/dpage/pgadmin4]: https://github.com/dpage/pgadmin4
+[PgAdmin]: #pgadmin
 [Senzing Garage]: https://github.com/senzing-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
-[Senzing]: https://senzing.com/
-[senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
-[Services]: #services
 [senzing-docker-compose-postgresql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/352-dockter-2/docker-compose/senzing-docker-compose-postgresql.yaml
 [senzing-docker-compose-sqlite.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/352-dockter-2/docker-compose/senzing-docker-compose-sqlite.yaml
+[Senzing]: https://senzing.com/
+[senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
+[senzingsdk-tools]: #senzingsdk-tools
+[Services]: #services
+[Sqlite-Web]: #sqlite-web
