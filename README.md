@@ -29,13 +29,13 @@ Using `docker-compose`, bring up a Senzing stack.
 1. :thinking: **Optional:** Pull Docker image versions.
 
    ```console
-   docker --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} pull
+   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} pull
    ```
 
 1. Bring up Docker compose formation.
 
    ```console
-   docker --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up
+   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up
    ```
 
 1.
