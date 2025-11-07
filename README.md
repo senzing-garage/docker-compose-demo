@@ -68,6 +68,11 @@ the onus is on the user for proper operation of docker and docker networking.
 
 ## Services
 
+| Docker compose file                      | senzingsdk-tools   | PgAdmin            | Sqlite-Web         |
+|------------------------------------------|:------------------:|:------------------:|:------------------:|
+| [senzing-docker-compose-postgresql.yaml] | :heavy_check_mark: | :heavy_check_mark: |                    |
+| [senzing-docker-compose-sqlite.yaml]     | :heavy_check_mark: |                    | :heavy_check_mark: |
+
 ### senzingsdk-tools
 
 The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing Senzing information.
@@ -104,3 +109,5 @@ An SQLite database administration tool.
 [Senzing]: https://senzing.com/
 [senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
 [Services]: #services
+[senzing-docker-compose-postgresql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/352-dockter-2/docker-compose/senzing-docker-compose-postgresql.yaml
+[senzing-docker-compose-sqlite.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/352-dockter-2/docker-compose/senzing-docker-compose-sqlite.yaml
