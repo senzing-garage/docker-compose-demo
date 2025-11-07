@@ -68,7 +68,7 @@ the onus is on the user for proper operation of docker and docker networking.
 
 ## Services
 
-### senzing/senzingsdk-tools
+### senzingsdk-tools
 
 The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing Senzing information.
 
@@ -85,13 +85,22 @@ A Postgres database administration tool.
 1. View at [localhost:8171](http://localhost:9171)
    1. When prompted for PgAdmin credentials, read the information in the "Senzing demonstration" section.
    1. When prompted for the *database* (not PgAdmin) password, enter `postgres`.
-1. Homepage: [github.com/dpage/pgadmin4](https://github.com/dpage/pgadmin4)
+1. Pgadmin4 homepage: [github.com/dpage/pgadmin4]
+
+### Sqlite-Web
+
+An SQLite database administration tool.
+
+1. View at [localhost:9174](http://localhost:9174)
+1. Sqlite-web homepage: [github.com/coleifer/sqlite-web]
 
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
+[docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
+[github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
+[github.com/dpage/pgadmin4]: https://github.com/dpage/pgadmin4
 [Senzing Garage]: https://github.com/senzing-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
 [Senzing]: https://senzing.com/
 [senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
 [Services]: #services
-[docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
