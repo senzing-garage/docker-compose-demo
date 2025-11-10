@@ -1,6 +1,8 @@
 name: senzing-docker-compose-postgresql
 
 services:
+  # makefile makes a metadata file for pgadmin.
+
   makefile:
     container_name: senzing-makefile
     command:
@@ -42,7 +44,7 @@ services:
   postgres:
     container_name: senzing-postgres
     environment:
-      # See https://github.com/bitnami/bitnami-docker-postgresql#configuration
+      # See https://hub.docker.com/_/postgres "Environment Variables"
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_DB: ${POSTGRES_DB:-G2}
       POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
