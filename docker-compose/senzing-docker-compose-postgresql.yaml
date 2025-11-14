@@ -1,8 +1,6 @@
 name: senzing-docker-compose-postgresql
 
 services:
-  # makefile makes a metadata file for pgadmin.
-
   makefile:
     container_name: senzing-makefile
     command:
@@ -46,10 +44,10 @@ services:
     environment:
       # See https://hub.docker.com/_/postgres "Environment Variables"
       PGDATA: /var/lib/postgresql/data/pgdata
-      POSTGRES_DB: ${POSTGRES_DB:-G2}
-      POSTGRES_PASSWORD: ${POSTGRESQL_POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: G2
+      POSTGRES_PASSWORD: postgres
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USERNAME:-postgres}"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -68,9 +66,8 @@ services:
     depends_on:
       - postgres
     environment:
-      SENZING_TOOLS_DATABASE_URL: "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-G2}/?sslmode=disable"
-      SENZING_TOOLS_DATASOURCES: "CUSTOMERS REFERENCE WATCHLIST"
-      SENZING_TOOLS_INSTALL_SENZING_ER_CONFIGURATION: "True"
+      SENZING_TOOLS_DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/G2/?sslmode=disable"
+      SENZING_TOOLS_DATASOURCES: "CUSTOMERS, REFERENCE, WATCHLIST"
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
@@ -121,7 +118,7 @@ services:
           },
           "SQL": {
             "BACKEND": "SQL",
-            "CONNECTION": "postgresql://${POSTGRES_USERNAME:-postgres}:${POSTGRES_PASSWORD:-postgres}@${POSTGRES_HOST:-senzing-postgres}:${POSTGRES_PORT:-5432}:${POSTGRES_DB:-G2}/"
+            "CONNECTION": "postgresql://postgres:postgres@senzing-postgres:5432:G2/"
           }
         }
     image: senzing/senzingsdk-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS:-latest}
@@ -130,7 +127,7 @@ services:
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      - user-data-volume:/var/opt/senzing
 
 networks:
   senzing:
@@ -139,3 +136,4 @@ networks:
 volumes:
   pgadmin-volume:
   postgres-volume:
+  user-data-volume:

@@ -1,38 +1,8 @@
 name: senzing-docker-compose-sqlite
 
 services:
-  makefile:
-    container_name: senzing-makefile
-    command:
-      - sh
-      - -c
-      - touch /data/G2C.db; chmod 777 /data/G2C.db
-    image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
-    networks:
-      - senzing
-    read_only: true
-    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
-    volumes:
-      - sqlite-volume:/data
-
-  sqlite-init:
-    container_name: senzing-sqlite-init
-    environment:
-      SENZING_TOOLS_DATABASE_URL: "sqlite3://na:na@/data/G2C.db"
-      SENZING_TOOLS_DATASOURCES: "CUSTOMERS REFERENCE WATCHLIST"
-      SENZING_TOOLS_INSTALL_SENZING_ER_CONFIGURATION: "True"
-    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
-    networks:
-      - senzing
-    restart: on-failure
-    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
-    volumes:
-      - sqlite-volume:/data
-
   sqlite-web:
     container_name: senzing-sqlite-web
-    depends_on:
-      - sqlite-init
     environment:
       SQLITE_DATABASE: "G2C.db"
     image: coleifer/sqlite-web:${SENZING_DOCKER_IMAGE_VERSION_COLEIFER_SQLITE_WEB:-latest}
@@ -41,6 +11,18 @@ services:
     ports:
       - 9174:8080
     restart: always
+    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
+    volumes:
+      - sqlite-volume:/data
+
+  sqlite-init:
+    container_name: senzing-sqlite-init
+    environment:
+      SENZING_TOOLS_DATABASE_URL: "sqlite3://na:na@/data/G2C.db"
+      SENZING_TOOLS_DATASOURCES: "CUSTOMERS, REFERENCE, WATCHLIST"
+    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
+    networks:
+      - senzing
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
       - sqlite-volume:/data
@@ -68,11 +50,10 @@ services:
     networks:
       - senzing
     restart: always
-    # user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
       - sqlite-volume:/data
-      - ${SENZING_VAR_DIR:-/var/opt/senzing}:/var/opt/senzing
+      - user-data-volume:/var/opt/senzing
 
 networks:
   senzing:
@@ -80,3 +61,4 @@ networks:
 
 volumes:
   sqlite-volume:
+  user-data-volume:

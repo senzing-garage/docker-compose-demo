@@ -1,6 +1,5 @@
-version: '3'
+version: "3"
 services:
-
   mssql:
     container_name: senzing-mssql
     environment:
@@ -17,7 +16,6 @@ services:
     user: "0"
     volumes:
       - ${MSSQL_DIR:-/var/opt/mssql}:/var/opt/mssql
-
 
   mssql-create-db:
     command:
@@ -38,7 +36,6 @@ services:
       - senzing
     restart: on-failure
 
-
   adminer:
     container_name: senzing-adminer
     environment:
@@ -49,7 +46,6 @@ services:
     ports:
       - 9177:8080
     restart: always
-
 
 networks:
   senzing:
