@@ -78,6 +78,7 @@ Services offered by specific Docker Compose formations:
 |------------------------------------------|--------------|
 | [senzing-docker-compose-postgresql.yaml] | [PgAdmin]    |
 | [senzing-docker-compose-sqlite.yaml]     | [Sqlite-Web] |
+| [senzing-docker-compose-mysql.yaml]      | [PhpMyAdmin] |
 | [senzing-docker-compose-mssql.yaml]      | [Adminer]    |
 
 ### senzingsdk-tools
@@ -106,7 +107,7 @@ A MySQL database administration tool.
 1. View at [localhost:9173](http://localhost:9173)
    1. Username: mysql
    1. Password: mysql
-1. PhpMyAdmin homepage: []
+1. PhpMyAdmin homepage: [https://www.phpmyadmin.net/]
 
 ### Sqlite-Web
 
@@ -134,6 +135,7 @@ An SQLite database administration tool.
 - [Examples]
 
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
+[Adminer]: #adminer
 [Development]: docs/development.md
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
 [docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
@@ -141,9 +143,14 @@ An SQLite database administration tool.
 [Examples]: docs/examples.md
 [github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
 [github.com/dpage/pgadmin4]: https://github.com/dpage/pgadmin4
+[https://www.adminer.org/en/]: https://www.adminer.org/en/
+[https://www.phpmyadmin.net/]: https://www.phpmyadmin.net
 [PgAdmin]: #pgadmin
+[PhpMyAdmin]: #phpmyadmin
 [Senzing Garage]: https://github.com/senzing-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
+[senzing-docker-compose-mssql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/352-dockter-2/docker-compose/senzing-docker-compose-mssql.yaml
+[senzing-docker-compose-mysql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/352-dockter-2/docker-compose/senzing-docker-compose-mysql.yaml
 [senzing-docker-compose-postgresql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/352-dockter-2/docker-compose/senzing-docker-compose-postgresql.yaml
 [senzing-docker-compose-sqlite.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/352-dockter-2/docker-compose/senzing-docker-compose-sqlite.yaml
 [Senzing]: https://senzing.com/
@@ -151,5 +158,3 @@ An SQLite database administration tool.
 [senzingsdk-tools]: #senzingsdk-tools
 [Services]: #services
 [Sqlite-Web]: #sqlite-web
-[Adminer] #adminer
-[https://www.adminer.org/en/]: <https://www.adminer.org/en/>
