@@ -78,6 +78,7 @@ Services offered by specific Docker Compose formations:
 |------------------------------------------|--------------|
 | [senzing-docker-compose-postgresql.yaml] | [PgAdmin]    |
 | [senzing-docker-compose-sqlite.yaml]     | [Sqlite-Web] |
+| [senzing-docker-compose-mssql.yaml]      | [Adminer]    |
 
 ### senzingsdk-tools
 
@@ -114,9 +115,30 @@ An SQLite database administration tool.
 1. View at [localhost:9174](http://localhost:9174)
 1. Sqlite-web homepage: [github.com/coleifer/sqlite-web]
 
+### Adminer
+
+An SQLite database administration tool.
+
+1. View at [localhost:9177](http://localhost:9177)
+   1. *System:* MS SQL (beta)
+   1. *Server:* senzing-mssql
+   1. *Username:* sa
+   1. *Password:* Passw0rd
+   1. *Database:* G2
+1. Adminer homepage: [https://www.adminer.org/en/]
+
+## References
+
+- [Development]
+- [Errors]
+- [Examples]
+
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
+[Development]: docs/development.md
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
 [docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
+[Errors]: docs/errors.md
+[Examples]: docs/examples.md
 [github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
 [github.com/dpage/pgadmin4]: https://github.com/dpage/pgadmin4
 [PgAdmin]: #pgadmin
@@ -129,3 +151,5 @@ An SQLite database administration tool.
 [senzingsdk-tools]: #senzingsdk-tools
 [Services]: #services
 [Sqlite-Web]: #sqlite-web
+[Adminer] #adminer
+[https://www.adminer.org/en/]: <https://www.adminer.org/en/>

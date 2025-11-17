@@ -30,6 +30,8 @@ services:
         Description = Senzing MS SQL database for G2
         Driver = ODBC Driver 18 for SQL Server
         Server = senzing-mssql,1433
+        MultiSubnetFailover = False
+        TrustServerCertificate = yes
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
     networks:
       - senzing
@@ -84,14 +86,14 @@ services:
     environment:
       SENZING_TOOLS_DATABASE_URL: "mssql://sa:Passw0rd@senzing-mssql:1433/G2?MultiSubnetFailover=False&TrustServerCertificate=yes"
       SENZING_TOOLS_DATASOURCES: "CUSTOMERS, REFERENCE, WATCHLIST"
-      ODBCINI: /var/opt/senzing/odbc.ini
+      ODBCINI: /var/opt/odbcini/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql18/etc
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
     restart: on-failure
     volumes:
-      - mssql-odbcini-volume:/var/opt/senzing
+      - mssql-odbcini-volume:/var/opt/odbcini
       - mssql-driver-volume:/opt/microsoft
 
   adminer:
@@ -111,6 +113,8 @@ services:
     command: ["sleep", "infinity"]
     container_name: senzingsdk-tools
     environment:
+      ODBCINI: /var/opt/odbcini/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql18/etc
       SENZING_ENGINE_CONFIGURATION_JSON: >-
         {
           "PIPELINE": {
@@ -121,7 +125,7 @@ services:
           },
           "SQL": {
             "BACKEND": "SQL",
-            "CONNECTION": "mssql://sa:Passw0rd@senzing-mssql:1433/G2?MultiSubnetFailover=False&TrustServerCertificate=yes"
+            "CONNECTION": "mssql://sa:Passw0rd@G2"
           }
         }
     image: senzing/senzingsdk-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS:-latest}
@@ -130,6 +134,8 @@ services:
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
+      - mssql-odbcini-volume:/var/opt/odbcini
+      - mssql-driver-volume:/opt/microsoft
       - user-data-volume:/var/opt/senzing
 
 networks:
