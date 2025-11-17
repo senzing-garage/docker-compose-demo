@@ -76,10 +76,10 @@ Services offered by specific Docker Compose formations:
 
 | Docker compose file                      | DB Admin     |
 |------------------------------------------|--------------|
+| [senzing-docker-compose-mssql.yaml]      | [Adminer]    |
+| [senzing-docker-compose-mysql.yaml]      | [PhpMyAdmin] |
 | [senzing-docker-compose-postgresql.yaml] | [PgAdmin]    |
 | [senzing-docker-compose-sqlite.yaml]     | [Sqlite-Web] |
-| [senzing-docker-compose-mysql.yaml]      | [PhpMyAdmin] |
-| [senzing-docker-compose-mssql.yaml]      | [Adminer]    |
 
 ### senzingsdk-tools
 
@@ -90,6 +90,18 @@ The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing
    ```console
    docker exec -it senzingsdk-tools /bin/bash
    ```
+
+### Adminer
+
+A MS SQL database administration tool.
+
+1. View at [localhost:9177](http://localhost:9177)
+   1. *System:* MS SQL (beta)
+   1. *Server:* senzing-mssql
+   1. *Username:* sa
+   1. *Password:* Passw0rd
+   1. *Database:* G2
+1. Adminer homepage: [https://www.adminer.org/en/]
 
 ### PgAdmin
 
@@ -115,18 +127,6 @@ An SQLite database administration tool.
 
 1. View at [localhost:9174](http://localhost:9174)
 1. Sqlite-web homepage: [github.com/coleifer/sqlite-web]
-
-### Adminer
-
-An SQLite database administration tool.
-
-1. View at [localhost:9177](http://localhost:9177)
-   1. *System:* MS SQL (beta)
-   1. *Server:* senzing-mssql
-   1. *Username:* sa
-   1. *Password:* Passw0rd
-   1. *Database:* G2
-1. Adminer homepage: [https://www.adminer.org/en/]
 
 ## References
 
