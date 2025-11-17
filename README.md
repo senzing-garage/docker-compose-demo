@@ -138,7 +138,7 @@ An SQLite database administration tool.
 [Adminer]: #adminer
 [Development]: docs/development.md
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
-[docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
+[docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/352-dockter-2/docker-compose
 [Errors]: docs/errors.md
 [Examples]: docs/examples.md
 [github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
