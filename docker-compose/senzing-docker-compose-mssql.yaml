@@ -1,0 +1,149 @@
+name: senzing-docker-compose-mssql
+
+services:
+  mssql-driver:
+    command:
+      - -y
+      - install
+      - msodbcsql18
+    container_name: senzing-mssql-driver
+    environment:
+      ACCEPT_EULA: Y
+    image: senzing/apt:${SENZING_DOCKER_IMAGE_VERSION_SENZING_APT:-latest}
+    networks:
+      - senzing
+    restart: on-failure
+    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
+    volumes:
+      - mssql-driver-volume:/opt/microsoft
+
+  makefile:
+    container_name: senzing-makefile
+    command:
+      - sh
+      - -c
+      - echo "$${FILE_CONTENTS}" >> /output/odbc.ini
+    environment:
+      FILE_CONTENTS: |
+        [G2]
+        Database = G2
+        Description = Senzing MS SQL database for G2
+        Driver = ODBC Driver 18 for SQL Server
+        Server = senzing-mssql,1433
+        MultiSubnetFailover = False
+        TrustServerCertificate = yes
+    image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
+    networks:
+      - senzing
+    read_only: true
+    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
+    volumes:
+      - mssql-odbcini-volume:/output
+
+  mssql:
+    container_name: senzing-mssql
+    depends_on:
+      - makefile
+    environment:
+      # See https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables
+      ACCEPT_EULA: Y
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: Passw0rd
+    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2025-latest}
+    networks:
+      - senzing
+    ports:
+      - 1433:1433
+    restart: always
+    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
+    volumes:
+      - mssql-volume:/var/opt/mssql
+
+  mssql-create-db:
+    command:
+      - /opt/mssql-tools18/bin/sqlcmd
+      - -C
+      - -P
+      - Passw0rd
+      - -Q
+      - "CREATE DATABASE G2"
+      - -S
+      - senzing-mssql,1433
+      - -U
+      - sa
+    container_name: senzing-mssql-create-database
+    depends_on:
+      - mssql
+    image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2025-latest}
+    networks:
+      - senzing
+    restart: on-failure
+
+  mssql-init:
+    container_name: senzing-mssql-init
+    depends_on:
+      - mssql
+    environment:
+      SENZING_TOOLS_DATABASE_URL: "mssql://sa:Passw0rd@senzing-mssql:1433/G2?MultiSubnetFailover=False&TrustServerCertificate=yes"
+      SENZING_TOOLS_DATASOURCES: "CUSTOMERS, REFERENCE, WATCHLIST"
+      ODBCINI: /var/opt/odbcini/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql18/etc
+    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
+    networks:
+      - senzing
+    restart: on-failure
+    volumes:
+      - mssql-odbcini-volume:/var/opt/odbcini
+      - mssql-driver-volume:/opt/microsoft
+
+  adminer:
+    container_name: senzing-adminer
+    environment:
+      ADMINER_DEFAULT_SERVER: senzing-mssql
+    image: senzing/adminer:${SENZING_DOCKER_IMAGE_VERSION_SENZING_ADMINER:-latest}
+    networks:
+      - senzing
+    ports:
+      - 9177:8080
+    restart: always
+
+  senzingsdk-tools:
+    cap_add:
+      - ALL
+    command: ["sleep", "infinity"]
+    container_name: senzingsdk-tools
+    environment:
+      ODBCINI: /var/opt/odbcini/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql18/etc
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/er/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "SQL",
+            "CONNECTION": "mssql://sa:Passw0rd@G2"
+          }
+        }
+    image: senzing/senzingsdk-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS:-latest}
+    networks:
+      - senzing
+    restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - mssql-odbcini-volume:/var/opt/odbcini
+      - mssql-driver-volume:/opt/microsoft
+      - user-data-volume:/var/opt/senzing
+
+networks:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
+
+volumes:
+  mssql-driver-volume:
+  mssql-volume:
+  mssql-odbcini-volume:
+  user-data-volume:

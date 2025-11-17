@@ -10,25 +10,9 @@ Heck, it may not even be appropriate for your application of Senzing!
 
 ## Synopsis
 
-Using `docker-compose`, bring up a Senzing stack.
+Using `docker-compose`, bring up a Docker compose formation for demonstrating Senzing.
 
 ## Overview
-
-This repository illustrates reference implementations of Senzing using docker-compose.
-
-The instructions show how to set up a system that:
-
-1. Reads JSON lines from a file on the internet and sends each JSON line to a message queue via the Senzing
-   [stream-producer].
-1. Reads messages from the queue and inserts into Senzing via the Senzing
-   [stream-loader].
-1. Reads information from Senzing via [Senzing API Server] server.
-1. Views resolved entities in a [web app].
-
-The following diagram shows the relationship of the docker containers in this docker composition.
-Arrows represent data flow.
-
-![Image of architecture]
 
 ## Caveat
 
@@ -41,62 +25,136 @@ Likewise, `docker` is not a CentOS 8 supported project.
 Although with user-modification it has been shown that docker and docker-compose can run in these environments,
 the onus is on the user for proper operation of docker and docker networking.
 
-## Implementation
+## Usage
 
-The following tables indicate the instructions for variations in components.
+1. :pencil2: Identify the file to be downloaded.
+   Choose from the files in the [docker-compose directory].
 
-1. Component variants:
-   1. Queue
-      1. RabbitMQ
-      1. Kafka
-      1. AWS SQS
-   1. Database
-      1. Postgres
-      1. MySQL
-      1. MS SQL
-1. Implementations of the docker formation:
+   Example:
 
-   | Queue    | Database   |            Instructions            | docker-compose.yaml                       |
-   | -------- | ---------- | :--------------------------------: | ----------------------------------------- |
-   | RabbitMQ | PostgreSQL | [rabbitmq postgresql instructions] | [docker-compose-rabbitmq-postgresql.yaml] |
-   | RabbitMQ | MySQL      |   [rabbitmq mysql instructions]    | [docker-compose-rabbitmq-mysql.yaml]      |
-   | RabbitMQ | MSSQL      |   [rabbitmq mssql instructions]    | [docker-compose-rabbitmq-mssql.yaml]      |
-   | Kafka    | PostgreSQL |  [kafka postgresql instructions]   | [docker-compose-kafka-postgresql.yaml]    |
-   | Kafka    | MySQL      |     [kafka mysql instructions]     | [docker-compose-kafka-mysql.yaml]         |
-   | Kafka    | MSSQL      |     [kafka mssql instructions]     | [docker-compose-kafka-mssql.yaml]         |
-   | AWS SQS  | PostgreSQL | [aws sqs postgresql instructions]  | [docker-compose-sqs-postgresql.yaml]      |
+    ```console
+    export SENZING_TOOLS_DOCKER_COMPOSE_FILE=senzing-docker-compose-postgresql.yaml
+    ```
 
-1. Advanced docker formations:
+1. Download the docker-compose file.
 
-   | Description                                      |      Instructions       |
-   | ------------------------------------------------ | :---------------------: |
-   | Enhancements built upon PostgreSQL and RabbitMQ. | [rabbitmq instructions] |
-   | Enhancements built upon PostgreSQL and Kafka.    |  [kafka instructions]   |
-   | Enhancements built upon PostgreSQL and AWS SQS.  | [aws sqs instructions]  |
+   ```console
+   curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/${SENZING_TOOLS_DOCKER_COMPOSE_FILE}
+   ```
 
-[aws sqs instructions]: docs/docker-compose-sqs-postgresql-advanced/README.md
-[aws sqs postgresql instructions]: docs/docker-compose-sqs-postgresql/README.md
+1. :thinking: **Optional:** Pull Docker image versions.
+
+   ```console
+   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} pull
+   ```
+
+1. Bring up Docker compose formation.
+
+   ```console
+   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up
+   ```
+
+1. Work with Docker compose formation.
+   See [Services] section.
+
+1. Bring down Docker formation.
+
+   ```console
+   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} down --volumes
+   ```
+
+   *Note:* The optional [--volumes] parameter cleans up the volumes.
+   Omit the [--volumes] parameter if the data is to be reused.
+
+## Services
+
+All Docker Compose formations include:
+
+- [senzingsdk-tools]
+
+Services offered by specific Docker Compose formations:
+
+| Docker compose file                      | DB Admin     |
+|------------------------------------------|--------------|
+| [senzing-docker-compose-mssql.yaml]      | [Adminer]    |
+| [senzing-docker-compose-mysql.yaml]      | [PhpMyAdmin] |
+| [senzing-docker-compose-postgresql.yaml] | [PgAdmin]    |
+| [senzing-docker-compose-sqlite.yaml]     | [Sqlite-Web] |
+
+### senzingsdk-tools
+
+The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing Senzing information.
+
+1. In a separate terminal, use `docker exec` to enter the `senzing/senzingsdk-tools` Docker container.
+
+   ```console
+   docker exec -it senzingsdk-tools /bin/bash
+   ```
+
+### Adminer
+
+A MS SQL database administration tool.
+
+1. View at [localhost:9177](http://localhost:9177)
+   1. *System:* MS SQL (beta)
+   1. *Server:* senzing-mssql
+   1. *Username:* sa
+   1. *Password:* Passw0rd
+   1. *Database:* G2
+1. Adminer homepage: [https://www.adminer.org/en/]
+
+### PgAdmin
+
+A Postgres database administration tool.
+
+1. View at [localhost:9171](http://localhost:9171)
+   1. When prompted for PgAdmin credentials, read the information in the "Senzing demonstration" section.
+   1. When prompted for the *database* (not PgAdmin) password, enter `postgres`.
+1. Pgadmin4 homepage: [github.com/dpage/pgadmin4]
+
+### PhpMyAdmin
+
+A MySQL database administration tool.
+
+1. View at [localhost:9173](http://localhost:9173)
+   1. Username: mysql
+   1. Password: mysql
+1. PhpMyAdmin homepage: [https://www.phpmyadmin.net/]
+
+### Sqlite-Web
+
+An SQLite database administration tool.
+
+1. View at [localhost:9174](http://localhost:9174)
+1. Sqlite-web homepage: [github.com/coleifer/sqlite-web]
+
+## References
+
+- [Development]
+- [Errors]
+- [Examples]
+
+[--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
+[Adminer]: #adminer
+[Development]: docs/development.md
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
-[docker-compose-kafka-mssql.yaml]: resources/mssql/docker-compose-kafka-mssql.yaml
-[docker-compose-kafka-mysql.yaml]: resources/mysql/docker-compose-kafka-mysql.yaml
-[docker-compose-kafka-postgresql.yaml]: resources/postgresql/docker-compose-kafka-postgresql.yaml
-[docker-compose-rabbitmq-mssql.yaml]: resources/mssql/docker-compose-rabbitmq-mssql.yaml
-[docker-compose-rabbitmq-mysql.yaml]: resources/mysql/docker-compose-rabbitmq-mysql.yaml
-[docker-compose-rabbitmq-postgresql.yaml]: resources/postgresql/docker-compose-rabbitmq-postgresql.yaml
-[docker-compose-sqs-postgresql.yaml]: resources/postgresql/docker-compose-sqs-postgresql.yaml
-[Image of architecture]: docs/img-architecture/architecture.png
-[kafka instructions]: docs/docker-compose-kafka-postgresql-advanced/README.md
-[kafka mssql instructions]: docs/docker-compose-kafka-mssql/README.md
-[kafka mysql instructions]: docs/docker-compose-kafka-mysql/README.md
-[kafka postgresql instructions]: docs/docker-compose-kafka-postgresql/README.md
-[rabbitmq instructions]: docs/docker-compose-rabbitmq-postgresql-advanced/README.md
-[rabbitmq mssql instructions]: docs/docker-compose-rabbitmq-mssql/README.md
-[rabbitmq mysql instructions]: docs/docker-compose-rabbitmq-mysql/README.md
-[rabbitmq postgresql instructions]: docs/docker-compose-rabbitmq-postgresql/README.md
-[Senzing API Server]: https://github.com/senzing-garage/senzing-api-server
+[docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
+[Errors]: docs/errors.md
+[Examples]: docs/examples.md
+[github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
+[github.com/dpage/pgadmin4]: https://github.com/dpage/pgadmin4
+[https://www.adminer.org/en/]: https://www.adminer.org/en/
+[https://www.phpmyadmin.net/]: https://www.phpmyadmin.net
+[PgAdmin]: #pgadmin
+[PhpMyAdmin]: #phpmyadmin
 [Senzing Garage]: https://github.com/senzing-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
+[senzing-docker-compose-mssql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mssql.yaml
+[senzing-docker-compose-mysql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mysql.yaml
+[senzing-docker-compose-postgresql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql.yaml
+[senzing-docker-compose-sqlite.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite.yaml
 [Senzing]: https://senzing.com/
-[stream-loader]: https://github.com/senzing-garage/stream-loader
-[stream-producer]: https://github.com/senzing-garage/stream-producer
-[web app]: https://github.com/senzing-garage/entity-search-web-app
+[senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
+[senzingsdk-tools]: #senzingsdk-tools
+[Services]: #services
+[Sqlite-Web]: #sqlite-web

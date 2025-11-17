@@ -1,0 +1,79 @@
+name: senzing-docker-compose-mysql
+
+services:
+  mysql:
+    container_name: senzing-mysql
+    environment:
+      # See https://hub.docker.com/_/mysql/ "Environment Variables"
+      MYSQL_DATABASE: G2
+      MYSQL_PASSWORD: mysql
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: mysql
+    image: mysql:${SENZING_DOCKER_IMAGE_VERSION_MYSQL:-latest}
+    networks:
+      - senzing
+    ports:
+      - 3306:3306
+    restart: always
+    volumes:
+      - mysql-volume:/var/lib/mysql
+
+  mysql-init:
+    container_name: senzing-mysql-init
+    depends_on:
+      - mysql
+    environment:
+      SENZING_TOOLS_DATABASE_URL: "mysql://mysql:mysql@mysql:3306/G2"
+      SENZING_TOOLS_DATASOURCES: "CUSTOMERS, REFERENCE, WATCHLIST"
+    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
+    networks:
+      - senzing
+    restart: on-failure
+
+  phpmyadmin:
+    container_name: senzing-phpmyadmin
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+    image: phpmyadmin:${SENZING_DOCKER_IMAGE_VERSION_PHPMYADMIN:-latest}
+    networks:
+      - senzing
+    ports:
+      - 9173:80
+    restart: always
+
+  senzingsdk-tools:
+    cap_add:
+      - ALL
+    command: ["sleep", "infinity"]
+    container_name: senzingsdk-tools
+    environment:
+      SENZING_ENGINE_CONFIGURATION_JSON: >-
+        {
+          "PIPELINE": {
+            "CONFIGPATH": "/etc/opt/senzing",
+            "LICENSESTRINGBASE64": "${SENZING_LICENSE_BASE64_ENCODED}",
+            "RESOURCEPATH": "/opt/senzing/er/resources",
+            "SUPPORTPATH": "/opt/senzing/data"
+          },
+          "SQL": {
+            "BACKEND": "SQL",
+            "CONNECTION": "mysql://mysql:mysql@senzing-mysql:3306:G2/"
+          }
+        }
+    image: senzing/senzingsdk-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS:-latest}
+    networks:
+      - senzing
+    restart: always
+    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    volumes:
+      - user-data-volume:/var/opt/senzing
+
+networks:
+  senzing:
+    name: ${SENZING_DOCKER_NETWORK:-senzing-network}
+
+volumes:
+  mysql-volume:
+  user-data-volume:
