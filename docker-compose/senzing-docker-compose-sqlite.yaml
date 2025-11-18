@@ -19,7 +19,7 @@ services:
     container_name: senzing-sqlite-init
     environment:
       SENZING_TOOLS_DATABASE_URL: "sqlite3://na:na@/data/G2C.db"
-      SENZING_TOOLS_DATASOURCES: "CUSTOMERS, REFERENCE, WATCHLIST"
+      SENZING_TOOLS_INSTALL_SENZING_ER_CONFIGURATION: "True"
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing

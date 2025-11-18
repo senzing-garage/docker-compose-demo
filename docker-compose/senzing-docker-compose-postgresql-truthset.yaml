@@ -1,4 +1,4 @@
-name: senzing-docker-compose-postgresql
+name: senzing-docker-compose-postgresql-truthset
 
 services:
   makefile:
@@ -67,7 +67,7 @@ services:
       - postgres
     environment:
       SENZING_TOOLS_DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/G2/?sslmode=disable"
-      SENZING_TOOLS_INSTALL_SENZING_ER_CONFIGURATION: "True"
+      SENZING_TOOLS_LOAD_TRUTHSET: "True"
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing

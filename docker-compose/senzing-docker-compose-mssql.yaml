@@ -85,7 +85,6 @@ services:
       - mssql
     environment:
       SENZING_TOOLS_DATABASE_URL: "mssql://sa:Passw0rd@senzing-mssql:1433/G2?MultiSubnetFailover=False&TrustServerCertificate=yes"
-      SENZING_TOOLS_DATASOURCES: "CUSTOMERS, REFERENCE, WATCHLIST"
       ODBCINI: /var/opt/odbcini/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql18/etc
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}

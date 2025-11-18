@@ -42,17 +42,14 @@ the onus is on the user for proper operation of docker and docker networking.
    curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/${SENZING_TOOLS_DOCKER_COMPOSE_FILE}
    ```
 
-1. :thinking: **Optional:** Pull Docker image versions.
-
-   ```console
-   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} pull
-   ```
-
 1. Bring up Docker compose formation.
 
    ```console
-   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up
+   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} --pull always up
    ```
+
+   *Note:* The optional [--pull always] parameter pulls the latest version of the Docker images before running.
+   Omit the [--pull always] parameter if using the currently cached Docker images is preferred.
 
 1. Work with Docker compose formation.
    See [Services] section.
@@ -134,6 +131,7 @@ An SQLite database administration tool.
 - [Errors]
 - [Examples]
 
+[--pull always]: https://docs.docker.com/reference/cli/docker/compose/up/
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
 [Adminer]: #adminer
 [Development]: docs/development.md
