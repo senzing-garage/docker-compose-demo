@@ -6,6 +6,21 @@ This is a one-and-done set of instructions for bringing up a tool in the
 `senzing/senzingsdk-tools` Docker image.
 The database is deleted when the docker-compose formation is brought down.
 
+1. Prerequisites:
+    1. `docker-compose` or `docker compose`.
+
+        ```console
+        docker-compose version
+        ```
+
+        ```console
+        docker compose version
+        ```
+
+        If neither is installed, visit [What is Docker-Compose].
+
+        If `docker compose` is installed, the instructions will need to use `docker compose` instead of `docker-compose`.
+
 1. Download docker-compose file.
 
     ```console
@@ -46,6 +61,21 @@ The database is deleted when the docker-compose formation is brought down.
 
 This is a set of instructions for repeatedly bringing and down a docker-compose formation.
 It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
+
+1. Prerequisites:
+    1. `docker-compose` or `docker compose`.
+
+        ```console
+        docker-compose version
+        ```
+
+        ```console
+        docker compose version
+        ```
+
+        If neither is installed, visit [What is Docker-Compose].
+
+        If `docker compose` is installed, the instructions will need to use `docker compose` instead of `docker-compose`.
 
 1. Download docker-compose file.
 
@@ -132,6 +162,21 @@ Bring up separate docker compose formations
 by modifying the [--project-name] commandline option
 and specifying the version of `senzing/senzingsdk-tools` via
 the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable.
+
+1. Prerequisites:
+    1. `docker-compose` or `docker compose`.
+
+        ```console
+        docker-compose version
+        ```
+
+        ```console
+        docker compose version
+        ```
+
+        If neither is installed, visit [What is Docker-Compose].
+
+        If `docker compose` is installed, the instructions will need to use `docker compose` instead of `docker-compose`.
 
 1. Download docker-compose file.
 
@@ -221,3 +266,5 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
     docker-compose --project-name senzing-4_0_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
     docker-compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
     ```
+
+[What is Docker-Compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
