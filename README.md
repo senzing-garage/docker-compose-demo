@@ -16,6 +16,9 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
 
 1. **TL;DR** - A Simple example
 
+   1. Prerequisites:
+      1. [Docker compose]
+
    1. Bring up a docker-compose formation:
 
       ```console
@@ -166,6 +169,7 @@ An SQLite database administration tool.
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
 [Adminer]: #adminer
 [Development]: docs/development.md
+[Docker compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
 [docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
 [Errors]: docs/errors.md
