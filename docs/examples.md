@@ -50,13 +50,13 @@ The database is deleted when the docker-compose formation is brought down.
             Export from container:
 
             ```console
-            docker cp senzingsdk-tools:/var/opt/senzing/* /tmp/from-container/
+            docker cp senzingsdk-tools:/var/opt/senzing/example-export-file.txt /tmp
             ```
 
             Import into container:
 
             ```console
-            docker cp /tmp/to-container/* senzingsdk-tools:/var/opt/senzing
+            docker cp /tmp/example-import-file.txt senzingsdk-tools:/var/opt/senzing
             ```
 
 1. In the `senzingsdk-tools` docker container, run the `sz_explorer` tool.
