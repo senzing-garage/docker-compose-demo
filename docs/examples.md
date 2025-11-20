@@ -116,7 +116,7 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
         docker exec -it senzingsdk-tools /bin/bash
         ```
 
-    - :thinking: For tips on importing/exporting files from container, see [Tips for importing and exporting files].
+        - :thinking: For tips on importing/exporting files from container, see [Tips for importing and exporting files].
 
     1. In the `senzingsdk-tools` docker container, run the `sz_explorer` tool.
 
