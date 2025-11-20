@@ -39,6 +39,11 @@ The database is deleted when the docker-compose formation is brought down.
     docker exec -it senzingsdk-tools /bin/bash
     ```
 
+    *Note:* To import/export data from the Docker container, use the `/var/opt/senzing` directory.
+    This may be mapped to one of the following locations on localhost:
+
+    - `/var/lib/docker/volumes`
+
 1. In the `senzingsdk-tools` docker container, run the `sz_explorer` tool.
 
     ```console
