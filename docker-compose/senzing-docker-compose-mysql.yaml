@@ -14,6 +14,9 @@ services:
       - senzing
     ports:
       - 3306:3306
+    profiles:
+      - new
+      - resume
     restart: always
     volumes:
       - mysql-volume:/var/lib/mysql
@@ -27,6 +30,8 @@ services:
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
+    profiles:
+      - new
     restart: on-failure
 
   phpmyadmin:
@@ -40,6 +45,9 @@ services:
       - senzing
     ports:
       - 9173:80
+    profiles:
+      - new
+      - resume
     restart: always
 
   senzingsdk-tools:
@@ -64,6 +72,9 @@ services:
     image: senzing/senzingsdk-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS:-latest}
     networks:
       - senzing
+    profiles:
+      - new
+      - resume
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:

@@ -10,6 +10,9 @@ services:
       - senzing
     ports:
       - 9174:8080
+    profiles:
+      - new
+      - resume
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -23,6 +26,8 @@ services:
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
+    profiles:
+      - new
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
       - sqlite-volume:/data
@@ -49,6 +54,9 @@ services:
     image: senzing/senzingsdk-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS:-latest}
     networks:
       - senzing
+    profiles:
+      - new
+      - resume
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:

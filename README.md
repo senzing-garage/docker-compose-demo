@@ -45,7 +45,7 @@ the onus is on the user for proper operation of docker and docker networking.
 1. Bring up Docker compose formation.
 
    ```console
-   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} --pull always up
+   docker-compose  --profile new --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up --pull always
    ```
 
    *Note:* The optional [--pull always] parameter pulls the latest version of the Docker images before running.
@@ -57,11 +57,12 @@ the onus is on the user for proper operation of docker and docker networking.
 1. Bring down Docker formation.
 
    ```console
-   docker-compose --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} down --volumes
+   docker-compose --profile new --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} down --volumes
    ```
 
    *Note:* The optional [--volumes] parameter cleans up the volumes.
-   Omit the [--volumes] parameter if the data is to be reused.
+   Omit the [--volumes] parameter if the data is to be reused via
+   [--profile resume].
 
 ## Services
 
@@ -131,7 +132,7 @@ An SQLite database administration tool.
 - [Errors]
 - [Examples]
 
-[--pull always]: https://docs.docker.com/reference/cli/docker/compose/up/
+[--pull always]: https://docs.docker.com/reference/cli/docker/compose/up/#options
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
 [Adminer]: #adminer
 [Development]: docs/development.md
@@ -156,3 +157,4 @@ An SQLite database administration tool.
 [senzingsdk-tools]: #senzingsdk-tools
 [Services]: #services
 [Sqlite-Web]: #sqlite-web
+[--profile resume]: https://docs.docker.com/reference/cli/docker/compose/up/#options

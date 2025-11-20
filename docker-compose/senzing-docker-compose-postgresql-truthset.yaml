@@ -34,6 +34,8 @@ services:
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
     networks:
       - senzing
+    profiles:
+      - new
     read_only: true
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -56,6 +58,9 @@ services:
       - senzing
     ports:
       - 5432:5432
+    profiles:
+      - new
+      - resume
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -71,12 +76,12 @@ services:
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
+    profiles:
+      - new
     restart: on-failure
 
   pgadmin:
     container_name: senzing-pgadmin
-    depends_on:
-      - makefile
     environment:
       # See https://www.pgadmin.org/docs/pgadmin4/latest/container_deployment.html
       PGADMIN_CONFIG_DEFAULT_SERVER: '"0.0.0.0"'
@@ -97,6 +102,9 @@ services:
     ports:
       - 9171:80
       - 9172:443
+    profiles:
+      - new
+      - resume
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -124,6 +132,9 @@ services:
     image: senzing/senzingsdk-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS:-latest}
     networks:
       - senzing
+    profiles:
+      - new
+      - resume
     restart: always
     user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
     volumes:
