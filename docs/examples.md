@@ -51,6 +51,8 @@ The database is deleted when the docker-compose formation is brought down.
     quick_look
     ```
 
+1. To view database in a web browser, visit [PgAdmin4] at [localhost:9171]
+
 1. Bring docker-compose formation down and delete the attached volumes.
 
     ```console
@@ -108,6 +110,8 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
         ```console
         quick_look
         ```
+
+    1. To view database in a web browser, visit [PgAdmin4] at [localhost:9171]
 
     1. Bring docker-compose formation down, but leave the attached volumes intact so the formation can be reused.
 
@@ -267,4 +271,6 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
     docker compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
     ```
 
+[localhost:9171]: http://localhost:9171
+[PgAdmin4]: https://www.pgadmin.org/
 [What is Docker-Compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
