@@ -7,19 +7,8 @@ This is a one-and-done set of instructions for bringing up a tool in the
 The database is deleted when the docker-compose formation is brought down.
 
 1. Prerequisites:
-    1. `docker compose` or `docker-compose`.
 
-        ```console
-        docker compose version
-        ```
-
-        ```console
-        docker-compose version
-        ```
-
-        If neither is installed, visit [What is Docker-Compose].
-
-        If only `docker-compose` is installed, the instructions will need to use `docker-compose` instead of `docker compose`.
+    1. [Docker compose]
 
 1. Download docker-compose file.
 
@@ -33,31 +22,15 @@ The database is deleted when the docker-compose formation is brought down.
     docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
     ```
 
+    - :thinking: To view database, see [View database].
+
 1. In a separate terminal, exec into the `senzing/senzingsdk-tools` container.
 
     ```console
     docker exec -it senzingsdk-tools /bin/bash
     ```
 
-    1. Tips for importing/exporting files from `senzing/senzingsdk-tools` container.
-    *Note:* To import/export data from the Docker container, use the `/var/opt/senzing` directory.
-    This may be mapped to one of the following locations on localhost:
-
-        - Linux: `/var/lib/docker/volumes`
-        - macOS: Use Docker.Desktop > Volumes > senzing-docker-compose-postgresql-truthset_user-data-volume
-        - Using [docker cp] command:
-
-            Export from container:
-
-            ```console
-            docker cp senzingsdk-tools:/var/opt/senzing/example-export-file.txt /tmp
-            ```
-
-            Import into container:
-
-            ```console
-            docker cp /tmp/example-import-file.txt senzingsdk-tools:/var/opt/senzing
-            ```
+    - :thinking: For tips on importing/exporting files from container, see [Tips for importing and exporting files].
 
 1. In the `senzingsdk-tools` docker container, run the `sz_explorer` tool.
 
@@ -71,10 +44,6 @@ The database is deleted when the docker-compose formation is brought down.
     quick_look
     ```
 
-1. To view database in a web browser, visit [PgAdmin4] at [localhost:9171]
-    1. Username and password are in dialog box.
-    1. Password for postgres database: postgres
-
 1. Bring docker-compose formation down and delete the attached volumes.
 
     ```console
@@ -87,19 +56,7 @@ This is a set of instructions for repeatedly bringing and down a docker-compose 
 It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
 
 1. Prerequisites:
-    1. `docker compose` or `docker-compose`.
-
-        ```console
-        docker compose version
-        ```
-
-        ```console
-        docker-compose version
-        ```
-
-        If neither is installed, visit [What is Docker-Compose].
-
-        If only `docker-compose` is installed, the instructions will need to use `docker-compose` instead of `docker compose`.
+    1. [Docker compose]
 
 1. Download docker-compose file.
 
@@ -115,11 +72,15 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
         docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
         ```
 
+        - :thinking: To view database, see [View database].
+
     1. In a separate terminal, exec into the `senzing/senzingsdk-tools` container.
 
         ```console
         docker exec -it senzingsdk-tools /bin/bash
         ```
+
+        - :thinking: For tips on importing/exporting files from container, see [Tips for importing and exporting files].
 
     1. In the `senzingsdk-tools` docker container, run the `sz_explorer` tool.
 
@@ -132,10 +93,6 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
         ```console
         quick_look
         ```
-
-    1. To view database in a web browser, visit [PgAdmin4] at [localhost:9171]
-        1. Username and password are in dialog box.
-        1. Password for postgres database: postgres
 
     1. Bring docker-compose formation down, but leave the attached volumes intact so the formation can be reused.
 
@@ -151,11 +108,15 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
         docker compose --profile resume --file senzing-docker-compose-postgresql-truthset.yaml up
         ```
 
+        - :thinking: To view database, see [View database].
+
     1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
 
         ```console
         docker exec -it senzingsdk-tools /bin/bash
         ```
+
+    - :thinking: For tips on importing/exporting files from container, see [Tips for importing and exporting files].
 
     1. In the `senzingsdk-tools` docker container, run the `sz_explorer` tool.
 
@@ -192,19 +153,7 @@ and specifying the version of `senzing/senzingsdk-tools` via
 the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable.
 
 1. Prerequisites:
-    1. `docker compose` or `docker-compose`.
-
-        ```console
-        docker compose version
-        ```
-
-        ```console
-        docker-compose version
-        ```
-
-        If neither is installed, visit [What is Docker-Compose].
-
-        If only `docker-compose` is installed, the instructions will need to use `docker-compose` instead of `docker compose`.
+    1. [Docker compose]
 
 1. Download docker-compose file.
 
@@ -295,7 +244,57 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
     docker compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
     ```
 
+## Prerequisites
+
+### Docker compose
+
+1. `docker compose` or `docker-compose`.
+
+    ```console
+    docker compose version
+    ```
+
+    ```console
+    docker-compose version
+    ```
+
+    If neither is installed, visit [What is Docker-Compose].
+
+    If only `docker-compose` is installed, the instructions will need to use `docker-compose` instead of `docker compose`.
+
+## Tips
+
+### View database
+
+1. To view database in a web browser, visit [PgAdmin4] at [localhost:9171]
+    1. Username and password are in dialog box.
+    1. Password for postgres database: postgres
+
+### Tips for importing and exporting files
+
+1. Tips for importing/exporting files from `senzing/senzingsdk-tools` container.
+   *Note:* To import/export data from the Docker container, use the `/var/opt/senzing` directory.
+   This may be mapped to one of the following locations on localhost:
+
+    - Linux: `/var/lib/docker/volumes`
+    - macOS: Use Docker.Desktop > Volumes > senzing-docker-compose-postgresql-truthset_user-data-volume
+    - Using [docker cp] command:
+
+        Export from container:
+
+        ```console
+        docker cp senzingsdk-tools:/var/opt/senzing/example-export-file.txt /tmp
+        ```
+
+        Import into container:
+
+        ```console
+        docker cp /tmp/example-import-file.txt senzingsdk-tools:/var/opt/senzing
+        ```
+
+[Docker compose]: #docker-compose
 [localhost:9171]: http://localhost:9171
 [PgAdmin4]: https://www.pgadmin.org/
+[Tips for importing and exporting files]: #tips-for-importing-and-exporting-files
+[View database]: #view-database
 [What is Docker-Compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
-[docker cp]: https://docs.docker.com/reference/cli/docker/container/cp/
