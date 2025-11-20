@@ -14,6 +14,15 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
 
 ## Overview
 
+This repository contains a multitude of docker-compose.yaml files in the [docker-compose directory].
+Variations:
+
+   | Variation | Example filename                                          |
+   |-----------|-----------------------------------------------------------|
+   | database  | `senzing-docker-compose-<database>.yaml`                  |
+   | truthset  | `senzing-docker-compose-<database>-truthset.yaml`         |
+   | multi use | `senzing-docker-compose-<database>-<truthset>-multi.yaml` |
+
 ## Caveat
 
 This demonstration runs on platforms that support `docker` and `docker-compose`.
@@ -45,7 +54,7 @@ the onus is on the user for proper operation of docker and docker networking.
 1. Bring up Docker compose formation.
 
    ```console
-   docker-compose  --profile new --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up --pull always
+   docker-compose --profile new --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up --pull always
    ```
 
    *Note:* The optional [--pull always] parameter pulls the latest version of the Docker images before running.
@@ -72,12 +81,14 @@ All Docker Compose formations include:
 
 Services offered by specific Docker Compose formations:
 
-| Docker compose file                      | DB Admin     |
-|------------------------------------------|--------------|
-| [senzing-docker-compose-mssql.yaml]      | [Adminer]    |
-| [senzing-docker-compose-mysql.yaml]      | [PhpMyAdmin] |
-| [senzing-docker-compose-postgresql.yaml] | [PgAdmin]    |
-| [senzing-docker-compose-sqlite.yaml]     | [Sqlite-Web] |
+| Docker compose file                               | DB Admin     |
+|---------------------------------------------------|--------------|
+| [senzing-docker-compose-mssql.yaml]               | [Adminer]    |
+| [senzing-docker-compose-mysql.yaml]               | [PhpMyAdmin] |
+| [senzing-docker-compose-postgresql-truthset.yaml] | [PgAdmin]    |
+| [senzing-docker-compose-postgresql.yaml]          | [PgAdmin]    |
+| [senzing-docker-compose-sqlite-truthset.yaml]     | [Sqlite-Web] |
+| [senzing-docker-compose-sqlite.yaml]              | [Sqlite-Web] |
 
 ### senzingsdk-tools
 
@@ -88,6 +99,8 @@ The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing
    ```console
    docker exec -it senzingsdk-tools /bin/bash
    ```
+
+   *Note:* in docker-compose files ending with `-multi.yaml`, the name of the docker container may differ.
 
 ### Adminer
 
@@ -132,6 +145,7 @@ An SQLite database administration tool.
 - [Errors]
 - [Examples]
 
+[--profile resume]: https://docs.docker.com/reference/cli/docker/compose/up/#options
 [--pull always]: https://docs.docker.com/reference/cli/docker/compose/up/#options
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
 [Adminer]: #adminer
@@ -150,11 +164,12 @@ An SQLite database administration tool.
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
 [senzing-docker-compose-mssql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mssql.yaml
 [senzing-docker-compose-mysql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mysql.yaml
+[senzing-docker-compose-postgresql-truthset.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
 [senzing-docker-compose-postgresql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql.yaml
+[senzing-docker-compose-sqlite-truthset.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite-truthset.yaml
 [senzing-docker-compose-sqlite.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite.yaml
 [Senzing]: https://senzing.com/
 [senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
 [senzingsdk-tools]: #senzingsdk-tools
 [Services]: #services
 [Sqlite-Web]: #sqlite-web
-[--profile resume]: https://docs.docker.com/reference/cli/docker/compose/up/#options
