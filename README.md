@@ -18,16 +18,16 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
 
    1. Bring up a docker-compose formation:
 
-   ```console
-   curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
-   docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
-   ```
+      ```console
+      curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
+      docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
+      ```
 
    1. In a separate terminal, exec into the `senzingsdk-tools` container:
 
-   ```console
-   docker exec -it senzingsdk-tools /bin/bash
-   ```
+      ```console
+      docker exec -it senzingsdk-tools /bin/bash
+      ```
 
 1. In addition to the **TL;DR**,
    this repository contains a multitude of docker-compose.yaml files in the [docker-compose directory].
