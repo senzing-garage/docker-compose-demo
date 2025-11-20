@@ -52,6 +52,8 @@ The database is deleted when the docker-compose formation is brought down.
     ```
 
 1. To view database in a web browser, visit [PgAdmin4] at [localhost:9171]
+    1. Username and password are in dialog box.
+    1. Password for postgres database: postgres
 
 1. Bring docker-compose formation down and delete the attached volumes.
 
@@ -112,6 +114,8 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
         ```
 
     1. To view database in a web browser, visit [PgAdmin4] at [localhost:9171]
+        1. Username and password are in dialog box.
+        1. Password for postgres database: postgres
 
     1. Bring docker-compose formation down, but leave the attached volumes intact so the formation can be reused.
 
