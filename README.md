@@ -14,7 +14,23 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
 
 ## Overview
 
-This repository contains a multitude of docker-compose.yaml files in the [docker-compose directory].
+*TL;DR* - A Simple example
+
+```console
+curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
+docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
+```
+
+In a separate terminal:
+
+```console
+docker exec -it senzingsdk-tools /bin/bash
+```
+
+*Variations*
+
+Beyond the **TL;DR**,
+this repository contains a multitude of docker-compose.yaml files in the [docker-compose directory].
 Variations:
 
    | Variation | Example filename                                          |
