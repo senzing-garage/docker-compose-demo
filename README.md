@@ -100,7 +100,7 @@ The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing
    docker exec -it senzingsdk-tools /bin/bash
    ```
 
-   *Note:* in docker-compose files ending with `-multi.yaml`, the name of the docker container may differ.
+   *Note:* In docker-compose files ending with `-multi.yaml`, the name of the docker container may differ.
 
 ### Adminer
 
