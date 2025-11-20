@@ -14,30 +14,30 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
 
 ## Overview
 
-*TL;DR* - A Simple example
+1. **TL;DR** - A Simple example
 
-```console
-curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
-docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
-```
+   1. Bring up a docker-compose formation:
 
-In a separate terminal:
+   ```console
+   curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
+   docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
+   ```
 
-```console
-docker exec -it senzingsdk-tools /bin/bash
-```
+   1. In a separate terminal, exec into the `senzingsdk-tools` container:
 
-*Variations*
+   ```console
+   docker exec -it senzingsdk-tools /bin/bash
+   ```
 
-Beyond the **TL;DR**,
-this repository contains a multitude of docker-compose.yaml files in the [docker-compose directory].
-Variations:
+1. In addition to the **TL;DR**,
+   this repository contains a multitude of docker-compose.yaml files in the [docker-compose directory].
+   Variations:
 
-   | Variation | Example filename                                          |
-   |-----------|-----------------------------------------------------------|
-   | database  | `senzing-docker-compose-<database>.yaml`                  |
-   | truthset  | `senzing-docker-compose-<database>-truthset.yaml`         |
-   | multi use | `senzing-docker-compose-<database>-<truthset>-multi.yaml` |
+      | Variation | Example filename                                          |
+      |-----------|-----------------------------------------------------------|
+      | database  | `senzing-docker-compose-<database>.yaml`                  |
+      | truthset  | `senzing-docker-compose-<database>-truthset.yaml`         |
+      | multi use | `senzing-docker-compose-<database>-<truthset>-multi.yaml` |
 
 ## Caveat
 
