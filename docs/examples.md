@@ -7,19 +7,19 @@ This is a one-and-done set of instructions for bringing up a tool in the
 The database is deleted when the docker-compose formation is brought down.
 
 1. Prerequisites:
-    1. `docker-compose` or `docker compose`.
-
-        ```console
-        docker-compose version
-        ```
+    1. `docker compose` or `docker-compose`.
 
         ```console
         docker compose version
         ```
 
+        ```console
+        docker-compose version
+        ```
+
         If neither is installed, visit [What is Docker-Compose].
 
-        If `docker compose` is installed, the instructions will need to use `docker compose` instead of `docker-compose`.
+        If only `docker-compose` is installed, the instructions will need to use `docker-compose` instead of `docker compose`.
 
 1. Download docker-compose file.
 
@@ -30,7 +30,7 @@ The database is deleted when the docker-compose formation is brought down.
 1. Bring up docker-compose formation.
 
     ```console
-    docker-compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
+    docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
     ```
 
 1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
@@ -54,7 +54,7 @@ The database is deleted when the docker-compose formation is brought down.
 1. Bring docker-compose formation down and delete the attached volumes.
 
     ```console
-    docker-compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml down --volumes
+    docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml down --volumes
     ```
 
 ## Reusable Truthset on Postgresql
@@ -63,19 +63,19 @@ This is a set of instructions for repeatedly bringing and down a docker-compose 
 It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
 
 1. Prerequisites:
-    1. `docker-compose` or `docker compose`.
-
-        ```console
-        docker-compose version
-        ```
+    1. `docker compose` or `docker-compose`.
 
         ```console
         docker compose version
         ```
 
+        ```console
+        docker-compose version
+        ```
+
         If neither is installed, visit [What is Docker-Compose].
 
-        If `docker compose` is installed, the instructions will need to use `docker compose` instead of `docker-compose`.
+        If only `docker-compose` is installed, the instructions will need to use `docker-compose` instead of `docker compose`.
 
 1. Download docker-compose file.
 
@@ -88,7 +88,7 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
     1. Bring up docker-compose formation using `--profile new`.
 
         ```console
-        docker-compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
+        docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
         ```
 
     1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
@@ -112,7 +112,7 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
     1. Bring docker-compose formation down, but leave the attached volumes intact so the formation can be reused.
 
         ```console
-        docker-compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml down
+        docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml down
         ```
 
 1. Bring up the same docker-compose formation again.
@@ -120,7 +120,7 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
     1. Bring up docker-compose formation using `--profile resume`.
 
         ```console
-        docker-compose --profile resume --file senzing-docker-compose-postgresql-truthset.yaml up
+        docker compose --profile resume --file senzing-docker-compose-postgresql-truthset.yaml up
         ```
 
     1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
@@ -144,7 +144,7 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
     1. Bring docker-compose formation down, but leave the attached volumes intact so the formation can be reused.
 
         ```console
-        docker-compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml down
+        docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml down
         ```
 
 1. Cleanup.  When the database is not longer needed, the docker-compose formation is brought down with the
@@ -153,7 +153,7 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
     1. Bring docker-compose formation down and delete the attached volumes.
 
         ```console
-        docker-compose --profile resume --file senzing-docker-compose-postgresql-truthset.yaml down --volumes
+        docker compose --profile resume --file senzing-docker-compose-postgresql-truthset.yaml down --volumes
         ```
 
 ## Compare different versions
@@ -164,19 +164,19 @@ and specifying the version of `senzing/senzingsdk-tools` via
 the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable.
 
 1. Prerequisites:
-    1. `docker-compose` or `docker compose`.
-
-        ```console
-        docker-compose version
-        ```
+    1. `docker compose` or `docker-compose`.
 
         ```console
         docker compose version
         ```
 
+        ```console
+        docker-compose version
+        ```
+
         If neither is installed, visit [What is Docker-Compose].
 
-        If `docker compose` is installed, the instructions will need to use `docker compose` instead of `docker-compose`.
+        If only `docker-compose` is installed, the instructions will need to use `docker-compose` instead of `docker compose`.
 
 1. Download docker-compose file.
 
@@ -192,7 +192,7 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
 
         ```console
         export SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS=4.0.0
-        docker-compose --project-name senzing-4_0_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml up --pull always
+        docker compose --project-name senzing-4_0_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml up --pull always
         ```
 
     1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
@@ -229,7 +229,7 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
 
         ```console
         export SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS=4.1.0
-        docker-compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml up --pull always
+        docker compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml up --pull always
         ```
 
     1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
@@ -263,8 +263,8 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
     :pencil2: Replace `senzing-4_0_0` and `senzing-4_1_0` with desired Senzing versions.
 
     ```console
-    docker-compose --project-name senzing-4_0_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
-    docker-compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
+    docker compose --project-name senzing-4_0_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
+    docker compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
     ```
 
 [What is Docker-Compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
