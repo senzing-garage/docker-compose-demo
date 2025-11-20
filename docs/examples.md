@@ -128,8 +128,8 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
 
 ## Compare different versions
 
-Bring up two separate docker compose formations
-using the [--project-name] commandline option
+Bring up separate docker compose formations
+by modifying the [--project-name] commandline option
 and specifying the version of `senzing/senzingsdk-tools` via
 the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable.
 
@@ -139,16 +139,20 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
     curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql-multi.yaml
     ```
 
-1. Bring up first Senzing version
+1. Bring up first Senzing version.
 
-    1. Bring up docker-compose formation with Senzing version 4.0.0.
+    1. :pencil2: Bring up docker-compose formation with Senzing version 4.0.0.
+
+       *Modify:* Replace `4.0.0` and `senzing-4_0_0` with desired Senzing version.
 
         ```console
         export SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS=4.0.0
         docker-compose --project-name senzing-4_0_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml up --pull always
         ```
 
-    1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
+    1. :pencil2: In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
+
+       *Modify:* Replace `senzing-4_0_0` with desired Senzing version.
 
         ```console
         docker exec -it senzing-4_0_0-senzingsdk-tools /bin/bash
@@ -166,25 +170,26 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
         sz_explorer
         ```
 
-    1. In `sz_explorer`, run `quick_look`
+    1. In `sz_explorer`, run `quick_look`.
 
         ```console
         quick_look
         ```
 
-1. Bring up second Senzing version
+1. Bring up second Senzing version.
 
     1. :pencil2: In a separate terminal, bring up docker-compose formation with Senzing version 4.1.0.
 
-        ```console
-        export SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS=4.1.0
-        ```
+       *Modify:* Replace `4.1.0` and `senzing-4_1_0` with desired Senzing version.
 
         ```console
+        export SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS=4.1.0
         docker-compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml up --pull always
         ```
 
     1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
+
+       *Modify:* Replace `senzing-4_1_0` with desired Senzing version.
 
         ```console
         docker exec -it senzing-4_1_0-senzingsdk-tools /bin/bash
@@ -202,13 +207,15 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
         sz_explorer
         ```
 
-    1. In `sz_explorer`, run `quick_look`
+    1. In `sz_explorer`, run `quick_look`.
 
         ```console
         quick_look
         ```
 
-1. Bring docker-compose formations down and delete the attached volumes.
+1. :pencil2: Bring docker-compose formations down and delete the attached volumes.
+
+    *Modify:* Replace `senzing-4_0_0` and `senzing-4_1_0` with desired Senzing versions.
 
     ```console
     docker-compose --project-name senzing-4_0_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml down --volumes
