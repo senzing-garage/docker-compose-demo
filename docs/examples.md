@@ -33,16 +33,31 @@ The database is deleted when the docker-compose formation is brought down.
     docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
     ```
 
-1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
+1. In a separate terminal, exec into the `senzing/senzingsdk-tools` container.
 
     ```console
     docker exec -it senzingsdk-tools /bin/bash
     ```
 
+    1. Tips for importing/exporting files from
     *Note:* To import/export data from the Docker container, use the `/var/opt/senzing` directory.
     This may be mapped to one of the following locations on localhost:
 
-    - `/var/lib/docker/volumes`
+    - Linux: `/var/lib/docker/volumes`
+    - macOS: Use Docker.Desktop > Volumes > senzing-docker-compose-postgresql-truthset_user-data-volume
+    - Alternatives:
+
+        Export from container:
+
+        ```console
+        docker cp senzingsdk-tools:/var/opt/senzing/* /tmp/from-container/
+        ```
+
+        Import into container:
+
+        ```console
+        docker cp /tmp/to-container/* senzingsdk-tools:/var/opt/senzing
+        ```
 
 1. In the `senzingsdk-tools` docker container, run the `sz_explorer` tool.
 
@@ -100,7 +115,7 @@ It demonstrates using a tool in the `senzing/senzingsdk-tools` Docker image.
         docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
         ```
 
-    1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
+    1. In a separate terminal, exec into the `senzing/senzingsdk-tools` container.
 
         ```console
         docker exec -it senzingsdk-tools /bin/bash
@@ -208,7 +223,7 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
         docker compose --project-name senzing-4_0_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml up --pull always
         ```
 
-    1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
+    1. In a separate terminal, exec into the `senzing/senzingsdk-tools` container.
 
        :pencil2: Replace `senzing-4_0_0` with desired Senzing version.
 
@@ -245,7 +260,7 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
         docker compose --project-name senzing-4_1_0 --profile new --file senzing-docker-compose-postgresql-truthset-multi.yaml up --pull always
         ```
 
-    1. In a separate terminal, exec into the `senzing/senzingsdk-tools` image.
+    1. In a separate terminal, exec into the `senzing/senzingsdk-tools` container.
 
        :pencil2: Replace `senzing-4_1_0` with desired Senzing version.
 
