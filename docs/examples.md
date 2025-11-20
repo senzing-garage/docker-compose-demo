@@ -43,21 +43,21 @@ The database is deleted when the docker-compose formation is brought down.
     *Note:* To import/export data from the Docker container, use the `/var/opt/senzing` directory.
     This may be mapped to one of the following locations on localhost:
 
-    - Linux: `/var/lib/docker/volumes`
-    - macOS: Use Docker.Desktop > Volumes > senzing-docker-compose-postgresql-truthset_user-data-volume
-    - Alternatives:
+        - Linux: `/var/lib/docker/volumes`
+        - macOS: Use Docker.Desktop > Volumes > senzing-docker-compose-postgresql-truthset_user-data-volume
+        - Alternatives:
 
-        Export from container:
+            Export from container:
 
-        ```console
-        docker cp senzingsdk-tools:/var/opt/senzing/* /tmp/from-container/
-        ```
+            ```console
+            docker cp senzingsdk-tools:/var/opt/senzing/* /tmp/from-container/
+            ```
 
-        Import into container:
+            Import into container:
 
-        ```console
-        docker cp /tmp/to-container/* senzingsdk-tools:/var/opt/senzing
-        ```
+            ```console
+            docker cp /tmp/to-container/* senzingsdk-tools:/var/opt/senzing
+            ```
 
 1. In the `senzingsdk-tools` docker container, run the `sz_explorer` tool.
 
