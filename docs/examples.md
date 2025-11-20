@@ -39,13 +39,13 @@ The database is deleted when the docker-compose formation is brought down.
     docker exec -it senzingsdk-tools /bin/bash
     ```
 
-    1. Tips for importing/exporting files from
+    1. Tips for importing/exporting files from `senzing/senzingsdk-tools` container.
     *Note:* To import/export data from the Docker container, use the `/var/opt/senzing` directory.
     This may be mapped to one of the following locations on localhost:
 
         - Linux: `/var/lib/docker/volumes`
         - macOS: Use Docker.Desktop > Volumes > senzing-docker-compose-postgresql-truthset_user-data-volume
-        - Alternatives:
+        - Using [docker cp] command:
 
             Export from container:
 
@@ -298,3 +298,4 @@ the `SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS` environment variable
 [localhost:9171]: http://localhost:9171
 [PgAdmin4]: https://www.pgadmin.org/
 [What is Docker-Compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
+[docker cp]: https://docs.docker.com/reference/cli/docker/container/cp/
