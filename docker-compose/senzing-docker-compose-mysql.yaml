@@ -76,7 +76,7 @@ services:
       - new
       - resume
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
       - user-data-volume:/var/opt/senzing
 
