@@ -35,8 +35,8 @@ The database administration tools are for the following databases:
    | Database | DB Admin Tool |
    |----------|---------------|
    | MS SQL   | [Adminer]     |
-   | Postgres | [PgAdmin]     |
    | MySQL    | [PhpMyAdmin]  |
+   | Postgres | [PgAdmin]     |
    | SQLite   | [Sqlite-Web]  |
 
 ### Adminer
