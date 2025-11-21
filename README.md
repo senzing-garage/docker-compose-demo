@@ -110,6 +110,7 @@ See [Services] for services rendered by each docker compose formation.
 - [Development]
 - [Errors]
 - [Examples]
+- [Services]
 
 [--profile resume]: https://docs.docker.com/reference/cli/docker/compose/up/#options
 [--pull always]: https://docs.docker.com/reference/cli/docker/compose/up/#options
