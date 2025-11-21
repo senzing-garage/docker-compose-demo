@@ -19,14 +19,19 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
    1. Prerequisites:
       1. [Docker compose]
 
-   1. Bring up a docker-compose formation:
+   1. Download docker-compose file:
 
       ```console
       curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
-      docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
       ```
 
       Alternatively, use a web browser to download [senzing-docker-compose-postgresql.yaml].
+
+   1. Bring up a docker-compose formation:
+
+      ```console
+      docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
+      ```
 
    1. In a separate terminal, exec into the `senzingsdk-tools` container:
 
