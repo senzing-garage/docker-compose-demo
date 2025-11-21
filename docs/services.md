@@ -32,10 +32,12 @@ The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing
 
 The database administration tools are for the following databases:
 
-- [Adminer] MS SQL
-- [PgAdmin] Postgres
-- [PhpMyAdmin] MySQL
-- [Sqlite-Web] SQLite
+   | Database | DB Admin Tool |
+   |----------|---------------|
+   | MS SQL   | [Adminer]     |
+   | Postgres | [PgAdmin]     |
+   | MySQL    | [PhpMyAdmin]  |
+   | SQLite   | [Sqlite-Web]  |
 
 ### Adminer
 
