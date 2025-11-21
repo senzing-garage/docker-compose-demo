@@ -12,6 +12,8 @@ services:
     image: senzing/apt:${SENZING_DOCKER_IMAGE_VERSION_SENZING_APT:-latest}
     networks:
       - senzing
+    profiles:
+      - new
     restart: on-failure
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -35,6 +37,8 @@ services:
     image: busybox:${SENZING_DOCKER_IMAGE_VERSION_BUSYBOX:-latest}
     networks:
       - senzing
+    profiles:
+      - new
     read_only: true
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -42,8 +46,6 @@ services:
 
   mssql:
     container_name: senzing-mssql
-    depends_on:
-      - makefile
     environment:
       # See https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables
       ACCEPT_EULA: Y
@@ -54,6 +56,9 @@ services:
       - senzing
     ports:
       - 1433:1433
+    profiles:
+      - new
+      - resume
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -75,6 +80,8 @@ services:
     depends_on:
       - mssql
     image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2025-latest}
+    profiles:
+      - new
     networks:
       - senzing
     restart: on-failure
@@ -85,12 +92,13 @@ services:
       - mssql
     environment:
       SENZING_TOOLS_DATABASE_URL: "mssql://sa:Passw0rd@senzing-mssql:1433/G2?MultiSubnetFailover=False&TrustServerCertificate=yes"
-      SENZING_TOOLS_DATASOURCES: "CUSTOMERS, REFERENCE, WATCHLIST"
       ODBCINI: /var/opt/odbcini/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql18/etc
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
+    profiles:
+      - new
     restart: on-failure
     volumes:
       - mssql-odbcini-volume:/var/opt/odbcini
@@ -105,6 +113,9 @@ services:
       - senzing
     ports:
       - 9177:8080
+    profiles:
+      - new
+      - resume
     restart: always
 
   senzingsdk-tools:
@@ -131,8 +142,11 @@ services:
     image: senzing/senzingsdk-tools:${SENZING_DOCKER_IMAGE_VERSION_SENZING_SENZINGSDK_TOOLS:-latest}
     networks:
       - senzing
+    profiles:
+      - new
+      - resume
     restart: always
-    user: ${SENZING_UID:-1001}:${SENZING_GID:-1001}
+    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
       - mssql-odbcini-volume:/var/opt/odbcini
       - mssql-driver-volume:/opt/microsoft

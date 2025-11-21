@@ -87,6 +87,8 @@
     "TCPIP",
     "testdata",
     "tmpfs",
+    "TRUTHSET",
+    "Truthsets",
     "WATCHLIST",
     "withinfo",
     "xpack"
