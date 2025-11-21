@@ -27,7 +27,7 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
 
       Alternatively, use a web browser to download [senzing-docker-compose-postgresql.yaml].
 
-   1. Bring up a docker-compose formation:
+   1. Bring up the docker-compose formation:
 
       ```console
       docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
