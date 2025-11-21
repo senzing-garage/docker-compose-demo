@@ -26,6 +26,8 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
       docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
       ```
 
+      Alternatively, use a web browser to download [senzing-docker-compose-postgresql.yaml].
+
    1. In a separate terminal, exec into the `senzingsdk-tools` container:
 
       ```console
@@ -185,7 +187,7 @@ An SQLite database administration tool.
 [senzing-docker-compose-mssql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mssql.yaml
 [senzing-docker-compose-mysql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mysql.yaml
 [senzing-docker-compose-postgresql-truthset.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
-[senzing-docker-compose-postgresql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql.yaml
+[senzing-docker-compose-postgresql.yaml]: https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
 [senzing-docker-compose-sqlite-truthset.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite-truthset.yaml
 [senzing-docker-compose-sqlite.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite.yaml
 [Senzing]: https://senzing.com/
