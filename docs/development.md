@@ -11,11 +11,7 @@ These are "one-time tasks" which may already have been completed.
    1. [Git]
    1. [make]
    1. [Docker]
-   1. [go]
-
-## References
 
 [Docker]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker.md
 [Git]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/git.md
-[go]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/go.md
 [make]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/make.md

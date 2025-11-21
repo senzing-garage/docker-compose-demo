@@ -6,7 +6,7 @@ All Docker Compose formations include:
 
 Services offered by specific Docker Compose formations:
 
-| Docker compose file                                     | DB Admin     | TruthSet           |
+| Docker compose file                                     | [DB Admin]   | [TruthSet]         |
 |---------------------------------------------------------|--------------|:------------------:|
 | [senzing-docker-compose-mssql.yaml]                     | [Adminer]    |                    |
 | [senzing-docker-compose-mysql.yaml]                     | [PhpMyAdmin] |                    |
@@ -28,7 +28,16 @@ The [senzing/senzingsdk-tools] Docker image contains Senzing tools for analyzing
 
    *Note:* In docker-compose files ending with `-multi.yaml`, the name of the docker container may differ.
 
-## Adminer
+## DB Admin
+
+The database administration tools are for the following databases:
+
+- [Adminer] MS SQL
+- [PgAdmin] Postgres
+- [PhpMyAdmin] MySQL
+- [Sqlite-Web] SQLite
+
+### Adminer
 
 A MS SQL database administration tool.
 
@@ -40,7 +49,7 @@ A MS SQL database administration tool.
    1. *Database:* G2
 1. Adminer homepage: [https://www.adminer.org/en/]
 
-## PgAdmin
+### PgAdmin
 
 A Postgres database administration tool.
 
@@ -49,7 +58,7 @@ A Postgres database administration tool.
    1. When prompted for the *database* (not PgAdmin) password, enter `postgres`.
 1. Pgadmin4 homepage: [github.com/dpage/pgadmin4]
 
-## PhpMyAdmin
+### PhpMyAdmin
 
 A MySQL database administration tool.
 
@@ -58,20 +67,27 @@ A MySQL database administration tool.
    1. Password: mysql
 1. PhpMyAdmin homepage: [https://www.phpmyadmin.net/]
 
-## Sqlite-Web
+### Sqlite-Web
 
 An SQLite database administration tool.
 
 1. View at [localhost:9174](http://localhost:9174)
 1. Sqlite-web homepage: [github.com/coleifer/sqlite-web]
 
+## TruthSet
+
+The [Senzing Truthsets] are a curated set of data sources and records to illustrate
+principles of Entity Resolution.
+
 [Adminer]: #adminer
+[DB Admin]: #db-admin
 [github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
 [github.com/dpage/pgadmin4]: https://github.com/dpage/pgadmin4
 [https://www.adminer.org/en/]: https://www.adminer.org/en/
 [https://www.phpmyadmin.net/]: https://www.phpmyadmin.net
 [PgAdmin]: #pgadmin
 [PhpMyAdmin]: #phpmyadmin
+[Senzing Truthsets]: https://github.com/Senzing/truth-sets
 [senzing-docker-compose-mssql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mssql.yaml
 [senzing-docker-compose-mysql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mysql.yaml
 [senzing-docker-compose-postgresql-truthset-multi.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql-truthset-multi.yaml
@@ -82,3 +98,4 @@ An SQLite database administration tool.
 [senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
 [senzingsdk-tools]: #senzingsdk-tools
 [Sqlite-Web]: #sqlite-web
+[TruthSet]: #truthset
