@@ -22,10 +22,10 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
    1. Download docker-compose file:
 
       ```console
-      curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
+      curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
       ```
 
-      Alternatively, use a web browser to download [senzing-docker-compose-postgresql.yaml].
+      Alternatively, use a web browser to download [senzing-docker-compose-postgresql-truthset.yaml].
 
    1. Bring up the docker-compose formation:
 
