@@ -49,7 +49,7 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
       | truthset  | `senzing-docker-compose-<database>-truthset.yaml`         |
       | multi use | `senzing-docker-compose-<database>-<truthset>-multi.yaml` |
 
-   For step-by-step instructions, wee [Examples].
+   For step-by-step instructions, see [Examples].
 
 ## Caveat
 
