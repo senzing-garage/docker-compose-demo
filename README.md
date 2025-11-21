@@ -179,7 +179,7 @@ An SQLite database administration tool.
 [Docker compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
 [docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
-[download senzing-docker-compose-postgresql-truthset.yaml]: https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
+[download senzing-docker-compose-postgresql-truthset.yaml]: https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
 [Errors]: docs/errors.md
 [Examples]: docs/examples.md
 [github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
