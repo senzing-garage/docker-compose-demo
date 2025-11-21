@@ -25,7 +25,7 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
       curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
       ```
 
-      Alternatively, use a web browser to download [senzing-docker-compose-postgresql-truthset.yaml].
+      Alternatively, use a web browser to [download senzing-docker-compose-postgresql-truthset.yaml].
 
    1. Bring up the docker-compose formation:
 
@@ -179,6 +179,7 @@ An SQLite database administration tool.
 [Docker compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
 [docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
+[download senzing-docker-compose-postgresql-truthset.yaml]: https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
 [Errors]: docs/errors.md
 [Examples]: docs/examples.md
 [github.com/coleifer/sqlite-web]: https://github.com/coleifer/sqlite-web
@@ -192,7 +193,7 @@ An SQLite database administration tool.
 [senzing-docker-compose-mssql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mssql.yaml
 [senzing-docker-compose-mysql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mysql.yaml
 [senzing-docker-compose-postgresql-truthset.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
-[senzing-docker-compose-postgresql.yaml]: https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
+[senzing-docker-compose-postgresql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql.yaml
 [senzing-docker-compose-sqlite-truthset.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite-truthset.yaml
 [senzing-docker-compose-sqlite.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite.yaml
 [Senzing]: https://senzing.com/
