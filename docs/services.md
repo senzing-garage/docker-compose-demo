@@ -80,7 +80,12 @@ A profile identifies a subset of docker containers to launch in the docker-compo
 
 ### new profile
 
+A "new" profile brings up a docker-compose formation with a database that has a Senzing Schema
+and Senzing configuration installed, but no data.
+
 ### resume profile
+
+A "resume" profile will bring up a former docker-compose formation with the existing database.
 
 ### truthset profile
 

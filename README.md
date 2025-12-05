@@ -89,11 +89,11 @@ the onus is on the user for proper operation of docker and docker networking.
       The [--profile] parameter specifies which variation of the docker-compose formation to bring up.
       Not all profiles exist for each docker-compose `.yaml` file.
 
-       | Profile  | Description                                     |
-       |----------|-------------------------------------------------|
-       | new      | New formation with empty Senzing datastore.     |
-       | resume   | Resume a prior docker-compose formation.        |
-       | truthset | New formation with Senzing TruthSets installed. |
+         | Profile  | Description                                     |
+         |----------|-------------------------------------------------|
+         | new      | New formation with empty Senzing datastore.     |
+         | resume   | Resume a prior docker-compose formation.        |
+         | truthset | New formation with Senzing TruthSets installed. |
 
        For more information, see [Profiles].
 
