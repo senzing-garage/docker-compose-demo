@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.2] - 2025-12-05
 
-### Changed in 2.0.1
+### Changed in 2.0.2
 
 - Variations refactored to `--profile` ("new", "resume", "truthset")
 
