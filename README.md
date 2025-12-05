@@ -10,7 +10,7 @@ Heck, it may not even be appropriate for your application of Senzing!
 
 ## Synopsis
 
-Using `docker-compose`, bring up a Docker compose formation for demonstrating Senzing.
+Using [Docker compose], bring up a Docker compose formation for demonstrating Senzing.
 
 ## Overview
 
@@ -22,15 +22,15 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
    1. Download docker-compose file:
 
       ```console
-      curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
+      curl -O https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
       ```
 
-      Alternatively, use a web browser to [download senzing-docker-compose-postgresql-truthset.yaml].
+      Alternatively, use a web browser to [download senzing-docker-compose-postgresql.yaml].
 
    1. Bring up the docker-compose formation:
 
       ```console
-      docker compose --profile new --file senzing-docker-compose-postgresql-truthset.yaml up --pull always
+      docker compose --profile truthset --file senzing-docker-compose-postgresql.yaml up --pull always
       ```
 
    1. In a separate terminal, exec into the `senzingsdk-tools` container:
@@ -43,11 +43,10 @@ Using `docker-compose`, bring up a Docker compose formation for demonstrating Se
    this repository contains a multitude of docker-compose.yaml files in the [docker-compose directory].
    Variations:
 
-      | Variation | Example filename                                          |
-      |-----------|-----------------------------------------------------------|
-      | database  | `senzing-docker-compose-<database>.yaml`                  |
-      | truthset  | `senzing-docker-compose-<database>-truthset.yaml`         |
-      | multi use | `senzing-docker-compose-<database>-<truthset>-multi.yaml` |
+      | Variation | Example filename                               |
+      |-----------|------------------------------------------------|
+      | database  | `senzing-docker-compose-<database>.yaml`       |
+      | multi use | `senzing-docker-compose-<database>-multi.yaml` |
 
    For step-by-step instructions, see [Examples].
 
@@ -85,8 +84,27 @@ the onus is on the user for proper operation of docker and docker networking.
    docker-compose --profile new --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up --pull always
    ```
 
-   *Note:* The optional [--pull always] parameter pulls the latest version of the Docker images before running.
-   Omit the [--pull always] parameter if using the currently cached Docker images is preferred.
+   1. `--profile`
+
+      The [--profile] parameter specifies which variation of the docker-compose formation to bring up.
+      Not all profiles exist for each docker-compose `.yaml` file.
+
+         | Profile  | Description                                     |
+         |----------|-------------------------------------------------|
+         | new      | New formation with empty Senzing datastore.     |
+         | resume   | Resume a prior docker-compose formation.        |
+         | truthset | New formation with Senzing TruthSets installed. |
+
+       For more information, see [Profiles].
+
+   1. `--file`
+
+      The [--file] parameter specifies the file containing the docker-compose YAML specification.
+
+   1. `--pull always`
+
+      The optional [--pull always] parameter pulls the latest version of the Docker images before running.
+      Omit the [--pull always] parameter if using the currently cached Docker images is preferred.
 
 1. Work with Docker compose formation.
    See [Services] section.
@@ -97,9 +115,10 @@ the onus is on the user for proper operation of docker and docker networking.
    docker-compose --profile new --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} down --volumes
    ```
 
-   *Note:* The optional [--volumes] parameter cleans up the volumes.
-   Omit the [--volumes] parameter if the data is to be reused via
-   [--profile resume].
+   1. `--volumes`
+
+      The optional [--volumes] parameter cleans up the volumes.
+      Omit the [--volumes] parameter if the data is to be reused via [--profile resume].
 
 ## Services
 
@@ -112,16 +131,19 @@ See [Services] for services rendered by each docker compose formation.
 - [Examples]
 - [Services]
 
+[--file]: https://docs.docker.com/reference/cli/docker/compose/
 [--profile resume]: https://docs.docker.com/reference/cli/docker/compose/up/#options
+[--profile]: https://docs.docker.com/reference/cli/docker/compose/
 [--pull always]: https://docs.docker.com/reference/cli/docker/compose/up/#options
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
 [Development]: docs/development.md
 [Docker compose]: https://github.com/senzing-garage/knowledge-base/blob/main/WHATIS/docker-compose.md
 [Docker is not supported in RHEL 8]: https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html-single/building_running_and_managing_containers/index#con_running-containers-without-docker_assembly_starting-with-containers
 [docker-compose directory]: https://github.com/senzing-garage/docker-compose-demo/tree/main/docker-compose
-[download senzing-docker-compose-postgresql-truthset.yaml]: https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
+[download senzing-docker-compose-postgresql.yaml]: https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
 [Errors]: docs/errors.md
 [Examples]: docs/examples.md
+[Profiles]: docs/services.md#profiles
 [Senzing Garage]: https://github.com/senzing-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
 [Senzing]: https://senzing.com/

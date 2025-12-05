@@ -13,6 +13,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -28,6 +29,20 @@ services:
       - senzing
     profiles:
       - new
+    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
+    volumes:
+      - sqlite-volume:/data
+
+  sqlite-init-truthset:
+    container_name: senzing-sqlite-init
+    environment:
+      SENZING_TOOLS_DATABASE_URL: "sqlite3://na:na@/data/G2C.db"
+      SENZING_TOOLS_LOAD_TRUTHSET: "True"
+    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
+    networks:
+      - senzing
+    profiles:
+      - truthset
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
       - sqlite-volume:/data
@@ -57,6 +72,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:

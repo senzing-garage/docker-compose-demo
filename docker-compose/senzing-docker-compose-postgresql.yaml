@@ -36,6 +36,7 @@ services:
       - senzing
     profiles:
       - new
+      - truthset
     read_only: true
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -61,6 +62,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -78,6 +80,20 @@ services:
       - senzing
     profiles:
       - new
+    restart: on-failure
+
+  postgres-init-truthset:
+    container_name: senzing-postgres-init
+    depends_on:
+      - postgres
+    environment:
+      SENZING_TOOLS_DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/G2/?sslmode=disable"
+      SENZING_TOOLS_LOAD_TRUTHSET: "True"
+    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
+    networks:
+      - senzing
+    profiles:
+      - truthset
     restart: on-failure
 
   pgadmin:
@@ -105,6 +121,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -135,6 +152,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
