@@ -21,6 +21,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -32,12 +33,26 @@ services:
       - postgres
     environment:
       SENZING_TOOLS_DATABASE_URL: "postgresql://postgres:postgres@${COMPOSE_PROJECT_NAME}-senzing-postgres:5432/G2/?sslmode=disable"
-      SENZING_TOOLS_LOAD_TRUTHSET: "True"
+      SENZING_TOOLS_INSTALL_SENZING_ER_CONFIGURATION: "True"
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
     profiles:
       - new
+    restart: on-failure
+
+  postgres-init-truthset:
+    container_name: "${COMPOSE_PROJECT_NAME}-senzing-postgres-init"
+    depends_on:
+      - postgres
+    environment:
+      SENZING_TOOLS_DATABASE_URL: "postgresql://postgres:postgres@${COMPOSE_PROJECT_NAME}-senzing-postgres:5432/G2/?sslmode=disable"
+      SENZING_TOOLS_LOAD_TRUTHSET: "True"
+    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
+    networks:
+      - senzing
+    profiles:
+      - truthset
     restart: on-failure
 
   senzingsdk-tools:
@@ -65,6 +80,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:

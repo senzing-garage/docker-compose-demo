@@ -14,6 +14,7 @@ services:
       - senzing
     profiles:
       - new
+      - truthset
     restart: on-failure
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -39,6 +40,7 @@ services:
       - senzing
     profiles:
       - new
+      - truthset
     read_only: true
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -59,6 +61,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
@@ -82,6 +85,7 @@ services:
     image: mcr.microsoft.com/mssql/server:${SENZING_DOCKER_IMAGE_VERSION_MSSQL_SERVER:-2025-latest}
     profiles:
       - new
+      - truthset
     networks:
       - senzing
     restart: on-failure
@@ -91,14 +95,34 @@ services:
     depends_on:
       - mssql
     environment:
-      SENZING_TOOLS_DATABASE_URL: "mssql://sa:Passw0rd@senzing-mssql:1433/G2?MultiSubnetFailover=False&TrustServerCertificate=yes"
       ODBCINI: /var/opt/odbcini/odbc.ini
       ODBCSYSINI: /opt/microsoft/msodbcsql18/etc
+      SENZING_TOOLS_DATABASE_URL: "mssql://sa:Passw0rd@senzing-mssql:1433/G2?MultiSubnetFailover=False&TrustServerCertificate=yes"
+      SENZING_TOOLS_INSTALL_SENZING_ER_CONFIGURATION: "True"
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
     profiles:
       - new
+    restart: on-failure
+    volumes:
+      - mssql-odbcini-volume:/var/opt/odbcini
+      - mssql-driver-volume:/opt/microsoft
+
+  mssql-init-truthset:
+    container_name: senzing-mssql-init
+    depends_on:
+      - mssql
+    environment:
+      ODBCINI: /var/opt/odbcini/odbc.ini
+      ODBCSYSINI: /opt/microsoft/msodbcsql18/etc
+      SENZING_TOOLS_DATABASE_URL: "mssql://sa:Passw0rd@senzing-mssql:1433/G2?MultiSubnetFailover=False&TrustServerCertificate=yes"
+      SENZING_TOOLS_LOAD_TRUTHSET: "True"
+    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
+    networks:
+      - senzing
+    profiles:
+      - truthset
     restart: on-failure
     volumes:
       - mssql-odbcini-volume:/var/opt/odbcini
@@ -116,6 +140,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
 
   senzingsdk-tools:
@@ -145,6 +170,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:

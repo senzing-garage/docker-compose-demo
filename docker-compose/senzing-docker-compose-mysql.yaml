@@ -1,6 +1,33 @@
 name: senzing-docker-compose-mysql
 
 services:
+  mysql-driver:
+    # NOTE: This currently has dependency conflicts.
+    command: >
+      -c "chmod 1755 /tmp
+      && wget https://dev.mysql.com/get/Downloads/Connector-ODBC/9.5/mysql-connector-odbc_9.5.0-1debian13_amd64.deb
+      && wget https://dev.mysql.com/get/Downloads/MySQL-9.5/mysql-common_9.5.0-1debian13_amd64.deb
+      && wget https://deb.debian.org/debian/pool/main/m/mysql-8.0/libmysqlclient21_8.0.44-1_amd64.deb
+      && apt-get update
+      && apt-get -y --no-install-recommends install ./mysql-connector-odbc_9.5.0-1debian13_amd64.deb ./mysql-common_9.5.0-1debian13_amd64.deb ./libmysqlclient21_8.0.44-1_amd64.deb
+      "
+    container_name: senzing-mysql-driver
+    entrypoint: ["bash"]
+    environment:
+      ACCEPT_EULA: Y
+    image: senzing/apt:${SENZING_DOCKER_IMAGE_VERSION_SENZING_APT:-latest}
+    networks:
+      - senzing
+    profiles:
+      - new
+      - truthset
+    user: ${SENZING_UID:-0}:${SENZING_GID:-0}
+    volumes:
+      - mysql-common-volume:/etc/mysql
+      - mysql-driver-volume:/usr/lib/x86_64-linux-gnu/mysql
+      - odbc-driver-volume:/usr/lib/x86_64-linux-gnu/odbc
+      # TODO: Need to mount /usr/lib/x86_64-linux-gnu/libmysqlclient.so.21 -> libmysqlclient.so.21.2.44
+
   mysql:
     container_name: senzing-mysql
     environment:
@@ -17,6 +44,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     volumes:
       - mysql-volume:/var/lib/mysql
@@ -27,11 +55,26 @@ services:
       - mysql
     environment:
       SENZING_TOOLS_DATABASE_URL: "mysql://mysql:mysql@mysql:3306/G2"
+      SENZING_TOOLS_INSTALL_SENZING_ER_CONFIGURATION: "True"
     image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
     networks:
       - senzing
     profiles:
       - new
+    restart: on-failure
+
+  mysql-init-truthset:
+    container_name: senzing-mysql-init
+    depends_on:
+      - mysql
+    environment:
+      SENZING_TOOLS_DATABASE_URL: "mysql://mysql:mysql@mysql:3306/G2"
+      SENZING_TOOLS_LOAD_TRUTHSET: "True"
+    image: senzing/init-database:${SENZING_DOCKER_IMAGE_VERSION_SENZING_INIT_DATABASE:-latest}
+    networks:
+      - senzing
+    profiles:
+      - truthset
     restart: on-failure
 
   phpmyadmin:
@@ -48,6 +91,7 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
 
   senzingsdk-tools:
@@ -75,15 +119,23 @@ services:
     profiles:
       - new
       - resume
+      - truthset
     restart: always
     user: ${SENZING_UID:-0}:${SENZING_GID:-0}
     volumes:
+      - mysql-common-volume:/etc/mysql
+      - mysql-driver-volume:/usr/lib/x86_64-linux-gnu/mysql
+      - odbc-driver-volume:/usr/lib/x86_64-linux-gnu/odbc
       - user-data-volume:/var/opt/senzing
+      # TODO: Need to mount /usr/lib/x86_64-linux-gnu/libmysqlclient.so.21 -> libmysqlclient.so.21.2.44
 
 networks:
   senzing:
     name: ${SENZING_DOCKER_NETWORK:-senzing-network}
 
 volumes:
+  mysql-common-volume:
+  mysql-driver-volume:
   mysql-volume:
+  odbc-driver-volume:
   user-data-volume:
