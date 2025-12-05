@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 [markdownlint](https://dlaa.me/markdownlint/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.2] - 2025-12-05
+
+### Changed in 2.0.1
+
+- Variations refactored to `--profile` ("new", "resume", "truthset")
+
 ## [2.0.1] - 2025-11-21
 
 ### Changed in 2.0.1

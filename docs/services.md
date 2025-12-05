@@ -78,11 +78,11 @@ An SQLite database administration tool.
 
 A profile identifies a subset of docker containers to launch in the docker-compose `.yaml` file.
 
-### new
+### new profile
 
-### resume
+### resume profile
 
-### truthset
+### truthset profile
 
 The [Senzing Truthsets] are a curated set of data sources and records to illustrate
 principles of Entity Resolution.
