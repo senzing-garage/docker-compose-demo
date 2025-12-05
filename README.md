@@ -84,8 +84,25 @@ the onus is on the user for proper operation of docker and docker networking.
    docker-compose --profile new --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} up --pull always
    ```
 
-   *Note:* The optional [--pull always] parameter pulls the latest version of the Docker images before running.
-   Omit the [--pull always] parameter if using the currently cached Docker images is preferred.
+   1. `--profile`
+
+      The [--profile] parameter specifies which variation of the docker-compose formation to bring up.
+      Not all formations exist for each docker-compose `.yaml` file.
+
+       | Profile  | Description                                     |
+       |----------|-------------------------------------------------|
+       | new      | New formation with empty Senzing datastore.     |
+       | resume   | Resume a prior docker-compose formation.        |
+       | truthset | New formation with Senzing TruthSets installed. |
+
+   1. `--file`
+
+      The [--file] parameter specifies the file containing the docker-compose YAML specification.
+
+   1. `--pull always`
+
+      The optional [--pull always] parameter pulls the latest version of the Docker images before running.
+      Omit the [--pull always] parameter if using the currently cached Docker images is preferred.
 
 1. Work with Docker compose formation.
    See [Services] section.
@@ -96,9 +113,10 @@ the onus is on the user for proper operation of docker and docker networking.
    docker-compose --profile new --file ${SENZING_TOOLS_DOCKER_COMPOSE_FILE} down --volumes
    ```
 
-   *Note:* The optional [--volumes] parameter cleans up the volumes.
-   Omit the [--volumes] parameter if the data is to be reused via
-   [--profile resume].
+   1. `--volumes`
+
+      The optional [--volumes] parameter cleans up the volumes.
+      Omit the [--volumes] parameter if the data is to be reused via [--profile resume].
 
 ## Services
 
@@ -111,7 +129,9 @@ See [Services] for services rendered by each docker compose formation.
 - [Examples]
 - [Services]
 
+[--file]: https://docs.docker.com/reference/cli/docker/compose/
 [--profile resume]: https://docs.docker.com/reference/cli/docker/compose/up/#options
+[--profile]: https://docs.docker.com/reference/cli/docker/compose/
 [--pull always]: https://docs.docker.com/reference/cli/docker/compose/up/#options
 [--volumes]: https://docs.docker.com/reference/cli/docker/compose/down/#options
 [Development]: docs/development.md
