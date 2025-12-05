@@ -6,15 +6,13 @@ All Docker Compose formations include:
 
 Services offered by specific Docker Compose formations:
 
-| Docker compose file                                     | [DB Admin]   | [TruthSet]         |
-|---------------------------------------------------------|--------------|:------------------:|
-| [senzing-docker-compose-mssql.yaml]                     | [Adminer]    |                    |
-| [senzing-docker-compose-mysql.yaml]                     | [PhpMyAdmin] |                    |
-| [senzing-docker-compose-postgresql-truthset-multi.yaml] | [PgAdmin]    | :white_check_mark: |
-| [senzing-docker-compose-postgresql-truthset.yaml]       | [PgAdmin]    | :white_check_mark: |
-| [senzing-docker-compose-postgresql.yaml]                | [PgAdmin]    |                    |
-| [senzing-docker-compose-sqlite-truthset.yaml]           | [Sqlite-Web] | :white_check_mark: |
-| [senzing-docker-compose-sqlite.yaml]                    | [Sqlite-Web] |                    |
+| Docker compose file                                     | [DB Admin]   | [Profiles]            |
+|---------------------------------------------------------|--------------|:---------------------:|
+| [senzing-docker-compose-mssql.yaml]                     | [Adminer]    | new, resume, truthset |
+| [senzing-docker-compose-mysql.yaml]                     | [PhpMyAdmin] | new, resume, truthset |
+| [senzing-docker-compose-postgresql-multi.yaml]          | [PgAdmin]    | new, resume, truthset |
+| [senzing-docker-compose-postgresql.yaml]                | [PgAdmin]    | new, resume, truthset |
+| [senzing-docker-compose-sqlite.yaml]                    | [Sqlite-Web] | new, resume, truthset |
 
 ## senzingsdk-tools
 
@@ -76,7 +74,15 @@ An SQLite database administration tool.
 1. View at [localhost:9174](http://localhost:9174)
 1. Sqlite-web homepage: [github.com/coleifer/sqlite-web]
 
-## TruthSet
+## Profiles
+
+A profile identifies a subset of docker containers to launch in the docker-compose `.yaml` file.
+
+### new
+
+### resume
+
+### truthset
 
 The [Senzing Truthsets] are a curated set of data sources and records to illustrate
 principles of Entity Resolution.
@@ -89,15 +95,13 @@ principles of Entity Resolution.
 [https://www.phpmyadmin.net/]: https://www.phpmyadmin.net
 [PgAdmin]: #pgadmin
 [PhpMyAdmin]: #phpmyadmin
+[Profiles]: #profiles
 [Senzing Truthsets]: https://github.com/Senzing/truth-sets
 [senzing-docker-compose-mssql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mssql.yaml
 [senzing-docker-compose-mysql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-mysql.yaml
-[senzing-docker-compose-postgresql-truthset-multi.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql-truthset-multi.yaml
-[senzing-docker-compose-postgresql-truthset.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql-truthset.yaml
+[senzing-docker-compose-postgresql-multi.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql-multi.yaml
 [senzing-docker-compose-postgresql.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-postgresql.yaml
-[senzing-docker-compose-sqlite-truthset.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite-truthset.yaml
 [senzing-docker-compose-sqlite.yaml]: https://github.com/senzing-garage/docker-compose-demo/blob/main/docker-compose/senzing-docker-compose-sqlite.yaml
 [senzing/senzingsdk-tools]: https://github.com/Senzing/senzingsdk-tools
 [senzingsdk-tools]: #senzingsdk-tools
 [Sqlite-Web]: #sqlite-web
-[TruthSet]: #truthset

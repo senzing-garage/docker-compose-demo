@@ -10,7 +10,7 @@ Heck, it may not even be appropriate for your application of Senzing!
 
 ## Synopsis
 
-Using `docker-compose`, bring up a Docker compose formation for demonstrating Senzing.
+Using [Docker compose], bring up a Docker compose formation for demonstrating Senzing.
 
 ## Overview
 
@@ -87,13 +87,15 @@ the onus is on the user for proper operation of docker and docker networking.
    1. `--profile`
 
       The [--profile] parameter specifies which variation of the docker-compose formation to bring up.
-      Not all formations exist for each docker-compose `.yaml` file.
+      Not all profiles exist for each docker-compose `.yaml` file.
 
        | Profile  | Description                                     |
        |----------|-------------------------------------------------|
        | new      | New formation with empty Senzing datastore.     |
        | resume   | Resume a prior docker-compose formation.        |
        | truthset | New formation with Senzing TruthSets installed. |
+
+       For more information, see [Profiles].
 
    1. `--file`
 
@@ -141,6 +143,7 @@ See [Services] for services rendered by each docker compose formation.
 [download senzing-docker-compose-postgresql.yaml]: https://raw.githubusercontent.com/senzing-garage/docker-compose-demo/refs/heads/main/docker-compose/senzing-docker-compose-postgresql.yaml
 [Errors]: docs/errors.md
 [Examples]: docs/examples.md
+[Profiles]: docs/services.md#profiles
 [Senzing Garage]: https://github.com/senzing-garage
 [Senzing Quick Start guides]: https://docs.senzing.com/quickstart/
 [Senzing]: https://senzing.com/
