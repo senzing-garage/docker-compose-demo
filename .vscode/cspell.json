@@ -14,6 +14,7 @@
     "configtool",
     "configtools",
     "CONTEXTPATH",
+    "cooldown",
     "CTYPE",
     "curlimages",
     "datamart",
@@ -36,6 +37,7 @@
     "isready",
     "Juypter",
     "KAFDROP",
+    "kernelsam",
     "kuery",
     "LIBFEAT",
     "libmyodbc",
@@ -93,7 +95,5 @@
     "withinfo",
     "xpack"
   ],
-  "ignorePaths": [
-    ".git/**"
-  ]
+  "ignorePaths": [".git/**"]
 }
